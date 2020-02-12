@@ -157,7 +157,7 @@ class ContactsField extends React.Component<Props, State> {
         } = this.props;
         const { contacts, numSuggestedShowing } = this.state;
         const groupLabel = <FormattedMessage {...messages.groupLabel} />;
-        const shouldShowSuggested = numSuggestedShowing > 0 && contacts.length !== numSuggestedShowing;
+        const shouldShowSuggested = numSuggestedShowing > 0;
         const pillSelectorOverlayClasses = classNames({
             scrollable: contacts.length > 5,
         });
