@@ -80,6 +80,15 @@
     &.bce-item-row-selected + & {
         border-top-color: $grey-blue;
     }
+
+    .checkbox-container {
+        margin: 0 0 0 1px;
+
+        span,
+        input {
+            cursor: pointer;
+        }
+    }
 }
 
 .bce-item-header-row {

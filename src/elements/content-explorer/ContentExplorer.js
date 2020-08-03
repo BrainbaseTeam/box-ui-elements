@@ -99,6 +99,8 @@ type Props = {
     messages?: StringMap,
     metadataColumnsToShow: MetadataColumnsToShow,
     metadataQuery: MetadataQuery,
+    onBatchCancel: Function,
+    onBatchDownload: Function,
     onCreate: Function,
     onDelete: Function,
     onDownload: Function,
@@ -133,6 +135,7 @@ type State = {
     isRenameModalOpen: boolean,
     isShareModalOpen: boolean,
     isUploadModalOpen: boolean,
+    picked: { [string]: BoxItem },
     rootName: string,
     searchQuery: string,
     selected?: BoxItem,
@@ -182,6 +185,8 @@ class ContentExplorer extends Component<Props, State> {
         staticHost: DEFAULT_HOSTNAME_STATIC,
         uploadHost: DEFAULT_HOSTNAME_UPLOAD,
         className: '',
+        onBatchCancel: noop,
+        onBatchDownload: noop,
         onDelete: noop,
         onDownload: noop,
         onPreview: noop,
@@ -252,6 +257,7 @@ class ContentExplorer extends Component<Props, State> {
             isRenameModalOpen: false,
             isShareModalOpen: false,
             isUploadModalOpen: false,
+            picked: {},
             rootName: '',
             searchQuery: '',
             sortBy,
@@ -850,6 +856,31 @@ class ContentExplorer extends Component<Props, State> {
     };
 
     /**
+     * Picks or unpicks item for batch download
+     *
+     * @private
+     * @param {Object} item - file or folder object
+     * @return {void}
+     */
+    pick = (item: BoxItem): void => {
+        const { id, type }: BoxItem = item;
+        const { picked, currentCollection: { items = [] } }: State = this.state;
+        const selectedKeys: Array<string> = Object.keys(picked);
+        const cacheKey: string = this.api.getAPI(type).getCacheKey(id);
+        const existing = picked[cacheKey];
+
+        if (existing) {
+            item.picked = false;
+            delete picked[cacheKey];
+        } else {
+            item.picked = true;
+            picked[cacheKey] = item;
+        }
+
+        this.setState({ picked });
+    };
+
+    /**
      * Selects the clicked file and then previews it
      * or opens it, if it was a web link
      *
@@ -903,6 +934,40 @@ class ContentExplorer extends Component<Props, State> {
      */
     download = (item: BoxItem): void => {
         this.select(item, this.downloadCallback);
+    };
+
+    /**
+     * Starts batch download
+     *
+     * @private
+     * @return {void}
+     */
+    batchDownload = (): void => {
+        const { onBatchDownload }: Props = this.props;
+        const { picked }: State = this.state;
+
+        const results: BoxItem[] = Object.keys(picked).map(key => {
+            const clone: BoxItem = { ...picked[key] };
+            delete clone.picked;
+            return clone;
+        });
+
+        onBatchDownload(results);
+    };
+
+    /**
+     * Clears items marked for batch download
+     *
+     * @private
+     * @return {void}
+     */
+    batchCancel = (): void => {
+        const { onBatchCancel }: Props = this.props;
+        const { picked }: State = this.state;
+
+        Object.keys(picked).forEach(key => delete picked[key].picked);
+
+        this.setState({ picked: {} }, () => onBatchCancel());
     };
 
     /**
@@ -1428,6 +1493,7 @@ class ContentExplorer extends Component<Props, State> {
             isPreviewModalOpen,
             isCreateFolderModalOpen,
             selected,
+            picked,
             isLoading,
             errorCode,
             focusedRow,
@@ -1496,6 +1562,7 @@ class ContentExplorer extends Component<Props, State> {
                             onItemClick={this.onItemClick}
                             onItemDelete={this.delete}
                             onItemDownload={this.download}
+                            onItemPick={this.pick}
                             onItemPreview={this.preview}
                             onItemRename={this.rename}
                             onItemSelect={this.select}
@@ -1508,7 +1575,10 @@ class ContentExplorer extends Component<Props, State> {
                             viewMode={viewMode}
                             metadataColumnsToShow={metadataColumnsToShow}
                         />
-                        <Footer>
+                        <Footer
+                            onBatchDownload={this.batchDownload}
+                            onBatchCancel={this.batchCancel}
+                        >
                             <Pagination
                                 offset={offset}
                                 onChange={this.paginate}

@@ -18,6 +18,7 @@ import headerCellRenderer from './headerCellRenderer';
 import sizeCellRenderer from './sizeCellRenderer';
 import dateCellRenderer from './dateCellRenderer';
 import moreOptionsCellRenderer from './moreOptionsCellRenderer';
+import selectionCellRenderer from './selectionCellRenderer';
 import { FIELD_DATE, FIELD_ID, FIELD_NAME, FIELD_SIZE, VIEW_FOLDER, VIEW_RECENTS } from '../../constants';
 import './ItemList.scss';
 
@@ -35,6 +36,7 @@ type Props = {
     onItemClick: Function,
     onItemDelete: Function,
     onItemDownload: Function,
+    onItemPick: Function,
     onItemPreview: Function,
     onItemRename: Function,
     onItemSelect: Function,
@@ -60,6 +62,7 @@ const ItemList = ({
     canRename,
     onItemClick,
     onItemSelect,
+    onItemPick,
     onItemDelete,
     onItemDownload,
     onItemRename,
@@ -79,6 +82,9 @@ const ItemList = ({
         canPreview,
         isSmall, // shows details if false
         isTouch,
+    );
+    const selectionCell = selectionCellRenderer(
+        onItemPick,
     );
     const iconCell = iconCellRenderer();
     const dateCell = dateCellRenderer();
@@ -208,6 +214,12 @@ const ItemList = ({
                                 dataKey={FIELD_ID}
                                 cellRenderer={moreOptionsCell}
                                 width={isSmall || !canShare ? 58 : 140}
+                                flexShrink={0}
+                            />
+                            <Column
+                                dataKey={FIELD_ID}
+                                cellRenderer={selectionCell}
+                                width={isSmall ? 20 : 30}
                                 flexShrink={0}
                             />
                         </Table>
