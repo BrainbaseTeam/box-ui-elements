@@ -889,7 +889,7 @@ class ContentExplorer extends Component<Props, State> {
         }
 
         const pickedItem: BoxItem = { ...item };
-        this.updateCollection(currentCollection, pickedItem, () => {});
+        this.updateCollection(currentCollection, pickedItem);
 
         this.setState({ picked });
     };
@@ -977,11 +977,18 @@ class ContentExplorer extends Component<Props, State> {
      */
     batchCancel = (): void => {
         const { onBatchCancel }: Props = this.props;
-        const { picked }: State = this.state;
+        const { picked, currentCollection }: State = this.state;
 
         Object.keys(picked).forEach(key => delete picked[key].picked);
 
         this.setState({ picked: {} }, () => onBatchCancel());
+
+        // Remove picked properties from currentCollection so UI also reflects changed state
+        Object.keys(currentCollection).forEach(key => {
+            delete currentCollection[key].picked;
+        });
+
+        this.updateCollection(currentCollection);
     };
 
     /**
@@ -1519,6 +1526,7 @@ class ContentExplorer extends Component<Props, State> {
         const allowUpload: boolean = canUpload && !!can_upload;
         const allowCreate: boolean = canCreateNewFolder && !!can_upload;
         const hasHeader: boolean = view !== VIEW_METADATA; // Show Header and SubHeader when it's not metadata view
+        const pickedCount: number = Object.keys(picked).length;
 
         const viewMode = this.getViewMode();
         const maxGridColumnCount = this.getMaxNumberOfGridViewColumnsForWidth();
@@ -1590,6 +1598,7 @@ class ContentExplorer extends Component<Props, State> {
                             metadataColumnsToShow={metadataColumnsToShow}
                         />
                         <Footer
+                            pickedCount={pickedCount}
                             onBatchDownload={this.batchDownload}
                             onBatchCancel={this.batchCancel}
                         >
