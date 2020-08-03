@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../src/elements/common/nav-router/index.js"],"names":["default"],"mappings":"AAAA,SAASA,OAAT,QAAwB,aAAxB","sourcesContent":["export { default } from './NavRouter';\n"],"file":"index.js"}

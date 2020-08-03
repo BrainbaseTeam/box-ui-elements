@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../../../src/elements/content-sidebar/activity-feed/common/delete-confirmation/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,sBAAxB","sourcesContent":["// @flow\nexport { default } from './DeleteConfirmation';\n"],"file":"index.js"}

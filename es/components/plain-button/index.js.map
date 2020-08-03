@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/components/plain-button/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,eAAxB","sourcesContent":["// @flow\nexport { default } from './PlainButton';\n"],"file":"index.js"}

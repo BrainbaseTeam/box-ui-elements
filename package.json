@@ -86,22 +86,38 @@
             "last 2 iOS versions",
             "IE 11"
         ],
-        "dev": ["last 1 Chrome versions", "last 1 Firefox versions"]
+        "dev": [
+            "last 1 Chrome versions",
+            "last 1 Firefox versions"
+        ]
     },
     "lint-staged": {
-        "*.js": ["eslint --fix", "git add"],
-        "*.md": ["prettier --write --parser=markdown", "git add"],
-        "*.json": ["prettier --write --parser=json", "git add"],
-        "*.html": ["prettier --write --parser=html", "git add"],
-        "*.scss": ["prettier --write --parser=scss", "stylelint --syntax scss --fix", "git add"],
-        "*.css": ["prettier --write --parser=css", "stylelint --syntax css --fix", "git add"]
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged",
-            "pre-push": "./scripts/prepush.sh",
-            "commit-msg": "commitlint -e"
-        }
+        "*.js": [
+            "eslint --fix",
+            "git add"
+        ],
+        "*.md": [
+            "prettier --write --parser=markdown",
+            "git add"
+        ],
+        "*.json": [
+            "prettier --write --parser=json",
+            "git add"
+        ],
+        "*.html": [
+            "prettier --write --parser=html",
+            "git add"
+        ],
+        "*.scss": [
+            "prettier --write --parser=scss",
+            "stylelint --syntax scss --fix",
+            "git add"
+        ],
+        "*.css": [
+            "prettier --write --parser=css",
+            "stylelint --syntax css --fix",
+            "git add"
+        ]
     },
     "jest": {
         "clearMocks": true,
@@ -113,17 +129,27 @@
             "\\.(css|less|scss)$": "<rootDir>/scripts/jest/mocks/styleMock.js",
             "react-virtualized/dist/es": "react-virtualized/dist/commonjs"
         },
-        "transformIgnorePatterns": ["node_modules/(?!(react-virtualized/dist/es))"],
+        "transformIgnorePatterns": [
+            "node_modules/(?!(react-virtualized/dist/es))"
+        ],
         "collectCoverage": false,
         "coverageDirectory": "<rootDir>/reports",
-        "collectCoverageFrom": ["src/**/*.js", "!**/node_modules/**", "!**/__tests__/**"],
+        "collectCoverageFrom": [
+            "src/**/*.js",
+            "!**/node_modules/**",
+            "!**/__tests__/**"
+        ],
         "globalSetup": "<rootDir>/scripts/jest/env-setup.js",
-        "roots": ["src"],
+        "roots": [
+            "src"
+        ],
         "setupFilesAfterEnv": [
             "<rootDir>/node_modules/regenerator-runtime/runtime.js",
             "<rootDir>/scripts/jest/enzyme-adapter.js"
         ],
-        "snapshotSerializers": ["enzyme-to-json/serializer"]
+        "snapshotSerializers": [
+            "enzyme-to-json/serializer"
+        ]
     },
     "engines": {
         "node": ">=8.x",

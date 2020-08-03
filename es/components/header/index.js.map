@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/components/header/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,UAAxB","sourcesContent":["// @flow\nexport { default } from './Header';\n"],"file":"index.js"}

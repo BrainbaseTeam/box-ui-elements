@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/features/security-cloud-game/index.js"],"names":["default"],"mappings":"AAAA,SAASA,OAAT,QAAwB,qBAAxB","sourcesContent":["export { default } from './SecurityCloudGame';\n"],"file":"index.js"}

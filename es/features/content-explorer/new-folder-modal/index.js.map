@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../src/features/content-explorer/new-folder-modal/index.js"],"names":["default"],"mappings":"AAAA,SAASA,OAAT,QAAwB,kBAAxB","sourcesContent":["export { default } from './NewFolderModal';\n"],"file":"index.js"}

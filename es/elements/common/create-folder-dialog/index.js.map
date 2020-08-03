@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../src/elements/common/create-folder-dialog/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,sBAAxB","sourcesContent":["// @flow\nexport { default } from './CreateFolderDialog';\n"],"file":"index.js"}

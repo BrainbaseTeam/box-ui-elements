@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/elements/content-sidebar/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,kBAAxB","sourcesContent":["// @flow\nexport { default } from './ContentSidebar';\nexport type { ContentSidebarProps } from './ContentSidebar';\n"],"file":"index.js"}

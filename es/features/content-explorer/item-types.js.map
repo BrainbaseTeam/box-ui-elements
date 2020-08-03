@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/features/content-explorer/item-types.js"],"names":["FILE","FOLDER","BOOKMARK"],"mappings":"AAAA,eAAe;AACXA,EAAAA,IAAI,EAAE,MADK;AAEXC,EAAAA,MAAM,EAAE,QAFG;AAGXC,EAAAA,QAAQ,EAAE;AAHC,CAAf","sourcesContent":["export default {\n    FILE: 'file',\n    FOLDER: 'folder',\n    BOOKMARK: 'web_link',\n};\n"],"file":"item-types.js"}
