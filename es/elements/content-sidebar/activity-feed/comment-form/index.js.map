@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../../src/elements/content-sidebar/activity-feed/comment-form/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,eAAxB","sourcesContent":["// @flow\nexport { default } from './CommentForm';\n"],"file":"index.js"}

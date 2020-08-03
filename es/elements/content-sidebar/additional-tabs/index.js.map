@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../src/elements/content-sidebar/additional-tabs/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,kBAAxB","sourcesContent":["// @flow\nexport { default } from './AdditionalTabs';\n"],"file":"index.js"}

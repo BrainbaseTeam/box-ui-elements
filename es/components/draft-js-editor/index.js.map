@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/components/draft-js-editor/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,iBAAxB","sourcesContent":["// @flow\nexport { default } from './DraftJSEditor';\n"],"file":"index.js"}

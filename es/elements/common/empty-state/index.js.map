@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../src/elements/common/empty-state/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,cAAxB","sourcesContent":["// @flow\nexport { default } from './EmptyState';\n"],"file":"index.js"}

@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/components/scroll-wrapper/index.js"],"names":["default"],"mappings":"AAEA,SAASA,OAAT,QAAwB,iBAAxB","sourcesContent":["// @flow\n\nexport { default } from './ScrollWrapper';\n"],"file":"index.js"}

@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../../src/elements/content-sidebar/activity-feed/task-new/index.js"],"names":["default","TaskComponent"],"mappings":"AACA,SAASA,OAAT,QAAwB,QAAxB;AACA,SAASC,aAAT,QAA8B,QAA9B","sourcesContent":["// @flow\nexport { default } from './Task';\nexport { TaskComponent } from './Task';\n"],"file":"index.js"}

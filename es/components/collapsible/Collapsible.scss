@@ -1,0 +1,84 @@
+@import '../../styles/variables';
+
+.collapsible-card {
+    // no overflow hidden sticky header
+    border-radius: $bdl-border-radius-size;
+
+    .collapsible-card-header {
+        position: relative; // for action items
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+        border-radius: $bdl-border-radius-size;
+
+        &.has-sticky-header {
+            position: sticky;
+            top: 0; // required by sticky position
+            z-index: 1; // required by sticky position
+        }
+    }
+
+    .collapsible-card-action-items {
+        position: absolute;
+        right: 34px;
+        bottom: 0;
+    }
+
+    .collapsible-card-header-caret {
+        position: absolute;
+        right: 0;
+        transition: transform $bdl-transition-duration-200ms;
+    }
+
+    .btn-plain.collapsible-card-title {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 10px 0;
+        text-align: left;
+    }
+
+    .collapsible-card-content {
+        padding: 10px 0;
+    }
+
+    &.is-open .collapsible-card-header-caret {
+        transform: rotateZ(180deg);
+    }
+
+    &.is-bordered {
+        border: 1px solid $bdl-gray-10;
+
+        .collapsible-card-header {
+            background-color: $white;
+        }
+
+        .btn-plain.collapsible-card-title,
+        .collapsible-card-content {
+            padding: 10px;
+        }
+
+        &.is-open .btn-plain.collapsible-card-title {
+            border-bottom: 1px solid $bdl-gray-10;
+        }
+
+        .collapsible-card-header-caret {
+            right: 10px;
+        }
+    }
+
+    &:not(.is-bordered) {
+        .btn-plain.collapsible-card-title {
+            border-bottom: 1px solid $bdl-gray-10;
+
+            &:hover,
+            &:active,
+            &:focus {
+                text-decoration: none;
+                border-bottom-color: $bdl-box-blue;
+            }
+        }
+    }
+}

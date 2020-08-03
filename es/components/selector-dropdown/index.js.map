@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/components/selector-dropdown/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,oBAAxB","sourcesContent":["// @flow\nexport { default } from './SelectorDropdown';\n"],"file":"index.js"}

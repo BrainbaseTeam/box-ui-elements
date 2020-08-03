@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../../../src/elements/content-sidebar/activity-feed/common/user-link/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,YAAxB","sourcesContent":["// @flow\nexport { default } from './UserLink';\n"],"file":"index.js"}

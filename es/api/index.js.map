@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/api/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,cAAxB","sourcesContent":["// @flow\nexport { default } from './APIFactory';\n"],"file":"index.js"}

@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/components/inline-notice/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,gBAAxB","sourcesContent":["// @flow\nexport { default } from './InlineNotice';\n"],"file":"index.js"}

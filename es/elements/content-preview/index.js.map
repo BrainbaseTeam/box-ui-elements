@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/elements/content-preview/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,kBAAxB","sourcesContent":["// @flow\nexport { default } from './ContentPreview';\nexport type { ContentPreviewProps } from './ContentPreview';\n"],"file":"index.js"}

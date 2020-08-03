@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../../src/elements/content-sidebar/skills/key-values/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,aAAxB","sourcesContent":["// @flow\nexport { default } from './Keyvalues';\n"],"file":"index.js"}

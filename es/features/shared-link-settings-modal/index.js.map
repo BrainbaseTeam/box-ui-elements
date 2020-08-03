@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/features/shared-link-settings-modal/index.js"],"names":["default"],"mappings":"AAAA,SAASA,OAAT,QAAwB,2BAAxB","sourcesContent":["export { default } from './SharedLinkSettingsModal';\n"],"file":"index.js"}

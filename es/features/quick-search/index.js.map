@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/features/quick-search/index.js"],"names":["default","QuickSearch","QuickSearchItem"],"mappings":"AAAA,SAASA,OAAO,IAAIC,WAApB,QAAuC,eAAvC;AACA,SAASD,OAAO,IAAIE,eAApB,QAA2C,mBAA3C","sourcesContent":["export { default as QuickSearch } from './QuickSearch';\nexport { default as QuickSearchItem } from './QuickSearchItem';\n"],"file":"index.js"}

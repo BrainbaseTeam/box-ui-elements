@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/components/text-input-with-copy-button/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,2BAAxB","sourcesContent":["// @flow\nexport { default } from './TextInputWithCopyButton';\n"],"file":"index.js"}

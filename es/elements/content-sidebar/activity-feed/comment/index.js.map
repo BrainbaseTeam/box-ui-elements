@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../../src/elements/content-sidebar/activity-feed/comment/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,WAAxB","sourcesContent":["// @flow\nexport { default } from './Comment';\n"],"file":"index.js"}

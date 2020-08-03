@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/components/thumbnail-card/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,iBAAxB","sourcesContent":["// @flow\nexport { default } from './ThumbnailCard';\n"],"file":"index.js"}
