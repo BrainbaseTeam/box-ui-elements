@@ -465,7 +465,7 @@ class ContentExplorer extends Component<Props, State> {
     fetchFolderSuccessCallback(collection: Collection, triggerNavigationEvent: boolean): void {
         const { onNavigate, rootFolderId }: Props = this.props;
         const { boxItem, id, name }: Collection = collection;
-        const { selected }: State = this.state;
+        const { selected, picked }: State = this.state;
         const rootName = id === rootFolderId ? name : '';
 
         // Close any open modals
@@ -806,13 +806,23 @@ class ContentExplorer extends Component<Props, State> {
         const thumbnails = await Promise.all(items.map(item => fileAPI.getThumbnailUrl(item)));
         let newSelectedItem: ?BoxItem;
 
+        const { picked }: State = this.state;
+
         newCollection.items = items.map((obj, index) => {
             const isSelected = obj.id === selectedId;
             const currentItem = isSelected ? selectedItem : obj;
+
+            const key = `${obj.type}_${obj.id}`;
+            let isPicked = false;
+            if (key in picked && picked[key].picked) {
+                isPicked = true;
+            }
+
             const newItem = {
                 ...currentItem,
                 selected: isSelected,
                 thumbnailUrl: thumbnails[index],
+                picked: isPicked,
             };
 
             // Only if selectedItem is in the current collection do we want to set selected state
@@ -864,7 +874,8 @@ class ContentExplorer extends Component<Props, State> {
      */
     pick = (item: BoxItem): void => {
         const { id, type }: BoxItem = item;
-        const { picked, currentCollection: { items = [] } }: State = this.state;
+        const { picked, currentCollection }: State = this.state;
+        const { items = [] } = currentCollection;
         const selectedKeys: Array<string> = Object.keys(picked);
         const cacheKey: string = this.api.getAPI(type).getCacheKey(id);
         const existing = picked[cacheKey];
@@ -876,6 +887,9 @@ class ContentExplorer extends Component<Props, State> {
             item.picked = true;
             picked[cacheKey] = item;
         }
+
+        const pickedItem: BoxItem = { ...item };
+        this.updateCollection(currentCollection, pickedItem, () => {});
 
         this.setState({ picked });
     };
