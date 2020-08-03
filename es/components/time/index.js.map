@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/components/time/index.js"],"names":["default","ReadableTime"],"mappings":"AACA;AACA,SAASA,OAAO,IAAIC,YAApB,QAAwC,gBAAxC","sourcesContent":["// @flow\n// eslint-disable-next-line import/prefer-default-export\nexport { default as ReadableTime } from './ReadableTime';\n"],"file":"index.js"}

@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/elements/content-picker/index.js"],"names":["default","ContentPickerPopup"],"mappings":"AACA,SAASA,OAAT,QAAwB,iBAAxB;AACA,SAASA,OAAO,IAAIC,kBAApB,QAA8C,sBAA9C","sourcesContent":["// @flow\nexport { default } from './ContentPicker';\nexport { default as ContentPickerPopup } from './ContentPickerPopup';\n"],"file":"index.js"}

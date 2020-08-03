@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/components/checkbox/index.js"],"names":["default","CheckboxField"],"mappings":"AACA,SAASA,OAAT,QAAwB,YAAxB;AACA,SAASA,OAAO,IAAIC,aAApB,QAAyC,iBAAzC","sourcesContent":["// @flow\nexport { default } from './Checkbox';\nexport { default as CheckboxField } from './CheckboxField';\n"],"file":"index.js"}

@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../../src/elements/content-sidebar/skills/faces/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,SAAxB","sourcesContent":["// @flow\nexport { default } from './Faces';\n"],"file":"index.js"}

@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/features/shared-link-modal/index.js"],"names":["default","SharedLink"],"mappings":"AAAA,SAASA,OAAT,QAAwB,mBAAxB;AACA,SAASA,OAAO,IAAIC,UAApB,QAAsC,cAAtC","sourcesContent":["export { default } from './SharedLinkModal';\nexport { default as SharedLink } from './SharedLink';\n"],"file":"index.js"}

@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../../src/elements/content-sidebar/skills/transcript/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,cAAxB","sourcesContent":["// @flow\nexport { default } from './Transcript';\n"],"file":"index.js"}
