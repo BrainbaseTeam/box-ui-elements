@@ -85,6 +85,24 @@ class ContentExplorer extends ES6Wrapper {
     };
 
     /**
+     * Callback for batch download start
+     *
+     * @return {void}
+     */
+    onBatchDownload = (data: BoxItem[]): void => {
+        this.emit('batchDownload', data);
+    };
+
+    /**
+     * Callback for batch download cancel
+     *
+     * @return {void}
+     */
+    onBatchCancel = (): void => {
+        this.emit('batchCancel');
+    };
+
+    /**
      * Helper to programatically navigate
      *
      * @param {string} id - string folder id
@@ -115,6 +133,8 @@ class ContentExplorer extends ES6Wrapper {
                 onCreate={this.onCreate}
                 onNavigate={this.onNavigate}
                 onInteraction={this.onInteraction}
+                onBatchDownload={this.onBatchDownload}
+                onBatchCancel={this.onBatchCancel}
                 {...this.options}
             />,
             this.container,
