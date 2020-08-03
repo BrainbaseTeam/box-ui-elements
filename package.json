@@ -96,13 +96,6 @@
         "*.scss": ["prettier --write --parser=scss", "stylelint --syntax scss --fix", "git add"],
         "*.css": ["prettier --write --parser=css", "stylelint --syntax css --fix", "git add"]
     },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged",
-            "pre-push": "./scripts/prepush.sh",
-            "commit-msg": "commitlint -e"
-        }
-    },
     "jest": {
         "clearMocks": true,
         "restoreMocks": true,
