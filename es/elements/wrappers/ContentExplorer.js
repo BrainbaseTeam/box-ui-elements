@@ -91,14 +91,10 @@ var ContentExplorer = /*#__PURE__*/function (_ES6Wrapper) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "onSetThumbnail", function (data) {
-      console.log('emit setThumbnail');
-
       _this.emit('setThumbnail', data);
     });
 
     _defineProperty(_assertThisInitialized(_this), "onRemoveThumbnail", function (data) {
-      console.log('emit removeThumbnail');
-
       _this.emit('removeThumbnail', data);
     });
 

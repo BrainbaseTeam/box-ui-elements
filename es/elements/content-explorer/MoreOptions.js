@@ -72,13 +72,14 @@ var MoreOptions = function MoreOptions(_ref) {
   var allowDelete = canDelete && permissions[PERMISSION_CAN_DELETE];
   var allowShare = canShare && permissions[PERMISSION_CAN_SHARE];
   var allowRename = canRename && permissions[PERMISSION_CAN_RENAME];
-  var allowDownload = canDownload && permissions[PERMISSION_CAN_DOWNLOAD] && type === TYPE_FILE && !Browser.isMobile(); // const allowed = allowDelete || allowRename || allowDownload || allowPreview || allowShare || allowOpen;
-  // const allowSetThumbnail = type === TYPE_FOLDER;
+  var allowDownload = canDownload && permissions[PERMISSION_CAN_DOWNLOAD] && type === TYPE_FILE && !Browser.isMobile();
+  var allowSetThumbnail = type === TYPE_FOLDER && permissions[PERMISSION_CAN_RENAME] && !item.metadata;
+  var allowRemoveThumbnail = type === TYPE_FOLDER && permissions[PERMISSION_CAN_RENAME] && item.metadata;
+  var allowed = allowDelete || allowRename || allowDownload || allowPreview || allowShare || allowOpen || allowSetThumbnail || allowRemoveThumbnail;
 
-  var allowSetThumbnail = type === TYPE_FOLDER;
-  var allowRemoveThumbnail = type === TYPE_FOLDER; // if (!allowed) {
-  //     return <span />;
-  // }
+  if (!allowed) {
+    return /*#__PURE__*/React.createElement("span", null);
+  }
 
   var setThumbnailMenuItem = {
     id: 'be.setThumbnail',
@@ -91,7 +92,7 @@ var MoreOptions = function MoreOptions(_ref) {
     defaultMessage: 'Remove custom thumbnail'
   };
   return /*#__PURE__*/React.createElement("div", {
-    className: "bce-more-options2"
+    className: "bce-more-options"
   }, /*#__PURE__*/React.createElement(DropdownMenu, {
     constrainToScrollParent: true,
     isRightAligned: true

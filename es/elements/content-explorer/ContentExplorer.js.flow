@@ -913,8 +913,6 @@ class ContentExplorer extends Component<Props, State> {
      * @return {void}
      */
     setThumbnail = (item: BoxItem): void => {
-        console.log('setting thumbnail', item);
-
         const { onSetThumbnail }: Props = this.props;
 
         onSetThumbnail(item);
@@ -928,8 +926,6 @@ class ContentExplorer extends Component<Props, State> {
      * @return {void}
      */
     removeThumbnail = (item: BoxItem): void => {
-        console.log('remove thumbnail', item);
-
         const { onRemoveThumbnail }: Props = this.props;
 
         onRemoveThumbnail(item);

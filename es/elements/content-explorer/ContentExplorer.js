@@ -393,13 +393,11 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "setThumbnail", function (item) {
-      console.log('setting thumbnail', item);
       var onSetThumbnail = _this.props.onSetThumbnail;
       onSetThumbnail(item);
     });
 
     _defineProperty(_assertThisInitialized(_this), "removeThumbnail", function (item) {
-      console.log('remove thumbnail', item);
       var onRemoveThumbnail = _this.props.onRemoveThumbnail;
       onRemoveThumbnail(item);
     });
