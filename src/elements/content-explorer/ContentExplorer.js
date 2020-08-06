@@ -523,6 +523,9 @@ class ContentExplorer extends Component<Props, State> {
             currentOffset: offset,
         });
 
+        let fields = FOLDER_FIELDS_TO_FETCH;
+        fields.push('metadata.enterprise_261189234.customThumbnail');
+
         // Fetch the folder using folder API
         this.api.getFolderAPI().getFolder(
             folderId,
@@ -534,7 +537,7 @@ class ContentExplorer extends Component<Props, State> {
                 this.fetchFolderSuccessCallback(collection, triggerNavigationEvent);
             },
             this.errorCallback,
-            { fields: FOLDER_FIELDS_TO_FETCH, forceFetch: true },
+            { fields, forceFetch: true },
         );
     };
 

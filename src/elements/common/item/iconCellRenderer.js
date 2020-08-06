@@ -14,9 +14,11 @@ import './IconCell.scss';
 
 export function getIcon(dimension: number, rowData: BoxItem) {
     const { type, extension, has_collaborations, is_externally_owned }: BoxItem = rowData;
+    const thumbnail_url = rowData?.metadata?.enterprise_261189234?.customThumbnail?.url;
+
     switch (type) {
         case TYPE_FOLDER:
-            return <FolderIcon dimension={dimension} isCollab={has_collaborations} isExternal={is_externally_owned} />;
+            return <FolderIcon dimension={dimension} isCollab={has_collaborations} isExternal={is_externally_owned} thumbnailUrl={thumbnail_url} />;
         case TYPE_FILE:
             return <FileIcon dimension={dimension} extension={extension} />;
         case TYPE_WEBLINK:
