@@ -108,7 +108,6 @@ class ContentExplorer extends ES6Wrapper {
      * @return {void}
      */
     onSetThumbnail = (data: BoxItem): void => {
-        console.log('emit setThumbnail');
         this.emit('setThumbnail', data);
     };
 
@@ -118,7 +117,6 @@ class ContentExplorer extends ES6Wrapper {
      * @return {void}
      */
     onRemoveThumbnail = (data: BoxItem): void => {
-        console.log('emit removeThumbnail');
         this.emit('removeThumbnail', data);
     };
 
