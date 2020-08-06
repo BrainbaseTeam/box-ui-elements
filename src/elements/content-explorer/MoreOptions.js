@@ -16,6 +16,7 @@ import {
     PERMISSION_CAN_SHARE,
     PERMISSION_CAN_PREVIEW,
     TYPE_FILE,
+    TYPE_FOLDER,
     TYPE_WEBLINK,
 } from '../../constants';
 
@@ -45,6 +46,8 @@ const MoreOptions = ({
     onItemRename,
     onItemShare,
     onItemPreview,
+    onItemSetThumbnail,
+    onItemRemoveThumbnail,
     isSmall,
     item,
 }: Props) => {
@@ -54,6 +57,8 @@ const MoreOptions = ({
     const onRename = () => onItemRename(item);
     const onShare = () => onItemShare(item);
     const onPreview = () => onItemPreview(item);
+    const onSetThumbnail = () => onItemSetThumbnail(item);
+    const onRemoveThumbnail = () => onItemRemoveThumbnail(item);
 
     const { permissions, type } = item;
 
@@ -68,13 +73,30 @@ const MoreOptions = ({
     const allowRename = canRename && permissions[PERMISSION_CAN_RENAME];
     const allowDownload =
         canDownload && permissions[PERMISSION_CAN_DOWNLOAD] && type === TYPE_FILE && !Browser.isMobile();
-    const allowed = allowDelete || allowRename || allowDownload || allowPreview || allowShare || allowOpen;
+    // const allowed = allowDelete || allowRename || allowDownload || allowPreview || allowShare || allowOpen;
 
-    if (!allowed) {
-        return <span />;
-    }
+    // const allowSetThumbnail = type === TYPE_FOLDER;
+    const allowSetThumbnail = type === TYPE_FOLDER;
+    const allowRemoveThumbnail = type === TYPE_FOLDER;
+
+    // if (!allowed) {
+    //     return <span />;
+    // }
+
+    const setThumbnailMenuItem = {
+        id: 'be.setThumbnail',
+        description: 'Set custom thumbnail',
+        defaultMessage: 'Set custom thumbnail',
+    };
+
+    const removeThumbnailMenuItem = {
+        id: 'be.removeThumbnail',
+        description: 'Remove custom thumbnail',
+        defaultMessage: 'Remove custom thumbnail',
+    };
+
     return (
-        <div className="bce-more-options">
+        <div className="bce-more-options2">
             <DropdownMenu constrainToScrollParent isRightAligned>
                 <Button
                     className="bce-btn-more-options"
@@ -113,6 +135,16 @@ const MoreOptions = ({
                     {allowShare && (
                         <MenuItem onClick={onShare}>
                             <FormattedMessage {...messages.share} />
+                        </MenuItem>
+                    )}
+                    {allowSetThumbnail && (
+                        <MenuItem onClick={onSetThumbnail}>
+                            <FormattedMessage {...setThumbnailMenuItem} />
+                        </MenuItem>
+                    )}
+                    {allowRemoveThumbnail && (
+                        <MenuItem onClick={onRemoveThumbnail}>
+                            <FormattedMessage {...removeThumbnailMenuItem} />
                         </MenuItem>
                     )}
                 </Menu>

@@ -103,6 +103,26 @@ class ContentExplorer extends ES6Wrapper {
     };
 
     /**
+     * Callback for setting custom thumbnail
+     *
+     * @return {void}
+     */
+    onSetThumbnail = (data: BoxItem): void => {
+        console.log('emit setThumbnail');
+        this.emit('setThumbnail', data);
+    };
+
+    /**
+     * Callback for removing custom thumbnail
+     *
+     * @return {void}
+     */
+    onRemoveThumbnail = (data: BoxItem): void => {
+        console.log('emit removeThumbnail');
+        this.emit('removeThumbnail', data);
+    };
+
+    /**
      * Helper to programatically navigate
      *
      * @param {string} id - string folder id
@@ -135,6 +155,8 @@ class ContentExplorer extends ES6Wrapper {
                 onInteraction={this.onInteraction}
                 onBatchDownload={this.onBatchDownload}
                 onBatchCancel={this.onBatchCancel}
+                onSetThumbnail={this.onSetThumbnail}
+                onRemoveThumbnail={this.onRemoveThumbnail}
                 {...this.options}
             />,
             this.container,

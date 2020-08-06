@@ -108,6 +108,8 @@ type Props = {
     onPreview: Function,
     onRename: Function,
     onSelect: Function,
+    onSetThumbnail: Function,
+    onRemoveThumbnail: Function,
     onUpload: Function,
     requestInterceptor?: Function,
     responseInterceptor?: Function,
@@ -193,6 +195,8 @@ class ContentExplorer extends Component<Props, State> {
         onRename: noop,
         onCreate: noop,
         onSelect: noop,
+        onSetThumbnail: noop,
+        onRemoveThumbnail: noop,
         onUpload: noop,
         onNavigate: noop,
         defaultView: DEFAULT_VIEW_FILES,
@@ -826,6 +830,10 @@ class ContentExplorer extends Component<Props, State> {
                 selected: isSelected,
                 thumbnailUrl: thumbnails[index],
                 picked: isPicked,
+
+                // Force metadata always to be updated. This causes thumbnails
+                // to reloaded.
+                metadata: obj.metadata,
             };
 
             // Only if selectedItem is in the current collection do we want to set selected state
@@ -895,6 +903,36 @@ class ContentExplorer extends Component<Props, State> {
         this.updateCollection(currentCollection, pickedItem);
 
         this.setState({ picked });
+    };
+
+    /**
+     * ...
+     *
+     * @private
+     * @param {Object} item - file or folder object
+     * @return {void}
+     */
+    setThumbnail = (item: BoxItem): void => {
+        console.log('setting thumbnail', item);
+
+        const { onSetThumbnail }: Props = this.props;
+
+        onSetThumbnail(item);
+    };
+
+    /**
+     * ...
+     *
+     * @private
+     * @param {Object} item - file or folder object
+     * @return {void}
+     */
+    removeThumbnail = (item: BoxItem): void => {
+        console.log('remove thumbnail', item);
+
+        const { onRemoveThumbnail }: Props = this.props;
+
+        onRemoveThumbnail(item);
     };
 
     /**
@@ -1592,6 +1630,8 @@ class ContentExplorer extends Component<Props, State> {
                             onItemRename={this.rename}
                             onItemSelect={this.select}
                             onItemShare={this.share}
+                            onItemSetThumbnail={this.setThumbnail}
+                            onItemRemoveThumbnail={this.removeThumbnail}
                             onSortChange={this.sort}
                             rootElement={this.rootElement}
                             rootId={rootFolderId}
