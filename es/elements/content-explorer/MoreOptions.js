@@ -8,7 +8,7 @@ import Browser from '../../utils/Browser';
 import IconEllipsis from '../../icons/general/IconEllipsis';
 import { bdlGray50 } from '../../styles/variables';
 import messages from '../common/messages';
-import { PERMISSION_CAN_DOWNLOAD, PERMISSION_CAN_RENAME, PERMISSION_CAN_DELETE, PERMISSION_CAN_SHARE, PERMISSION_CAN_PREVIEW, TYPE_FILE, TYPE_WEBLINK } from '../../constants';
+import { PERMISSION_CAN_DOWNLOAD, PERMISSION_CAN_RENAME, PERMISSION_CAN_DELETE, PERMISSION_CAN_SHARE, PERMISSION_CAN_PREVIEW, TYPE_FILE, TYPE_FOLDER, TYPE_WEBLINK } from '../../constants';
 import './MoreOptionsCell.scss';
 
 var MoreOptions = function MoreOptions(_ref) {
@@ -23,6 +23,8 @@ var MoreOptions = function MoreOptions(_ref) {
       onItemRename = _ref.onItemRename,
       onItemShare = _ref.onItemShare,
       onItemPreview = _ref.onItemPreview,
+      onItemSetThumbnail = _ref.onItemSetThumbnail,
+      onItemRemoveThumbnail = _ref.onItemRemoveThumbnail,
       isSmall = _ref.isSmall,
       item = _ref.item;
 
@@ -50,6 +52,14 @@ var MoreOptions = function MoreOptions(_ref) {
     return onItemPreview(item);
   };
 
+  var onSetThumbnail = function onSetThumbnail() {
+    return onItemSetThumbnail(item);
+  };
+
+  var onRemoveThumbnail = function onRemoveThumbnail() {
+    return onItemRemoveThumbnail(item);
+  };
+
   var permissions = item.permissions,
       type = item.type;
 
@@ -62,15 +72,26 @@ var MoreOptions = function MoreOptions(_ref) {
   var allowDelete = canDelete && permissions[PERMISSION_CAN_DELETE];
   var allowShare = canShare && permissions[PERMISSION_CAN_SHARE];
   var allowRename = canRename && permissions[PERMISSION_CAN_RENAME];
-  var allowDownload = canDownload && permissions[PERMISSION_CAN_DOWNLOAD] && type === TYPE_FILE && !Browser.isMobile();
-  var allowed = allowDelete || allowRename || allowDownload || allowPreview || allowShare || allowOpen;
+  var allowDownload = canDownload && permissions[PERMISSION_CAN_DOWNLOAD] && type === TYPE_FILE && !Browser.isMobile(); // const allowed = allowDelete || allowRename || allowDownload || allowPreview || allowShare || allowOpen;
+  // const allowSetThumbnail = type === TYPE_FOLDER;
 
-  if (!allowed) {
-    return /*#__PURE__*/React.createElement("span", null);
-  }
+  var allowSetThumbnail = type === TYPE_FOLDER;
+  var allowRemoveThumbnail = type === TYPE_FOLDER; // if (!allowed) {
+  //     return <span />;
+  // }
 
+  var setThumbnailMenuItem = {
+    id: 'be.setThumbnail',
+    description: 'Set custom thumbnail',
+    defaultMessage: 'Set custom thumbnail'
+  };
+  var removeThumbnailMenuItem = {
+    id: 'be.removeThumbnail',
+    description: 'Remove custom thumbnail',
+    defaultMessage: 'Remove custom thumbnail'
+  };
   return /*#__PURE__*/React.createElement("div", {
-    className: "bce-more-options"
+    className: "bce-more-options2"
   }, /*#__PURE__*/React.createElement(DropdownMenu, {
     constrainToScrollParent: true,
     isRightAligned: true
@@ -94,7 +115,11 @@ var MoreOptions = function MoreOptions(_ref) {
     onClick: onRename
   }, /*#__PURE__*/React.createElement(FormattedMessage, messages.rename)), allowShare && /*#__PURE__*/React.createElement(MenuItem, {
     onClick: onShare
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.share)))), allowShare && !isSmall && /*#__PURE__*/React.createElement(Button, {
+  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.share)), allowSetThumbnail && /*#__PURE__*/React.createElement(MenuItem, {
+    onClick: onSetThumbnail
+  }, /*#__PURE__*/React.createElement(FormattedMessage, setThumbnailMenuItem)), allowRemoveThumbnail && /*#__PURE__*/React.createElement(MenuItem, {
+    onClick: onRemoveThumbnail
+  }, /*#__PURE__*/React.createElement(FormattedMessage, removeThumbnailMenuItem)))), allowShare && !isSmall && /*#__PURE__*/React.createElement(Button, {
     onClick: onShare,
     onFocus: onFocus,
     type: "button"
