@@ -79,9 +79,9 @@ const MoreOptions = ({
     const allowed = allowDelete || allowRename || allowDownload || allowPreview
         || allowShare || allowOpen || allowSetThumbnail || allowRemoveThumbnail;
 
-    // if (!allowed) {
-    //     return <span />;
-    // }
+    if (!allowed) {
+        return <span />;
+    }
 
     const setThumbnailMenuItem = {
         id: 'be.setThumbnail',
@@ -96,7 +96,7 @@ const MoreOptions = ({
     };
 
     return (
-        <div className="bce-more-options2">
+        <div className="bce-more-options">
             <DropdownMenu constrainToScrollParent isRightAligned>
                 <Button
                     className="bce-btn-more-options"
