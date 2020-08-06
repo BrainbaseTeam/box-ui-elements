@@ -73,11 +73,11 @@ const MoreOptions = ({
     const allowRename = canRename && permissions[PERMISSION_CAN_RENAME];
     const allowDownload =
         canDownload && permissions[PERMISSION_CAN_DOWNLOAD] && type === TYPE_FILE && !Browser.isMobile();
-    // const allowed = allowDelete || allowRename || allowDownload || allowPreview || allowShare || allowOpen;
+    const allowSetThumbnail = type === TYPE_FOLDER && permissions[PERMISSION_CAN_RENAME] && !item.metadata;
+    const allowRemoveThumbnail = type === TYPE_FOLDER && permissions[PERMISSION_CAN_RENAME] && item.metadata;
 
-    // const allowSetThumbnail = type === TYPE_FOLDER;
-    const allowSetThumbnail = type === TYPE_FOLDER;
-    const allowRemoveThumbnail = type === TYPE_FOLDER;
+    const allowed = allowDelete || allowRename || allowDownload || allowPreview
+        || allowShare || allowOpen || allowSetThumbnail || allowRemoveThumbnail;
 
     // if (!allowed) {
     //     return <span />;
