@@ -19,6 +19,8 @@ export default (
     onItemRename: Function,
     onItemShare: Function,
     onItemPreview: Function,
+    onItemSetThumbnail: Function,
+    onItemRemoveThumbnail: Function,
     isSmall: boolean,
 ) => ({ rowData }: { rowData: BoxItem }) => (
     <MoreOptions
@@ -33,6 +35,8 @@ export default (
         onItemRename={onItemRename}
         onItemShare={onItemShare}
         onItemPreview={onItemPreview}
+        onItemSetThumbnail={onItemSetThumbnail}
+        onItemRemoveThumbnail={onItemRemoveThumbnail}
         isSmall={isSmall}
         item={rowData}
     />

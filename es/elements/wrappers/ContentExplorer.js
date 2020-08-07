@@ -90,6 +90,14 @@ var ContentExplorer = /*#__PURE__*/function (_ES6Wrapper) {
       _this.emit('batchCancel');
     });
 
+    _defineProperty(_assertThisInitialized(_this), "onSetThumbnail", function (data) {
+      _this.emit('setThumbnail', data);
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "onRemoveThumbnail", function (data) {
+      _this.emit('removeThumbnail', data);
+    });
+
     return _this;
   }
 
@@ -130,7 +138,9 @@ var ContentExplorer = /*#__PURE__*/function (_ES6Wrapper) {
         onNavigate: this.onNavigate,
         onInteraction: this.onInteraction,
         onBatchDownload: this.onBatchDownload,
-        onBatchCancel: this.onBatchCancel
+        onBatchCancel: this.onBatchCancel,
+        onSetThumbnail: this.onSetThumbnail,
+        onRemoveThumbnail: this.onRemoveThumbnail
       }, this.options)), this.container);
     }
   }]);

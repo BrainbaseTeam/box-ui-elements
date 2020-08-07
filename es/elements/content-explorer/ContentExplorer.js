@@ -155,13 +155,15 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
         view: VIEW_FOLDER,
         currentCollection: _this.currentUnloadedCollection(),
         currentOffset: offset
-      }); // Fetch the folder using folder API
+      });
 
+      var fields = FOLDER_FIELDS_TO_FETCH;
+      fields.push('metadata.enterprise_261189234.customThumbnail'); // Fetch the folder using folder API
 
       _this.api.getFolderAPI().getFolder(folderId, limit, offset, sortBy, sortDirection, function (collection) {
         _this.fetchFolderSuccessCallback(collection, triggerNavigationEvent);
       }, _this.errorCallback, {
-        fields: FOLDER_FIELDS_TO_FETCH,
+        fields: fields,
         forceFetch: true
       });
     });
@@ -388,6 +390,16 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
       _this.setState({
         picked: picked
       });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "setThumbnail", function (item) {
+      var onSetThumbnail = _this.props.onSetThumbnail;
+      onSetThumbnail(item);
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "removeThumbnail", function (item) {
+      var onRemoveThumbnail = _this.props.onRemoveThumbnail;
+      onRemoveThumbnail(item);
     });
 
     _defineProperty(_assertThisInitialized(_this), "preview", function (item) {
@@ -1318,7 +1330,10 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
                   var newItem = _objectSpread(_objectSpread({}, currentItem), {}, {
                     selected: isSelected,
                     thumbnailUrl: thumbnails[index],
-                    picked: isPicked
+                    picked: isPicked,
+                    // Force metadata always to be updated. This causes thumbnails
+                    // to reloaded.
+                    metadata: obj.metadata
                   }); // Only if selectedItem is in the current collection do we want to set selected state
 
 
@@ -1494,6 +1509,8 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
         onItemRename: this.rename,
         onItemSelect: this.select,
         onItemShare: this.share,
+        onItemSetThumbnail: this.setThumbnail,
+        onItemRemoveThumbnail: this.removeThumbnail,
         onSortChange: this.sort,
         rootElement: this.rootElement,
         rootId: rootFolderId,
@@ -1615,6 +1632,8 @@ _defineProperty(ContentExplorer, "defaultProps", {
   onRename: noop,
   onCreate: noop,
   onSelect: noop,
+  onSetThumbnail: noop,
+  onRemoveThumbnail: noop,
   onUpload: noop,
   onNavigate: noop,
   defaultView: DEFAULT_VIEW_FILES,

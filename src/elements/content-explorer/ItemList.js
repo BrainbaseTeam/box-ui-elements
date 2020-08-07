@@ -41,6 +41,8 @@ type Props = {
     onItemRename: Function,
     onItemSelect: Function,
     onItemShare: Function,
+    onItemSetThumbnail: Function,
+    onItemRemoveThumbnail: Function,
     onSortChange: Function,
     rootElement: HTMLElement,
     rootId: string,
@@ -68,6 +70,8 @@ const ItemList = ({
     onItemRename,
     onItemShare,
     onItemPreview,
+    onItemSetThumbnail,
+    onItemRemoveThumbnail,
     onSortChange,
     currentCollection,
     tableRef,
@@ -101,6 +105,8 @@ const ItemList = ({
         onItemRename,
         onItemShare,
         onItemPreview,
+        onItemSetThumbnail,
+        onItemRemoveThumbnail,
         isSmall,
     );
     const isRecents: boolean = view === VIEW_RECENTS;
