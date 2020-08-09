@@ -46,6 +46,8 @@ const MoreOptions = ({
     onItemRename,
     onItemShare,
     onItemPreview,
+    onItemCustomShare,
+    onItemMoveTo,
     onItemSetThumbnail,
     onItemRemoveThumbnail,
     isSmall,
@@ -57,6 +59,8 @@ const MoreOptions = ({
     const onRename = () => onItemRename(item);
     const onShare = () => onItemShare(item);
     const onPreview = () => onItemPreview(item);
+    const onCustomShare = () => onItemCustomShare(item);
+    const onMoveTo = () => onItemMoveTo(item);
     const onSetThumbnail = () => onItemSetThumbnail(item);
     const onRemoveThumbnail = () => onItemRemoveThumbnail(item);
 
@@ -82,6 +86,12 @@ const MoreOptions = ({
     if (!allowed) {
         return <span />;
     }
+
+    const moveToMenuItem = {
+        id: 'be.moveTo',
+        description: 'Move to...',
+        defaultMessage: 'Move to...',
+    };
 
     const setThumbnailMenuItem = {
         id: 'be.setThumbnail',
@@ -132,9 +142,14 @@ const MoreOptions = ({
                             <FormattedMessage {...messages.rename} />
                         </MenuItem>
                     )}
-                    {allowShare && (
-                        <MenuItem onClick={onShare}>
+                    {(  // TODO: Permissions?
+                        <MenuItem onClick={onCustomShare}>
                             <FormattedMessage {...messages.share} />
+                        </MenuItem>
+                    )}
+                    {(  // TODO: Permissions?
+                        <MenuItem onClick={onMoveTo}>
+                            <FormattedMessage {...moveToMenuItem} />
                         </MenuItem>
                     )}
                     {allowSetThumbnail && (
@@ -149,11 +164,6 @@ const MoreOptions = ({
                     )}
                 </Menu>
             </DropdownMenu>
-            {allowShare && !isSmall && (
-                <Button onClick={onShare} onFocus={onFocus} type="button">
-                    <FormattedMessage {...messages.share} />
-                </Button>
-            )}
         </div>
     );
 };
