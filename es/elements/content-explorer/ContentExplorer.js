@@ -392,6 +392,16 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "customShare", function (item) {
+      var onCustomShare = _this.props.onCustomShare;
+      onCustomShare(item);
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "moveTo", function (item) {
+      var onMoveTo = _this.props.onMoveTo;
+      onMoveTo(item);
+    });
+
     _defineProperty(_assertThisInitialized(_this), "setThumbnail", function (item) {
       var onSetThumbnail = _this.props.onSetThumbnail;
       onSetThumbnail(item);
@@ -1502,8 +1512,10 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
         isSmall: isSmall,
         isTouch: isTouch,
         onItemClick: this.onItemClick,
+        onItemCustomShare: this.customShare,
         onItemDelete: this.delete,
         onItemDownload: this.download,
+        onItemMoveTo: this.moveTo,
         onItemPick: this.pick,
         onItemPreview: this.preview,
         onItemRename: this.rename,
@@ -1626,8 +1638,10 @@ _defineProperty(ContentExplorer, "defaultProps", {
   className: '',
   onBatchCancel: noop,
   onBatchDownload: noop,
+  onCustomShare: noop,
   onDelete: noop,
   onDownload: noop,
+  onMoveTo: noop,
   onPreview: noop,
   onRename: noop,
   onCreate: noop,

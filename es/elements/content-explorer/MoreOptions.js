@@ -23,6 +23,8 @@ var MoreOptions = function MoreOptions(_ref) {
       onItemRename = _ref.onItemRename,
       onItemShare = _ref.onItemShare,
       onItemPreview = _ref.onItemPreview,
+      onItemCustomShare = _ref.onItemCustomShare,
+      onItemMoveTo = _ref.onItemMoveTo,
       onItemSetThumbnail = _ref.onItemSetThumbnail,
       onItemRemoveThumbnail = _ref.onItemRemoveThumbnail,
       isSmall = _ref.isSmall,
@@ -50,6 +52,14 @@ var MoreOptions = function MoreOptions(_ref) {
 
   var onPreview = function onPreview() {
     return onItemPreview(item);
+  };
+
+  var onCustomShare = function onCustomShare() {
+    return onItemCustomShare(item);
+  };
+
+  var onMoveTo = function onMoveTo() {
+    return onItemMoveTo(item);
   };
 
   var onSetThumbnail = function onSetThumbnail() {
@@ -81,6 +91,11 @@ var MoreOptions = function MoreOptions(_ref) {
     return /*#__PURE__*/React.createElement("span", null);
   }
 
+  var moveToMenuItem = {
+    id: 'be.moveTo',
+    description: 'Move to...',
+    defaultMessage: 'Move to...'
+  };
   var setThumbnailMenuItem = {
     id: 'be.setThumbnail',
     description: 'Set custom thumbnail',
@@ -114,17 +129,21 @@ var MoreOptions = function MoreOptions(_ref) {
     onClick: onDownload
   }, /*#__PURE__*/React.createElement(FormattedMessage, messages.download)), allowRename && /*#__PURE__*/React.createElement(MenuItem, {
     onClick: onRename
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.rename)), allowShare && /*#__PURE__*/React.createElement(MenuItem, {
-    onClick: onShare
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.share)), allowSetThumbnail && /*#__PURE__*/React.createElement(MenuItem, {
+  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.rename)),
+  /*#__PURE__*/
+  // TODO: Permissions?
+  React.createElement(MenuItem, {
+    onClick: onCustomShare
+  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.share)),
+  /*#__PURE__*/
+  // TODO: Permissions?
+  React.createElement(MenuItem, {
+    onClick: onMoveTo
+  }, /*#__PURE__*/React.createElement(FormattedMessage, moveToMenuItem)), allowSetThumbnail && /*#__PURE__*/React.createElement(MenuItem, {
     onClick: onSetThumbnail
   }, /*#__PURE__*/React.createElement(FormattedMessage, setThumbnailMenuItem)), allowRemoveThumbnail && /*#__PURE__*/React.createElement(MenuItem, {
     onClick: onRemoveThumbnail
-  }, /*#__PURE__*/React.createElement(FormattedMessage, removeThumbnailMenuItem)))), allowShare && !isSmall && /*#__PURE__*/React.createElement(Button, {
-    onClick: onShare,
-    onFocus: onFocus,
-    type: "button"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.share)));
+  }, /*#__PURE__*/React.createElement(FormattedMessage, removeThumbnailMenuItem)))));
 };
 
 export default MoreOptions;

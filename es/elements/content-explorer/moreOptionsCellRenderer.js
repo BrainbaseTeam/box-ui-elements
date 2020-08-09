@@ -5,7 +5,7 @@
  */
 import React from 'react';
 import MoreOptions from './MoreOptions';
-export default (function (canPreview, canShare, canDownload, canDelete, canRename, onItemSelect, onItemDelete, onItemDownload, onItemRename, onItemShare, onItemPreview, onItemSetThumbnail, onItemRemoveThumbnail, isSmall) {
+export default (function (canPreview, canShare, canDownload, canDelete, canRename, onItemSelect, onItemDelete, onItemDownload, onItemRename, onItemShare, onItemPreview, onItemCustomShare, onItemMoveTo, onItemSetThumbnail, onItemRemoveThumbnail, isSmall) {
   return function (_ref) {
     var rowData = _ref.rowData;
     return /*#__PURE__*/React.createElement(MoreOptions, {
@@ -20,6 +20,8 @@ export default (function (canPreview, canShare, canDownload, canDelete, canRenam
       onItemRename: onItemRename,
       onItemShare: onItemShare,
       onItemPreview: onItemPreview,
+      onItemCustomShare: onItemCustomShare,
+      onItemMoveTo: onItemMoveTo,
       onItemSetThumbnail: onItemSetThumbnail,
       onItemRemoveThumbnail: onItemRemoveThumbnail,
       isSmall: isSmall,

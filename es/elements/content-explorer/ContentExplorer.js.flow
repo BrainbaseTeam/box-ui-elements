@@ -102,8 +102,10 @@ type Props = {
     onBatchCancel: Function,
     onBatchDownload: Function,
     onCreate: Function,
+    onCustomShare: Function,
     onDelete: Function,
     onDownload: Function,
+    onMoveTo: Function,
     onNavigate: Function,
     onPreview: Function,
     onRename: Function,
@@ -189,8 +191,10 @@ class ContentExplorer extends Component<Props, State> {
         className: '',
         onBatchCancel: noop,
         onBatchDownload: noop,
+        onCustomShare: noop,
         onDelete: noop,
         onDownload: noop,
+        onMoveTo: noop,
         onPreview: noop,
         onRename: noop,
         onCreate: noop,
@@ -906,7 +910,33 @@ class ContentExplorer extends Component<Props, State> {
     };
 
     /**
-     * ...
+     * Activates custom share
+     *
+     * @private
+     * @param {Object} item - file or folder object
+     * @return {void}
+     */
+    customShare = (item: BoxItem): void => {
+        const { onCustomShare }: Props = this.props;
+
+        onCustomShare(item);
+    };
+
+    /**
+     * Moves items
+     *
+     * @private
+     * @param {Object} item - file or folder object
+     * @return {void}
+     */
+    moveTo = (item: BoxItem): void => {
+        const { onMoveTo }: Props = this.props;
+
+        onMoveTo(item);
+    };
+
+    /**
+     * Sets custom thumbnail
      *
      * @private
      * @param {Object} item - file or folder object
@@ -919,7 +949,7 @@ class ContentExplorer extends Component<Props, State> {
     };
 
     /**
-     * ...
+     * Removes custom thumbnail
      *
      * @private
      * @param {Object} item - file or folder object
@@ -1619,8 +1649,10 @@ class ContentExplorer extends Component<Props, State> {
                             isSmall={isSmall}
                             isTouch={isTouch}
                             onItemClick={this.onItemClick}
+                            onItemCustomShare={this.customShare}
                             onItemDelete={this.delete}
                             onItemDownload={this.download}
+                            onItemMoveTo={this.moveTo}
                             onItemPick={this.pick}
                             onItemPreview={this.preview}
                             onItemRename={this.rename}
