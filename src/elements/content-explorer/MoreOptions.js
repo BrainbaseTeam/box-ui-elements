@@ -77,11 +77,12 @@ const MoreOptions = ({
     const allowRename = canRename && permissions[PERMISSION_CAN_RENAME];
     const allowDownload =
         canDownload && permissions[PERMISSION_CAN_DOWNLOAD] && type === TYPE_FILE && !Browser.isMobile();
+    const allowMoveTo = permissions[PERMISSION_CAN_RENAME];
     const allowSetThumbnail = type === TYPE_FOLDER && permissions[PERMISSION_CAN_RENAME] && !item.metadata;
     const allowRemoveThumbnail = type === TYPE_FOLDER && permissions[PERMISSION_CAN_RENAME] && item.metadata;
 
     const allowed = allowDelete || allowRename || allowDownload || allowPreview
-        || allowShare || allowOpen || allowSetThumbnail || allowRemoveThumbnail;
+        || allowShare || allowOpen || allowMoveTo || allowSetThumbnail || allowRemoveThumbnail;
 
     if (!allowed) {
         return <span />;
@@ -142,12 +143,12 @@ const MoreOptions = ({
                             <FormattedMessage {...messages.rename} />
                         </MenuItem>
                     )}
-                    {(  // TODO: Permissions?
+                    {allowShare && (
                         <MenuItem onClick={onCustomShare}>
                             <FormattedMessage {...messages.share} />
                         </MenuItem>
                     )}
-                    {(  // TODO: Permissions?
+                    {allowMoveTo && (
                         <MenuItem onClick={onMoveTo}>
                             <FormattedMessage {...moveToMenuItem} />
                         </MenuItem>
