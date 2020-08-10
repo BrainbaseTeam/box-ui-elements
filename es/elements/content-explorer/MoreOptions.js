@@ -83,9 +83,10 @@ var MoreOptions = function MoreOptions(_ref) {
   var allowShare = canShare && permissions[PERMISSION_CAN_SHARE];
   var allowRename = canRename && permissions[PERMISSION_CAN_RENAME];
   var allowDownload = canDownload && permissions[PERMISSION_CAN_DOWNLOAD] && type === TYPE_FILE && !Browser.isMobile();
+  var allowMoveTo = permissions[PERMISSION_CAN_RENAME];
   var allowSetThumbnail = type === TYPE_FOLDER && permissions[PERMISSION_CAN_RENAME] && !item.metadata;
   var allowRemoveThumbnail = type === TYPE_FOLDER && permissions[PERMISSION_CAN_RENAME] && item.metadata;
-  var allowed = allowDelete || allowRename || allowDownload || allowPreview || allowShare || allowOpen || allowSetThumbnail || allowRemoveThumbnail;
+  var allowed = allowDelete || allowRename || allowDownload || allowPreview || allowShare || allowOpen || allowMoveTo || allowSetThumbnail || allowRemoveThumbnail;
 
   if (!allowed) {
     return /*#__PURE__*/React.createElement("span", null);
@@ -129,15 +130,9 @@ var MoreOptions = function MoreOptions(_ref) {
     onClick: onDownload
   }, /*#__PURE__*/React.createElement(FormattedMessage, messages.download)), allowRename && /*#__PURE__*/React.createElement(MenuItem, {
     onClick: onRename
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.rename)),
-  /*#__PURE__*/
-  // TODO: Permissions?
-  React.createElement(MenuItem, {
+  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.rename)), allowShare && /*#__PURE__*/React.createElement(MenuItem, {
     onClick: onCustomShare
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.share)),
-  /*#__PURE__*/
-  // TODO: Permissions?
-  React.createElement(MenuItem, {
+  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.share)), allowMoveTo && /*#__PURE__*/React.createElement(MenuItem, {
     onClick: onMoveTo
   }, /*#__PURE__*/React.createElement(FormattedMessage, moveToMenuItem)), allowSetThumbnail && /*#__PURE__*/React.createElement(MenuItem, {
     onClick: onSetThumbnail

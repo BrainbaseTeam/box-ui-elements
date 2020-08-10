@@ -5,14 +5,17 @@
  */
 import React from 'react';
 import Checkbox from '../../components/checkbox';
+import { PERMISSION_CAN_DOWNLOAD } from '../../constants';
 export default (function (onItemPick) {
   return function (_ref) {
     var rowData = _ref.rowData;
     var _rowData$name = rowData.name,
         name = _rowData$name === void 0 ? '' : _rowData$name,
         _rowData$picked = rowData.picked,
-        picked = _rowData$picked === void 0 ? false : _rowData$picked;
-    return /*#__PURE__*/React.createElement(Checkbox, {
+        picked = _rowData$picked === void 0 ? false : _rowData$picked,
+        permissions = rowData.permissions;
+    var allowDownload = permissions[PERMISSION_CAN_DOWNLOAD];
+    return /*#__PURE__*/React.createElement("div", null, allowDownload && /*#__PURE__*/React.createElement(Checkbox, {
       hideLabel: true,
       label: name,
       name: name,
@@ -21,7 +24,7 @@ export default (function (onItemPick) {
       },
       value: name,
       isChecked: picked
-    });
+    }));
   };
 });
 //# sourceMappingURL=selectionCellRenderer.js.map
