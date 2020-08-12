@@ -8,12 +8,15 @@ type Props = {
 };
 
 const ItemGridThumbnail = ({ item }: Props) => {
-    const { thumbnailUrl } = item;
+    let { thumbnailUrl } = item;
+    if (item.metadata) {
+        thumbnailUrl = item.metadata.enterprise_261189234.customThumbnail.url;
+    }
 
     return (
         <div className="bce-ItemGridThumbnail">
             {thumbnailUrl ? (
-                <div className="bce-ItemGridThumbnail-item" style={{ backgroundImage: `url("${thumbnailUrl}")` }} />
+                <div className="bce-ItemGridThumbnail-item" style={{ width: '100%', height: '100%', background: `url("${thumbnailUrl}") center center / cover no-repeat` }} />
             ) : (
                 <div className="bce-ItemGridThumbnail-item">{getIcon(128, item)}</div>
             )}
