@@ -90,6 +90,14 @@ var ContentExplorer = /*#__PURE__*/function (_ES6Wrapper) {
       _this.emit('batchCancel');
     });
 
+    _defineProperty(_assertThisInitialized(_this), "onCustomShare", function (data) {
+      _this.emit('customShare', data);
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "onMoveTo", function (data) {
+      _this.emit('moveTo', data);
+    });
+
     _defineProperty(_assertThisInitialized(_this), "onSetThumbnail", function (data) {
       _this.emit('setThumbnail', data);
     });
@@ -139,6 +147,8 @@ var ContentExplorer = /*#__PURE__*/function (_ES6Wrapper) {
         onInteraction: this.onInteraction,
         onBatchDownload: this.onBatchDownload,
         onBatchCancel: this.onBatchCancel,
+        onCustomShare: this.onCustomShare,
+        onMoveTo: this.onMoveTo,
         onSetThumbnail: this.onSetThumbnail,
         onRemoveThumbnail: this.onRemoveThumbnail
       }, this.options)), this.container);

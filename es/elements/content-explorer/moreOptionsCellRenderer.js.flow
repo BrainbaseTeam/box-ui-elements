@@ -19,6 +19,8 @@ export default (
     onItemRename: Function,
     onItemShare: Function,
     onItemPreview: Function,
+    onItemCustomShare: Function,
+    onItemMoveTo: Function,
     onItemSetThumbnail: Function,
     onItemRemoveThumbnail: Function,
     isSmall: boolean,
@@ -35,6 +37,8 @@ export default (
         onItemRename={onItemRename}
         onItemShare={onItemShare}
         onItemPreview={onItemPreview}
+        onItemCustomShare={onItemCustomShare}
+        onItemMoveTo={onItemMoveTo}
         onItemSetThumbnail={onItemSetThumbnail}
         onItemRemoveThumbnail={onItemRemoveThumbnail}
         isSmall={isSmall}
