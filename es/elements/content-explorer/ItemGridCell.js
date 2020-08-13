@@ -10,6 +10,7 @@ import ItemGridThumbnail from './ItemGridThumbnail';
 import MoreOptions from './MoreOptions';
 import Name from '../common/item/Name';
 import './ItemGridCell.scss';
+import { PERMISSION_CAN_DOWNLOAD } from '../../constants';
 
 var ItemGridCell = function ItemGridCell(_ref) {
   var canPreview = _ref.canPreview,
@@ -26,7 +27,9 @@ var ItemGridCell = function ItemGridCell(_ref) {
   var _item$name = item.name,
       name = _item$name === void 0 ? '' : _item$name,
       _item$picked = item.picked,
-      picked = _item$picked === void 0 ? false : _item$picked;
+      picked = _item$picked === void 0 ? false : _item$picked,
+      permissions = item.permissions;
+  var allowDownload = permissions[PERMISSION_CAN_DOWNLOAD];
   return /*#__PURE__*/React.createElement("figure", {
     className: "bce-ItemGridCell"
   }, /*#__PURE__*/React.createElement(ItemGridThumbnail, {
@@ -47,7 +50,7 @@ var ItemGridCell = function ItemGridCell(_ref) {
     isSmall: true,
     item: item,
     onItemSelect: onItemSelect
-  }, rest)), /*#__PURE__*/React.createElement(Checkbox, {
+  }, rest)), allowDownload && /*#__PURE__*/React.createElement(Checkbox, {
     hideLabel: true,
     label: name,
     name: name,

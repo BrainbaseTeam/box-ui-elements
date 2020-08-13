@@ -6,6 +6,7 @@ import MoreOptions from './MoreOptions';
 import Name from '../common/item/Name';
 import type { ItemGridProps } from './flowTypes';
 import './ItemGridCell.scss';
+import { PERMISSION_CAN_DOWNLOAD } from '../../constants';
 
 type Props = {
     item: BoxItem,
@@ -24,7 +25,8 @@ const ItemGridCell = ({
     view,
     ...rest
 }: Props) => {
-    const { name = '', picked = false } = item;
+    const { name = '', picked = false, permissions } = item;
+    const allowDownload = permissions[PERMISSION_CAN_DOWNLOAD];
 
     return (
         <figure className="bce-ItemGridCell">
@@ -41,14 +43,16 @@ const ItemGridCell = ({
                     view={view}
                 />
                 <MoreOptions canPreview={canPreview} isSmall item={item} onItemSelect={onItemSelect} {...rest} />
-                <Checkbox
-                    hideLabel
-                    label={name}
-                    name={name}
-                    onChange={() => onItemPick(item)}
-                    value={name}
-                    isChecked={picked}
-                />
+                { allowDownload && (
+                    <Checkbox
+                        hideLabel
+                        label={name}
+                        name={name}
+                        onChange={() => onItemPick(item)}
+                        value={name}
+                        isChecked={picked}
+                    />
+                )}
             </figcaption>
         </figure>
     );
