@@ -103,6 +103,24 @@ class ContentExplorer extends ES6Wrapper {
     };
 
     /**
+     * Callback for custom share
+     *
+     * @return {void}
+     */
+    onCustomShare = (data: BoxItem): void => {
+        this.emit('customShare', data);
+    };
+
+    /**
+     * Callback for moving items
+     *
+     * @return {void}
+     */
+    onMoveTo = (data: BoxItem): void => {
+        this.emit('moveTo', data);
+    };
+
+    /**
      * Callback for setting custom thumbnail
      *
      * @return {void}
@@ -153,6 +171,8 @@ class ContentExplorer extends ES6Wrapper {
                 onInteraction={this.onInteraction}
                 onBatchDownload={this.onBatchDownload}
                 onBatchCancel={this.onBatchCancel}
+                onCustomShare={this.onCustomShare}
+                onMoveTo={this.onMoveTo}
                 onSetThumbnail={this.onSetThumbnail}
                 onRemoveThumbnail={this.onRemoveThumbnail}
                 {...this.options}

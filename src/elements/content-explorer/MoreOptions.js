@@ -46,6 +46,8 @@ const MoreOptions = ({
     onItemRename,
     onItemShare,
     onItemPreview,
+    onItemCustomShare,
+    onItemMoveTo,
     onItemSetThumbnail,
     onItemRemoveThumbnail,
     isSmall,
@@ -57,6 +59,8 @@ const MoreOptions = ({
     const onRename = () => onItemRename(item);
     const onShare = () => onItemShare(item);
     const onPreview = () => onItemPreview(item);
+    const onCustomShare = () => onItemCustomShare(item);
+    const onMoveTo = () => onItemMoveTo(item);
     const onSetThumbnail = () => onItemSetThumbnail(item);
     const onRemoveThumbnail = () => onItemRemoveThumbnail(item);
 
@@ -73,15 +77,22 @@ const MoreOptions = ({
     const allowRename = canRename && permissions[PERMISSION_CAN_RENAME];
     const allowDownload =
         canDownload && permissions[PERMISSION_CAN_DOWNLOAD] && type === TYPE_FILE && !Browser.isMobile();
+    const allowMoveTo = permissions[PERMISSION_CAN_RENAME];
     const allowSetThumbnail = type === TYPE_FOLDER && permissions[PERMISSION_CAN_RENAME] && !item.metadata;
     const allowRemoveThumbnail = type === TYPE_FOLDER && permissions[PERMISSION_CAN_RENAME] && item.metadata;
 
     const allowed = allowDelete || allowRename || allowDownload || allowPreview
-        || allowShare || allowOpen || allowSetThumbnail || allowRemoveThumbnail;
+        || allowShare || allowOpen || allowMoveTo || allowSetThumbnail || allowRemoveThumbnail;
 
     if (!allowed) {
         return <span />;
     }
+
+    const moveToMenuItem = {
+        id: 'be.moveTo',
+        description: 'Move to...',
+        defaultMessage: 'Move to...',
+    };
 
     const setThumbnailMenuItem = {
         id: 'be.setThumbnail',
@@ -133,8 +144,13 @@ const MoreOptions = ({
                         </MenuItem>
                     )}
                     {allowShare && (
-                        <MenuItem onClick={onShare}>
+                        <MenuItem onClick={onCustomShare}>
                             <FormattedMessage {...messages.share} />
+                        </MenuItem>
+                    )}
+                    {allowMoveTo && (
+                        <MenuItem onClick={onMoveTo}>
+                            <FormattedMessage {...moveToMenuItem} />
                         </MenuItem>
                     )}
                     {allowSetThumbnail && (
@@ -149,11 +165,6 @@ const MoreOptions = ({
                     )}
                 </Menu>
             </DropdownMenu>
-            {allowShare && !isSmall && (
-                <Button onClick={onShare} onFocus={onFocus} type="button">
-                    <FormattedMessage {...messages.share} />
-                </Button>
-            )}
         </div>
     );
 };
