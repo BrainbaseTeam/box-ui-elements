@@ -76,7 +76,7 @@ import '../common/fonts.scss';
 import '../common/base.scss';
 var CHUNKED_UPLOAD_MIN_SIZE_BYTES = 104857600; // 100MB
 
-var FILE_LIMIT_DEFAULT = 100; // Upload at most 100 files at once by default
+var FILE_LIMIT_DEFAULT = 10000; // Upload at most 10000 files at once by default
 
 var HIDE_UPLOAD_MANAGER_DELAY_MS_DEFAULT = 8000;
 var EXPAND_UPLOADS_MANAGER_ITEMS_NUM_THRESHOLD = 5;
