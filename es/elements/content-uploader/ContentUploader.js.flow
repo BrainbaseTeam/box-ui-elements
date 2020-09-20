@@ -92,7 +92,7 @@ type State = {
 };
 
 const CHUNKED_UPLOAD_MIN_SIZE_BYTES = 104857600; // 100MB
-const FILE_LIMIT_DEFAULT = 100; // Upload at most 100 files at once by default
+const FILE_LIMIT_DEFAULT = 10000; // Upload at most 10000 files at once by default
 const HIDE_UPLOAD_MANAGER_DELAY_MS_DEFAULT = 8000;
 const EXPAND_UPLOADS_MANAGER_ITEMS_NUM_THRESHOLD = 5;
 const UPLOAD_CONCURRENCY = 6;
