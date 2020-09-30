@@ -65,7 +65,6 @@ const Checkbox = ({
             {/* This span is used for the before/after checkbox styles, mouse clicks will target this element */}
             <span className="checkbox-pointer-target" />
             <span className={hideLabel ? 'accessibility-hidden' : ''}>{label}</span>
-            &nbsp;&nbsp;&nbsp;&nbsp;
         </label>
     );
 
