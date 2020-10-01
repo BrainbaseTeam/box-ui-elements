@@ -40,9 +40,9 @@ var Checkbox = function Checkbox(_ref) {
     className: "checkbox-pointer-target"
   }), /*#__PURE__*/React.createElement("span", {
     className: hideLabel ? 'accessibility-hidden' : ''
-  }, label), "\xA0\xA0\xA0\xA0");
+  }, label));
   return /*#__PURE__*/React.createElement("div", {
-    className: "checkbox-container ".concat(className, " ").concat(isDisabled ? 'is-disabled' : '')
+    className: "checkbox-container-box-ui-elements ".concat(className, " ").concat(isDisabled ? 'is-disabled' : '')
   }, fieldLabel && /*#__PURE__*/React.createElement("div", {
     className: "label"
   }, fieldLabel), tooltip ? /*#__PURE__*/React.createElement(CheckboxTooltip, {

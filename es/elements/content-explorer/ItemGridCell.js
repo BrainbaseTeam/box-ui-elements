@@ -45,7 +45,9 @@ var ItemGridCell = function ItemGridCell(_ref) {
     rootId: rootId,
     showDetails: true,
     view: view
-  }), /*#__PURE__*/React.createElement(MoreOptions, _extends({
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "bce-ItemGridCell-rightwrapper"
+  }, /*#__PURE__*/React.createElement(MoreOptions, _extends({
     canPreview: canPreview,
     isSmall: true,
     item: item,
@@ -59,7 +61,7 @@ var ItemGridCell = function ItemGridCell(_ref) {
     },
     value: name,
     isChecked: picked
-  })));
+  }))));
 };
 
 export default ItemGridCell;

@@ -8,6 +8,7 @@
     position: relative;
     display: inline-flex;
     user-select: none;
+    margin-left: 10px;
 
     > input[type='checkbox'] {
         flex: none;
@@ -86,8 +87,8 @@
     }
 }
 
-.checkbox-container {
-    margin: 0 0 20px;
+.checkbox-container-box-ui-elements {
+    margin: 0 0 0px;
 
     &.is-disabled .checkbox-label {
         color: $bdl-gray-50;

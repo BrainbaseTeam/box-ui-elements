@@ -18,7 +18,6 @@ import headerCellRenderer from './headerCellRenderer';
 import sizeCellRenderer from './sizeCellRenderer';
 import dateCellRenderer from './dateCellRenderer';
 import moreOptionsCellRenderer from './moreOptionsCellRenderer';
-import selectionCellRenderer from './selectionCellRenderer';
 import { FIELD_DATE, FIELD_ID, FIELD_NAME, FIELD_SIZE, VIEW_FOLDER, VIEW_RECENTS } from '../../constants';
 import './ItemList.scss';
 
@@ -91,9 +90,6 @@ const ItemList = ({
         isSmall, // shows details if false
         isTouch,
     );
-    const selectionCell = selectionCellRenderer(
-        onItemPick,
-    );
     const iconCell = iconCellRenderer();
     const dateCell = dateCellRenderer();
     const sizeAccessCell = sizeCellRenderer();
@@ -106,6 +102,7 @@ const ItemList = ({
         onItemSelect,
         onItemDelete,
         onItemDownload,
+        onItemPick,
         onItemRename,
         onItemShare,
         onItemPreview,
@@ -226,12 +223,6 @@ const ItemList = ({
                                 dataKey={FIELD_ID}
                                 cellRenderer={moreOptionsCell}
                                 width={isSmall || !canShare ? 58 : 140}
-                                flexShrink={0}
-                            />
-                            <Column
-                                dataKey={FIELD_ID}
-                                cellRenderer={selectionCell}
-                                width={isSmall ? 20 : 30}
                                 flexShrink={0}
                             />
                         </Table>

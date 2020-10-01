@@ -42,17 +42,19 @@ const ItemGridCell = ({
                     showDetails
                     view={view}
                 />
-                <MoreOptions canPreview={canPreview} isSmall item={item} onItemSelect={onItemSelect} {...rest} />
-                { allowDownload && (
-                    <Checkbox
-                        hideLabel
-                        label={name}
-                        name={name}
-                        onChange={() => onItemPick(item)}
-                        value={name}
-                        isChecked={picked}
-                    />
-                )}
+                <div className="bce-ItemGridCell-rightwrapper">
+                    <MoreOptions canPreview={canPreview} isSmall item={item} onItemSelect={onItemSelect} {...rest} />
+                    { allowDownload && (
+                        <Checkbox
+                            hideLabel
+                            label={name}
+                            name={name}
+                            onChange={() => onItemPick(item)}
+                            value={name}
+                            isChecked={picked}
+                        />
+                    )}
+                </div>
             </figcaption>
         </figure>
     );

@@ -65,12 +65,11 @@ const Checkbox = ({
             {/* This span is used for the before/after checkbox styles, mouse clicks will target this element */}
             <span className="checkbox-pointer-target" />
             <span className={hideLabel ? 'accessibility-hidden' : ''}>{label}</span>
-            &nbsp;&nbsp;&nbsp;&nbsp;
         </label>
     );
 
     return (
-        <div className={`checkbox-container ${className} ${isDisabled ? 'is-disabled' : ''}`}>
+        <div className={`checkbox-container-box-ui-elements ${className} ${isDisabled ? 'is-disabled' : ''}`}>
             {fieldLabel && <div className="label">{fieldLabel}</div>}
             {tooltip ? <CheckboxTooltip label={checkboxLabel} tooltip={tooltip} /> : checkboxLabel}
             {description ? <div className="checkbox-description">{description}</div> : null}
