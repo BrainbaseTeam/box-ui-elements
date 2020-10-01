@@ -69,7 +69,7 @@ const Checkbox = ({
     );
 
     return (
-        <div className={`checkbox-container ${className} ${isDisabled ? 'is-disabled' : ''}`}>
+        <div className={`checkbox-container-box-ui-elements ${className} ${isDisabled ? 'is-disabled' : ''}`}>
             {fieldLabel && <div className="label">{fieldLabel}</div>}
             {tooltip ? <CheckboxTooltip label={checkboxLabel} tooltip={tooltip} /> : checkboxLabel}
             {description ? <div className="checkbox-description">{description}</div> : null}
