@@ -98,6 +98,10 @@ var ContentExplorer = /*#__PURE__*/function (_ES6Wrapper) {
       _this.emit('moveTo', data);
     });
 
+    _defineProperty(_assertThisInitialized(_this), "onCopy", function (data) {
+      _this.emit('copy', data);
+    });
+
     _defineProperty(_assertThisInitialized(_this), "onSetThumbnail", function (data) {
       _this.emit('setThumbnail', data);
     });
@@ -149,6 +153,7 @@ var ContentExplorer = /*#__PURE__*/function (_ES6Wrapper) {
         onBatchCancel: this.onBatchCancel,
         onCustomShare: this.onCustomShare,
         onMoveTo: this.onMoveTo,
+        onCopy: this.onCopy,
         onSetThumbnail: this.onSetThumbnail,
         onRemoveThumbnail: this.onRemoveThumbnail
       }, this.options)), this.container);

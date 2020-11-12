@@ -7,7 +7,7 @@ import React from 'react';
 import Checkbox from '../../components/checkbox';
 import MoreOptions from './MoreOptions';
 import { PERMISSION_CAN_DOWNLOAD } from '../../constants';
-export default (function (canPreview, canShare, canDownload, canDelete, canRename, onItemSelect, onItemDelete, onItemDownload, onItemPick, onItemRename, onItemShare, onItemPreview, onItemCustomShare, onItemMoveTo, onItemSetThumbnail, onItemRemoveThumbnail, isSmall) {
+export default (function (canPreview, canShare, canDownload, canDelete, canRename, onItemSelect, onItemDelete, onItemDownload, onItemPick, onItemRename, onItemShare, onItemPreview, onItemCustomShare, onItemMoveTo, onItemCopy, onItemSetThumbnail, onItemRemoveThumbnail, isSmall) {
   return function (_ref) {
     var rowData = _ref.rowData;
     var _rowData$name = rowData.name,
@@ -32,6 +32,7 @@ export default (function (canPreview, canShare, canDownload, canDelete, canRenam
       onItemPreview: onItemPreview,
       onItemCustomShare: onItemCustomShare,
       onItemMoveTo: onItemMoveTo,
+      onItemCopy: onItemCopy,
       onItemSetThumbnail: onItemSetThumbnail,
       onItemRemoveThumbnail: onItemRemoveThumbnail,
       isSmall: isSmall,
