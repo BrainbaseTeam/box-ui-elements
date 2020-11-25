@@ -48,6 +48,7 @@ const MoreOptions = ({
     onItemPreview,
     onItemCustomShare,
     onItemMoveTo,
+    onItemCopy,
     onItemSetThumbnail,
     onItemRemoveThumbnail,
     isSmall,
@@ -61,6 +62,7 @@ const MoreOptions = ({
     const onPreview = () => onItemPreview(item);
     const onCustomShare = () => onItemCustomShare(item);
     const onMoveTo = () => onItemMoveTo(item);
+    const onCopy = () => onItemCopy(item);
     const onSetThumbnail = () => onItemSetThumbnail(item);
     const onRemoveThumbnail = () => onItemRemoveThumbnail(item);
 
@@ -78,11 +80,12 @@ const MoreOptions = ({
     const allowDownload =
         canDownload && permissions[PERMISSION_CAN_DOWNLOAD] && type === TYPE_FILE && !Browser.isMobile();
     const allowMoveTo = permissions[PERMISSION_CAN_RENAME];
+    const allowCopy = permissions[PERMISSION_CAN_RENAME];
     const allowSetThumbnail = type === TYPE_FOLDER && permissions[PERMISSION_CAN_RENAME] && !item.metadata;
     const allowRemoveThumbnail = type === TYPE_FOLDER && permissions[PERMISSION_CAN_RENAME] && item.metadata;
 
     const allowed = allowDelete || allowRename || allowDownload || allowPreview
-        || allowShare || allowOpen || allowMoveTo || allowSetThumbnail || allowRemoveThumbnail;
+        || allowShare || allowOpen || allowMoveTo || allowCopy || allowSetThumbnail || allowRemoveThumbnail;
 
     if (!allowed) {
         return <span />;
@@ -93,6 +96,12 @@ const MoreOptions = ({
         description: 'Move to...',
         defaultMessage: 'Move to...',
     };
+
+    const copyMenuItem = {
+        id: 'be.copy',
+        description: 'Copy',
+        defaultMessage: 'Copy'
+    }
 
     const setThumbnailMenuItem = {
         id: 'be.setThumbnail',
@@ -151,6 +160,11 @@ const MoreOptions = ({
                     {allowMoveTo && (
                         <MenuItem onClick={onMoveTo}>
                             <FormattedMessage {...moveToMenuItem} />
+                        </MenuItem>
+                    )}
+                    {allowCopy && (
+                        <MenuItem onClick={onCopy}>
+                            <FormattedMessage {...copyMenuItem} />
                         </MenuItem>
                     )}
                     {allowSetThumbnail && (

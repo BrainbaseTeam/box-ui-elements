@@ -121,6 +121,15 @@ class ContentExplorer extends ES6Wrapper {
     };
 
     /**
+     * Callback for copying items
+     *
+     * @return {void}
+     */
+    onCopy = (data: BoxItem): void => {
+        this.emit('copy', data);
+    };
+
+    /**
      * Callback for setting custom thumbnail
      *
      * @return {void}
@@ -173,6 +182,7 @@ class ContentExplorer extends ES6Wrapper {
                 onBatchCancel={this.onBatchCancel}
                 onCustomShare={this.onCustomShare}
                 onMoveTo={this.onMoveTo}
+                onCopy={this.onCopy}
                 onSetThumbnail={this.onSetThumbnail}
                 onRemoveThumbnail={this.onRemoveThumbnail}
                 {...this.options}

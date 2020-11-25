@@ -42,6 +42,7 @@ var ItemList = function ItemList(_ref) {
       onItemPreview = _ref.onItemPreview,
       onItemCustomShare = _ref.onItemCustomShare,
       onItemMoveTo = _ref.onItemMoveTo,
+      onItemCopy = _ref.onItemCopy,
       onItemSetThumbnail = _ref.onItemSetThumbnail,
       onItemRemoveThumbnail = _ref.onItemRemoveThumbnail,
       onSortChange = _ref.onSortChange,
@@ -54,7 +55,7 @@ var ItemList = function ItemList(_ref) {
   var iconCell = iconCellRenderer();
   var dateCell = dateCellRenderer();
   var sizeAccessCell = sizeCellRenderer();
-  var moreOptionsCell = moreOptionsCellRenderer(canPreview, canShare, canDownload, canDelete, canRename, onItemSelect, onItemDelete, onItemDownload, onItemPick, onItemRename, onItemShare, onItemPreview, onItemCustomShare, onItemMoveTo, onItemSetThumbnail, onItemRemoveThumbnail, isSmall);
+  var moreOptionsCell = moreOptionsCellRenderer(canPreview, canShare, canDownload, canDelete, canRename, onItemSelect, onItemDelete, onItemDownload, onItemPick, onItemRename, onItemShare, onItemPreview, onItemCustomShare, onItemMoveTo, onItemCopy, onItemSetThumbnail, onItemRemoveThumbnail, isSmall);
   var isRecents = view === VIEW_RECENTS;
   var hasSort = view === VIEW_FOLDER;
   var id = currentCollection.id,

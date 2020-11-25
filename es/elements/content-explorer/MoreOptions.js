@@ -25,6 +25,7 @@ var MoreOptions = function MoreOptions(_ref) {
       onItemPreview = _ref.onItemPreview,
       onItemCustomShare = _ref.onItemCustomShare,
       onItemMoveTo = _ref.onItemMoveTo,
+      onItemCopy = _ref.onItemCopy,
       onItemSetThumbnail = _ref.onItemSetThumbnail,
       onItemRemoveThumbnail = _ref.onItemRemoveThumbnail,
       isSmall = _ref.isSmall,
@@ -62,6 +63,10 @@ var MoreOptions = function MoreOptions(_ref) {
     return onItemMoveTo(item);
   };
 
+  var onCopy = function onCopy() {
+    return onItemCopy(item);
+  };
+
   var onSetThumbnail = function onSetThumbnail() {
     return onItemSetThumbnail(item);
   };
@@ -84,9 +89,10 @@ var MoreOptions = function MoreOptions(_ref) {
   var allowRename = canRename && permissions[PERMISSION_CAN_RENAME];
   var allowDownload = canDownload && permissions[PERMISSION_CAN_DOWNLOAD] && type === TYPE_FILE && !Browser.isMobile();
   var allowMoveTo = permissions[PERMISSION_CAN_RENAME];
+  var allowCopy = permissions[PERMISSION_CAN_RENAME];
   var allowSetThumbnail = type === TYPE_FOLDER && permissions[PERMISSION_CAN_RENAME] && !item.metadata;
   var allowRemoveThumbnail = type === TYPE_FOLDER && permissions[PERMISSION_CAN_RENAME] && item.metadata;
-  var allowed = allowDelete || allowRename || allowDownload || allowPreview || allowShare || allowOpen || allowMoveTo || allowSetThumbnail || allowRemoveThumbnail;
+  var allowed = allowDelete || allowRename || allowDownload || allowPreview || allowShare || allowOpen || allowMoveTo || allowCopy || allowSetThumbnail || allowRemoveThumbnail;
 
   if (!allowed) {
     return /*#__PURE__*/React.createElement("span", null);
@@ -96,6 +102,11 @@ var MoreOptions = function MoreOptions(_ref) {
     id: 'be.moveTo',
     description: 'Move to...',
     defaultMessage: 'Move to...'
+  };
+  var copyMenuItem = {
+    id: 'be.copy',
+    description: 'Copy',
+    defaultMessage: 'Copy'
   };
   var setThumbnailMenuItem = {
     id: 'be.setThumbnail',
@@ -134,7 +145,9 @@ var MoreOptions = function MoreOptions(_ref) {
     onClick: onCustomShare
   }, /*#__PURE__*/React.createElement(FormattedMessage, messages.share)), allowMoveTo && /*#__PURE__*/React.createElement(MenuItem, {
     onClick: onMoveTo
-  }, /*#__PURE__*/React.createElement(FormattedMessage, moveToMenuItem)), allowSetThumbnail && /*#__PURE__*/React.createElement(MenuItem, {
+  }, /*#__PURE__*/React.createElement(FormattedMessage, moveToMenuItem)), allowCopy && /*#__PURE__*/React.createElement(MenuItem, {
+    onClick: onCopy
+  }, /*#__PURE__*/React.createElement(FormattedMessage, copyMenuItem)), allowSetThumbnail && /*#__PURE__*/React.createElement(MenuItem, {
     onClick: onSetThumbnail
   }, /*#__PURE__*/React.createElement(FormattedMessage, setThumbnailMenuItem)), allowRemoveThumbnail && /*#__PURE__*/React.createElement(MenuItem, {
     onClick: onRemoveThumbnail

@@ -106,6 +106,7 @@ type Props = {
     onDelete: Function,
     onDownload: Function,
     onMoveTo: Function,
+    onCopy: Function,
     onNavigate: Function,
     onPreview: Function,
     onRename: Function,
@@ -198,6 +199,7 @@ class ContentExplorer extends Component<Props, State> {
         onRename: noop,
         onCreate: noop,
         onMoveTo: noop,
+        onCopy: noop,
         onSelect: noop,
         onSetThumbnail: noop,
         onRemoveThumbnail: noop,
@@ -936,6 +938,19 @@ class ContentExplorer extends Component<Props, State> {
     };
 
     /**
+     * Copy items
+     *
+     * @private
+     * @param {Object} item - file or folder object
+     * @return {void}
+     */
+    copy = (item: BoxItem): void => {
+        const { onCopy }: Props = this.props;
+
+        onCopy(item);
+    };
+
+    /**
      * Sets custom thumbnail
      *
      * @private
@@ -1653,6 +1668,7 @@ class ContentExplorer extends Component<Props, State> {
                             onItemDelete={this.delete}
                             onItemDownload={this.download}
                             onItemMoveTo={this.moveTo}
+                            onItemCopy={this.copy}
                             onItemPick={this.pick}
                             onItemPreview={this.preview}
                             onItemRename={this.rename}

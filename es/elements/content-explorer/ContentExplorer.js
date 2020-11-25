@@ -402,6 +402,11 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
       onMoveTo(item);
     });
 
+    _defineProperty(_assertThisInitialized(_this), "copy", function (item) {
+      var onCopy = _this.props.onCopy;
+      onCopy(item);
+    });
+
     _defineProperty(_assertThisInitialized(_this), "setThumbnail", function (item) {
       var onSetThumbnail = _this.props.onSetThumbnail;
       onSetThumbnail(item);
@@ -1516,6 +1521,7 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
         onItemDelete: this.delete,
         onItemDownload: this.download,
         onItemMoveTo: this.moveTo,
+        onItemCopy: this.copy,
         onItemPick: this.pick,
         onItemPreview: this.preview,
         onItemRename: this.rename,
@@ -1645,6 +1651,7 @@ _defineProperty(ContentExplorer, "defaultProps", {
   onRename: noop,
   onCreate: noop,
   onMoveTo: noop,
+  onCopy: noop,
   onSelect: noop,
   onSetThumbnail: noop,
   onRemoveThumbnail: noop,
