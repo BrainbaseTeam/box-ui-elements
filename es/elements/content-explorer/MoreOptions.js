@@ -8,7 +8,7 @@ import Browser from '../../utils/Browser';
 import IconEllipsis from '../../icons/general/IconEllipsis';
 import { bdlGray50 } from '../../styles/variables';
 import messages from '../common/messages';
-import { PERMISSION_CAN_DOWNLOAD, PERMISSION_CAN_RENAME, PERMISSION_CAN_DELETE, PERMISSION_CAN_SHARE, PERMISSION_CAN_PREVIEW, TYPE_FILE, TYPE_FOLDER, TYPE_WEBLINK } from '../../constants';
+import { PERMISSION_CAN_DOWNLOAD, PERMISSION_CAN_RENAME, PERMISSION_CAN_DELETE, PERMISSION_CAN_SHARE, PERMISSION_CAN_PREVIEW, TYPE_FILE, TYPE_FOLDER, TYPE_WEBLINK, PERMISSION_CAN_SET_SHARE_ACCESS } from '../../constants';
 import './MoreOptionsCell.scss';
 
 var MoreOptions = function MoreOptions(_ref) {
@@ -85,7 +85,7 @@ var MoreOptions = function MoreOptions(_ref) {
   var allowPreview = type === TYPE_FILE && canPreview && permissions[PERMISSION_CAN_PREVIEW];
   var allowOpen = type === TYPE_WEBLINK;
   var allowDelete = canDelete && permissions[PERMISSION_CAN_DELETE];
-  var allowShare = canShare && permissions[PERMISSION_CAN_SHARE];
+  var allowShare = canShare && permissions[PERMISSION_CAN_SHARE] && permissions[PERMISSION_CAN_SET_SHARE_ACCESS];
   var allowRename = canRename && permissions[PERMISSION_CAN_RENAME];
   var allowDownload = canDownload && permissions[PERMISSION_CAN_DOWNLOAD] && type === TYPE_FILE && !Browser.isMobile();
   var allowMoveTo = permissions[PERMISSION_CAN_RENAME];
