@@ -176,7 +176,7 @@ var ItemList = function ItemList(_ref) {
         disableSort: true,
         dataKey: FIELD_ID,
         cellRenderer: moreOptionsCell,
-        width: isSmall || !canShare ? 58 : 140,
+        width: isSmall ? 58 : 140,
         flexShrink: 0
       }));
     });
