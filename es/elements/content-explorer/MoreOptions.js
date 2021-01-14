@@ -148,6 +148,7 @@ var MoreOptions = function MoreOptions(_ref) {
   }, /*#__PURE__*/React.createElement(FormattedMessage, moveToMenuItem)), allowCopy && /*#__PURE__*/React.createElement(MenuItem, {
     onClick: onCopy
   }, /*#__PURE__*/React.createElement(FormattedMessage, copyMenuItem)), allowSetThumbnail && /*#__PURE__*/React.createElement(MenuItem, {
+    className: "menu-item-set-thumbnail",
     onClick: onSetThumbnail
   }, /*#__PURE__*/React.createElement(FormattedMessage, setThumbnailMenuItem)), allowRemoveThumbnail && /*#__PURE__*/React.createElement(MenuItem, {
     onClick: onRemoveThumbnail

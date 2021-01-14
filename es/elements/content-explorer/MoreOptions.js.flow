@@ -169,7 +169,7 @@ const MoreOptions = ({
                         </MenuItem>
                     )}
                     {allowSetThumbnail && (
-                        <MenuItem onClick={onSetThumbnail}>
+                        <MenuItem className="menu-item-set-thumbnail" onClick={onSetThumbnail}>
                             <FormattedMessage {...setThumbnailMenuItem} />
                         </MenuItem>
                     )}
