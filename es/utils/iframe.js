@@ -23,10 +23,14 @@ function createDownloadIframe() {
     if (document.body) {
       document.body.appendChild(iframe);
     }
-  } // Clean the iframe up
+  } // If the iframe previously failed to load contentDocument will be null
 
 
-  iframe.contentDocument.write('<head></head><body></body>');
+  if (iframe.contentDocument) {
+    // Clean the iframe up
+    iframe.contentDocument.write('<head></head><body></body>');
+  }
+
   return iframe;
 }
 /**

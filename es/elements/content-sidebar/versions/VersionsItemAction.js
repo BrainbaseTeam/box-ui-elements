@@ -20,7 +20,7 @@ var VersionsItemAction = function VersionsItemAction(_ref) {
       isCurrent = _ref.isCurrent,
       rest = _objectWithoutProperties(_ref, ["action", "children", "fileId", "isCurrent"]);
 
-  return /*#__PURE__*/React.createElement(MenuItem, _extends({
+  return React.createElement(MenuItem, _extends({
     className: "bcs-VersionsItemAction",
     "data-resin-iscurrent": isCurrent,
     "data-resin-itemid": fileId,

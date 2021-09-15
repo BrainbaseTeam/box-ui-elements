@@ -8,19 +8,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -28,17 +24,21 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import { FormattedMessage } from 'react-intl';
 import DropdownMenu, { MenuToggle } from '../../components/dropdown-menu';
+import LabelPill from '../../components/label-pill';
 import PlainButton from '../../components/plain-button';
 import { Menu, SelectMenuItem } from '../../components/menu';
-import { CAN_VIEW_DOWNLOAD, CAN_VIEW_ONLY } from './constants';
+import { CAN_EDIT, CAN_VIEW_DOWNLOAD, CAN_VIEW_ONLY } from './constants';
 import messages from './messages';
+import './SharedLinkPermissionMenu.scss';
 
-var SharedLinkPermissionMenu = /*#__PURE__*/function (_Component) {
+var SharedLinkPermissionMenu =
+/*#__PURE__*/
+function (_Component) {
   _inherits(SharedLinkPermissionMenu, _Component);
 
-  var _super = _createSuper(SharedLinkPermissionMenu);
-
   function SharedLinkPermissionMenu() {
+    var _getPrototypeOf2;
+
     var _this;
 
     _classCallCheck(this, SharedLinkPermissionMenu);
@@ -47,7 +47,7 @@ var SharedLinkPermissionMenu = /*#__PURE__*/function (_Component) {
       args[_key] = arguments[_key];
     }
 
-    _this = _super.call.apply(_super, [this].concat(args));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(SharedLinkPermissionMenu)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_this), "onChangePermissionLevel", function (newPermissionLevel) {
       var _this$props = _this.props,
@@ -77,40 +77,46 @@ var SharedLinkPermissionMenu = /*#__PURE__*/function (_Component) {
       var _this$props2 = this.props,
           allowedPermissionLevels = _this$props2.allowedPermissionLevels,
           permissionLevel = _this$props2.permissionLevel,
+          sharedLinkEditTagTargetingApi = _this$props2.sharedLinkEditTagTargetingApi,
           submitting = _this$props2.submitting,
           trackingProps = _this$props2.trackingProps;
       var sharedLinkPermissionsMenuButtonProps = trackingProps.sharedLinkPermissionsMenuButtonProps;
+      var canShow = sharedLinkEditTagTargetingApi ? sharedLinkEditTagTargetingApi.canShow : false;
 
       if (!permissionLevel) {
         return null;
       }
 
-      var permissionLevels = (_permissionLevels = {}, _defineProperty(_permissionLevels, CAN_VIEW_DOWNLOAD, {
-        label: /*#__PURE__*/React.createElement(FormattedMessage, messages.sharedLinkPermissionsViewDownload),
-        description: /*#__PURE__*/React.createElement(FormattedMessage, messages.sharedLinkPermissionsViewDownloadDescription)
+      var permissionLevels = (_permissionLevels = {}, _defineProperty(_permissionLevels, CAN_EDIT, {
+        label: React.createElement(FormattedMessage, messages.sharedLinkPermissionsEdit)
+      }), _defineProperty(_permissionLevels, CAN_VIEW_DOWNLOAD, {
+        label: React.createElement(FormattedMessage, messages.sharedLinkPermissionsViewDownload)
       }), _defineProperty(_permissionLevels, CAN_VIEW_ONLY, {
-        label: /*#__PURE__*/React.createElement(FormattedMessage, messages.sharedLinkPermissionsViewOnly),
-        description: /*#__PURE__*/React.createElement(FormattedMessage, messages.sharedLinkPermissionsViewOnlyDescription)
+        label: React.createElement(FormattedMessage, messages.sharedLinkPermissionsViewOnly)
       }), _permissionLevels);
-      return /*#__PURE__*/React.createElement(DropdownMenu, {
+      return React.createElement(DropdownMenu, {
         constrainToWindow: true
-      }, /*#__PURE__*/React.createElement(PlainButton, _extends({
+      }, React.createElement(PlainButton, _extends({
         className: classNames('lnk', {
-          'is-disabled': submitting
+          'is-disabled': submitting,
+          'bdl-is-disabled': submitting
         }),
         disabled: submitting
-      }, sharedLinkPermissionsMenuButtonProps), /*#__PURE__*/React.createElement(MenuToggle, null, permissionLevels[permissionLevel].label)), /*#__PURE__*/React.createElement(Menu, {
+      }, sharedLinkPermissionsMenuButtonProps), React.createElement(MenuToggle, null, permissionLevels[permissionLevel].label)), React.createElement(Menu, {
         className: "ums-share-permissions-menu"
       }, allowedPermissionLevels.map(function (level) {
-        return /*#__PURE__*/React.createElement(SelectMenuItem, {
+        return React.createElement(SelectMenuItem, {
           key: level,
           isSelected: level === permissionLevel,
           onClick: function onClick() {
             return _this2.onChangePermissionLevel(level);
           }
-        }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("strong", null, permissionLevels[level].label), /*#__PURE__*/React.createElement("small", {
-          className: "usm-menu-description"
-        }, " ", permissionLevels[level].description, " ")));
+        }, React.createElement("div", {
+          className: "ums-share-permissions-menu-item"
+        }, React.createElement("span", null, permissionLevels[level].label), level === CAN_EDIT && canShow && React.createElement(LabelPill.Pill, {
+          className: "ftux-editable-shared-link",
+          type: "ftux"
+        }, React.createElement(LabelPill.Text, null, React.createElement(FormattedMessage, messages.ftuxSharedLinkPermissionsEditTag)))));
       })));
     }
   }]);

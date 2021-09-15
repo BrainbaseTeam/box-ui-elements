@@ -5,9 +5,10 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
  * @file Active state component for Activity Feed
  */
 import * as React from 'react';
-import classNames from 'classnames';
 import getProp from 'lodash/get';
+import ActivityItem from './ActivityItem';
 import AppActivity from '../app-activity';
+import AnnotationActivity from '../annotations';
 import Comment from '../comment';
 import TaskNew from '../task-new';
 import Version, { CollapsedVersion } from '../version';
@@ -18,15 +19,20 @@ var ActiveState = function ActiveState(_ref) {
       activeFeedEntryType = _ref.activeFeedEntryType,
       activeFeedItemRef = _ref.activeFeedItemRef,
       approverSelectorContacts = _ref.approverSelectorContacts,
+      currentFileVersionId = _ref.currentFileVersionId,
       currentUser = _ref.currentUser,
       items = _ref.items,
       mentionSelectorContacts = _ref.mentionSelectorContacts,
       getMentionWithQuery = _ref.getMentionWithQuery,
+      onAnnotationDelete = _ref.onAnnotationDelete,
+      onAnnotationEdit = _ref.onAnnotationEdit,
+      onAnnotationSelect = _ref.onAnnotationSelect,
       onAppActivityDelete = _ref.onAppActivityDelete,
       onCommentDelete = _ref.onCommentDelete,
       onCommentEdit = _ref.onCommentEdit,
       onTaskDelete = _ref.onTaskDelete,
       onTaskEdit = _ref.onTaskEdit,
+      onTaskView = _ref.onTaskView,
       onTaskAssignmentUpdate = _ref.onTaskAssignmentUpdate,
       onTaskModalClose = _ref.onTaskModalClose,
       onVersionInfo = _ref.onVersionInfo,
@@ -39,21 +45,22 @@ var ActiveState = function ActiveState(_ref) {
         type = _ref2.type;
     return id === activeFeedEntryId && type === activeFeedEntryType;
   });
-  return /*#__PURE__*/React.createElement("ul", {
+  return React.createElement("ul", {
     className: "bcs-activity-feed-active-state"
   }, items.map(function (item) {
     var isFocused = item === activeEntry;
     var refValue = isFocused ? activeFeedItemRef : undefined;
+    var itemFileVersionId = getProp(item, 'file_version.id');
 
     switch (item.type) {
       case 'comment':
-        return /*#__PURE__*/React.createElement("li", {
+        return React.createElement(ActivityItem, {
           key: item.type + item.id,
-          className: classNames('bcs-activity-feed-comment', {
-            'bcs-is-focused': isFocused
-          }),
+          className: "bcs-activity-feed-comment",
+          "data-testid": "comment",
+          isFocused: isFocused,
           ref: refValue
-        }, /*#__PURE__*/React.createElement(Comment, _extends({}, item, {
+        }, React.createElement(Comment, _extends({}, item, {
           currentUser: currentUser,
           getAvatarUrl: getAvatarUrl,
           getMentionWithQuery: getMentionWithQuery,
@@ -69,13 +76,13 @@ var ActiveState = function ActiveState(_ref) {
         })));
 
       case 'task':
-        return /*#__PURE__*/React.createElement("li", {
+        return React.createElement(ActivityItem, {
           key: item.type + item.id,
-          className: classNames('bcs-activity-feed-task-new', {
-            'bcs-is-focused': isFocused
-          }),
+          className: "bcs-activity-feed-task-new",
+          "data-testid": "task",
+          isFocused: isFocused,
           ref: refValue
-        }, /*#__PURE__*/React.createElement(TaskNew, _extends({}, item, {
+        }, React.createElement(TaskNew, _extends({}, item, {
           approverSelectorContacts: approverSelectorContacts,
           currentUser: currentUser,
           getApproverWithQuery: getApproverWithQuery,
@@ -84,28 +91,53 @@ var ActiveState = function ActiveState(_ref) {
           onAssignmentUpdate: onTaskAssignmentUpdate,
           onDelete: onTaskDelete,
           onEdit: onTaskEdit,
+          onView: onTaskView,
           onModalClose: onTaskModalClose,
           translations: translations
         })));
 
       case 'file_version':
-        return /*#__PURE__*/React.createElement("li", {
+        return React.createElement(ActivityItem, {
           key: item.type + item.id,
-          className: "bcs-version-item"
-        }, item.versions ? /*#__PURE__*/React.createElement(CollapsedVersion, _extends({}, item, {
+          className: "bcs-version-item",
+          "data-testid": "version"
+        }, item.versions ? // $FlowFixMe
+        React.createElement(CollapsedVersion, _extends({}, item, {
           onInfo: onVersionInfo
-        })) : /*#__PURE__*/React.createElement(Version, _extends({}, item, {
+        })) : // $FlowFixMe
+        React.createElement(Version, _extends({}, item, {
           onInfo: onVersionInfo
         })));
 
       case 'app_activity':
-        return /*#__PURE__*/React.createElement("li", {
+        return React.createElement(ActivityItem, {
           key: item.type + item.id,
-          className: "bcs-activity-feed-app-activity"
-        }, /*#__PURE__*/React.createElement(AppActivity, _extends({
+          className: "bcs-activity-feed-app-activity",
+          "data-testid": "app-activity"
+        }, React.createElement(AppActivity, _extends({
           currentUser: currentUser,
           onDelete: onAppActivityDelete
         }, item)));
+
+      case 'annotation':
+        return React.createElement(ActivityItem, {
+          key: item.type + item.id,
+          className: "bcs-activity-feed-annotation-activity",
+          "data-testid": "annotation-activity",
+          isFocused: isFocused,
+          ref: refValue
+        }, React.createElement(AnnotationActivity, {
+          currentUser: currentUser,
+          getAvatarUrl: getAvatarUrl,
+          getUserProfileUrl: getUserProfileUrl,
+          getMentionWithQuery: getMentionWithQuery,
+          isCurrentVersion: currentFileVersionId === itemFileVersionId,
+          item: item,
+          mentionSelectorContacts: mentionSelectorContacts,
+          onEdit: onAnnotationEdit,
+          onDelete: onAnnotationDelete,
+          onSelect: onAnnotationSelect
+        }));
 
       default:
         return null;

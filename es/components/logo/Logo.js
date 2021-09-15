@@ -10,9 +10,9 @@ var Logo = function Logo(_ref) {
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 45 : _ref$width,
       title = _ref.title;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "logo"
-  }, /*#__PURE__*/React.createElement(IconLogo, {
+  }, React.createElement(IconLogo, {
     color: color,
     height: height,
     title: title,

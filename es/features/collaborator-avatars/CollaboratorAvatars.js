@@ -8,19 +8,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -33,15 +29,15 @@ import messages from './messages';
 import './CollaboratorAvatars.scss';
 var MAX_ADDITIONAL_COLLABORATOR_NUM_CAP = 99;
 
-var CollaboratorAvatars = /*#__PURE__*/function (_Component) {
+var CollaboratorAvatars =
+/*#__PURE__*/
+function (_Component) {
   _inherits(CollaboratorAvatars, _Component);
-
-  var _super = _createSuper(CollaboratorAvatars);
 
   function CollaboratorAvatars() {
     _classCallCheck(this, CollaboratorAvatars);
 
-    return _super.apply(this, arguments);
+    return _possibleConstructorReturn(this, _getPrototypeOf(CollaboratorAvatars).apply(this, arguments));
   }
 
   _createClass(CollaboratorAvatars, [{
@@ -84,7 +80,7 @@ var CollaboratorAvatars = /*#__PURE__*/function (_Component) {
           maxDisplayedUserAvatars = _this$props4.maxDisplayedUserAvatars,
           containerAttributes = _this$props4.containerAttributes,
           onClick = _this$props4.onClick;
-      return /*#__PURE__*/React.createElement(PlainButton, _extends({
+      return React.createElement(PlainButton, _extends({
         className: classNames('collaborator-avatar-container', {
           'are-avatars-hidden': !this.isVisible()
         }),
@@ -92,23 +88,23 @@ var CollaboratorAvatars = /*#__PURE__*/function (_Component) {
       }, containerAttributes, {
         "aria-hidden": this.isVisible() ? 'false' : 'true',
         type: "button"
-      }), /*#__PURE__*/React.createElement("div", {
+      }), React.createElement("div", {
         className: "avatars-label"
-      }, /*#__PURE__*/React.createElement(FormattedMessage, messages.collaboratorAvatarsLabel)), /*#__PURE__*/React.createElement("div", {
+      }, React.createElement(FormattedMessage, messages.collaboratorAvatarsLabel)), React.createElement("div", {
         className: "avatars"
       }, this.isVisible() && collaborators.slice(0, maxDisplayedUserAvatars).map(function (collaborator, index) {
         var collabID = collaborator.collabID,
             imageURL = collaborator.imageURL,
             hasCustomAvatar = collaborator.hasCustomAvatar,
             name = collaborator.name;
-        return /*#__PURE__*/React.createElement(CollaboratorAvatarItem, {
+        return React.createElement(CollaboratorAvatarItem, {
           key: "collab-avatar-".concat(collabID),
           avatarUrl: imageURL,
           hasCustomAvatar: hasCustomAvatar,
           id: index,
           name: name
         });
-      })), this.isVisible() && this.hasAdditionalCollaborators() && /*#__PURE__*/React.createElement("div", {
+      })), this.isVisible() && this.hasAdditionalCollaborators() && React.createElement("div", {
         className: "avatars-count"
       }, this.formatAdditionalCollaboratorCount()));
     }

@@ -21,19 +21,19 @@ var withErrorHandling = function withErrorHandling(WrappedComponent) {
         rest = _objectWithoutProperties(_ref, ["maskError", "inlineError", "errorCode"]);
 
     if (maskError) {
-      return /*#__PURE__*/React.createElement(SidebarSection, null, /*#__PURE__*/React.createElement(ErrorMask, {
-        errorHeader: /*#__PURE__*/React.createElement(FormattedMessage, maskError.errorHeader),
-        errorSubHeader: maskError.errorSubHeader ? /*#__PURE__*/React.createElement(FormattedMessage, maskError.errorSubHeader) : undefined
+      return React.createElement(SidebarSection, null, React.createElement(ErrorMask, {
+        errorHeader: React.createElement(FormattedMessage, maskError.errorHeader),
+        errorSubHeader: maskError.errorSubHeader ? React.createElement(FormattedMessage, maskError.errorSubHeader) : undefined
       }));
     }
 
     if (inlineError) {
-      return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(InlineError, {
-        title: /*#__PURE__*/React.createElement(FormattedMessage, inlineError.title)
-      }, /*#__PURE__*/React.createElement(FormattedMessage, inlineError.content)), /*#__PURE__*/React.createElement(WrappedComponent, rest));
+      return React.createElement(React.Fragment, null, React.createElement(InlineError, {
+        title: React.createElement(FormattedMessage, inlineError.title)
+      }, React.createElement(FormattedMessage, inlineError.content)), React.createElement(WrappedComponent, rest));
     }
 
-    return /*#__PURE__*/React.createElement(WrappedComponent, rest);
+    return React.createElement(WrappedComponent, rest);
   };
 };
 

@@ -4,7 +4,7 @@ import * as React from 'react';
 import MenuItem from './MenuItem';
 
 var SelectMenuItem = function SelectMenuItem(props) {
-  return /*#__PURE__*/React.createElement(MenuItem, _extends({
+  return React.createElement(MenuItem, _extends({
     isSelectItem: true
   }, props));
 };

@@ -11,13 +11,13 @@ var IconMaximize = function IconMaximize(_ref) {
       title = _ref.title,
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 16 : _ref$width;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: "icon-maximize ".concat(className),
     height: height,
     title: title,
     viewBox: "0 0 16 16",
     width: width
-  }, /*#__PURE__*/React.createElement("path", {
+  }, React.createElement("path", {
     className: "fill-color",
     d: "M8 8V3H2v5h6zm1 0v1H1V1h8v7z",
     fill: color,

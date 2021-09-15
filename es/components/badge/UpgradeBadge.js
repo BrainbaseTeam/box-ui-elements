@@ -16,9 +16,9 @@ var UpgradeBadge = function UpgradeBadge(_ref) {
       rest = _objectWithoutProperties(_ref, ["className"]);
 
   var classes = classNames('upgrade-badge', className);
-  return /*#__PURE__*/React.createElement(Badge, _extends({
+  return React.createElement(Badge, _extends({
     className: classes
-  }, rest), /*#__PURE__*/React.createElement(FormattedMessage, messages.upgrade));
+  }, rest), React.createElement(FormattedMessage, messages.upgrade));
 };
 
 export default UpgradeBadge;

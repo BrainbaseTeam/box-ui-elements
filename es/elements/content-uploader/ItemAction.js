@@ -1,5 +1,3 @@
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
 /**
  * 
  * @file Item action component
@@ -25,9 +23,7 @@ var ItemAction = function ItemAction(_ref) {
       isResumableUploadsEnabled = _ref.isResumableUploadsEnabled,
       _ref$isFolder = _ref.isFolder,
       isFolder = _ref$isFolder === void 0 ? false : _ref$isFolder;
-  var icon = /*#__PURE__*/React.createElement(IconClose, null);
-  var target = null;
-  var resin = {};
+  var icon = React.createElement(IconClose, null);
   var tooltip;
 
   if (isFolder && status !== STATUS_PENDING) {
@@ -36,7 +32,7 @@ var ItemAction = function ItemAction(_ref) {
 
   switch (status) {
     case STATUS_COMPLETE:
-      icon = /*#__PURE__*/React.createElement(IconCheck, {
+      icon = React.createElement(IconCheck, {
         color: ICON_CHECK_COLOR
       });
 
@@ -47,22 +43,20 @@ var ItemAction = function ItemAction(_ref) {
       break;
 
     case STATUS_ERROR:
-      icon = /*#__PURE__*/React.createElement(IconRetry, {
+      icon = React.createElement(IconRetry, {
         height: 24,
         width: 24
       });
       tooltip = isResumableUploadsEnabled ? messages.resume : messages.retry;
-      target = 'uploadretry';
       break;
 
     case STATUS_IN_PROGRESS:
     case STATUS_STAGED:
       if (isResumableUploadsEnabled) {
-        icon = /*#__PURE__*/React.createElement(LoadingIndicator, null);
+        icon = React.createElement(LoadingIndicator, null);
       } else {
-        icon = /*#__PURE__*/React.createElement(IconInProgress, null);
+        icon = React.createElement(IconInProgress, null);
         tooltip = messages.uploadsCancelButtonTooltip;
-        target = 'uploadcancel';
       }
 
       break;
@@ -70,7 +64,7 @@ var ItemAction = function ItemAction(_ref) {
     case STATUS_PENDING:
     default:
       if (isResumableUploadsEnabled) {
-        icon = /*#__PURE__*/React.createElement(LoadingIndicator, null);
+        icon = React.createElement(LoadingIndicator, null);
       } else {
         tooltip = messages.uploadsCancelButtonTooltip;
       }
@@ -78,22 +72,16 @@ var ItemAction = function ItemAction(_ref) {
       break;
   }
 
-  if (target) {
-    resin = {
-      'data-resin-target': target
-    };
-  }
-
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "bcu-item-action"
-  }, tooltip ? /*#__PURE__*/React.createElement(Tooltip, {
+  }, tooltip ? React.createElement(Tooltip, {
     position: "top-left",
     text: intl.formatMessage(tooltip)
-  }, /*#__PURE__*/React.createElement(PlainButton, _extends({
+  }, React.createElement(PlainButton, {
     onClick: onClick,
     type: "button",
     isDisabled: status === STATUS_STAGED
-  }, resin), icon)) : icon);
+  }, icon)) : icon);
 };
 
 export { ItemAction as ItemActionForTesting };

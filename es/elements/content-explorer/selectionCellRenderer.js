@@ -15,7 +15,7 @@ export default (function (onItemPick) {
         picked = _rowData$picked === void 0 ? false : _rowData$picked,
         permissions = rowData.permissions;
     var allowDownload = permissions[PERMISSION_CAN_DOWNLOAD];
-    return /*#__PURE__*/React.createElement("div", null, allowDownload && /*#__PURE__*/React.createElement(Checkbox, {
+    return React.createElement("div", null, allowDownload && React.createElement(Checkbox, {
       hideLabel: true,
       label: name,
       name: name,

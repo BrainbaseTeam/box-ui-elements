@@ -8,7 +8,7 @@ var Crumb = function Crumb(_ref) {
   var classes = classNames('breadcrumb-item', className, {
     'breadcrumb-item-last': isLastCrumb
   });
-  return /*#__PURE__*/React.createElement("li", {
+  return React.createElement("li", {
     className: classes
   }, children);
 };

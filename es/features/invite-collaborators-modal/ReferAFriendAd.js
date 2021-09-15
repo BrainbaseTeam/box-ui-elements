@@ -6,14 +6,14 @@ import messages from './messages';
 import './ReferAFriendAd.scss';
 
 var ReferAFriendAd = function ReferAFriendAd() {
-  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Badge, {
+  return React.createElement("div", null, React.createElement(Badge, {
     type: "success"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.referAFriendBadgeText)), "\xA0\xA0", /*#__PURE__*/React.createElement(FormattedMessage, messages.referAFriendText), "\xA0", /*#__PURE__*/React.createElement(Link, {
+  }, React.createElement(FormattedMessage, messages.referAFriendBadgeText)), "\xA0\xA0", React.createElement(FormattedMessage, messages.referAFriendText), "\xA0", React.createElement(Link, {
     className: "refer-a-friend-reward-center-link",
     href: "/master/settings/rewardCenter",
     rel: "noopener noreferrer",
     target: "_blank"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.referAFriendRewardCenterLinkText)));
+  }, React.createElement(FormattedMessage, messages.referAFriendRewardCenterLinkText)));
 };
 
 export default ReferAFriendAd;

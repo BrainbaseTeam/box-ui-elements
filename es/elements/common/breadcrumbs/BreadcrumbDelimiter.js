@@ -9,12 +9,12 @@ import { DELIMITER_CARET, COLOR_999 } from '../../../constants';
 
 var BreadcrumbDelimiter = function BreadcrumbDelimiter(_ref) {
   var delimiter = _ref.delimiter;
-  return delimiter === DELIMITER_CARET ? /*#__PURE__*/React.createElement(IconChevron, {
+  return delimiter === DELIMITER_CARET ? React.createElement(IconChevron, {
     className: "be-breadcrumb-seperator",
     color: COLOR_999,
     direction: "right",
     size: "7px"
-  }) : /*#__PURE__*/React.createElement("span", null, "/");
+  }) : React.createElement("span", null, "/");
 };
 
 export default BreadcrumbDelimiter;

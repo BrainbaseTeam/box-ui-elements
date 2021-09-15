@@ -6,13 +6,13 @@ import './EmptyContent.scss';
 
 var EmptyContent = function EmptyContent(_ref) {
   var canAdd = _ref.canAdd;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "metadata-instance-editor-no-instances"
-  }, /*#__PURE__*/React.createElement(IconAddMetadataEmptyState, null), /*#__PURE__*/React.createElement("p", {
+  }, React.createElement(IconAddMetadataEmptyState, null), React.createElement("p", {
     className: "metadata-instance-editor-no-instances--call-out"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.noMetadata)), canAdd && /*#__PURE__*/React.createElement("p", {
+  }, React.createElement(FormattedMessage, messages.noMetadata)), canAdd && React.createElement("p", {
     className: "metadata-instance-editor-no-instances--how-add-template"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.noMetadataAddTemplate)));
+  }, React.createElement(FormattedMessage, messages.noMetadataAddTemplate)));
 };
 
 export default EmptyContent;

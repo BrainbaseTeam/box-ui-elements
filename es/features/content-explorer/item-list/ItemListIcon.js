@@ -28,28 +28,28 @@ var ItemListIcon = function ItemListIcon(_ref) {
           titleID = 'externalFolder';
         }
 
-        return /*#__PURE__*/React.createElement(FolderIcon, {
+        return React.createElement(FolderIcon, {
           isCollab: hasCollaborations,
           isExternal: isExternallyOwned,
-          title: /*#__PURE__*/React.createElement(FormattedMessage, messages[titleID])
+          title: React.createElement(FormattedMessage, messages[titleID])
         });
       }
 
     case ItemTypes.FILE:
-      return /*#__PURE__*/React.createElement(FileIcon, {
+      return React.createElement(FileIcon, {
         extension: extension,
-        title: /*#__PURE__*/React.createElement(FormattedMessage, messages.file)
+        title: React.createElement(FormattedMessage, messages.file)
       });
 
     case ItemTypes.BOOKMARK:
-      return /*#__PURE__*/React.createElement(BookmarkIcon, {
-        title: /*#__PURE__*/React.createElement(FormattedMessage, messages.bookmark)
+      return React.createElement(BookmarkIcon, {
+        title: React.createElement(FormattedMessage, messages.bookmark)
       });
 
     default:
       // Use generic file icon as fallback
-      return /*#__PURE__*/React.createElement(FileIcon, {
-        title: /*#__PURE__*/React.createElement(FormattedMessage, messages.file)
+      return React.createElement(FileIcon, {
+        title: React.createElement(FormattedMessage, messages.file)
       });
   }
 };

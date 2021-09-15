@@ -22,10 +22,10 @@ var SuggestedPillsRow = function SuggestedPillsRow(_ref) {
     return null;
   }
 
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "pill-selector-suggested"
-  }, /*#__PURE__*/React.createElement("span", null, title), filteredSuggestedPillData.map(function (item) {
-    return /*#__PURE__*/React.createElement(SuggestedPill, {
+  }, React.createElement("span", null, title), filteredSuggestedPillData.map(function (item) {
+    return React.createElement(SuggestedPill, {
       key: item.id,
       email: item.email,
       id: item.id,

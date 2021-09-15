@@ -12,19 +12,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -32,8 +28,8 @@ import * as React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
 import classNames from 'classnames';
 import omit from 'lodash/omit';
-import IconClear from '../../icons/general/IconClear';
-import IconSearch from '../../icons/general/IconSearch';
+import ClearBadge16 from '../../icon/fill/ClearBadge16';
+import Search16 from '../../icon/fill/Search16';
 import makeLoadable from '../loading-indicator/makeLoadable';
 import './SearchForm.scss';
 var messages = defineMessages({
@@ -51,12 +47,14 @@ var messages = defineMessages({
   }
 });
 
-var SearchForm = /*#__PURE__*/function (_React$Component) {
+var SearchForm =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(SearchForm, _React$Component);
 
-  var _super = _createSuper(SearchForm);
-
   function SearchForm() {
+    var _getPrototypeOf2;
+
     var _this;
 
     _classCallCheck(this, SearchForm);
@@ -65,7 +63,7 @@ var SearchForm = /*#__PURE__*/function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    _this = _super.call.apply(_super, [this].concat(args));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(SearchForm)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_this), "state", {
       isEmpty: true
@@ -140,8 +138,9 @@ var SearchForm = /*#__PURE__*/function (_React$Component) {
           method = _this$props2.method,
           name = _this$props2.name,
           queryParams = _this$props2.queryParams,
+          onSubmit = _this$props2.onSubmit,
           useClearButton = _this$props2.useClearButton,
-          rest = _objectWithoutProperties(_this$props2, ["action", "className", "intl", "isLoading", "method", "name", "queryParams", "useClearButton"]);
+          rest = _objectWithoutProperties(_this$props2, ["action", "className", "intl", "isLoading", "method", "name", "queryParams", "onSubmit", "useClearButton"]);
 
       var isEmpty = this.state.isEmpty;
       var inputProps = omit(rest, ['getSearchInput', 'onChange', 'onSubmit', 'required', 'shouldPreventClearEventPropagation']);
@@ -152,7 +151,7 @@ var SearchForm = /*#__PURE__*/function (_React$Component) {
         'use-clear-button': useClearButton
       });
       var hiddenInputs = Object.keys(queryParams).map(function (param, index) {
-        return /*#__PURE__*/React.createElement("input", {
+        return React.createElement("input", {
           key: index,
           name: param,
           type: "hidden",
@@ -161,34 +160,36 @@ var SearchForm = /*#__PURE__*/function (_React$Component) {
       });
 
       var SearchActions = function SearchActions() {
-        return /*#__PURE__*/React.createElement("div", {
+        return React.createElement("div", {
           className: "action-buttons"
-        }, /*#__PURE__*/React.createElement("button", {
+        }, onSubmit ? React.createElement("button", {
           type: "button",
           className: "action-button search-button",
           title: formatMessage(messages.searchButtonTitle)
-        }, /*#__PURE__*/React.createElement(IconSearch, null)), /*#__PURE__*/React.createElement("button", {
+        }, React.createElement(Search16, null)) : React.createElement("div", {
+          className: "action-button search-button"
+        }, React.createElement(Search16, null)), React.createElement("button", {
           className: "action-button clear-button",
           onClick: _this2.onClearHandler,
           title: formatMessage(messages.clearButtonTitle),
           type: "button"
-        }, /*#__PURE__*/React.createElement(IconClear, null)));
+        }, React.createElement(ClearBadge16, null)));
       };
 
       var LoadableSearchActions = makeLoadable(SearchActions); // @NOTE Prevent errors from React about controlled inputs
 
       var onChangeStub = function onChangeStub() {};
 
-      return /*#__PURE__*/React.createElement("div", {
+      return React.createElement("div", {
         className: classes
-      }, /*#__PURE__*/React.createElement("form", {
+      }, React.createElement("form", {
         action: action,
         className: formClassNames,
         method: method,
         onChange: this.onChangeHandler,
         onSubmit: this.onSubmitHandler,
         role: "search"
-      }, /*#__PURE__*/React.createElement("input", _extends({
+      }, React.createElement("input", _extends({
         ref: this.setInputRef,
         "aria-label": formatMessage(messages.searchLabel),
         autoComplete: "off",
@@ -196,7 +197,7 @@ var SearchForm = /*#__PURE__*/function (_React$Component) {
         name: name,
         onChange: onChangeStub,
         type: "search"
-      }, inputProps)), /*#__PURE__*/React.createElement(LoadableSearchActions, {
+      }, inputProps)), React.createElement(LoadableSearchActions, {
         isLoading: isLoading,
         loadingIndicatorProps: {
           className: 'search-form-loading-indicator'

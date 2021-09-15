@@ -51,7 +51,7 @@ var Status = function Status(_ref) {
 
   }
 
-  return /*#__PURE__*/React.createElement(FormattedMessage, localizedMessage);
+  return React.createElement(FormattedMessage, localizedMessage);
 };
 
 export default Status;

@@ -11,23 +11,23 @@ var IconAlertCircle = function IconAlertCircle(_ref) {
       title = _ref.title,
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 20 : _ref$width;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: "icon-alert-circle ".concat(className),
     height: height,
     title: title,
     viewBox: "0 0 20 20",
     width: width
-  }, /*#__PURE__*/React.createElement("g", {
+  }, React.createElement("g", {
     fill: "none",
     fillRule: "evenodd",
     transform: "translate(1 1)"
-  }, /*#__PURE__*/React.createElement("circle", {
+  }, React.createElement("circle", {
     className: "stroke-color",
     cx: "9",
     cy: "9",
     r: "9",
     stroke: color
-  }), /*#__PURE__*/React.createElement("rect", {
+  }), React.createElement("rect", {
     className: "fill-color",
     fill: color,
     height: "6",
@@ -35,7 +35,7 @@ var IconAlertCircle = function IconAlertCircle(_ref) {
     width: "2",
     x: "8",
     y: "4"
-  }), /*#__PURE__*/React.createElement("circle", {
+  }), React.createElement("circle", {
     className: "fill-color",
     cx: "9",
     cy: "13",

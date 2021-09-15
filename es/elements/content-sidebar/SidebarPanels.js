@@ -8,19 +8,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -30,8 +26,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
  * @author Box
  */
 import * as React from 'react';
+import flow from 'lodash/flow';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import SidebarUtils from './SidebarUtils';
+import withSidebarAnnotations from './withSidebarAnnotations';
+import { withAnnotatorContext } from '../common/annotator-context';
+import { withAPIContext } from '../common/api-context';
+import { withRouterAndRef } from '../common/routing';
 import { ORIGIN_ACTIVITY_SIDEBAR, ORIGIN_DETAILS_SIDEBAR, ORIGIN_METADATA_SIDEBAR, ORIGIN_SKILLS_SIDEBAR, ORIGIN_VERSIONS_SIDEBAR, SIDEBAR_VIEW_ACTIVITY, SIDEBAR_VIEW_DETAILS, SIDEBAR_VIEW_METADATA, SIDEBAR_VIEW_SKILLS, SIDEBAR_VIEW_VERSIONS } from '../../constants';
 // TODO: place into code splitting logic
 var BASE_EVENT_NAME = '_JS_LOADING';
@@ -41,6 +42,7 @@ var MARK_NAME_JS_LOADING_SKILLS = "".concat(ORIGIN_SKILLS_SIDEBAR).concat(BASE_E
 var MARK_NAME_JS_LOADING_METADATA = "".concat(ORIGIN_METADATA_SIDEBAR).concat(BASE_EVENT_NAME);
 var MARK_NAME_JS_LOADING_VERSIONS = "".concat(ORIGIN_VERSIONS_SIDEBAR).concat(BASE_EVENT_NAME);
 var URL_TO_FEED_ITEM_TYPE = {
+  annotations: 'annotation',
   comments: 'comment',
   tasks: 'task'
 };
@@ -50,12 +52,14 @@ var LoadableSkillsSidebar = SidebarUtils.getAsyncSidebarContent(SIDEBAR_VIEW_SKI
 var LoadableMetadataSidebar = SidebarUtils.getAsyncSidebarContent(SIDEBAR_VIEW_METADATA, MARK_NAME_JS_LOADING_METADATA);
 var LoadableVersionsSidebar = SidebarUtils.getAsyncSidebarContent(SIDEBAR_VIEW_VERSIONS, MARK_NAME_JS_LOADING_VERSIONS);
 
-var SidebarPanels = /*#__PURE__*/function (_React$Component) {
+var SidebarPanels =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(SidebarPanels, _React$Component);
 
-  var _super = _createSuper(SidebarPanels);
-
   function SidebarPanels() {
+    var _getPrototypeOf2;
+
     var _this;
 
     _classCallCheck(this, SidebarPanels);
@@ -64,34 +68,46 @@ var SidebarPanels = /*#__PURE__*/function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    _this = _super.call.apply(_super, [this].concat(args));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(SidebarPanels)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
-    _defineProperty(_assertThisInitialized(_this), "activitySidebar", /*#__PURE__*/React.createRef());
+    _defineProperty(_assertThisInitialized(_this), "activitySidebar", React.createRef());
 
-    _defineProperty(_assertThisInitialized(_this), "detailsSidebar", /*#__PURE__*/React.createRef());
+    _defineProperty(_assertThisInitialized(_this), "detailsSidebar", React.createRef());
 
-    _defineProperty(_assertThisInitialized(_this), "metadataSidebar", /*#__PURE__*/React.createRef());
+    _defineProperty(_assertThisInitialized(_this), "metadataSidebar", React.createRef());
 
-    _defineProperty(_assertThisInitialized(_this), "versionsSidebar", /*#__PURE__*/React.createRef());
+    _defineProperty(_assertThisInitialized(_this), "state", {
+      isInitialized: false
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "versionsSidebar", React.createRef());
 
     return _this;
   }
 
   _createClass(SidebarPanels, [{
-    key: "refresh",
-
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.setState({
+        isInitialized: true
+      });
+    }
     /**
      * Refreshes the contents of the active sidebar
      * @returns {void}
      */
+
+  }, {
+    key: "refresh",
     value: function refresh() {
+      var shouldRefreshCache = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
       var activitySidebar = this.activitySidebar.current;
       var detailsSidebar = this.detailsSidebar.current;
       var metadataSidebar = this.metadataSidebar.current;
       var versionsSidebar = this.versionsSidebar.current;
 
       if (activitySidebar) {
-        activitySidebar.refresh();
+        activitySidebar.refresh(shouldRefreshCache);
       }
 
       if (detailsSidebar) {
@@ -127,52 +143,59 @@ var SidebarPanels = /*#__PURE__*/function (_React$Component) {
           hasVersions = _this$props.hasVersions,
           isOpen = _this$props.isOpen,
           metadataSidebarProps = _this$props.metadataSidebarProps,
+          onAnnotationSelect = _this$props.onAnnotationSelect,
           onVersionChange = _this$props.onVersionChange,
           onVersionHistoryClick = _this$props.onVersionHistoryClick,
           versionsSidebarProps = _this$props.versionsSidebarProps;
+      var isInitialized = this.state.isInitialized;
 
       if (!isOpen || !hasActivity && !hasDetails && !hasMetadata && !hasSkills && !hasVersions) {
         return null;
       }
 
-      return /*#__PURE__*/React.createElement(Switch, null, hasSkills && /*#__PURE__*/React.createElement(Route, {
+      return React.createElement(Switch, null, hasSkills && React.createElement(Route, {
         exact: true,
         path: "/".concat(SIDEBAR_VIEW_SKILLS),
         render: function render() {
-          return /*#__PURE__*/React.createElement(LoadableSkillsSidebar, {
+          return React.createElement(LoadableSkillsSidebar, {
             elementId: elementId,
             key: file.id,
             file: file,
             getPreview: getPreview,
             getViewer: getViewer,
+            hasSidebarInitialized: isInitialized,
             startMarkName: MARK_NAME_JS_LOADING_SKILLS
           });
         }
-      }), hasActivity && /*#__PURE__*/React.createElement(Route, {
+      }), hasActivity && React.createElement(Route, {
         exact: true,
-        path: ["/".concat(SIDEBAR_VIEW_ACTIVITY), "/".concat(SIDEBAR_VIEW_ACTIVITY, "/:activeFeedEntryType(comments|tasks)/:activeFeedEntryId?")],
+        path: ["/".concat(SIDEBAR_VIEW_ACTIVITY), "/".concat(SIDEBAR_VIEW_ACTIVITY, "/:activeFeedEntryType(annotations)/:fileVersionId/:activeFeedEntryId?"), "/".concat(SIDEBAR_VIEW_ACTIVITY, "/:activeFeedEntryType(comments|tasks)/:activeFeedEntryId?")],
         render: function render(_ref) {
           var match = _ref.match;
           var matchEntryType = match.params.activeFeedEntryType;
           var activeFeedEntryType = matchEntryType ? URL_TO_FEED_ITEM_TYPE[matchEntryType] : undefined;
-          return /*#__PURE__*/React.createElement(LoadableActivitySidebar, _extends({
+          return React.createElement(LoadableActivitySidebar, _extends({
             elementId: elementId,
             currentUser: currentUser,
             file: file,
+            hasSidebarInitialized: isInitialized,
+            onAnnotationSelect: onAnnotationSelect,
+            onVersionChange: onVersionChange,
             onVersionHistoryClick: onVersionHistoryClick,
             ref: _this2.activitySidebar,
             startMarkName: MARK_NAME_JS_LOADING_ACTIVITY,
             activeFeedEntryId: match.params.activeFeedEntryId,
-            activeFeedEntryType: activeFeedEntryType
+            activeFeedEntryType: match.params.activeFeedEntryId && activeFeedEntryType
           }, activitySidebarProps));
         }
-      }), hasDetails && /*#__PURE__*/React.createElement(Route, {
+      }), hasDetails && React.createElement(Route, {
         exact: true,
         path: "/".concat(SIDEBAR_VIEW_DETAILS),
         render: function render() {
-          return /*#__PURE__*/React.createElement(LoadableDetailsSidebar, _extends({
+          return React.createElement(LoadableDetailsSidebar, _extends({
             elementId: elementId,
             fileId: fileId,
+            hasSidebarInitialized: isInitialized,
             key: fileId,
             hasVersions: hasVersions,
             onVersionHistoryClick: onVersionHistoryClick,
@@ -180,23 +203,25 @@ var SidebarPanels = /*#__PURE__*/function (_React$Component) {
             startMarkName: MARK_NAME_JS_LOADING_DETAILS
           }, detailsSidebarProps));
         }
-      }), hasMetadata && /*#__PURE__*/React.createElement(Route, {
+      }), hasMetadata && React.createElement(Route, {
         exact: true,
         path: "/".concat(SIDEBAR_VIEW_METADATA),
         render: function render() {
-          return /*#__PURE__*/React.createElement(LoadableMetadataSidebar, _extends({
+          return React.createElement(LoadableMetadataSidebar, _extends({
             elementId: elementId,
             fileId: fileId,
+            hasSidebarInitialized: isInitialized,
             ref: _this2.metadataSidebar,
             startMarkName: MARK_NAME_JS_LOADING_METADATA
           }, metadataSidebarProps));
         }
-      }), hasVersions && /*#__PURE__*/React.createElement(Route, {
+      }), hasVersions && React.createElement(Route, {
         path: "/:sidebar(activity|details)/versions/:versionId?",
         render: function render(_ref2) {
           var match = _ref2.match;
-          return /*#__PURE__*/React.createElement(LoadableVersionsSidebar, _extends({
+          return React.createElement(LoadableVersionsSidebar, _extends({
             fileId: fileId,
+            hasSidebarInitialized: isInitialized,
             key: fileId,
             onVersionChange: onVersionChange,
             parentName: match.params.sidebar,
@@ -204,7 +229,7 @@ var SidebarPanels = /*#__PURE__*/function (_React$Component) {
             versionId: match.params.versionId
           }, versionsSidebarProps));
         }
-      }), /*#__PURE__*/React.createElement(Route, {
+      }), React.createElement(Route, {
         render: function render() {
           var redirect = '';
 
@@ -218,7 +243,7 @@ var SidebarPanels = /*#__PURE__*/function (_React$Component) {
             redirect = SIDEBAR_VIEW_METADATA;
           }
 
-          return /*#__PURE__*/React.createElement(Redirect, {
+          return React.createElement(Redirect, {
             to: {
               pathname: "/".concat(redirect),
               state: {
@@ -234,5 +259,6 @@ var SidebarPanels = /*#__PURE__*/function (_React$Component) {
   return SidebarPanels;
 }(React.Component);
 
-export default SidebarPanels;
+export { SidebarPanels as SidebarPanelsComponent };
+export default flow([withSidebarAnnotations, withAPIContext, withAnnotatorContext, withRouterAndRef])(SidebarPanels);
 //# sourceMappingURL=SidebarPanels.js.map

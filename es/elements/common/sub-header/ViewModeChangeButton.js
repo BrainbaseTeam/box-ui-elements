@@ -5,8 +5,9 @@ function _objectWithoutProperties(source, excluded) { if (source == null) return
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
 import React from 'react';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl } from 'react-intl';
 import classNames from 'classnames';
+import noop from 'lodash/noop';
 import Button from '../../../components/button';
 import IconGridViewInverted from '../../../icons/general/IconGridViewInverted';
 import IconListView from '../../../icons/general/IconListView';
@@ -19,28 +20,32 @@ import './ViewModeChangeButton.scss';
 var ViewModeChangeButton = function ViewModeChangeButton(_ref) {
   var _ref$className = _ref.className,
       className = _ref$className === void 0 ? '' : _ref$className,
-      onViewModeChange = _ref.onViewModeChange,
+      _ref$onViewModeChange = _ref.onViewModeChange,
+      onViewModeChange = _ref$onViewModeChange === void 0 ? noop : _ref$onViewModeChange,
       intl = _ref.intl,
       viewMode = _ref.viewMode,
       rest = _objectWithoutProperties(_ref, ["className", "onViewModeChange", "intl", "viewMode"]);
 
   var isGridView = viewMode === VIEW_MODE_GRID;
+  var viewMessage = isGridView ? intl.formatMessage(messages.listView) : intl.formatMessage(messages.gridView);
 
   var onClick = function onClick() {
     onViewModeChange(isGridView ? VIEW_MODE_LIST : VIEW_MODE_GRID);
   };
 
-  return /*#__PURE__*/React.createElement(Tooltip, {
-    text: isGridView ? /*#__PURE__*/React.createElement(FormattedMessage, messages.listView) : /*#__PURE__*/React.createElement(FormattedMessage, messages.gridView)
-  }, /*#__PURE__*/React.createElement(Button, _extends({
+  return React.createElement(Tooltip, {
+    text: viewMessage
+  }, React.createElement(Button, _extends({
+    "aria-label": viewMessage,
+    "data-testid": "view-mode-change-button",
     className: classNames('bdl-ViewModeChangeButton', className),
     type: "button",
     onClick: onClick
-  }, rest), isGridView ? /*#__PURE__*/React.createElement(IconListView, {
+  }, rest), isGridView ? React.createElement(IconListView, {
     color: bdlGray50,
     width: 17,
     height: 17
-  }) : /*#__PURE__*/React.createElement(IconGridViewInverted, {
+  }) : React.createElement(IconGridViewInverted, {
     color: bdlGray50,
     width: 17,
     height: 17

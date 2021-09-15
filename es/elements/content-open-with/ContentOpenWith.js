@@ -14,19 +14,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -60,10 +56,10 @@ var BOX_TOOLS_INSTALL_ERROR_MESSAGE_KEY = 'boxToolsInstallErrorMessage';
 var GENERIC_EXECUTE_MESSAGE_KEY = 'executeIntegrationOpenWithErrorHeader';
 var AUTH_CODE = 'auth_code';
 
-var ContentOpenWith = /*#__PURE__*/function (_PureComponent) {
+var ContentOpenWith =
+/*#__PURE__*/
+function (_PureComponent) {
   _inherits(ContentOpenWith, _PureComponent);
-
-  var _super = _createSuper(ContentOpenWith);
 
   /**
    * [constructor]
@@ -76,7 +72,7 @@ var ContentOpenWith = /*#__PURE__*/function (_PureComponent) {
 
     _classCallCheck(this, ContentOpenWith);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ContentOpenWith).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "initialState", {
       isDropdownOpen: false,
@@ -88,9 +84,13 @@ var ContentOpenWith = /*#__PURE__*/function (_PureComponent) {
       shouldRenderLoadingIntegrationPortal: false
     });
 
-    _defineProperty(_assertThisInitialized(_this), "fetchOpenWithSuccessHandler", /*#__PURE__*/function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(integrations) {
-        var _this$props, boxToolsName, boxToolsInstallUrl, boxEditIntegration, _yield$_this$getInteg, extension, errorMessageObject, formattedErrorMessage;
+    _defineProperty(_assertThisInitialized(_this), "fetchOpenWithSuccessHandler",
+    /*#__PURE__*/
+    function () {
+      var _ref = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee(integrations) {
+        var _this$props, boxToolsName, boxToolsInstallUrl, boxEditIntegration, _ref3, extension, errorMessageObject, formattedErrorMessage;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -112,8 +112,8 @@ var ContentOpenWith = /*#__PURE__*/function (_PureComponent) {
                 return _this.getIntegrationFileExtension();
 
               case 6:
-                _yield$_this$getInteg = _context.sent;
-                extension = _yield$_this$getInteg.extension;
+                _ref3 = _context.sent;
+                extension = _ref3.extension;
                 boxEditIntegration.extension = extension; // If Box Edit is present and enabled, we need to set its ability to locally open the given file
                 // No-op if these checks are successful
 
@@ -132,10 +132,10 @@ var ContentOpenWith = /*#__PURE__*/function (_PureComponent) {
                 _context.prev = 15;
                 _context.t0 = _context["catch"](3);
                 errorMessageObject = messages[_context.t0.message] || messages[GENERIC_EXECUTE_MESSAGE_KEY];
-                formattedErrorMessage = /*#__PURE__*/React.createElement(FormattedMessage, errorMessageObject);
+                formattedErrorMessage = React.createElement(FormattedMessage, errorMessageObject);
 
                 if (_context.t0.message === BOX_TOOLS_INSTALL_ERROR_MESSAGE_KEY) {
-                  formattedErrorMessage = /*#__PURE__*/React.createElement(BoxToolsInstallMessage, {
+                  formattedErrorMessage = React.createElement(BoxToolsInstallMessage, {
                     boxToolsInstallUrl: boxToolsInstallUrl,
                     boxToolsName: boxToolsName
                   });
@@ -178,9 +178,9 @@ var ContentOpenWith = /*#__PURE__*/function (_PureComponent) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_this), "canOpenExtensionWithBoxEdit", function (_ref3) {
-      var _ref3$extension = _ref3.extension,
-          extension = _ref3$extension === void 0 ? '' : _ref3$extension;
+    _defineProperty(_assertThisInitialized(_this), "canOpenExtensionWithBoxEdit", function (_ref4) {
+      var _ref4$extension = _ref4.extension,
+          extension = _ref4$extension === void 0 ? '' : _ref4$extension;
       return _this.api.getBoxEditAPI().getAppForExtension(extension).catch(function () {
         throw new Error(BLACKLISTED_ERROR_MESSAGE_KEY);
       });
@@ -197,9 +197,9 @@ var ContentOpenWith = /*#__PURE__*/function (_PureComponent) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_this), "onIntegrationClick", function (_ref4) {
-      var appIntegrationId = _ref4.appIntegrationId,
-          displayName = _ref4.displayName;
+    _defineProperty(_assertThisInitialized(_this), "onIntegrationClick", function (_ref5) {
+      var appIntegrationId = _ref5.appIntegrationId,
+          displayName = _ref5.displayName;
       var fileId = _this.props.fileId;
 
       var isBoxEditIntegration = _this.isBoxEditIntegration(appIntegrationId);
@@ -275,8 +275,8 @@ var ContentOpenWith = /*#__PURE__*/function (_PureComponent) {
       _this.integrationWindow = null;
     });
 
-    _defineProperty(_assertThisInitialized(_this), "executeBoxEditSuccessHandler", function (integrationId, _ref5) {
-      var url = _ref5.url;
+    _defineProperty(_assertThisInitialized(_this), "executeBoxEditSuccessHandler", function (integrationId, _ref6) {
+      var url = _ref6.url;
       var _this$props2 = _this.props,
           fileId = _this$props2.fileId,
           token = _this$props2.token,
@@ -518,25 +518,26 @@ var ContentOpenWith = /*#__PURE__*/function (_PureComponent) {
       var className = classNames('be bcow', this.props.className);
       var displayIntegration = this.getDisplayIntegration();
       var numIntegrations = integrations ? integrations.length : 0;
-      return /*#__PURE__*/React.createElement(Internationalize, {
+      return React.createElement(Internationalize, {
         language: language,
         messages: intlMessages
-      }, /*#__PURE__*/React.createElement("div", {
+      }, React.createElement("div", {
         className: className,
+        "data-testid": "bcow-content",
         id: this.id
-      }, numIntegrations <= 1 ? /*#__PURE__*/React.createElement(OpenWithButton, {
+      }, numIntegrations <= 1 ? React.createElement(OpenWithButton, {
         displayIntegration: displayIntegration,
         error: fetchError,
         isLoading: isLoading,
         onClick: this.onIntegrationClick
-      }) : /*#__PURE__*/React.createElement(OpenWithDropdownMenu, {
+      }) : React.createElement(OpenWithDropdownMenu, {
         dropdownAlignment: dropdownAlignment,
         integrations: integrations,
         onClick: this.onIntegrationClick
-      }), (shouldRenderLoadingIntegrationPortal || shouldRenderErrorIntegrationPortal) && /*#__PURE__*/React.createElement(IntegrationPortalContainer, {
+      }), (shouldRenderLoadingIntegrationPortal || shouldRenderErrorIntegrationPortal) && React.createElement(IntegrationPortalContainer, {
         hasError: shouldRenderErrorIntegrationPortal,
         integrationWindow: this.integrationWindow
-      }), executePostData && /*#__PURE__*/React.createElement(ExecuteForm, {
+      }), executePostData && React.createElement(ExecuteForm, {
         executePostData: executePostData,
         id: this.id,
         onSubmit: this.onExecuteFormSubmit,

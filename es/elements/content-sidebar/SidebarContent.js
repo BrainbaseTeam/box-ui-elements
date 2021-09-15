@@ -24,18 +24,19 @@ var SidebarContent = function SidebarContent(_ref) {
 
   var label = "".concat(elementId).concat(elementId === '' ? '' : '_').concat(sidebarView);
   var id = "".concat(label, "-content");
-  return /*#__PURE__*/React.createElement("div", _extends({
+  return React.createElement("div", _extends({
     "aria-labelledby": label,
     className: classNames('bcs-content', className),
+    "data-testid": "bcs-content",
     id: id,
     role: "tabpanel"
-  }, rest), /*#__PURE__*/React.createElement("div", {
+  }, rest), React.createElement("div", {
     className: "bcs-content-header"
-  }, /*#__PURE__*/React.createElement("h3", {
+  }, React.createElement("h3", {
     className: "bcs-title"
-  }, title), actions), /*#__PURE__*/React.createElement("div", {
+  }, title), actions), React.createElement("div", {
     className: "bcs-scroll-content-wrapper"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "bcs-scroll-content"
   }, children)));
 };

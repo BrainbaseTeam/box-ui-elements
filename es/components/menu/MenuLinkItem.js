@@ -18,7 +18,7 @@ var MenuLinkItem = function MenuLinkItem(_ref) {
   var listItemProps = omit(rest, ['role', 'tabIndex']);
   listItemProps.role = 'none';
   var linkProps = {
-    className: classNames('menu-item', linkEl.props.className, {
+    className: classNames('menu-item', linkEl ? linkEl.props.className : '', {
       'is-select-item': isSelectItem,
       'is-selected': isSelected
     }),
@@ -30,7 +30,7 @@ var MenuLinkItem = function MenuLinkItem(_ref) {
     linkProps['aria-checked'] = isSelected;
   }
 
-  return /*#__PURE__*/React.createElement("li", listItemProps, /*#__PURE__*/React.cloneElement(linkEl, linkProps));
+  return React.createElement("li", listItemProps, React.cloneElement(linkEl, linkProps));
 };
 
 export default MenuLinkItem;

@@ -11,7 +11,7 @@ var ModalActions = function ModalActions(_ref) {
   var className = _ref.className,
       rest = _objectWithoutProperties(_ref, ["className"]);
 
-  return /*#__PURE__*/React.createElement("div", _extends({
+  return React.createElement("div", _extends({
     className: classNames('modal-actions', className)
   }, rest));
 };

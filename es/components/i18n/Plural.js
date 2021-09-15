@@ -1,3 +1,4 @@
+// @deprecated, use FormattedPlural from react-intl v3 instead
 import * as React from 'react';
 
 /**
@@ -14,6 +15,11 @@ import * as React from 'react';
  */
 var Plural = function Plural(_ref) {
   var children = _ref.children;
+
+  /* eslint-disable no-console */
+  console.warn("box-ui-elements: the Plural component is deprecated! Use react-intl's FormattedPlural instead.");
+  /* eslint-enable no-console */
+
   return children;
 };
 

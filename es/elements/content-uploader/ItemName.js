@@ -7,7 +7,7 @@ import './ItemName.scss';
 
 var ItemName = function ItemName(_ref) {
   var name = _ref.name;
-  return /*#__PURE__*/React.createElement("span", {
+  return React.createElement("span", {
     className: "bcu-item-label"
   }, name);
 };

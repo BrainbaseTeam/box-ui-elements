@@ -4,14 +4,13 @@ function _objectWithoutProperties(source, excluded) { if (source == null) return
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as React from 'react';
 import classNames from 'classnames';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
+import { RecordOf } from 'immutable';
 import { convertToMs, isToday, isYesterday } from '../../utils/datetime';
 import DatalistItem from '../../components/datalist-item';
-import IconSmallFolder from '../../icons/folder/IconSmallFolder';
+import Folder16 from '../../icon/fill/Folder16';
 import ItemIcon from '../../icons/item-icon';
 import { Link } from '../../components/link';
 import messages from './messages';
@@ -41,7 +40,7 @@ var QuickSearchItem = function QuickSearchItem(_ref) {
   var updatedDateInMs = convertToMs(updatedDate);
   var markedQueryMatches = [];
   nameWithMarkedQuery.split(QUERY_SEPARATOR).forEach(function (element, index) {
-    return index % 2 === 0 ? markedQueryMatches.push(element) : markedQueryMatches.push( /*#__PURE__*/React.createElement("mark", {
+    return index % 2 === 0 ? markedQueryMatches.push(element) : markedQueryMatches.push(React.createElement("mark", {
       key: index,
       className: "search-term"
     }, element));
@@ -50,26 +49,25 @@ var QuickSearchItem = function QuickSearchItem(_ref) {
 
   switch (type) {
     case 'web_link':
-      itemIconTitle = /*#__PURE__*/React.createElement(FormattedMessage, messages.bookmark);
+      itemIconTitle = React.createElement(FormattedMessage, messages.bookmark);
       break;
 
     case 'file':
-      itemIconTitle = /*#__PURE__*/React.createElement(FormattedMessage, messages.file);
+      itemIconTitle = React.createElement(FormattedMessage, messages.file);
       break;
 
     case 'folder':
       if (iconType === 'folder-collab') {
-        itemIconTitle = /*#__PURE__*/React.createElement(FormattedMessage, messages.collaboratedFolder);
+        itemIconTitle = React.createElement(FormattedMessage, messages.collaboratedFolder);
       } else if (iconType === 'folder-external') {
-        itemIconTitle = /*#__PURE__*/React.createElement(FormattedMessage, messages.externalFolder);
+        itemIconTitle = React.createElement(FormattedMessage, messages.externalFolder);
       } else {
-        itemIconTitle = /*#__PURE__*/React.createElement(FormattedMessage, messages.personalFolder);
+        itemIconTitle = React.createElement(FormattedMessage, messages.personalFolder);
       }
 
       break;
 
     default:
-      itemIconTitle = null;
   }
 
   var updatedText;
@@ -123,57 +121,39 @@ var QuickSearchItem = function QuickSearchItem(_ref) {
     default:
   }
 
-  var itemName = href && shouldNavigateOnItemClick ? /*#__PURE__*/React.createElement(Link, _extends({
+  var itemName = href && shouldNavigateOnItemClick ? React.createElement(Link, _extends({
     onClick: function onClick(e) {
       return e.stopPropagation();
     },
     className: "item-name",
     href: href,
     title: name
-  }, targetProps), markedQueryMatches) : /*#__PURE__*/React.createElement("span", {
+  }, targetProps), markedQueryMatches) : React.createElement("span", {
     className: "item-name",
     title: name
   }, markedQueryMatches);
-  return /*#__PURE__*/React.createElement(DatalistItem, _extends({
+  return React.createElement(DatalistItem, _extends({
     className: classNames('quick-search-item', className)
-  }, rest), /*#__PURE__*/React.createElement(ItemIcon, {
+  }, rest), React.createElement(ItemIcon, {
     iconType: iconType,
     title: itemIconTitle
-  }), /*#__PURE__*/React.createElement("span", {
+  }), React.createElement("span", {
     className: "item-info"
-  }, itemName, /*#__PURE__*/React.createElement("span", {
+  }, itemName, React.createElement("span", {
     className: "item-subtext"
-  }, (parentName || parentFolderRenderer) && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(IconSmallFolder, {
-    title: /*#__PURE__*/React.createElement(FormattedMessage, messages.parentFolder)
-  }), parentFolderRenderer ? parentFolderRenderer(itemData, closeDropdown) : /*#__PURE__*/React.createElement("span", {
+  }, (parentName || parentFolderRenderer) && React.createElement(React.Fragment, null, React.createElement(Folder16, {
+    title: React.createElement(FormattedMessage, messages.parentFolder),
+    height: 12,
+    width: 12
+  }), parentFolderRenderer ? parentFolderRenderer(itemData, closeDropdown) : React.createElement("span", {
     className: "parent-folder"
-  }, parentName), /*#__PURE__*/React.createElement("span", {
+  }, parentName), React.createElement("span", {
     className: "separator"
-  }, "\xB7")), /*#__PURE__*/React.createElement("span", {
+  }, "\u2022")), React.createElement("span", {
     className: "txt-ellipsis",
     title: updatedText
   }, updatedText))));
 };
 
-var itemDataShape = {
-  extension: PropTypes.string,
-  iconType: PropTypes.string,
-  id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  nameWithMarkedQuery: PropTypes.string.isRequired,
-  parentName: PropTypes.string.isRequired,
-  sharedLink: PropTypes.string,
-  type: PropTypes.string.isRequired,
-  updatedBy: PropTypes.string.isRequired,
-  updatedDate: PropTypes.number.isRequired
-};
-QuickSearchItem.propTypes = {
-  closeDropdown: PropTypes.func,
-  className: PropTypes.string,
-  intl: intlShape.isRequired,
-  itemData: PropTypes.oneOfType([ImmutablePropTypes.recordOf(itemDataShape), PropTypes.shape(itemDataShape)]).isRequired,
-  parentFolderRenderer: PropTypes.func,
-  shouldNavigateOnItemClick: PropTypes.bool
-};
 export default injectIntl(QuickSearchItem);
 //# sourceMappingURL=QuickSearchItem.js.map

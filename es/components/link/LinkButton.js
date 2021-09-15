@@ -12,7 +12,7 @@ var LinkButton = function LinkButton(_ref) {
       className = _ref$className === void 0 ? '' : _ref$className,
       rest = _objectWithoutProperties(_ref, ["className"]);
 
-  return /*#__PURE__*/React.createElement(LinkBase, _extends({
+  return React.createElement(LinkBase, _extends({
     className: "btn ".concat(className)
   }, rest));
 };

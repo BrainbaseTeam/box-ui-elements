@@ -19,6 +19,51 @@ var messages = defineMessages({
   missing: {
     "id": "boxui.classification.missing",
     "defaultMessage": "Not classified"
+  },
+  modifiedByLabel: {
+    "id": "boxui.classification.modifiedByLabel",
+    "defaultMessage": "Classification Label"
+  },
+  importedBy: {
+    "id": "boxui.classification.importedBy",
+    "defaultMessage": "Imported from {modifiedBy} on {modifiedAt}"
+  },
+  modifiedBy: {
+    "id": "boxui.classification.modifiedBy",
+    "defaultMessage": "Applied by {modifiedBy} on {modifiedAt}"
+  },
+  // Classification Colors
+  classificationYellow: {
+    "id": "boxui.classification.classificationYellow",
+    "defaultMessage": "Yellow"
+  },
+  classificationOrange: {
+    "id": "boxui.classification.classificationOrange",
+    "defaultMessage": "Orange"
+  },
+  classificationRed: {
+    "id": "boxui.classification.classificationRed",
+    "defaultMessage": "Red"
+  },
+  classificationPurple: {
+    "id": "boxui.classification.classificationPurple",
+    "defaultMessage": "Purple"
+  },
+  classificationLightBlue: {
+    "id": "boxui.classification.classificationLightBlue",
+    "defaultMessage": "Light Blue"
+  },
+  classificationDarkBlue: {
+    "id": "boxui.classification.classificationDarkBlue",
+    "defaultMessage": "Dark Blue"
+  },
+  classificationGreen: {
+    "id": "boxui.classification.classificationGreen",
+    "defaultMessage": "Green"
+  },
+  classificationGrey: {
+    "id": "boxui.classification.classificationGrey",
+    "defaultMessage": "Grey"
   }
 });
 export default messages;

@@ -13,7 +13,7 @@ var NavSidebar = function NavSidebar(_ref) {
       className = _ref$className === void 0 ? '' : _ref$className,
       rest = _objectWithoutProperties(_ref, ["children", "className"]);
 
-  return /*#__PURE__*/React.createElement("aside", _extends({
+  return React.createElement("aside", _extends({
     className: "nav-sidebar ".concat(className)
   }, rest), children);
 };

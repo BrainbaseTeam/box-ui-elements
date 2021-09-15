@@ -5,6 +5,10 @@
  */
 import { defineMessages } from 'react-intl';
 var messages = defineMessages({
+  annotationMissingError: {
+    "id": "be.activitySidebar.activityFeed.annotationMissingError",
+    "defaultMessage": "This comment no longer exists"
+  },
   feedInlineErrorTitle: {
     "id": "be.activitySidebar.activityFeed.feedInlineErrorTitle",
     "defaultMessage": "Error"

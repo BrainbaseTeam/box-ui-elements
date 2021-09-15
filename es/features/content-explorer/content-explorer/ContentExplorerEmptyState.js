@@ -8,11 +8,11 @@ import messages from '../messages';
 var ContentExplorerEmptyState = function ContentExplorerEmptyState(_ref) {
   var _ref$isSearch = _ref.isSearch,
       isSearch = _ref$isSearch === void 0 ? false : _ref$isSearch;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "content-explorer-empty-state themed"
-  }, isSearch ? /*#__PURE__*/React.createElement(SearchEmptyState, null) : /*#__PURE__*/React.createElement(FolderEmptyState, null), /*#__PURE__*/React.createElement("span", {
+  }, isSearch ? React.createElement(SearchEmptyState, null) : React.createElement(FolderEmptyState, null), React.createElement("span", {
     className: "content-explorer-empty-state-text"
-  }, isSearch ? /*#__PURE__*/React.createElement(FormattedMessage, messages.emptySearch) : /*#__PURE__*/React.createElement(FormattedMessage, messages.emptyFolder)));
+  }, isSearch ? React.createElement(FormattedMessage, messages.emptySearch) : React.createElement(FormattedMessage, messages.emptyFolder)));
 };
 
 ContentExplorerEmptyState.propTypes = {

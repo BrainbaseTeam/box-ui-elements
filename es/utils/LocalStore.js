@@ -13,7 +13,9 @@ import Cache from './Cache';
 var KEY_PREFIX = 'localStore';
 var SERVICE_VERSION = '0';
 
-var LocalStore = /*#__PURE__*/function () {
+var LocalStore =
+/*#__PURE__*/
+function () {
   /**
    * [constructor]
    *
@@ -23,8 +25,13 @@ var LocalStore = /*#__PURE__*/function () {
     _classCallCheck(this, LocalStore);
 
     this.memoryStore = new Cache();
-    this.localStorage = window.localStorage;
-    this.isLocalStorageAvailable = this.canUseLocalStorage();
+
+    try {
+      this.localStorage = window.localStorage;
+      this.isLocalStorageAvailable = this.canUseLocalStorage();
+    } catch (e) {
+      this.isLocalStorageAvailable = false;
+    }
   }
   /**
    * Builds a key for the session store

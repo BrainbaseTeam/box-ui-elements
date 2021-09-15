@@ -7,8 +7,7 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 import * as React from 'react';
 import classNames from 'classnames';
 import './Toggle.scss';
-
-var Toggle = function Toggle(_ref) {
+var Toggle = React.forwardRef(function (_ref, ref) {
   var _ref$className = _ref.className,
       className = _ref$className === void 0 ? '' : _ref$className,
       description = _ref.description,
@@ -25,10 +24,10 @@ var Toggle = function Toggle(_ref) {
   var classes = classNames('toggle-container', className, {
     'is-toggle-right-aligned': isToggleRightAligned
   });
-  var toggleElements = [/*#__PURE__*/React.createElement("div", {
+  var toggleElements = [React.createElement("div", {
     key: "toggle-simple-switch",
     className: "toggle-simple-switch"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     key: "toggle-simple-label",
     className: "toggle-simple-label"
   }, label)];
@@ -37,22 +36,23 @@ var Toggle = function Toggle(_ref) {
     toggleElements = toggleElements.reverse();
   }
 
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: classes
-  }, /*#__PURE__*/React.createElement("label", {
+  }, React.createElement("label", {
     className: "toggle-simple"
-  }, /*#__PURE__*/React.createElement("input", _extends({
+  }, React.createElement("input", _extends({
     checked: isOn,
     className: "toggle-simple-input",
     disabled: isDisabled,
+    ref: ref,
     name: name,
     onBlur: onBlur,
     onChange: onChange,
     type: "checkbox"
-  }, rest)), toggleElements), description ? /*#__PURE__*/React.createElement("div", {
+  }, rest)), toggleElements), description ? React.createElement("div", {
     className: "toggle-simple-description"
   }, description) : null);
-};
-
+});
+Toggle.displayName = 'Toggle';
 export default Toggle;
 //# sourceMappingURL=Toggle.js.map

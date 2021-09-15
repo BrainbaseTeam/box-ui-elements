@@ -12,17 +12,17 @@ var AccessLabel = function AccessLabel(_ref) {
 
   switch (accessLevel) {
     case PEOPLE_WITH_LINK:
-      return /*#__PURE__*/React.createElement(FormattedMessage, messages.peopleWithTheLink);
+      return React.createElement(FormattedMessage, messages.peopleWithTheLink);
 
     case PEOPLE_IN_COMPANY:
-      return enterpriseName ? /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.peopleInEnterprise, {
+      return enterpriseName ? React.createElement(FormattedMessage, _extends({}, messages.peopleInEnterprise, {
         values: {
           enterpriseName: enterpriseName
         }
-      })) : /*#__PURE__*/React.createElement(FormattedMessage, messages.peopleInYourCompany);
+      })) : React.createElement(FormattedMessage, messages.peopleInYourCompany);
 
     case PEOPLE_IN_ITEM:
-      return itemType === 'folder' ? /*#__PURE__*/React.createElement(FormattedMessage, messages.peopleInThisFolder) : /*#__PURE__*/React.createElement(FormattedMessage, messages.peopleInThisFile);
+      return itemType === 'folder' ? React.createElement(FormattedMessage, messages.peopleInThisFolder) : React.createElement(FormattedMessage, messages.peopleInThisFile);
 
     default:
       return null;

@@ -53,67 +53,67 @@ var VersionsItemActions = function VersionsItemActions(_ref) {
     return null;
   }
 
-  return /*#__PURE__*/React.createElement(DropdownMenu, {
+  return React.createElement(DropdownMenu, {
     className: "bcs-VersionsItemActions",
     constrainToScrollParent: true,
     constrainToWindow: true,
     isRightAligned: true,
     onMenuClose: handleMenuClose
-  }, /*#__PURE__*/React.createElement(PlainButton, {
+  }, React.createElement(PlainButton, {
     className: "bcs-VersionsItemActions-toggle",
     "data-resin-iscurrent": isCurrent,
     "data-resin-itemid": fileId,
     "data-resin-target": "overflow",
     onClick: handleToggleClick,
     type: "button"
-  }, /*#__PURE__*/React.createElement(IconEllipsis, {
+  }, React.createElement(IconEllipsis, {
     height: 4,
     width: 14
-  }), /*#__PURE__*/React.createElement(FormattedMessage, messages.versionActionToggle, function (text) {
-    return /*#__PURE__*/React.createElement("span", {
+  }), React.createElement(FormattedMessage, messages.versionActionToggle, function (text) {
+    return React.createElement("span", {
       className: "accessibility-hidden"
     }, text);
-  })), /*#__PURE__*/React.createElement(Menu, {
+  })), React.createElement(Menu, {
     className: "bcs-VersionsItemActions-menu",
     "data-resin-component": "preview" // Needed for resin events due to tether moving menu to body
     ,
     "data-resin-feature": "versions" // Needed for resin events due to tether moving menu to body
 
-  }, showPreview && /*#__PURE__*/React.createElement(VersionsItemAction, {
+  }, showPreview && React.createElement(VersionsItemAction, {
     action: "preview",
     fileId: fileId,
     isCurrent: isCurrent,
     onClick: onPreview
-  }, /*#__PURE__*/React.createElement(IconOpenWith, null), /*#__PURE__*/React.createElement(FormattedMessage, messages.versionActionPreview)), showDownload && /*#__PURE__*/React.createElement(VersionsItemAction, {
+  }, React.createElement(IconOpenWith, null), React.createElement(FormattedMessage, messages.versionActionPreview)), showDownload && React.createElement(VersionsItemAction, {
     action: "download",
     fileId: fileId,
     isCurrent: isCurrent,
     onClick: onDownload
-  }, /*#__PURE__*/React.createElement(IconDownload, null), /*#__PURE__*/React.createElement(FormattedMessage, messages.versionActionDownload)), showPromote && /*#__PURE__*/React.createElement(VersionsItemAction, {
+  }, React.createElement(IconDownload, null), React.createElement(FormattedMessage, messages.versionActionDownload)), showPromote && React.createElement(VersionsItemAction, {
     action: "promote",
     fileId: fileId,
     isCurrent: isCurrent,
     onClick: onPromote
-  }, /*#__PURE__*/React.createElement(IconUpload, null), /*#__PURE__*/React.createElement(FormattedMessage, messages.versionActionPromote)), showRestore && /*#__PURE__*/React.createElement(VersionsItemAction, {
+  }, React.createElement(IconUpload, null), React.createElement(FormattedMessage, messages.versionActionPromote)), showRestore && React.createElement(VersionsItemAction, {
     action: "restore",
     fileId: fileId,
     isCurrent: isCurrent,
     onClick: onRestore
-  }, /*#__PURE__*/React.createElement(IconClockPast, {
+  }, React.createElement(IconClockPast, {
     height: 14,
     width: 14
-  }), /*#__PURE__*/React.createElement(FormattedMessage, messages.versionActionRestore)), showDelete && /*#__PURE__*/React.createElement(Tooltip, {
+  }), React.createElement(FormattedMessage, messages.versionActionRestore)), showDelete && React.createElement(Tooltip, {
     position: "middle-left",
-    text: /*#__PURE__*/React.createElement(FormattedMessage, messages.versionActionDisabledRetention),
+    text: React.createElement(FormattedMessage, messages.versionActionDisabledRetention),
     isTabbable: false,
     isDisabled: !isRetained
-  }, /*#__PURE__*/React.createElement(VersionsItemAction, {
+  }, React.createElement(VersionsItemAction, {
     action: "remove",
     fileId: fileId,
     isCurrent: isCurrent,
     isDisabled: isRetained,
     onClick: onDelete
-  }, /*#__PURE__*/React.createElement(IconTrash, null), /*#__PURE__*/React.createElement(FormattedMessage, messages.versionActionDelete)))));
+  }, React.createElement(IconTrash, null), React.createElement(FormattedMessage, messages.versionActionDelete)))));
 };
 
 export default VersionsItemActions;

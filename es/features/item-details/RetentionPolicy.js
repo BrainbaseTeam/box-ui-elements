@@ -20,16 +20,16 @@ var RetentionPolicy = function RetentionPolicy(_ref) {
     return null;
   }
 
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FormattedMessage, _extends({
+  return React.createElement(React.Fragment, null, React.createElement(FormattedMessage, _extends({
     tagName: "dt"
-  }, messages.retentionPolicyDescription)), /*#__PURE__*/React.createElement("dd", null, retentionPolicyDescription), policyType !== 'indefinite' ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FormattedMessage, _extends({
+  }, messages.retentionPolicyDescription)), React.createElement("dd", null, retentionPolicyDescription), policyType !== 'indefinite' ? React.createElement(React.Fragment, null, React.createElement(FormattedMessage, _extends({
     tagName: "dt"
-  }, messages.retentionPolicyExpiration)), dispositionTime ? /*#__PURE__*/React.createElement("dd", null, /*#__PURE__*/React.createElement(FormattedDate, _extends({
+  }, messages.retentionPolicyExpiration)), dispositionTime ? React.createElement("dd", null, React.createElement(FormattedDate, _extends({
     value: new Date(dispositionTime)
-  }, datetimeOptions)), openModal ? /*#__PURE__*/React.createElement(PlainButton, {
-    className: "lnk",
+  }, datetimeOptions)), openModal ? React.createElement(PlainButton, {
+    className: "lnk bdl-RetentionLink",
     onClick: openModal
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.retentionPolicyExtend)) : null) : null) : null);
+  }, React.createElement(FormattedMessage, messages.retentionPolicyExtend)) : null) : null) : null);
 };
 
 export default RetentionPolicy;

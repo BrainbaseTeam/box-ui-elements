@@ -11,13 +11,13 @@ var IconEllipsis = function IconEllipsis(_ref) {
       title = _ref.title,
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 20 : _ref$width;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: "icon-ellipsis ".concat(className),
     height: height,
     title: title,
     viewBox: "0 0 10 2",
     width: width
-  }, /*#__PURE__*/React.createElement("path", {
+  }, React.createElement("path", {
     className: "fill-color",
     d: "M1 2c.6 0 1-.4 1-1s-.4-1-1-1-1 .4-1 1 .4 1 1 1zm8 0c.6 0 1-.4 1-1s-.4-1-1-1-1 .4-1 1 .4 1 1 1zM5 2c.6 0 1-.4 1-1s-.4-1-1-1-1 .4-1 1 .4 1 1 1z",
     fill: color,

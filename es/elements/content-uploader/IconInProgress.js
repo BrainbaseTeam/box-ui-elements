@@ -8,9 +8,9 @@ import LoadingIndicator from '../../components/loading-indicator/LoadingIndicato
 import IconClose from '../../icons/general/IconClose';
 
 var IconInProgress = function IconInProgress() {
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "be-icon-in-progress"
-  }, /*#__PURE__*/React.createElement(IconClose, null), /*#__PURE__*/React.createElement(LoadingIndicator, null));
+  }, React.createElement(IconClose, null), React.createElement(LoadingIndicator, null));
 };
 
 export default IconInProgress;

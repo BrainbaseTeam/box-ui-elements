@@ -14,12 +14,10 @@ var UploadInput = function UploadInput(_ref) {
       inputLabelClass = _ref$inputLabelClass === void 0 ? '' : _ref$inputLabelClass,
       inputLabel = _ref.inputLabel,
       handleChange = _ref.handleChange;
-  return inputLabel ?
-  /*#__PURE__*/
-  // eslint-disable-next-line jsx-a11y/label-has-for
+  return inputLabel ? // eslint-disable-next-line jsx-a11y/label-has-for
   React.createElement("label", {
     className: inputLabelClass
-  }, inputLabel, /*#__PURE__*/React.createElement("input", {
+  }, inputLabel, React.createElement("input", {
     directory: isFolderUpload ? '' : undefined,
     multiple: isMultiple,
     onChange: handleChange,

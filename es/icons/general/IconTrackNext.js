@@ -11,13 +11,13 @@ var IconTrackNext = function IconTrackNext(_ref) {
       title = _ref.title,
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 14 : _ref$width;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: "icon-track-next ".concat(className),
     height: height,
     title: title,
     viewBox: "0 0 14 14",
     width: width
-  }, /*#__PURE__*/React.createElement("path", {
+  }, React.createElement("path", {
     className: "fill-color",
     d: "M7.72 7.85a1 1 0 0 0 0-1.41l-5-4.81A1 1 0 0 0 2 1.35a1 1 0 0 0-1 1V12a1 1 0 0 0 .28.69 1 1 0 0 0 1.41 0l5-4.81zM13 2v10a1 1 0 0 1-1 1 1 1 0 0 1-1-1V2a1 1 0 0 1 1-1 1 1 0 0 1 1 1z",
     fill: color

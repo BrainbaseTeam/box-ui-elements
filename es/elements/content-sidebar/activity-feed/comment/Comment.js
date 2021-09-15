@@ -8,19 +8,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -29,29 +25,31 @@ import classNames from 'classnames';
 import noop from 'lodash/noop';
 import { FormattedMessage } from 'react-intl';
 import TetherComponent from 'react-tether';
+import Trash16 from '../../../../icon/line/Trash16';
+import Pencil16 from '../../../../icon/line/Pencil16';
 import Avatar from '../Avatar';
 import Media from '../../../../components/media';
 import { MenuItem } from '../../../../components/menu';
-import IconTrash from '../../../../icons/general/IconTrash';
-import IconPencil from '../../../../icons/general/IconPencil';
 import { ACTIVITY_TARGETS } from '../../../common/interactionTargets';
 import DeleteConfirmation from '../common/delete-confirmation';
 import ActivityTimestamp from '../common/activity-timestamp';
 import UserLink from '../common/user-link';
+import ActivityCard from '../ActivityCard';
 import ActivityError from '../common/activity-error';
 import ActivityMessage from '../common/activity-message';
 import CommentForm from '../comment-form';
-import { bdlGray80 } from '../../../../styles/variables';
 import { PLACEHOLDER_USER } from '../../../../constants';
 import messages from './messages';
 import './Comment.scss';
 
-var Comment = /*#__PURE__*/function (_React$Component) {
+var Comment =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(Comment, _React$Component);
 
-  var _super = _createSuper(Comment);
-
   function Comment() {
+    var _getPrototypeOf2;
+
     var _this;
 
     _classCallCheck(this, Comment);
@@ -60,7 +58,7 @@ var Comment = /*#__PURE__*/function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    _this = _super.call.apply(_super, [this].concat(args));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Comment)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_this), "state", {
       isConfirmingDelete: false,
@@ -164,16 +162,16 @@ var Comment = /*#__PURE__*/function (_React$Component) {
       var canEdit = onEdit !== noop && permissions.can_edit;
       var canDelete = permissions.can_delete;
       var isMenuVisible = (canDelete || canEdit) && !isPending;
-      return /*#__PURE__*/React.createElement("div", {
+      return React.createElement(ActivityCard, {
         className: "bcs-Comment"
-      }, /*#__PURE__*/React.createElement(Media, {
+      }, React.createElement(Media, {
         className: classNames('bcs-Comment-media', {
           'bcs-is-pending': isPending || error
         })
-      }, /*#__PURE__*/React.createElement(Media.Figure, null, /*#__PURE__*/React.createElement(Avatar, {
+      }, React.createElement(Media.Figure, null, React.createElement(Avatar, {
         getAvatarUrl: getAvatarUrl,
         user: createdByUser
-      })), /*#__PURE__*/React.createElement(Media.Body, null, isMenuVisible && /*#__PURE__*/React.createElement(TetherComponent, {
+      })), React.createElement(Media.Body, null, isMenuVisible && React.createElement(TetherComponent, {
         attachment: "top right",
         className: "bcs-Comment-deleteConfirmationModal",
         constraints: [{
@@ -181,43 +179,43 @@ var Comment = /*#__PURE__*/function (_React$Component) {
           attachment: 'together'
         }],
         targetAttachment: "bottom right"
-      }, /*#__PURE__*/React.createElement(Media.Menu, {
+      }, React.createElement(Media.Menu, {
         isDisabled: isConfirmingDelete,
+        "data-testid": "comment-actions-menu",
         menuProps: {
           'data-resin-component': ACTIVITY_TARGETS.COMMENT_OPTIONS
         }
-      }, canEdit && /*#__PURE__*/React.createElement(MenuItem, {
+      }, canEdit && React.createElement(MenuItem, {
         "data-resin-target": ACTIVITY_TARGETS.COMMENT_OPTIONS_EDIT,
+        "data-testid": "edit-comment",
         onClick: this.handleEditClick
-      }, /*#__PURE__*/React.createElement(IconPencil, {
-        color: bdlGray80
-      }), /*#__PURE__*/React.createElement(FormattedMessage, messages.commentEditMenuItem)), canDelete && /*#__PURE__*/React.createElement(MenuItem, {
+      }, React.createElement(Pencil16, null), React.createElement(FormattedMessage, messages.commentEditMenuItem)), canDelete && React.createElement(MenuItem, {
         "data-resin-target": ACTIVITY_TARGETS.COMMENT_OPTIONS_DELETE,
+        "data-testid": "delete-comment",
         onClick: this.handleDeleteClick
-      }, /*#__PURE__*/React.createElement(IconTrash, {
-        color: bdlGray80
-      }), /*#__PURE__*/React.createElement(FormattedMessage, messages.commentDeleteMenuItem))), isConfirmingDelete && /*#__PURE__*/React.createElement(DeleteConfirmation, {
+      }, React.createElement(Trash16, null), React.createElement(FormattedMessage, messages.commentDeleteMenuItem))), isConfirmingDelete && React.createElement(DeleteConfirmation, {
         "data-resin-component": ACTIVITY_TARGETS.COMMENT_OPTIONS,
         isOpen: isConfirmingDelete,
         message: messages.commentDeletePrompt,
         onDeleteCancel: this.handleDeleteCancel,
         onDeleteConfirm: this.handleDeleteConfirm
-      })), /*#__PURE__*/React.createElement("div", {
+      })), React.createElement("div", {
         className: "bcs-Comment-headline"
-      }, /*#__PURE__*/React.createElement(UserLink, {
+      }, React.createElement(UserLink, {
         "data-resin-target": ACTIVITY_TARGETS.PROFILE,
         id: createdByUser.id,
         name: createdByUser.name,
         getUserProfileUrl: getUserProfileUrl
-      })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(ActivityTimestamp, {
+      })), React.createElement("div", null, React.createElement(ActivityTimestamp, {
         date: createdAtTimestamp
-      })), isEditing ? /*#__PURE__*/React.createElement(CommentForm, {
+      })), isEditing ? React.createElement(CommentForm, {
         isDisabled: isDisabled,
         className: classNames('bcs-Comment-editor', {
           'bcs-is-disabled': isDisabled
         }),
         updateComment: this.handleUpdate,
-        isOpen: isInputOpen,
+        isOpen: isInputOpen // $FlowFixMe
+        ,
         user: currentUser,
         onCancel: this.commentFormCancelHandler,
         onFocus: this.commentFormFocusHandler,
@@ -227,14 +225,14 @@ var Comment = /*#__PURE__*/function (_React$Component) {
         getAvatarUrl: getAvatarUrl,
         mentionSelectorContacts: mentionSelectorContacts,
         getMentionWithQuery: getMentionWithQuery
-      }) : /*#__PURE__*/React.createElement(ActivityMessage, _extends({
+      }) : React.createElement(ActivityMessage, _extends({
         id: id,
         tagged_message: tagged_message,
         translatedTaggedMessage: translatedTaggedMessage
       }, translations, {
         translationFailed: error ? true : null,
         getUserProfileUrl: getUserProfileUrl
-      })))), error ? /*#__PURE__*/React.createElement(ActivityError, error) : null);
+      })))), error ? React.createElement(ActivityError, error) : null);
     }
   }]);
 

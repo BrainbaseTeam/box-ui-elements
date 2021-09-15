@@ -18,9 +18,17 @@ var dropDefinition = {
   dropValidator: function dropValidator(_ref, _ref2) {
     var allowedTypes = _ref.allowedTypes;
     var types = _ref2.types;
-    return Array.from(types).some(function (type) {
-      return allowedTypes.indexOf(type) > -1;
+
+    if (types instanceof Array) {
+      return Array.from(types).some(function (type) {
+        return allowedTypes.indexOf(type) > -1;
+      });
+    }
+
+    var allowedList = allowedTypes.filter(function (allowed) {
+      return types.contains(allowed);
     });
+    return allowedList.length > 0;
   },
 
   /**
@@ -28,8 +36,8 @@ var dropDefinition = {
    */
   onDrop: function onDrop(event, _ref3) {
     var addDataTransferItemsToUploadQueue = _ref3.addDataTransferItemsToUploadQueue;
-    var items = event.dataTransfer.items;
-    addDataTransferItemsToUploadQueue(items);
+    var dataTransfer = event.dataTransfer;
+    addDataTransferItemsToUploadQueue(dataTransfer);
   }
 };
 var DroppableContent = makeDroppable(dropDefinition)(function (_ref4) {
@@ -48,13 +56,13 @@ var DroppableContent = makeDroppable(dropDefinition)(function (_ref4) {
   };
 
   var hasItems = items.length > 0;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "bcu-droppable-content"
-  }, /*#__PURE__*/React.createElement(ItemList, {
+  }, React.createElement(ItemList, {
     items: items,
     onClick: onClick,
     view: view
-  }), /*#__PURE__*/React.createElement(UploadState, {
+  }), React.createElement(UploadState, {
     canDrop: canDrop,
     hasItems: hasItems,
     isFolderUploadEnabled: isFolderUploadEnabled,

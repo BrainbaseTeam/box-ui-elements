@@ -8,9 +8,9 @@ import { bdlGray10 } from '../../../styles/variables';
 import IconEllipsis from '../../../icons/general/IconEllipsis';
 
 var MoreTabPlaceholder = function MoreTabPlaceholder() {
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "bdl-AdditionalTabPlaceholder"
-  }, /*#__PURE__*/React.createElement(IconEllipsis, {
+  }, React.createElement(IconEllipsis, {
     color: bdlGray10,
     className: "bdl-AdditionalTabPlaceholder-moreIcon"
   }));

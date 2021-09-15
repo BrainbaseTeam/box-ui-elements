@@ -6,7 +6,7 @@ var ButtonGroup = function ButtonGroup(_ref) {
       _ref$className = _ref.className,
       className = _ref$className === void 0 ? '' : _ref$className,
       isDisabled = _ref.isDisabled;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "btn-group ".concat(className, " ").concat(isDisabled ? 'is-disabled' : '')
   }, children);
 };

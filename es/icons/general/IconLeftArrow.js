@@ -11,13 +11,13 @@ var IconLeftArrow = function IconLeftArrow(_ref) {
       title = _ref.title,
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 12 : _ref$width;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: "icon-governance ".concat(className),
     height: height,
     title: title,
     viewBox: "0 0 12 14",
     width: width
-  }, /*#__PURE__*/React.createElement("path", {
+  }, React.createElement("path", {
     className: "stroke-color",
     d: "M9.5 4.5h-9m4-4l-4 4m4 4l-4-4",
     fill: "none",

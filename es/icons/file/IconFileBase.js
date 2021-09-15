@@ -11,7 +11,7 @@ var IconFileBase = function IconFileBase(_ref) {
       title = _ref.title,
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 32 : _ref$width;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: "".concat(baseClassName, " ").concat(className),
     height: height,
     title: title,

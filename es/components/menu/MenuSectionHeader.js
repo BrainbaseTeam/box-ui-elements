@@ -12,7 +12,7 @@ var MenuSectionHeader = function MenuSectionHeader(_ref) {
       className = _ref$className === void 0 ? '' : _ref$className,
       rest = _objectWithoutProperties(_ref, ["className"]);
 
-  return /*#__PURE__*/React.createElement(MenuItem, _extends({
+  return React.createElement(MenuItem, _extends({
     className: "menu-section-header ".concat(className),
     isDisabled: true
   }, rest));

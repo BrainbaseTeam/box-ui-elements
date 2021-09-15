@@ -11,13 +11,13 @@ var IconForward = function IconForward(_ref) {
       title = _ref.title,
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 24 : _ref$width;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: "icon-forward ".concat(className),
     height: height,
     title: title,
     viewBox: "0 0 16 16",
     width: width
-  }, /*#__PURE__*/React.createElement("path", {
+  }, React.createElement("path", {
     d: "M7 14c-3.865993 0-7-3.134007-7-7s3.134007-7 7-7 7 3.134007 7 7-3.134007 7-7 7zM5.157023 9.352557l1.17851 1.17851L9.87107 6.995535 6.335534 3.46l-1.17851 1.17851 2.35702 2.357024-2.35702 2.357023z",
     fill: color,
     fillRule: "evenodd"

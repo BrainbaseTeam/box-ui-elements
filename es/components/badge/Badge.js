@@ -6,6 +6,7 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 
 import * as React from 'react';
 import classNames from 'classnames';
+import { BadgeType } from './types';
 import './Badge.scss';
 
 var Badge = function Badge(_ref) {
@@ -13,11 +14,11 @@ var Badge = function Badge(_ref) {
       _ref$className = _ref.className,
       className = _ref$className === void 0 ? '' : _ref$className,
       _ref$type = _ref.type,
-      type = _ref$type === void 0 ? 'default' : _ref$type,
+      type = _ref$type === void 0 ? BadgeType.DEFAULT : _ref$type,
       rest = _objectWithoutProperties(_ref, ["children", "className", "type"]);
 
-  var classes = classNames('badge', type !== 'default' ? "badge-".concat(type) : '', className);
-  return /*#__PURE__*/React.createElement("span", _extends({
+  var classes = classNames('badge', type !== BadgeType.DEFAULT ? "badge-".concat(type) : '', className);
+  return React.createElement("span", _extends({
     className: classes
   }, rest), children);
 };

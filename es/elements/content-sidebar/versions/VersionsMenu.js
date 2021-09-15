@@ -52,7 +52,7 @@ var getHeading = function getHeading(_ref) {
   return heading;
 };
 
-var VersionsMenu = /*#__PURE__*/React.memo(function (_ref2) {
+var VersionsMenu = React.memo(function (_ref2) {
   var intl = _ref2.intl,
       versions = _ref2.versions,
       rest = _objectWithoutProperties(_ref2, ["intl", "versions"]);
@@ -79,15 +79,15 @@ var VersionsMenu = /*#__PURE__*/React.memo(function (_ref2) {
     last(groups).groupVersions.push(version);
     return groups;
   }, []);
-  return /*#__PURE__*/React.createElement("ul", {
+  return React.createElement("ul", {
     className: "bcs-VersionsMenu"
   }, versionGroups.map(function (_ref4) {
     var groupHeading = _ref4.groupHeading,
         groupVersions = _ref4.groupVersions;
-    return /*#__PURE__*/React.createElement("li", {
+    return React.createElement("li", {
       className: "bcs-VersionsMenu-item",
       key: groupHeading
-    }, /*#__PURE__*/React.createElement(VersionsGroup, _extends({
+    }, React.createElement(VersionsGroup, _extends({
       currentId: currentId,
       heading: groupHeading,
       versions: groupVersions

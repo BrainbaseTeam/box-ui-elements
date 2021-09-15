@@ -12,13 +12,13 @@ var messages = defineMessages({
 var ErrorMask = function ErrorMask(_ref) {
   var errorHeader = _ref.errorHeader,
       errorSubHeader = _ref.errorSubHeader;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "error-mask"
-  }, /*#__PURE__*/React.createElement(IconSadCloud, {
+  }, React.createElement(IconSadCloud, {
     className: "error-mask-sad-cloud",
     height: 50,
-    title: /*#__PURE__*/React.createElement(FormattedMessage, messages.errorMaskIconSadCloudText)
-  }), /*#__PURE__*/React.createElement("h4", null, errorHeader), /*#__PURE__*/React.createElement("h5", null, errorSubHeader));
+    title: React.createElement(FormattedMessage, messages.errorMaskIconSadCloudText)
+  }), React.createElement("h4", null, errorHeader), React.createElement("h5", null, errorSubHeader));
 };
 
 export default ErrorMask;

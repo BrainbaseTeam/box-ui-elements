@@ -11,7 +11,7 @@ import HotkeyLayer from './HotkeyLayer';
 var HotkeyFriendlyOverlay = function HotkeyFriendlyOverlay(_ref) {
   var props = _extends({}, _ref);
 
-  return /*#__PURE__*/React.createElement(HotkeyLayer, null, /*#__PURE__*/React.createElement(Overlay, props));
+  return React.createElement(HotkeyLayer, null, React.createElement(Overlay, props));
 };
 
 export default HotkeyFriendlyOverlay;

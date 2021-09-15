@@ -33,9 +33,9 @@ var SharedLinkAccessDescription = function SharedLinkAccessDescription(_ref) {
       return null;
   }
 
-  return /*#__PURE__*/React.createElement("small", {
+  return React.createElement("small", {
     className: "usm-menu-description"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, description, {
+  }, React.createElement(FormattedMessage, _extends({}, description, {
     values: {
       company: enterpriseName
     }

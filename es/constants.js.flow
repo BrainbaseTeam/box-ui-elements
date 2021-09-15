@@ -5,7 +5,6 @@
  */
 
 import Browser from './utils/Browser';
-import type { UserMini } from './common/types/core';
 
 /* ------------------------ API ---------------------------- */
 export const API_PAGE_LIMIT = 1000; // default limit for paginated api calls
@@ -99,6 +98,10 @@ export const FIELD_RESTORED_FROM = 'restored_from';
 export const FIELD_CREATED_AT = 'created_at';
 export const FIELD_INTERACTED_AT: 'interacted_at' = 'interacted_at';
 export const FIELD_SHARED_LINK = 'shared_link';
+export const FIELD_SHARED_LINK_ACCESS_LEVELS_DISABLED_REASONS: 'allowed_shared_link_access_levels_disabled_reasons' =
+    'allowed_shared_link_access_levels_disabled_reasons';
+export const FIELD_SHARED_LINK_FEATURES: 'shared_link_features' = 'shared_link_features';
+export const FIELD_ALLOWED_INVITEE_ROLES: 'allowed_invitee_roles' = 'allowed_invitee_roles';
 export const FIELD_ALLOWED_SHARED_LINK_ACCESS_LEVELS = 'allowed_shared_link_access_levels';
 export const FIELD_HAS_COLLABORATIONS = 'has_collaborations';
 export const FIELD_IS_EXTERNALLY_OWNED = 'is_externally_owned';
@@ -140,36 +143,49 @@ export const FIELD_APP: 'app' = 'app';
 export const FIELD_OCCURRED_AT: 'occurred_at' = 'occurred_at';
 export const FIELD_RENDERED_TEXT: 'rendered_text' = 'rendered_text';
 export const FIELD_RETENTION: 'retention' = 'retention';
+export const FIELD_UPLOADER_DISPLAY_NAME: 'uploader_display_name' = 'uploader_display_name';
+export const FIELD_CLASSIFICATION: 'classification' = 'classification';
+export const FIELD_ENTERPRISE: 'enterprise' = 'enterprise';
+export const FIELD_HOSTNAME: 'hostname' = 'hostname';
 
 /* ----------------------- Permissions --------------------------- */
+export const PERMISSION_CAN_COMMENT = 'can_comment';
+export const PERMISSION_CAN_CREATE_ANNOTATIONS = 'can_create_annotations';
+export const PERMISSION_CAN_DELETE = 'can_delete';
+export const PERMISSION_CAN_DOWNLOAD = 'can_download';
+export const PERMISSION_CAN_EDIT = 'can_edit';
 export const PERMISSION_CAN_PREVIEW = 'can_preview';
 export const PERMISSION_CAN_RENAME = 'can_rename';
-export const PERMISSION_CAN_DOWNLOAD = 'can_download';
-export const PERMISSION_CAN_DELETE = 'can_delete';
-export const PERMISSION_CAN_UPLOAD = 'can_upload';
-export const PERMISSION_CAN_SHARE = 'can_share';
 export const PERMISSION_CAN_SET_SHARE_ACCESS = 'can_set_share_access';
-export const PERMISSION_CAN_COMMENT = 'can_comment';
-export const PERMISSION_CAN_EDIT = 'can_edit';
+export const PERMISSION_CAN_SHARE = 'can_share';
+export const PERMISSION_CAN_UPLOAD = 'can_upload';
+export const PERMISSION_CAN_VIEW_ANNOTATIONS = 'can_view_annotations';
+
+/* --------------------- Invitee roles --------------------------- */
+export const INVITEE_ROLE_EDITOR: 'editor' = 'editor';
 
 /* ------------- Delimiters for bread crumbs ---------------- */
 export const DELIMITER_SLASH: 'slash' = 'slash';
 export const DELIMITER_CARET: 'caret' = 'caret';
 
 /* ---------------------- Defaults -------------------------- */
-export const DEFAULT_PREVIEW_VERSION = '2.16.0';
+export const DEFAULT_PREVIEW_VERSION = '2.72.0';
 export const DEFAULT_LOCALE = 'en-US';
 export const DEFAULT_PATH_STATIC = 'platform/elements';
 export const DEFAULT_PATH_STATIC_PREVIEW = 'platform/preview';
 export const DEFAULT_HOSTNAME_API = 'https://api.box.com';
 export const DEFAULT_HOSTNAME_STATIC = 'https://cdn01.boxcdn.net';
 export const DEFAULT_HOSTNAME_UPLOAD = 'https://upload.box.com';
+export const DEFAULT_HOSTNAME_UPLOAD_APP = 'https://upload.app.box.com';
+export const DEFAULT_HOSTNAME_UPLOAD_GOV = 'https://upload.app.box-gov.com';
 export const DEFAULT_HOSTNAME_APP = 'https://app.box.com';
 export const DEFAULT_CONTAINER = 'body';
 export const DEFAULT_ROOT = '0';
 export const DEFAULT_SEARCH_DEBOUNCE = 500;
 export const DEFAULT_COLLAB_DEBOUNCE = 500;
+export const DEFAULT_FORMAT_DEBOUNCE = 1000;
 export const DEFAULT_MAX_COLLABORATORS = 25;
+export const DEFAULT_MAX_CONTACTS = 50;
 export const DEFAULT_PAGE_NUMBER = 1;
 export const DEFAULT_PAGE_SIZE = 50;
 export const DEFAULT_FETCH_START = 0;
@@ -177,14 +193,15 @@ export const DEFAULT_FETCH_END = 1000;
 export const DEFAULT_VIEW_FILES: 'files' = 'files';
 export const DEFAULT_VIEW_RECENTS: 'recents' = 'recents';
 export const DEFAULT_VIEW_METADATA: 'metadata' = 'metadata';
-export const CLIENT_NAME_CONTENT_PICKER = 'ContentPicker';
-export const CLIENT_NAME_FILE_PICKER = 'FilePicker';
-export const CLIENT_NAME_FOLDER_PICKER = 'FolderPicker';
-export const CLIENT_NAME_CONTENT_UPLOADER = 'ContentUploader';
-export const CLIENT_NAME_CONTENT_EXPLORER = 'ContentExplorer';
-export const CLIENT_NAME_CONTENT_PREVIEW = 'ContentPreview';
-export const CLIENT_NAME_CONTENT_SIDEBAR = 'ContentSidebar';
-export const CLIENT_NAME_OPEN_WITH = 'ContentOpenWith';
+export const CLIENT_NAME_CONTENT_EXPLORER: 'ContentExplorer' = 'ContentExplorer';
+export const CLIENT_NAME_OPEN_WITH: 'ContentOpenWith' = 'ContentOpenWith';
+export const CLIENT_NAME_CONTENT_PICKER: 'ContentPicker' = 'ContentPicker';
+export const CLIENT_NAME_CONTENT_PREVIEW: 'ContentPreview' = 'ContentPreview';
+export const CLIENT_NAME_CONTENT_SHARING: 'ContentSharing' = 'ContentSharing';
+export const CLIENT_NAME_CONTENT_SIDEBAR: 'ContentSidebar' = 'ContentSidebar';
+export const CLIENT_NAME_CONTENT_UPLOADER: 'ContentUploader' = 'ContentUploader';
+export const CLIENT_NAME_FILE_PICKER: 'FilePicker' = 'FilePicker';
+export const CLIENT_NAME_FOLDER_PICKER: 'FolderPicker' = 'FolderPicker';
 
 /* ---------------------- Statuses -------------------------- */
 export const STATUS_PENDING: 'pending' = 'pending';
@@ -192,6 +209,8 @@ export const STATUS_IN_PROGRESS: 'inprogress' = 'inprogress';
 export const STATUS_STAGED: 'staged' = 'staged';
 export const STATUS_COMPLETE: 'complete' = 'complete';
 export const STATUS_ERROR: 'error' = 'error';
+export const STATUS_ACCEPTED: 'accepted' = 'accepted';
+export const STATUS_INACTIVE: 'inactive' = 'inactive';
 
 /* ------------------- Styles ------------------------ */
 export const CLASS_MODAL_CONTENT = 'be-modal-dialog-content';
@@ -213,6 +232,11 @@ export const ERROR_CODE_UPLOAD_CHILD_FOLDER_FAILED = 'child_folder_failed_upload
 export const ERROR_CODE_UPLOAD_STORAGE_LIMIT_EXCEEDED = 'storage_limit_exceeded';
 export const ERROR_CODE_UPLOAD_FILE_SIZE_LIMIT_EXCEEDED = 'file_size_limit_exceeded';
 export const ERROR_CODE_UPLOAD_PENDING_APP_FOLDER_SIZE_LIMIT = 'pending_app_folder_size_limit';
+export const ERROR_CODE_UPLOAD_BAD_DIGEST = 'bad_digest';
+export const ERROR_CODE_UPLOAD_FAILED_PACKAGE = 'failed_package_upload';
+export const ERROR_CODE_FETCH_ACTIVITY = 'fetch_activity_error';
+export const ERROR_CODE_FETCH_ANNOTATION = 'fetch_annotation_error';
+export const ERROR_CODE_FETCH_ANNOTATIONS = 'fetch_annotations_error';
 export const ERROR_CODE_FETCH_FILE = 'fetch_file_error';
 export const ERROR_CODE_FETCH_FILE_DUE_TO_POLICY = 'forbidden_by_policy';
 export const ERROR_CODE_FETCH_FOLDER = 'fetch_folder_error';
@@ -223,6 +247,8 @@ export const ERROR_CODE_FETCH_VERSION = 'fetch_version_error';
 export const ERROR_CODE_FETCH_VERSIONS = 'fetch_versions_error';
 export const ERROR_CODE_FETCH_TASKS = 'fetch_tasks_error';
 export const ERROR_CODE_FETCH_CURRENT_USER = 'fetch_current_user_error';
+export const ERROR_CODE_FETCH_ENTERPRISE_GROUPS: 'fetch_enterprise_groups_error' = 'fetch_enterprise_groups_error';
+export const ERROR_CODE_FETCH_ENTERPRISE_USERS: 'fetch_enterprise_users_error' = 'fetch_enterprise_users_error';
 export const ERROR_CODE_FETCH_TASK_ASSIGNMENT = 'fetch_task_assignment_error';
 export const ERROR_CODE_FETCH_TASK_COLLABORATOR = 'fetch_task_collaborator_error';
 export const ERROR_CODE_FETCH_INTEGRATIONS = 'fetch_integrations_error';
@@ -232,6 +258,7 @@ export const ERROR_CODE_FETCH_ACCESS_STATS = 'fetch_access_stats_error';
 export const ERROR_CODE_FETCH_SKILLS = 'fetch_skills_error';
 export const ERROR_CODE_FETCH_RECENTS = 'fetch_recents_error';
 export const ERROR_CODE_EXECUTE_INTEGRATION = 'execute_integrations_error';
+export const ERROR_CODE_CREATE_ANNOTATION = 'create_annotation_error';
 export const ERROR_CODE_CREATE_COMMENT = 'create_comment_error';
 export const ERROR_CODE_CREATE_TASK = 'create_task_error';
 export const ERROR_CODE_CREATE_TASK_LINK = 'create_task_link_error';
@@ -240,6 +267,8 @@ export const ERROR_CODE_CREATE_TASK_COLLABORATOR = 'create_task_collaborator_err
 export const ERROR_CODE_CREATE_FOLDER = 'create_folder_error';
 export const ERROR_CODE_CREATE_METADATA = 'create_metadata_error';
 export const ERROR_CODE_DELETE_APP_ACTIVITY = 'delete_app_activity_error';
+export const ERROR_CODE_DELETE_ANNOTATION = 'delete_annotation_error';
+export const ERROR_CODE_EDIT_ANNOTATION = 'edit_annotation_error';
 export const ERROR_CODE_DELETE_COMMENT = 'delete_comment_error';
 export const ERROR_CODE_DELETE_TASK = 'delete_task_error';
 export const ERROR_CODE_DELETE_TASK_ASSIGNMENT = 'delete_task_assignment_error';
@@ -247,6 +276,7 @@ export const ERROR_CODE_DELETE_TASK_COLLABORATOR = 'delete_task_collaborator_err
 export const ERROR_CODE_DELETE_ITEM = 'delete_item_error';
 export const ERROR_CODE_DELETE_METADATA = 'delete_metadata_error';
 export const ERROR_CODE_DELETE_VERSION = 'delete_version_error';
+export const ERROR_CODE_GROUP_EXCEEDS_LIMIT = 'group_exceeds_limit';
 export const ERROR_CODE_PROMOTE_VERSION = 'promote_version_error';
 export const ERROR_CODE_RESTORE_VERSION = 'restore_version_error';
 export const ERROR_CODE_UPDATE_TASK = 'update_task_error';
@@ -286,7 +316,7 @@ export const METRIC_TYPE_ELEMENTS_LOAD_METRIC: 'elements_load_metric' = 'element
 export const IS_ERROR_DISPLAYED = 'isErrorDisplayed'; // used to determine if user will see some error state or message
 
 /* ------------- Representation Hints ------------------- */
-const X_REP_HINT_BASE = '[3d][pdf][text][mp3]';
+const X_REP_HINT_BASE = '[3d][pdf][text][mp3][json]';
 const X_REP_HINT_DOC_THUMBNAIL = '[jpg?dimensions=1024x1024&paged=false]';
 const X_REP_HINT_IMAGE = '[jpg?dimensions=2048x2048,png?dimensions=2048x2048]';
 const X_REP_HINT_VIDEO_DASH = '[dash,mp4][filmstrip]';
@@ -321,6 +351,10 @@ export const SKILLS_STATUS_INVOKED = 'skills_invoked_status';
 
 /* ------------------ File Extensions ---------------------- */
 export const FILE_EXTENSION_BOX_NOTE = 'boxnote';
+export const FILE_EXTENSION_GOOGLE_DOC = 'gdoc';
+export const FILE_EXTENSION_GOOGLE_SHEET = 'gsheet';
+export const FILE_EXTENSION_GOOGLE_SLIDE = 'gslides';
+export const FILE_EXTENSION_GOOGLE_SLIDE_LEGACY = 'gslide';
 
 /* ------------------ X-Rep-Hints ---------------------- */
 // available dimensions for JPG: "32x32", "94x94", "160x160", "320x320", "1024x1024", "2048x2048"
@@ -329,9 +363,17 @@ export const X_REP_HINT_JPG_DIMENSIONS_DEFAULT: '1024x1024' = '1024x1024';
 // available dimensions for PNG: "1024x1024", "2048x2048"
 export const X_REP_HINT_PNG_DIMENSIONS_DEFAULT: '1024x1024' = '1024x1024';
 
-// if unable to fetch jpg thumbnail, grab png rep of first page. Certain file types do
-// not have a thumbnail rep but do have a first page rep.
-export const X_REP_HINT_HEADER_DIMENSIONS_DEFAULT = `[jpg?dimensions=${X_REP_HINT_JPG_DIMENSIONS_DEFAULT}&paged=false,png?dimensions=${X_REP_HINT_PNG_DIMENSIONS_DEFAULT}]`;
+// If unable to fetch jpg thumbnail, grab png rep of first page. Certain file types do not have a thumbnail rep but do have a first page rep.
+// Get the PDF rep as well, which ensures that the Preview SDK loads linearized reps for customers with PDF optimization enabled.
+// Get the text rep as well, which ensures that large text files load in the Preview SDK.
+export const X_REP_HINT_HEADER_DIMENSIONS_DEFAULT = `[jpg?dimensions=${X_REP_HINT_JPG_DIMENSIONS_DEFAULT}&paged=false,png?dimensions=${X_REP_HINT_PNG_DIMENSIONS_DEFAULT}][pdf][text]`;
+
+/* ------------------ Representations Response ---------- */
+export const REPRESENTATIONS_RESPONSE_ERROR: 'error' = 'error';
+export const REPRESENTATIONS_RESPONSE_NONE: 'none' = 'none';
+export const REPRESENTATIONS_RESPONSE_PENDING: 'pending' = 'pending';
+export const REPRESENTATIONS_RESPONSE_SUCCESS: 'success' = 'success';
+export const REPRESENTATIONS_RESPONSE_VIEWABLE: 'viewable' = 'viewable';
 
 /* ------------------ Sidebar View ---------------------- */
 export const SIDEBAR_VIEW_SKILLS: 'skills' = 'skills';
@@ -349,10 +391,11 @@ export const HTTP_OPTIONS: 'OPTIONS' = 'OPTIONS';
 export const HTTP_HEAD: 'HEAD' = 'HEAD';
 
 /* ------------------ HTTP Codes  ---------------------- */
+export const HTTP_STATUS_CODE_BAD_REQUEST: 400 = 400;
+export const HTTP_STATUS_CODE_UNAUTHORIZED: 401 = 401;
 export const HTTP_STATUS_CODE_FORBIDDEN: 403 = 403;
 export const HTTP_STATUS_CODE_NOT_FOUND: 404 = 404;
 export const HTTP_STATUS_CODE_CONFLICT: 409 = 409;
-export const HTTP_STATUS_CODE_UNAUTHORIZED: 401 = 401;
 export const HTTP_STATUS_CODE_RATE_LIMIT: 429 = 429;
 export const HTTP_STATUS_CODE_INTERNAL_SERVER_ERROR: 500 = 500;
 export const HTTP_STATUS_CODE_NOT_IMPLEMENTED: 501 = 501;
@@ -372,29 +415,24 @@ export const VERSION_RETENTION_REMOVE_ACTION: 'remove_retention' = 'remove_reten
 export const VERSION_RETENTION_INDEFINITE: 'indefinite' = 'indefinite';
 
 /* ------------------ Placeholder Feed Items ------------------------- */
-export const PLACEHOLDER_USER: UserMini = { type: 'user', id: '2', name: '' };
+export const PLACEHOLDER_USER = { type: 'user', id: '2', name: '' };
+export const FILE_REQUEST_NAME = 'File Request';
 
 /* ------------------ Open With ------------------------- */
-export const APP_INTEGRATION = 'app_integration';
+export const APP_INTEGRATION: 'app_integration' = 'app_integration';
 export const BOX_EDIT_INTEGRATION_ID = '1338';
 export const BOX_EDIT_SFC_INTEGRATION_ID = '13418';
 export const OPEN_WITH_BUTTON_ICON_SIZE = 26;
 export const OPEN_WITH_MENU_ITEM_ICON_SIZE = 30;
 
-/* ------------------ Legacy Task Assignment Statuses ----------------- */
-export const TASK_APPROVED: 'approved' = 'approved';
-export const TASK_COMPLETED: 'completed' = 'completed';
-export const TASK_INCOMPLETE: 'incomplete' = 'incomplete';
-export const TASK_REJECTED: 'rejected' = 'rejected';
-
-/* ------------------ New Task Statuses ----------------- */
+/* ------------------ Task Statuses ----------------- */
 export const TASK_NEW_APPROVED: 'APPROVED' = 'APPROVED';
 export const TASK_NEW_COMPLETED: 'COMPLETED' = 'COMPLETED';
 export const TASK_NEW_NOT_STARTED: 'NOT_STARTED' = 'NOT_STARTED';
 export const TASK_NEW_IN_PROGRESS: 'IN_PROGRESS' = 'IN_PROGRESS';
 export const TASK_NEW_REJECTED: 'REJECTED' = 'REJECTED';
 
-/* ------------------ New Task types ----------------- */
+/* ------------------ Task types ----------------- */
 export const TASK_TYPE_GENERAL: 'GENERAL' = 'GENERAL';
 export const TASK_TYPE_APPROVAL: 'APPROVAL' = 'APPROVAL';
 
@@ -405,6 +443,17 @@ export const TASK_COMPLETION_RULE_ANY: 'ANY_ASSIGNEE' = 'ANY_ASSIGNEE';
 /* ----------------- Task Edit modes ---------------- */
 export const TASK_EDIT_MODE_CREATE: 'CREATE' = 'CREATE';
 export const TASK_EDIT_MODE_EDIT: 'EDIT' = 'EDIT';
+
+/* ----------------- Task Validation ---------------- */
+export const TASK_MAX_GROUP_ASSIGNEES: 250 = 250;
+
+/* ----------------- Theme ---------------------------*/
+export const THEME_VERY_DARK = 'vDark';
+export const THEME_DARK = 'dark';
+export const THEME_MID_DARK = 'midDark';
+export const THEME_MIDTONE = 'midTone';
+export const THEME_MID_LIGHT = 'midLight';
+export const THEME_VERY_LIGHT = 'vLight';
 
 /* ------------------ Keyboard Events ----------------- */
 export const KEYS = {

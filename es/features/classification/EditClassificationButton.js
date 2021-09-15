@@ -23,12 +23,12 @@ var EditClassificationButton = function EditClassificationButton(_ref) {
 
   var message = isEditing ? messages.edit : messages.add;
   var interaction = isEditing ? 'editclassification' : 'addclassification';
-  return /*#__PURE__*/React.createElement(PlainButton, _extends({
+  return React.createElement(PlainButton, _extends({
     className: "bdl-EditClassificationButton ".concat(className),
     "data-resin-target": interaction,
     onClick: onEdit,
     type: "button"
-  }, rest), /*#__PURE__*/React.createElement(FormattedMessage, message));
+  }, rest), React.createElement(FormattedMessage, message));
 };
 
 export default EditClassificationButton;

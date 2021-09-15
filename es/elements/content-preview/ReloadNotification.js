@@ -13,14 +13,14 @@ import './ReloadNotification.scss';
 var ReloadNotification = function ReloadNotification(_ref) {
   var onClick = _ref.onClick,
       onClose = _ref.onClose;
-  return /*#__PURE__*/React.createElement("span", {
+  return React.createElement("span", {
     className: "bcpr-notification"
-  }, /*#__PURE__*/React.createElement(Notification, {
+  }, React.createElement(Notification, {
     onClose: onClose,
     type: NotificationConstants.TYPE_INFO
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.previewUpdate), /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(FormattedMessage, messages.previewUpdate), React.createElement(Button, {
     onClick: onClick
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.reload))));
+  }, React.createElement(FormattedMessage, messages.reload))));
 };
 
 export default ReloadNotification;

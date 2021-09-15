@@ -6,19 +6,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -33,12 +29,14 @@ import MenuToggle from '../../../components/dropdown-menu/MenuToggle';
 import messages from '../messages';
 import LoadingIndicator from '../../../components/loading-indicator';
 
-var TemplateButton = /*#__PURE__*/function (_React$Component) {
+var TemplateButton =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(TemplateButton, _React$Component);
 
-  var _super = _createSuper(TemplateButton);
-
   function TemplateButton() {
+    var _getPrototypeOf2;
+
     var _this;
 
     _classCallCheck(this, TemplateButton);
@@ -47,7 +45,7 @@ var TemplateButton = /*#__PURE__*/function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    _this = _super.call.apply(_super, [this].concat(args));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(TemplateButton)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_this), "state", {
       isTemplateMenuOpen: false
@@ -77,37 +75,37 @@ var TemplateButton = /*#__PURE__*/function (_React$Component) {
       var hasTemplates = templates && templates.length > 0;
 
       if (isLoadingTemplates) {
-        icon = /*#__PURE__*/React.createElement(LoadingIndicator, {
+        icon = React.createElement(LoadingIndicator, {
           className: "loading-indicator"
         });
-        text = /*#__PURE__*/React.createElement(FormattedMessage, messages.templatesLoadingButtonText);
+        text = React.createElement(FormattedMessage, messages.templatesLoadingButtonText);
       } else if (!hasTemplates) {
-        text = /*#__PURE__*/React.createElement(FormattedMessage, messages.noTemplatesText);
+        text = React.createElement(FormattedMessage, messages.noTemplatesText);
       } else if (activeTemplate) {
-        icon = /*#__PURE__*/React.createElement(MetadataActiveBadge, null);
+        icon = React.createElement(MetadataActiveBadge, null);
         text = activeTemplate.displayName;
       } else if (!activeTemplate) {
-        icon = /*#__PURE__*/React.createElement(MetadataDefaultBadge, null);
-        text = /*#__PURE__*/React.createElement(FormattedMessage, messages.templatesButtonText);
+        icon = React.createElement(MetadataDefaultBadge, null);
+        text = React.createElement(FormattedMessage, messages.templatesButtonText);
       }
 
       var buttonClasses = classNames('query-bar-button', {
         'is-active': activeTemplate
       });
-      return /*#__PURE__*/React.createElement(Button, {
+      return React.createElement(Button, {
         className: buttonClasses,
         isDisabled: !templates || templates.length === 0,
         type: "button",
         onClick: _this.toggleTemplateDropdownButton
-      }, /*#__PURE__*/React.createElement(MenuToggle, null, icon, /*#__PURE__*/React.createElement("span", {
+      }, React.createElement(MenuToggle, null, icon, React.createElement("span", {
         className: "button-label"
       }, text)));
     });
 
     _defineProperty(_assertThisInitialized(_this), "renderTitle", function () {
-      return /*#__PURE__*/React.createElement("div", {
+      return React.createElement("div", {
         className: "template-dropdown-list-title"
-      }, /*#__PURE__*/React.createElement(FormattedMessage, messages.metadataViewTemplateListHeaderTitle));
+      }, React.createElement(FormattedMessage, messages.metadataViewTemplateListHeaderTitle));
     });
 
     return _this;
@@ -120,15 +118,15 @@ var TemplateButton = /*#__PURE__*/function (_React$Component) {
           activeTemplate = _this$props2.activeTemplate,
           templates = _this$props2.templates,
           usedTemplates = _this$props2.usedTemplates;
-      return /*#__PURE__*/React.createElement(TemplateDropdown, {
+      return React.createElement(TemplateDropdown, {
         className: "query-bar-template-dropdown-flyout",
-        defaultTemplateIcon: /*#__PURE__*/React.createElement(MetadataDefaultBadge, {
+        defaultTemplateIcon: React.createElement(MetadataDefaultBadge, {
           className: "template-list-item-badge"
         }),
         title: this.renderTitle(),
         onAdd: this.updateActiveTemplate,
         activeTemplate: activeTemplate,
-        activeTemplateIcon: /*#__PURE__*/React.createElement(MetadataActiveBadge, {
+        activeTemplateIcon: React.createElement(MetadataActiveBadge, {
           className: "template-list-item-badge"
         }),
         templates: templates || [],

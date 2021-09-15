@@ -12,11 +12,11 @@ var Header = function Header(_ref) {
       onAdd = _ref.onAdd,
       templates = _ref.templates,
       title = _ref.title;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "metadata-instance-editor-header"
-  }, title || /*#__PURE__*/React.createElement("h4", {
+  }, title || React.createElement("h4", {
     className: "metadata-instance-editor-title"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.metadataTemplatesTitle)), canAdd && onAdd && /*#__PURE__*/React.createElement(TemplateDropdown, {
+  }, React.createElement(FormattedMessage, messages.metadataTemplatesTitle)), canAdd && onAdd && React.createElement(TemplateDropdown, {
     isDropdownBusy: isDropdownBusy,
     onAdd: onAdd,
     templates: templates.filter(function (template) {

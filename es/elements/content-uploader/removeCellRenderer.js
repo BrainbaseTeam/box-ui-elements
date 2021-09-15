@@ -12,7 +12,7 @@ export default (function (_onClick) {
       return null;
     }
 
-    return /*#__PURE__*/React.createElement(ItemRemove, {
+    return React.createElement(ItemRemove, {
       status: rowData.status,
       onClick: function onClick() {
         return _onClick(rowData);

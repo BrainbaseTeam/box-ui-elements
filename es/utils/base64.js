@@ -12,7 +12,6 @@
  * @return {string}
  */
 export default function hexToBase64(str) {
-  return btoa( // $FlowFixMe - ignore flow errors from next line
-  String.fromCharCode.apply(null, str.replace(/\r|\n/g, '').replace(/([\da-fA-F]{2}) ?/g, '0x$1 ').replace(/ +$/, '').split(' ')));
+  return btoa(String.fromCharCode.apply(null, str.replace(/\r|\n/g, '').replace(/([\da-fA-F]{2}) ?/g, '0x$1 ').replace(/ +$/, '').split(' ')));
 }
 //# sourceMappingURL=base64.js.map

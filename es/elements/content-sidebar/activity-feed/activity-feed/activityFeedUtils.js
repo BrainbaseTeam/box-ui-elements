@@ -44,6 +44,7 @@ export function collapseFeedState(feedState) {
       var collaborators = previousFeedItem.collaborators || _defineProperty({}, prevModifiedBy.id, _objectSpread({}, prevModifiedBy));
 
       var modifiedBy = tmpCurModifiedBy || PLACEHOLDER_USER; // add collaborators
+      // $FlowFixMe
 
       collaborators[modifiedBy.id] = _objectSpread({}, modifiedBy);
       return collapsedFeedState.concat([{

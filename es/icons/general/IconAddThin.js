@@ -11,17 +11,17 @@ var IconAddThin = function IconAddThin(_ref) {
       title = _ref.title,
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 17 : _ref$width;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: "icon-add-thin ".concat(className),
     height: height,
     title: title,
     viewBox: "0 0 17 17",
     width: width
-  }, /*#__PURE__*/React.createElement("path", {
+  }, React.createElement("path", {
     className: "fill-color",
     d: "M8 0h1v17H8z",
     fill: color
-  }), /*#__PURE__*/React.createElement("path", {
+  }), React.createElement("path", {
     className: "fill-color",
     d: "M17 8v1H0V8z",
     fill: color

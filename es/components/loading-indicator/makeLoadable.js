@@ -5,7 +5,7 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 import * as React from 'react';
 import LoadingIndicator from './LoadingIndicator';
 
-function makeLoadable(BaseComponent) {
+var makeLoadable = function makeLoadable(BaseComponent) {
   var LoadableComponent = function LoadableComponent(_ref) {
     var _ref$isLoading = _ref.isLoading,
         isLoading = _ref$isLoading === void 0 ? false : _ref$isLoading,
@@ -13,12 +13,12 @@ function makeLoadable(BaseComponent) {
         loadingIndicatorProps = _ref$loadingIndicator === void 0 ? {} : _ref$loadingIndicator,
         rest = _objectWithoutProperties(_ref, ["isLoading", "loadingIndicatorProps"]);
 
-    return isLoading ? /*#__PURE__*/React.createElement(LoadingIndicator, loadingIndicatorProps) : /*#__PURE__*/React.createElement(BaseComponent, rest);
+    return isLoading ? React.createElement(LoadingIndicator, loadingIndicatorProps) : React.createElement(BaseComponent, rest);
   };
 
   LoadableComponent.displayName = "Loadable".concat(BaseComponent.displayName || BaseComponent.name || 'Component');
   return LoadableComponent;
-}
+};
 
 export default makeLoadable;
 //# sourceMappingURL=makeLoadable.js.map

@@ -20,7 +20,7 @@ var TextAreaField = function TextAreaField(_ref) {
       touched = form.touched;
   var isTouched = getProp(touched, name);
   var error = isTouched ? getProp(errors, name) : null;
-  return /*#__PURE__*/React.createElement(TextAreaPrimitive, _extends({}, field, rest, {
+  return React.createElement(TextAreaPrimitive, _extends({}, field, rest, {
     textareaRef: innerRef,
     error: error,
     hideOptionalLabel: isRequired

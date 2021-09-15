@@ -11,7 +11,7 @@ var DraftMentionItem = function DraftMentionItem(_ref) {
     id = contentState.getEntity(entityKey).getData().id;
   }
 
-  return /*#__PURE__*/React.createElement("a", {
+  return React.createElement("a", {
     href: "/profile/".concat(id)
   }, children);
 };

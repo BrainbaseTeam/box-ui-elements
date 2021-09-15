@@ -6,19 +6,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -32,8 +28,9 @@ import getProp from 'lodash/get';
 import noop from 'lodash/noop';
 import TetherComponent from 'react-tether';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import DeleteConfirmation from '../common/delete-confirmation';
+import ActivityCard from '../ActivityCard';
 import ActivityTimestamp from '../common/activity-timestamp';
+import DeleteConfirmation from '../common/delete-confirmation';
 import IconTrash from '../../../../icons/general/IconTrash';
 import Media from '../../../../components/media';
 import messages from './messages';
@@ -52,7 +49,7 @@ function mapActivityNodes(node) {
 
   switch (tagName) {
     case 'A':
-      return /*#__PURE__*/React.createElement(Link, {
+      return React.createElement(Link, {
         href: href,
         "data-resin-target": dataset.resinTarget,
         "data-resin-action": dataset.resinAction,
@@ -67,12 +64,14 @@ function mapActivityNodes(node) {
   }
 }
 
-var AppActivity = /*#__PURE__*/function (_React$PureComponent) {
+var AppActivity =
+/*#__PURE__*/
+function (_React$PureComponent) {
   _inherits(AppActivity, _React$PureComponent);
 
-  var _super = _createSuper(AppActivity);
-
   function AppActivity() {
+    var _getPrototypeOf2;
+
     var _this;
 
     _classCallCheck(this, AppActivity);
@@ -81,7 +80,7 @@ var AppActivity = /*#__PURE__*/function (_React$PureComponent) {
       args[_key] = arguments[_key];
     }
 
-    _this = _super.call.apply(_super, [this].concat(args));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(AppActivity)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_this), "parser", new DOMParser());
 
@@ -147,21 +146,23 @@ var AppActivity = /*#__PURE__*/function (_React$PureComponent) {
       var createdAtTimestamp = new Date(createdAt).getTime();
       var isMenuVisible = canDelete && !isPending;
       var isConfirmingDelete = this.state.isConfirmingDelete;
-      return /*#__PURE__*/React.createElement(Media, {
-        className: classNames('bcs-AppActivity', {
-          'bcs-is-pending': isPending || error
-        }),
+      return React.createElement(ActivityCard, {
+        className: "bcs-AppActivity",
         "data-resin-target": "loaded",
         "data-resin-feature": "appActivityCard".concat(templateId)
-      }, /*#__PURE__*/React.createElement(Media.Figure, null, /*#__PURE__*/React.createElement("img", {
+      }, React.createElement(Media, {
+        className: classNames({
+          'bcs-is-pending': isPending || error
+        })
+      }, React.createElement(Media.Figure, null, React.createElement("img", {
         className: "bcs-AppActivity-icon",
         alt: intl.formatMessage(messages.appActivityAltIcon, {
           appActivityName: name
         }),
         src: icon_url
-      })), /*#__PURE__*/React.createElement(Media.Body, {
+      })), React.createElement(Media.Body, {
         className: "bcs-AppActivity-body"
-      }, isMenuVisible && /*#__PURE__*/React.createElement(TetherComponent, {
+      }, isMenuVisible && React.createElement(TetherComponent, {
         attachment: "top right",
         className: "bcs-AppActivity-confirm",
         constraints: [{
@@ -169,22 +170,22 @@ var AppActivity = /*#__PURE__*/function (_React$PureComponent) {
           attachment: 'together'
         }],
         targetAttachment: "bottom right"
-      }, /*#__PURE__*/React.createElement(Media.Menu, {
+      }, React.createElement(Media.Menu, {
         isDisabled: isConfirmingDelete
-      }, /*#__PURE__*/React.createElement(MenuItem, {
+      }, React.createElement(MenuItem, {
         onClick: this.handleDeleteClick
-      }, /*#__PURE__*/React.createElement(IconTrash, {
+      }, React.createElement(IconTrash, {
         color: bdlGray80
-      }), /*#__PURE__*/React.createElement(FormattedMessage, messages.appActivityDeleteMenuItem))), isConfirmingDelete && /*#__PURE__*/React.createElement(DeleteConfirmation, {
+      }), React.createElement(FormattedMessage, messages.appActivityDeleteMenuItem))), isConfirmingDelete && React.createElement(DeleteConfirmation, {
         isOpen: isConfirmingDelete,
         message: messages.appActivityDeletePrompt,
         onDeleteCancel: this.handleDeleteCancel,
         onDeleteConfirm: this.handleDeleteConfirm
-      })), /*#__PURE__*/React.createElement("figcaption", {
+      })), React.createElement("figcaption", {
         className: "bcs-AppActivity-headline"
-      }, name), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(ActivityTimestamp, {
+      }, name), React.createElement("div", null, React.createElement(ActivityTimestamp, {
         date: createdAtTimestamp
-      })), this.parseActivity().map(mapActivityNodes)));
+      })), this.parseActivity().map(mapActivityNodes))));
     }
   }]);
 

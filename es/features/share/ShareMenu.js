@@ -34,36 +34,36 @@ var ShareMenu = function ShareMenu(_ref) {
       onInviteCollabSelect = _ref.onInviteCollabSelect,
       rest = _objectWithoutProperties(_ref, ["canInvite", "canShare", "className", "getSharedLinkProps", "inviteCollabsProps", "inviteRestrictionCode", "isDownloadAllowed", "isPreviewAllowed", "onGetSharedLinkSelect", "onInviteCollabSelect"]);
 
-  var inviteCollabsOption = /*#__PURE__*/React.createElement(MenuItem, _extends({
+  var inviteCollabsOption = React.createElement(MenuItem, _extends({
     className: "invite-collaborators",
     isDisabled: !canInvite,
     onClick: onInviteCollabSelect
-  }, inviteCollabsProps), canInvite ? /*#__PURE__*/React.createElement(IconInviteCollaborators, null) : /*#__PURE__*/React.createElement(IconCollaboratorsRestricted, null), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(FormattedMessage, messages.inviteCollabs)), /*#__PURE__*/React.createElement("div", {
+  }, inviteCollabsProps), canInvite ? React.createElement(IconInviteCollaborators, null) : React.createElement(IconCollaboratorsRestricted, null), React.createElement("div", null, React.createElement("div", null, React.createElement(FormattedMessage, messages.inviteCollabs)), React.createElement("div", {
     className: "share-option-description"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.editAndComment))));
-  var inviteCollabTooltip = inviteRestrictionCode === OWNER_COOWNER_ONLY ? /*#__PURE__*/React.createElement(FormattedMessage, messages.ownerCoownerOnlyTooltip) : /*#__PURE__*/React.createElement(FormattedMessage, messages.insufficientPermissionsTooltip);
+  }, React.createElement(FormattedMessage, messages.editAndComment))));
+  var inviteCollabTooltip = inviteRestrictionCode === OWNER_COOWNER_ONLY ? React.createElement(FormattedMessage, messages.ownerCoownerOnlyTooltip) : React.createElement(FormattedMessage, messages.insufficientPermissionsTooltip);
   var sharedLinkPermissions;
 
   if (isDownloadAllowed && isPreviewAllowed) {
-    sharedLinkPermissions = /*#__PURE__*/React.createElement(FormattedMessage, messages.viewAndDownload);
+    sharedLinkPermissions = React.createElement(FormattedMessage, messages.viewAndDownload);
   } else if (isPreviewAllowed) {
-    sharedLinkPermissions = /*#__PURE__*/React.createElement(FormattedMessage, messages.viewOnly);
+    sharedLinkPermissions = React.createElement(FormattedMessage, messages.viewOnly);
   } else if (isDownloadAllowed) {
-    sharedLinkPermissions = /*#__PURE__*/React.createElement(FormattedMessage, messages.downloadOnly);
+    sharedLinkPermissions = React.createElement(FormattedMessage, messages.downloadOnly);
   } else {
-    sharedLinkPermissions = /*#__PURE__*/React.createElement(FormattedMessage, messages.shortcutOnly);
+    sharedLinkPermissions = React.createElement(FormattedMessage, messages.shortcutOnly);
   }
 
-  return /*#__PURE__*/React.createElement(Menu, _extends({
+  return React.createElement(Menu, _extends({
     className: "share-menu ".concat(className)
-  }, rest), canInvite ? inviteCollabsOption : /*#__PURE__*/React.createElement(Tooltip, {
+  }, rest), canInvite ? inviteCollabsOption : React.createElement(Tooltip, {
     position: "middle-left",
     text: inviteCollabTooltip
-  }, inviteCollabsOption), /*#__PURE__*/React.createElement(MenuItem, _extends({
+  }, inviteCollabsOption), React.createElement(MenuItem, _extends({
     className: "get-shared-link",
     isDisabled: !canShare,
     onClick: onGetSharedLinkSelect
-  }, getSharedLinkProps), canShare ? /*#__PURE__*/React.createElement(IconSharedLink, null) : /*#__PURE__*/React.createElement(IconSharedLinkRestricted, null), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(FormattedMessage, messages.getSharedLink)), /*#__PURE__*/React.createElement("div", {
+  }, getSharedLinkProps), canShare ? React.createElement(IconSharedLink, null) : React.createElement(IconSharedLinkRestricted, null), React.createElement("div", null, React.createElement("div", null, React.createElement(FormattedMessage, messages.getSharedLink)), React.createElement("div", {
     className: "share-option-description"
   }, sharedLinkPermissions))));
 };

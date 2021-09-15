@@ -31,16 +31,18 @@ var TaskModal = function TaskModal(props) {
       isTaskFormOpen = props.isTaskFormOpen,
       taskFormProps = props.taskFormProps; // Note: Modal throws an error if this fails to find an element!
 
-  return /*#__PURE__*/React.createElement(Modal, {
+  return React.createElement(Modal, {
     className: "be-modal task-modal",
+    "data-testid": "create-task-modal",
     focusElementSelector: focusTargetSelector,
     isOpen: isTaskFormOpen,
     onRequestClose: onModalClose,
-    title: /*#__PURE__*/React.createElement(FormattedMessage, getMessageForModalTitle(taskType, editMode))
-  }, /*#__PURE__*/React.createElement("div", {
+    title: React.createElement(FormattedMessage, getMessageForModalTitle(taskType, editMode))
+  }, React.createElement("div", {
     className: "be"
-  }, /*#__PURE__*/React.createElement(TaskForm, _extends({
-    editMode: editMode,
+  }, React.createElement(TaskForm, _extends({
+    editMode: editMode // $FlowFixMe
+    ,
     error: error,
     onCancel: onModalClose,
     onSubmitError: onSubmitError,

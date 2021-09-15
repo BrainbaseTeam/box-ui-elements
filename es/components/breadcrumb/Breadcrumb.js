@@ -1,14 +1,10 @@
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 import * as React from 'react';
 import { injectIntl } from 'react-intl';
@@ -20,8 +16,8 @@ import './Breadcrumb.scss';
 
 var constructChildren = function constructChildren(children, threshold) {
   var dotDotDotItems = children.slice(1, children.length + 1 - threshold);
-  var menuCrumbsItems = /*#__PURE__*/React.createElement(EllipsisCrumb, null, dotDotDotItems.reverse().map(function (crumb, index) {
-    return /*#__PURE__*/React.createElement(MenuLinkItem, {
+  var menuCrumbsItems = React.createElement(EllipsisCrumb, null, dotDotDotItems.reverse().map(function (crumb, index) {
+    return React.createElement(MenuLinkItem, {
       key: index
     }, crumb);
   }));
@@ -41,7 +37,7 @@ var renderBreadcrumbs = function renderBreadcrumbs(children, threshold) {
 
   return React.Children.map(newChildren, function (item, i) {
     var isLastCrumb = length === 0 || i === length - 1;
-    return /*#__PURE__*/React.createElement(Crumb, {
+    return React.createElement(Crumb, {
       className: hasEllipsis && i === 1 ? 'no-shrink' : undefined,
       isLastCrumb: isLastCrumb
     }, item);
@@ -55,10 +51,10 @@ var Breadcrumb = function Breadcrumb(_ref) {
       _ref$threshold = _ref.threshold,
       threshold = _ref$threshold === void 0 ? 4 : _ref$threshold,
       children = _ref.children;
-  return /*#__PURE__*/React.createElement("nav", {
+  return React.createElement("nav", {
     "aria-label": intl.formatMessage(messages.breadcrumbLabel),
     className: "breadcrumbs ".concat(className)
-  }, /*#__PURE__*/React.createElement("ol", null, renderBreadcrumbs(React.Children.toArray(children), threshold)));
+  }, React.createElement("ol", null, renderBreadcrumbs(React.Children.toArray(children), threshold)));
 };
 
 export { Breadcrumb as BreadcrumbCore };

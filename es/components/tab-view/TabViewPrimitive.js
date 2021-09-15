@@ -8,19 +8,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -35,17 +31,17 @@ import './Tabs.scss';
 export var TAB_KEY = 'Tab';
 export var TAB_PANEL_ROLE = 'tabpanel';
 
-var TabViewPrimitive = /*#__PURE__*/function (_React$Component) {
+var TabViewPrimitive =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(TabViewPrimitive, _React$Component);
-
-  var _super = _createSuper(TabViewPrimitive);
 
   function TabViewPrimitive(props) {
     var _this;
 
     _classCallCheck(this, TabViewPrimitive);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(TabViewPrimitive).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "onClickTab", function (tabIndex) {
       var _this$props = _this.props,
@@ -251,9 +247,10 @@ var TabViewPrimitive = /*#__PURE__*/function (_React$Component) {
       var style = isDynamic ? {
         left: "".concat(tabsContainerOffsetLeft, "px")
       } : {};
-      return /*#__PURE__*/React.createElement("nav", {
+      return React.createElement("div", {
         className: "tabs",
         role: "tablist",
+        tabIndex: "0",
         ref: function ref(_ref2) {
           _this2.tabsContainer = _ref2;
         },
@@ -272,7 +269,7 @@ var TabViewPrimitive = /*#__PURE__*/function (_React$Component) {
         var tabIndex = i === selectedIndex ? '0' : '-1';
 
         if (href) {
-          return /*#__PURE__*/React.createElement(LinkButton, {
+          return React.createElement(LinkButton, {
             className: classes,
             "aria-controls": ariaControls,
             "aria-selected": ariaSelected,
@@ -286,14 +283,14 @@ var TabViewPrimitive = /*#__PURE__*/function (_React$Component) {
             tabIndex: tabIndex,
             to: href,
             component: component
-          }, /*#__PURE__*/React.createElement("div", {
+          }, React.createElement("div", {
             className: "tab-title"
-          }, tab.props.title), /*#__PURE__*/React.createElement("div", {
+          }, tab.props.title), React.createElement("div", {
             className: "tab-underline"
           }));
         }
 
-        return /*#__PURE__*/React.createElement("button", _extends({
+        return React.createElement("button", _extends({
           className: classes,
           "aria-controls": ariaControls,
           "aria-selected": ariaSelected,
@@ -307,9 +304,9 @@ var TabViewPrimitive = /*#__PURE__*/function (_React$Component) {
             _this2.tabsElements[i] = _ref;
           },
           tabIndex: tabIndex
-        }, buttonProps), /*#__PURE__*/React.createElement("div", {
+        }, buttonProps), React.createElement("div", {
           className: "tab-title"
-        }, tab.props.title), /*#__PURE__*/React.createElement("div", {
+        }, tab.props.title), React.createElement("div", {
           className: "tab-underline"
         }));
       }));
@@ -322,13 +319,11 @@ var TabViewPrimitive = /*#__PURE__*/function (_React$Component) {
       var _this$props7 = this.props,
           onTabFocus = _this$props7.onTabFocus,
           focusedIndex = _this$props7.focusedIndex;
-      return (
-        /*#__PURE__*/
-        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+      return (// eslint-disable-next-line jsx-a11y/no-static-element-interactions
         React.createElement("div", {
           className: "dynamic-tabs-bar",
           onKeyDown: this.handleKeyDown
-        }, /*#__PURE__*/React.createElement("button", {
+        }, React.createElement("button", {
           className: classNames('btn-plain svg-container left-arrow', {
             hidden: !this.isLeftArrowVisible()
           }),
@@ -337,9 +332,9 @@ var TabViewPrimitive = /*#__PURE__*/function (_React$Component) {
           },
           type: "button",
           tabIndex: "-1"
-        }, /*#__PURE__*/React.createElement(IconPageBack, null)), /*#__PURE__*/React.createElement("div", {
+        }, React.createElement(IconPageBack, null)), React.createElement("div", {
           className: "dynamic-tabs-wrapper"
-        }, this.renderTabs()), /*#__PURE__*/React.createElement("button", {
+        }, this.renderTabs()), React.createElement("button", {
           className: classNames('btn-plain svg-container right-arrow', {
             hidden: !this.isRightArrowVisible()
           }),
@@ -348,7 +343,7 @@ var TabViewPrimitive = /*#__PURE__*/function (_React$Component) {
           },
           type: "button",
           tabIndex: "-1"
-        }, /*#__PURE__*/React.createElement(IconPageForward, null)))
+        }, React.createElement(IconPageForward, null)))
       );
     }
   }, {
@@ -364,26 +359,22 @@ var TabViewPrimitive = /*#__PURE__*/function (_React$Component) {
           isDynamic = _this$props8$isDynami === void 0 ? false : _this$props8$isDynami,
           onKeyUp = _this$props8.onKeyUp,
           selectedIndex = _this$props8.selectedIndex;
-      return (
-        /*#__PURE__*/
-        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+      return (// eslint-disable-next-line jsx-a11y/no-static-element-interactions
         React.createElement("div", {
           className: "tab-view ".concat(classNames(className, {
             'dynamic-tabs': isDynamic
           })),
           onKeyUp: onKeyUp
-        }, !isDynamic ? this.renderTabs() : this.renderDynamicTabs(), /*#__PURE__*/React.createElement("div", {
+        }, !isDynamic ? this.renderTabs() : this.renderDynamicTabs(), React.createElement("div", {
           className: "tab-panels"
         }, React.Children.toArray(children).map(function (child, i) {
-          return /*#__PURE__*/React.createElement("div", {
+          return React.createElement("div", {
             key: i,
             id: "".concat(_this3.tabviewID, "-panel-").concat(i),
             "aria-labelledby": "".concat(_this3.tabviewID, "-tab-").concat(i + 1),
             "aria-hidden": selectedIndex !== i,
             className: "tab-panel ".concat(i === selectedIndex ? 'is-selected' : ''),
-            role: TAB_PANEL_ROLE // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-            ,
-            tabIndex: "0"
+            role: TAB_PANEL_ROLE
           }, child.props.children);
         })))
       );

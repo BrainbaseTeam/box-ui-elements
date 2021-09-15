@@ -8,9 +8,9 @@ var TableHeader = function TableHeader(_ref) {
       className = _ref$className === void 0 ? '' : _ref$className,
       _ref$rowClassName = _ref.rowClassName,
       rowClassName = _ref$rowClassName === void 0 ? '' : _ref$rowClassName;
-  return /*#__PURE__*/React.createElement("thead", {
+  return React.createElement("thead", {
     className: classNames('table-header', className)
-  }, /*#__PURE__*/React.createElement(TableRow, {
+  }, React.createElement(TableRow, {
     className: rowClassName
   }, children));
 };

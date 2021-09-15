@@ -9,10 +9,10 @@ import messages from './messages';
 
 var TranslateButton = function TranslateButton(_ref) {
   var handleTranslate = _ref.handleTranslate;
-  return /*#__PURE__*/React.createElement(PlainButton, {
+  return React.createElement(PlainButton, {
     className: "bcs-ActivityMessage-translate",
     onClick: handleTranslate
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.activityMessageTranslate));
+  }, React.createElement(FormattedMessage, messages.activityMessageTranslate));
 };
 
 export default TranslateButton;

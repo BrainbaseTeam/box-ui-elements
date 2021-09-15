@@ -5,8 +5,8 @@ import FeatureConsumer from './FeatureConsumer';
 
 function withFeatureConsumer(WrappedComponent) {
   function wrapComponent(props, ref) {
-    return /*#__PURE__*/React.createElement(FeatureConsumer, null, function (features) {
-      return /*#__PURE__*/React.createElement(WrappedComponent, _extends({}, props, {
+    return React.createElement(FeatureConsumer, null, function (features) {
+      return React.createElement(WrappedComponent, _extends({}, props, {
         ref: ref,
         features: features
       }));
@@ -15,7 +15,7 @@ function withFeatureConsumer(WrappedComponent) {
 
   var wrappedName = WrappedComponent.displayName || WrappedComponent.name || 'component';
   wrapComponent.displayName = "withFeatureConsumer(".concat(wrappedName, ")");
-  return /*#__PURE__*/React.forwardRef(wrapComponent);
+  return React.forwardRef(wrapComponent);
 }
 
 export default withFeatureConsumer;

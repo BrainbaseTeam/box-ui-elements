@@ -8,8 +8,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import Tooltip from '../tooltip';
 import './SelectButton.scss';
-
-var SelectButton = function SelectButton(_ref) {
+var SelectButton = React.forwardRef(function (_ref, ref) {
   var children = _ref.children,
       _ref$className = _ref.className,
       className = _ref$className === void 0 ? '' : _ref$className,
@@ -18,19 +17,19 @@ var SelectButton = function SelectButton(_ref) {
       isDisabled = _ref$isDisabled === void 0 ? false : _ref$isDisabled,
       rest = _objectWithoutProperties(_ref, ["children", "className", "error", "isDisabled"]);
 
-  return /*#__PURE__*/React.createElement(Tooltip, {
+  return React.createElement(Tooltip, {
     isShown: !!error,
     position: "middle-right",
     text: error,
     theme: "error"
-  }, /*#__PURE__*/React.createElement("button", _extends({
-    className: classNames(className, 'select-button', {
+  }, React.createElement("button", _extends({
+    className: classNames(className, 'select-button', 'bdl-SelectButton', {
       'is-invalid': !!error
     }),
     disabled: isDisabled,
+    ref: ref,
     type: "button"
   }, rest), children));
-};
-
+});
 export default SelectButton;
 //# sourceMappingURL=SelectButton.js.map

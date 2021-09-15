@@ -12,19 +12,15 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 /**
  * 
@@ -35,10 +31,10 @@ import Base from '../Base';
 import { HTTP_STATUS_CODE_RATE_LIMIT, HTTP_STATUS_CODE_INTERNAL_SERVER_ERROR, HTTP_STATUS_CODE_NOT_IMPLEMENTED, HTTP_STATUS_CODE_BAD_GATEWAY, HTTP_STATUS_CODE_SERVICE_UNAVAILABLE, HTTP_STATUS_CODE_GATEWAY_TIMEOUT } from '../../constants';
 var RETRYABLE = [HTTP_STATUS_CODE_RATE_LIMIT, HTTP_STATUS_CODE_INTERNAL_SERVER_ERROR, HTTP_STATUS_CODE_NOT_IMPLEMENTED, HTTP_STATUS_CODE_BAD_GATEWAY, HTTP_STATUS_CODE_SERVICE_UNAVAILABLE, HTTP_STATUS_CODE_GATEWAY_TIMEOUT];
 
-var TasksBase = /*#__PURE__*/function (_Base) {
+var TasksBase =
+/*#__PURE__*/
+function (_Base) {
   _inherits(TasksBase, _Base);
-
-  var _super = _createSuper(TasksBase);
 
   function TasksBase(_ref) {
     var _ref$retryableStatusC = _ref.retryableStatusCodes,
@@ -47,9 +43,9 @@ var TasksBase = /*#__PURE__*/function (_Base) {
 
     _classCallCheck(this, TasksBase);
 
-    return _super.call(this, _objectSpread(_objectSpread({}, options), {}, {
+    return _possibleConstructorReturn(this, _getPrototypeOf(TasksBase).call(this, _objectSpread({}, options, {
       retryableStatusCodes: retryableStatusCodes
-    }));
+    })));
   }
 
   return TasksBase;

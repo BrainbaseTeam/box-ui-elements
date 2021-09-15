@@ -11,17 +11,18 @@ var Pill = function Pill(_ref) {
       isValid = _ref$isValid === void 0 ? true : _ref$isValid,
       onRemove = _ref.onRemove,
       text = _ref.text;
-  var styles = classNames('pill', {
+  var styles = classNames('bdl-Pill', 'pill', {
     'is-selected': isSelected && !isDisabled,
     'is-invalid': !isValid,
-    'is-disabled': isDisabled
+    'is-disabled': isDisabled,
+    'bdl-is-disabled': isDisabled
   });
   var onClick = isDisabled ? noop : onRemove;
-  return /*#__PURE__*/React.createElement("span", {
+  return React.createElement("span", {
     className: styles
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "pill-text"
-  }, text), /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
+    className: "bdl-Pill-text pill-text"
+  }, text), React.createElement("span", {
     "aria-hidden": "true",
     className: "close-btn",
     onClick: onClick

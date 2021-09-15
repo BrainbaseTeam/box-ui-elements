@@ -15,7 +15,8 @@ var bcp47TagToDigitalUnits = {
 var getFileSize = function getFileSize(size) {
   var locale = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'en';
   var settings = {
-    round: 1
+    round: 1,
+    locale: locale
   };
   var localizedUnits = bcp47TagToDigitalUnits[locale];
 

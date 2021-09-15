@@ -12,11 +12,11 @@ import ErrorBoundary from './ErrorBoundary';
 var withErrorBoundary = function withErrorBoundary(errorOrigin) {
   var errorComponent = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : DefaultError;
   return function (WrappedComponent) {
-    return /*#__PURE__*/React.forwardRef(function (props, ref) {
-      return /*#__PURE__*/React.createElement(ErrorBoundary, _extends({
+    return React.forwardRef(function (props, ref) {
+      return React.createElement(ErrorBoundary, _extends({
         errorComponent: errorComponent,
         errorOrigin: errorOrigin
-      }, props), /*#__PURE__*/React.createElement(WrappedComponent, {
+      }, props), React.createElement(WrappedComponent, {
         ref: ref
       }));
     });

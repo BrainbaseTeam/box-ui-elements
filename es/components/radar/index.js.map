@@ -1,1 +1,1 @@
-{"version":3,"sources":["../../../src/components/radar/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,kBAAxB","sourcesContent":["// @flow\nexport { default } from './RadarAnimation';\n"],"file":"index.js"}
+{"version":3,"sources":["../../../src/components/radar/index.ts"],"names":["default","RadarAnimationPosition"],"mappings":"AAAA,SAASA,OAAT,EAAkBC,sBAAlB,QAAgD,kBAAhD","sourcesContent":["export { default, RadarAnimationPosition } from './RadarAnimation';\n"],"file":"index.js"}

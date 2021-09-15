@@ -5,6 +5,8 @@ function _objectWithoutProperties(source, excluded) { if (source == null) return
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
 import * as React from 'react';
+import uniqueId from 'lodash/uniqueId';
+import classNames from 'classnames';
 import CheckboxTooltip from './CheckboxTooltip';
 import './Checkbox.scss';
 
@@ -24,33 +26,38 @@ var Checkbox = function Checkbox(_ref) {
       tooltip = _ref.tooltip,
       rest = _objectWithoutProperties(_ref, ["className", "description", "fieldLabel", "hideLabel", "id", "isChecked", "isDisabled", "label", "name", "onChange", "subsection", "tooltip"]);
 
-  var checkboxLabel =
-  /*#__PURE__*/
-  // eslint-disable-next-line jsx-a11y/label-has-for
-  React.createElement("label", {
+  var generatedID = React.useRef(uniqueId('checkbox')).current; // use passed-in ID from props; otherwise generate one
+
+  var inputID = id || generatedID;
+  var checkboxAndLabel = React.createElement("span", {
     className: "checkbox-label"
-  }, /*#__PURE__*/React.createElement("input", _extends({
+  }, React.createElement("input", _extends({
     checked: isChecked,
     disabled: isDisabled,
-    id: id,
+    id: inputID,
     name: name,
     onChange: onChange,
     type: "checkbox"
-  }, rest)), /*#__PURE__*/React.createElement("span", {
+  }, rest)), React.createElement("span", {
     className: "checkbox-pointer-target"
-  }), /*#__PURE__*/React.createElement("span", {
-    className: hideLabel ? 'accessibility-hidden' : ''
-  }, label));
-  return /*#__PURE__*/React.createElement("div", {
-    className: "checkbox-container-box-ui-elements ".concat(className, " ").concat(isDisabled ? 'is-disabled' : '')
-  }, fieldLabel && /*#__PURE__*/React.createElement("div", {
-    className: "label"
-  }, fieldLabel), tooltip ? /*#__PURE__*/React.createElement(CheckboxTooltip, {
-    label: checkboxLabel,
+  }), React.createElement("span", {
+    className: classNames('bdl-Checkbox-labelTooltipWrapper', {
+      'accessibility-hidden': hideLabel
+    })
+  }, label && React.createElement("label", {
+    htmlFor: inputID
+  }, label), tooltip && React.createElement(CheckboxTooltip, {
     tooltip: tooltip
-  }) : checkboxLabel, description ? /*#__PURE__*/React.createElement("div", {
+  })));
+  return React.createElement("div", {
+    className: classNames('checkbox-container-box-ui-elements', className, {
+      'is-disabled bdl-is-disabled': isDisabled
+    })
+  }, fieldLabel && React.createElement("div", {
+    className: "label"
+  }, fieldLabel), checkboxAndLabel, description ? React.createElement("div", {
     className: "checkbox-description"
-  }, description) : null, subsection ? /*#__PURE__*/React.createElement("div", {
+  }, description) : null, subsection ? React.createElement("div", {
     className: "checkbox-subsection"
   }, subsection) : null);
 };

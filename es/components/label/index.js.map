@@ -1,1 +1,1 @@
-{"version":3,"sources":["../../../src/components/label/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,SAAxB","sourcesContent":["// @flow\nexport { default } from './Label';\n"],"file":"index.js"}
+{"version":3,"sources":["../../../src/components/label/index.tsx"],"names":["default"],"mappings":"AAAA,SAASA,OAAT,QAAwB,SAAxB","sourcesContent":["export { default } from './Label';\n"],"file":"index.js"}

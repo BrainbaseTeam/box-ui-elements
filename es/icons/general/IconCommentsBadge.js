@@ -11,21 +11,21 @@ var IconCommentsBadge = function IconCommentsBadge(_ref) {
       title = _ref.title,
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 14 : _ref$width;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: "icon-comments-badge ".concat(className),
     height: height,
     title: title,
     viewBox: "0 0 14 15",
     width: width
-  }, /*#__PURE__*/React.createElement("g", {
+  }, React.createElement("g", {
     className: "stroke-color",
     fill: "none",
     fillRule: "evenodd",
     stroke: color,
     strokeWidth: ".875"
-  }, /*#__PURE__*/React.createElement("path", {
+  }, React.createElement("path", {
     d: "M3.063 13.938l2.88-2.905h5.432c1.208 0 2.188-.98 2.188-2.187v-6.22c0-1.21-.98-2.188-2.188-2.188h-8.75c-1.208 0-2.188.98-2.188 2.187v6.22c0 1.21.98 2.188 2.188 2.188h.438v2.905z"
-  }), /*#__PURE__*/React.createElement("path", {
+  }), React.createElement("path", {
     d: "M3.938 3.97h6.124M3.938 7.5h6.124",
     strokeLinecap: "round",
     strokeLinejoin: "round"

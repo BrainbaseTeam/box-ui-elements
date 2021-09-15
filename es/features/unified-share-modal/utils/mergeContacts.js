@@ -7,7 +7,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var mergeContacts = function mergeContacts(existingContacts, fetchedContacts) {
   var contactsMap = Object.keys(fetchedContacts).reduce(function (map, email) {
     var contact = fetchedContacts[email];
-    map[email] = _objectSpread(_objectSpread({}, contact), {}, {
+    map[email] = _objectSpread({}, contact, {
       text: contact.name,
       value: contact.email || contact.id
     });

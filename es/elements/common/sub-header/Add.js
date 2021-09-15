@@ -18,13 +18,13 @@ var Add = function Add(_ref) {
       showUpload = _ref$showUpload === void 0 ? true : _ref$showUpload,
       _ref$showCreate = _ref.showCreate,
       showCreate = _ref$showCreate === void 0 ? true : _ref$showCreate;
-  return /*#__PURE__*/React.createElement(DropdownMenu, {
+  return React.createElement(DropdownMenu, {
     isRightAligned: true
-  }, /*#__PURE__*/React.createElement(AddButton, null), /*#__PURE__*/React.createElement(Menu, null, showUpload && /*#__PURE__*/React.createElement(MenuItem, {
+  }, React.createElement(AddButton, null), React.createElement(Menu, null, showUpload && React.createElement(MenuItem, {
     onClick: onUpload
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.upload)), showCreate && /*#__PURE__*/React.createElement(MenuItem, {
+  }, React.createElement(FormattedMessage, messages.upload)), showCreate && React.createElement(MenuItem, {
     onClick: onCreate
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.newFolder))));
+  }, React.createElement(FormattedMessage, messages.newFolder))));
 };
 
 export default Add;

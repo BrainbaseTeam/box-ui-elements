@@ -1,1 +1,1 @@
-{"version":3,"sources":["../../../src/icons/folder-icon/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,cAAxB","sourcesContent":["// @flow\nexport { default } from './FolderIcon';\n"],"file":"index.js"}
+{"version":3,"sources":["../../../src/icons/folder-icon/index.tsx"],"names":["default"],"mappings":"AAAA,SAASA,OAAT,QAAwB,cAAxB","sourcesContent":["export { default } from './FolderIcon';\n"],"file":"index.js"}

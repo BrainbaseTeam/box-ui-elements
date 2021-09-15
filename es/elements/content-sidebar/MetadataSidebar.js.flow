@@ -9,6 +9,7 @@ import flow from 'lodash/flow';
 import getProp from 'lodash/get';
 import noop from 'lodash/noop';
 import { FormattedMessage } from 'react-intl';
+import type { MessageDescriptor } from 'react-intl';
 import API from '../../api';
 import EmptyContent from '../../features/metadata-instance-editor/EmptyContent';
 import InlineError from '../../components/inline-error/InlineError';
@@ -33,6 +34,10 @@ import {
     ORIGIN_METADATA_SIDEBAR,
     SIDEBAR_VIEW_METADATA,
 } from '../../constants';
+import type { WithLoggerProps } from '../../common/types/logging';
+import type { ElementsXhrError, ErrorContextProps, JSONPatchOperations } from '../../common/types/api';
+import type { MetadataEditor, MetadataTemplate } from '../../common/types/metadata';
+import type { BoxItem } from '../../common/types/core';
 import './MetadataSidebar.scss';
 
 type ExternalProps = {
@@ -44,6 +49,7 @@ type ExternalProps = {
 type PropsWithoutContext = {
     elementId: string,
     fileId: string,
+    hasSidebarInitialized?: boolean,
 } & ExternalProps;
 
 type Props = {

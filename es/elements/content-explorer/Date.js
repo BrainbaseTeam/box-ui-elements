@@ -17,7 +17,7 @@ var Date = function Date(_ref) {
   var modifiedBy = modified_by ? modified_by.name || '' : '';
   var isRecents = dataKey === FIELD_INTERACTED_AT;
   var date = isRecents ? interacted_at || modified_at : modified_at;
-  var DateValue = /*#__PURE__*/React.createElement(Datefield, {
+  var DateValue = React.createElement(Datefield, {
     capitalize: true,
     date: date,
     omitCommas: true
@@ -27,7 +27,7 @@ var Date = function Date(_ref) {
     return DateValue;
   }
 
-  return /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.nameDate, {
+  return React.createElement(FormattedMessage, _extends({}, messages.nameDate, {
     values: {
       date: DateValue,
       name: modifiedBy

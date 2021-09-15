@@ -24,12 +24,13 @@ var ItemName = function ItemName(_ref) {
     return onClick(item);
   };
 
-  return type === TYPE_FOLDER || !isTouch && (type === TYPE_WEBLINK || canPreview) ? /*#__PURE__*/React.createElement(PlainButton, {
+  return type === TYPE_FOLDER || !isTouch && (type === TYPE_WEBLINK || canPreview) ? React.createElement(PlainButton, {
     className: "be-item-label",
+    "data-testid": "be-item-name",
     onClick: onItemClick,
     onFocus: onItemFocus,
     type: "button"
-  }, name) : /*#__PURE__*/React.createElement("span", {
+  }, name) : React.createElement("span", {
     className: "be-item-label"
   }, name);
 };

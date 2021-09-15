@@ -7,25 +7,29 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 import * as React from 'react';
 import classNames from 'classnames';
 import IconAlertDefault from '../../icons/general/IconAlertDefault';
-import { bdlYellorange } from '../../styles/variables';
+import { bdlYellow50 } from '../../styles/variables';
 import './SecurityBadge.scss';
 
 var SecurityBadge = function SecurityBadge(_ref) {
   var className = _ref.className,
+      color = _ref.color,
       icon = _ref.icon,
       message = _ref.message,
-      rest = _objectWithoutProperties(_ref, ["className", "icon", "message"]);
+      rest = _objectWithoutProperties(_ref, ["className", "color", "icon", "message"]);
 
-  return /*#__PURE__*/React.createElement("h1", _extends({
-    className: classNames('bdl-SecurityBadge', className)
-  }, rest), icon, /*#__PURE__*/React.createElement("span", {
+  return React.createElement("h1", _extends({
+    className: classNames('bdl-SecurityBadge', className),
+    style: {
+      backgroundColor: color
+    }
+  }, rest), icon, React.createElement("span", {
     className: "bdl-SecurityBadge-name"
   }, message));
 };
 
 SecurityBadge.defaultProps = {
-  icon: /*#__PURE__*/React.createElement(IconAlertDefault, {
-    color: bdlYellorange,
+  icon: React.createElement(IconAlertDefault, {
+    color: bdlYellow50,
     height: 22,
     width: 22,
     strokeWidth: 3

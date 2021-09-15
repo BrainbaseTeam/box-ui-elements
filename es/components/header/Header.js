@@ -19,7 +19,7 @@ var Header = function Header(_ref) {
   var classes = classNames('header', {
     'is-fixed': fixed
   }, className);
-  return /*#__PURE__*/React.createElement("header", _extends({
+  return React.createElement("header", _extends({
     className: classes,
     style: color ? {
       backgroundColor: color

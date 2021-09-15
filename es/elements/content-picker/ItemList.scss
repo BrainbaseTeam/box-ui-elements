@@ -1,5 +1,4 @@
 @import '../common/variables';
-@import '~react-virtualized/styles.css';
 
 .bcp-item-grid {
     flex: 1;
@@ -61,7 +60,7 @@
         }
     }
 
-    .checkbox-container,
+    .checkbox-container-box-ui-elements,
     .radio-container {
         margin: 0 0 0 1px;
 

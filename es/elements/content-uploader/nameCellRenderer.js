@@ -9,7 +9,7 @@ import IconName from './IconName';
 export default (function (isResumableUploadsEnabled) {
   return function (_ref) {
     var rowData = _ref.rowData;
-    return /*#__PURE__*/React.createElement(IconName, _extends({
+    return React.createElement(IconName, _extends({
       isResumableUploadsEnabled: isResumableUploadsEnabled
     }, rowData));
   };

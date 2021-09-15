@@ -10,19 +10,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -50,12 +46,14 @@ import { isValidTimeSlice } from './timeSliceUtils';
 import TranscriptRow from './TranscriptRow';
 import './Transcript.scss';
 
-var Transcript = /*#__PURE__*/function (_React$PureComponent) {
+var Transcript =
+/*#__PURE__*/
+function (_React$PureComponent) {
   _inherits(Transcript, _React$PureComponent);
 
-  var _super = _createSuper(Transcript);
-
   function Transcript() {
+    var _getPrototypeOf2;
+
     var _this;
 
     _classCallCheck(this, Transcript);
@@ -64,7 +62,7 @@ var Transcript = /*#__PURE__*/function (_React$PureComponent) {
       args[_key] = arguments[_key];
     }
 
-    _this = _super.call.apply(_super, [this].concat(args));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Transcript)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_this), "state", {
       isEditingIndex: undefined,
@@ -89,7 +87,7 @@ var Transcript = /*#__PURE__*/function (_React$PureComponent) {
       var isEditingRow = isEditingIndex === index;
       var transcriptText = isEditingRow ? newTranscriptText : text;
       var interactionTarget = isEditingRow ? SKILLS_TARGETS.TRANSCRIPTS.EDIT_TEXT : SKILLS_TARGETS.TRANSCRIPTS.TRANSCRIPT;
-      return /*#__PURE__*/React.createElement(TranscriptRow, {
+      return React.createElement(TranscriptRow, {
         key: index,
         appears: appears,
         interactionTarget: interactionTarget,
@@ -135,7 +133,7 @@ var Transcript = /*#__PURE__*/function (_React$PureComponent) {
         });
 
         onSkillChange(null, null, [{
-          replacement: _objectSpread(_objectSpread({}, entry), {}, {
+          replacement: _objectSpread({}, entry, {
             text: newTranscriptText
           }),
           replaced: entry
@@ -290,44 +288,44 @@ var Transcript = /*#__PURE__*/function (_React$PureComponent) {
         'be-transcript-content-collapsed': isCollapsed
       });
       var expandCollapseMessage = isCollapsed ? messages.expand : messages.collapse;
-      return /*#__PURE__*/React.createElement(LoadingIndicatorWrapper, {
+      return React.createElement(LoadingIndicatorWrapper, {
         className: "be-transcript",
         isLoading: isLoading
-      }, hasEntries && !isLoading && /*#__PURE__*/React.createElement("div", {
+      }, hasEntries && !isLoading && React.createElement("div", {
         className: "be-transcript-actions"
-      }, /*#__PURE__*/React.createElement(Tooltip, {
-        text: /*#__PURE__*/React.createElement(FormattedMessage, messages.copy)
-      }, /*#__PURE__*/React.createElement(PlainButton, {
+      }, React.createElement(Tooltip, {
+        text: React.createElement(FormattedMessage, messages.copy)
+      }, React.createElement(PlainButton, {
         className: "be-transcript-copy",
         "data-resin-target": SKILLS_TARGETS.TRANSCRIPTS.COPY,
         getDOMRef: this.copyBtnRef,
         onClick: this.copyTranscript,
         type: "button"
-      }, /*#__PURE__*/React.createElement(IconCopy, {
+      }, React.createElement(IconCopy, {
         color: bdlGray50
-      }))), hasManyEntries && /*#__PURE__*/React.createElement(Tooltip, {
-        text: /*#__PURE__*/React.createElement(FormattedMessage, expandCollapseMessage)
-      }, /*#__PURE__*/React.createElement(PlainButton, {
+      }))), hasManyEntries && React.createElement(Tooltip, {
+        text: React.createElement(FormattedMessage, expandCollapseMessage)
+      }, React.createElement(PlainButton, {
         className: "be-transcript-expand",
         "data-resin-target": SKILLS_TARGETS.TRANSCRIPTS.EXPAND,
         onClick: this.toggleExpandCollapse,
         type: "button"
-      }, isCollapsed ? /*#__PURE__*/React.createElement(IconExpand, {
+      }, isCollapsed ? React.createElement(IconExpand, {
         color: bdlGray50
-      }) : /*#__PURE__*/React.createElement(IconCollapse, {
+      }) : React.createElement(IconCollapse, {
         color: bdlGray50
-      }))), isEditable && /*#__PURE__*/React.createElement(Tooltip, {
-        text: /*#__PURE__*/React.createElement(FormattedMessage, messages.editLabel)
-      }, /*#__PURE__*/React.createElement(PlainButton, {
+      }))), isEditable && React.createElement(Tooltip, {
+        text: React.createElement(FormattedMessage, messages.editLabel)
+      }, React.createElement(PlainButton, {
         className: editBtnClassName,
         "data-resin-target": SKILLS_TARGETS.TRANSCRIPTS.EDIT,
         onClick: this.toggleIsEditing,
         type: "button"
-      }, /*#__PURE__*/React.createElement(IconEdit, null)))), isEditing ? /*#__PURE__*/React.createElement("div", {
+      }, React.createElement(IconEdit, null)))), isEditing ? React.createElement("div", {
         className: "be-transcript-edit-message"
-      }, /*#__PURE__*/React.createElement(FormattedMessage, messages.transcriptEdit)) : null, hasEntries ? /*#__PURE__*/React.createElement("div", {
+      }, React.createElement(FormattedMessage, messages.transcriptEdit)) : null, hasEntries ? React.createElement("div", {
         className: contentClassName
-      }, entries.map(this.transcriptMapper)) : /*#__PURE__*/React.createElement(FormattedMessage, messages.skillNoInfoFoundError));
+      }, entries.map(this.transcriptMapper)) : React.createElement(FormattedMessage, messages.skillNoInfoFoundError));
     }
   }]);
 

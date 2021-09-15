@@ -51,7 +51,7 @@ var SubHeaderLeft = function SubHeaderLeft(_ref) {
     }
   }
 
-  return /*#__PURE__*/React.createElement(Breadcrumbs, {
+  return React.createElement(Breadcrumbs, {
     crumbs: crumbs,
     delimiter: DELIMITER_CARET,
     isSmall: isSmall,

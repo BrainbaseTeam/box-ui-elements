@@ -35,16 +35,17 @@ var SubHeader = function SubHeader(_ref) {
       view = _ref.view,
       _ref$viewMode = _ref.viewMode,
       viewMode = _ref$viewMode === void 0 ? VIEW_MODE_LIST : _ref$viewMode;
-  return /*#__PURE__*/React.createElement("div", {
-    className: "be-sub-header"
-  }, /*#__PURE__*/React.createElement(SubHeaderLeft, {
+  return React.createElement("div", {
+    className: "be-sub-header",
+    "data-testid": "be-sub-header"
+  }, React.createElement(SubHeaderLeft, {
     currentCollection: currentCollection,
     isSmall: isSmall,
     onItemClick: onItemClick,
     rootId: rootId,
     rootName: rootName,
     view: view
-  }), /*#__PURE__*/React.createElement(SubHeaderRight, {
+  }), React.createElement(SubHeaderRight, {
     canCreateNewFolder: canCreateNewFolder,
     canUpload: canUpload,
     currentCollection: currentCollection,

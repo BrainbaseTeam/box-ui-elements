@@ -19,16 +19,16 @@ var VersionsList = function VersionsList(_ref) {
       versions = _ref.versions,
       rest = _objectWithoutProperties(_ref, ["currentId", "versions"]);
 
-  return /*#__PURE__*/React.createElement("ul", {
+  return React.createElement("ul", {
     className: "bcs-VersionsList"
   }, versions.map(function (version) {
-    return /*#__PURE__*/React.createElement("li", {
+    return React.createElement("li", {
       className: "bcs-VersionsList-item",
       key: version.id
-    }, /*#__PURE__*/React.createElement(Route, {
+    }, React.createElement(Route, {
       render: function render(_ref2) {
         var match = _ref2.match;
-        return /*#__PURE__*/React.createElement(VersionsItem, _extends({
+        return React.createElement(VersionsItem, _extends({
           isCurrent: currentId === version.id,
           isSelected: match.params.versionId === version.id,
           version: version

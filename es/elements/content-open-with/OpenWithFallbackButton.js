@@ -8,9 +8,9 @@ import OpenWithButton from './OpenWithButton';
 
 var OpenWithFallbackButton = function OpenWithFallbackButton(_ref) {
   var error = _ref.error;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "be bcow"
-  }, /*#__PURE__*/React.createElement(OpenWithButton, {
+  }, React.createElement(OpenWithButton, {
     error: error,
     isLoading: false
   }));

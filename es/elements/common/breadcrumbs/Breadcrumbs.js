@@ -4,10 +4,12 @@
  * @author Box
  */
 import React from 'react';
+import { injectIntl } from 'react-intl';
 import Breadcrumb from './Breadcrumb';
 import BreadcrumbDropdown from './BreadcrumbDropdown';
 import BreadcrumbDelimiter from './BreadcrumbDelimiter';
-import { DELIMITER_SLASH, DELIMITER_CARET } from '../../../constants';
+import { DELIMITER_CARET, DEFAULT_ROOT, DELIMITER_SLASH } from '../../../constants';
+import messages from '../messages';
 import './Breadcrumbs.scss';
 
 /**
@@ -38,20 +40,20 @@ function filterCrumbs(rootId, crumbs) {
 function getBreadcrumb(crumbs, isLast, onCrumbClick, delimiter) {
   if (Array.isArray(crumbs)) {
     var condensed = delimiter !== DELIMITER_CARET;
-    return /*#__PURE__*/React.createElement("span", {
+    return React.createElement("span", {
       className: "be-breadcrumb-more"
-    }, /*#__PURE__*/React.createElement(BreadcrumbDropdown, {
+    }, React.createElement(BreadcrumbDropdown, {
       className: condensed ? 'be-breadcrumbs-condensed' : '',
       crumbs: crumbs,
       onCrumbClick: onCrumbClick
-    }), /*#__PURE__*/React.createElement(BreadcrumbDelimiter, {
+    }), React.createElement(BreadcrumbDelimiter, {
       delimiter: condensed ? DELIMITER_SLASH : DELIMITER_CARET
     }));
   }
 
   var id = crumbs.id,
       name = crumbs.name;
-  return /*#__PURE__*/React.createElement(Breadcrumb, {
+  return React.createElement(Breadcrumb, {
     delimiter: delimiter,
     isLast: isLast,
     name: name,
@@ -67,21 +69,32 @@ var Breadcrumbs = function Breadcrumbs(_ref) {
       onCrumbClick = _ref.onCrumbClick,
       delimiter = _ref.delimiter,
       _ref$isSmall = _ref.isSmall,
-      isSmall = _ref$isSmall === void 0 ? false : _ref$isSmall;
+      isSmall = _ref$isSmall === void 0 ? false : _ref$isSmall,
+      intl = _ref.intl;
 
   if (!rootId || crumbs.length === 0) {
-    return /*#__PURE__*/React.createElement("span", null);
+    return React.createElement("span", null);
   } // The crumbs given may have ancestors higher than the root. We need to filter them out.
 
 
-  var filteredCrumbs = filterCrumbs(rootId, crumbs);
+  var filteredCrumbs = filterCrumbs(rootId, crumbs); // Make sure "All Files" crumb is localized
+
+  var defaultRootCrumb = filteredCrumbs.find(function (_ref2) {
+    var id = _ref2.id;
+    return id === DEFAULT_ROOT;
+  });
+
+  if (defaultRootCrumb) {
+    defaultRootCrumb.name = intl.formatMessage(messages.rootBreadcrumb);
+  }
+
   var length = filteredCrumbs.length; // Always show the last/leaf breadcrumb.
 
   var crumb = filteredCrumbs[length - 1];
   var onClick = crumb.id ? function () {
     return onCrumbClick(crumb.id);
   } : undefined;
-  var lastBreadcrumb = /*#__PURE__*/React.createElement(Breadcrumb, {
+  var lastBreadcrumb = React.createElement(Breadcrumb, {
     isLast: true,
     name: crumb.name,
     onClick: onClick
@@ -92,10 +105,11 @@ var Breadcrumbs = function Breadcrumbs(_ref) {
   var moreBreadcrumbs = length > 3 ? getBreadcrumb(filteredCrumbs.slice(1, length - 2), false, onCrumbClick, delimiter) : null; // Only show the root breadcrumb when there are at least 3 crumbs.
 
   var firstBreadcrumb = length > 2 ? getBreadcrumb(filteredCrumbs[0], false, onCrumbClick, delimiter) : null;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "be-breadcrumbs"
   }, isSmall ? null : firstBreadcrumb, isSmall ? null : moreBreadcrumbs, secondLastBreadcrumb, lastBreadcrumb);
 };
 
-export default Breadcrumbs;
+export { Breadcrumbs as BreadcrumbsBase };
+export default injectIntl(Breadcrumbs);
 //# sourceMappingURL=Breadcrumbs.js.map

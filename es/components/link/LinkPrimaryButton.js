@@ -12,7 +12,7 @@ var LinkPrimaryButton = function LinkPrimaryButton(_ref) {
       className = _ref$className === void 0 ? '' : _ref$className,
       rest = _objectWithoutProperties(_ref, ["className"]);
 
-  return /*#__PURE__*/React.createElement(LinkButton, _extends({
+  return React.createElement(LinkButton, _extends({
     className: "btn-primary ".concat(className)
   }, rest));
 };

@@ -22,13 +22,14 @@ import './Content.scss';
  *
  * @param {string} view the current view
  * @param {Object} currentCollection the current collection
+ * @param {FieldsToShow} fieldsToShow list of metadata template fields to show
  * @return {boolean} empty or not
  */
 
-function isEmpty(view, currentCollection, metadataColumnsToShow) {
+function isEmpty(view, currentCollection, fieldsToShow) {
   var _currentCollection$it = currentCollection.items,
       items = _currentCollection$it === void 0 ? [] : _currentCollection$it;
-  return view === VIEW_ERROR || items.length === 0 || view === VIEW_METADATA && metadataColumnsToShow.length === 0;
+  return view === VIEW_ERROR || !items.length || view === VIEW_METADATA && !fieldsToShow.length;
 }
 
 var Content = function Content(_ref) {
@@ -42,34 +43,34 @@ var Content = function Content(_ref) {
       view = _ref.view,
       _ref$viewMode = _ref.viewMode,
       viewMode = _ref$viewMode === void 0 ? VIEW_MODE_LIST : _ref$viewMode,
-      _ref$metadataColumnsT = _ref.metadataColumnsToShow,
-      metadataColumnsToShow = _ref$metadataColumnsT === void 0 ? [] : _ref$metadataColumnsT,
-      rest = _objectWithoutProperties(_ref, ["currentCollection", "focusedRow", "gridColumnCount", "isMedium", "onSortChange", "tableRef", "view", "viewMode", "metadataColumnsToShow"]);
+      _ref$fieldsToShow = _ref.fieldsToShow,
+      fieldsToShow = _ref$fieldsToShow === void 0 ? [] : _ref$fieldsToShow,
+      rest = _objectWithoutProperties(_ref, ["currentCollection", "focusedRow", "gridColumnCount", "isMedium", "onSortChange", "tableRef", "view", "viewMode", "fieldsToShow"]);
 
-  var isViewEmpty = isEmpty(view, currentCollection, metadataColumnsToShow);
+  var isViewEmpty = isEmpty(view, currentCollection, fieldsToShow);
   var isMetadataBasedView = view === VIEW_METADATA;
   var isListView = !isMetadataBasedView && viewMode === VIEW_MODE_LIST; // Folder view or Recents view
 
   var isGridView = !isMetadataBasedView && viewMode === VIEW_MODE_GRID; // Folder view or Recents view
 
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "bce-content"
-  }, view === VIEW_ERROR || view === VIEW_SELECTED ? null : /*#__PURE__*/React.createElement(ProgressBar, {
+  }, view === VIEW_ERROR || view === VIEW_SELECTED ? null : React.createElement(ProgressBar, {
     percent: currentCollection.percentLoaded
-  }), isViewEmpty && /*#__PURE__*/React.createElement(EmptyState, {
+  }), isViewEmpty && React.createElement(EmptyState, {
     view: view,
     isLoading: currentCollection.percentLoaded !== 100
-  }), !isViewEmpty && isMetadataBasedView && /*#__PURE__*/React.createElement(MetadataBasedItemList, _extends({
+  }), !isViewEmpty && isMetadataBasedView && React.createElement(MetadataBasedItemList, _extends({
     currentCollection: currentCollection,
-    metadataColumnsToShow: metadataColumnsToShow
-  }, rest)), !isViewEmpty && isListView && /*#__PURE__*/React.createElement(ItemList, _extends({
+    fieldsToShow: fieldsToShow
+  }, rest)), !isViewEmpty && isListView && React.createElement(ItemList, _extends({
     currentCollection: currentCollection,
     onSortChange: onSortChange,
     focusedRow: focusedRow,
     isMedium: isMedium,
     tableRef: tableRef,
     view: view
-  }, rest)), !isViewEmpty && isGridView && /*#__PURE__*/React.createElement(ItemGrid, _extends({
+  }, rest)), !isViewEmpty && isGridView && React.createElement(ItemGrid, _extends({
     currentCollection: currentCollection,
     gridColumnCount: gridColumnCount,
     view: view

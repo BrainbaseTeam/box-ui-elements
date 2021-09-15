@@ -4,9 +4,9 @@ import './MenuToggle.scss';
 
 var MenuToggle = function MenuToggle(_ref) {
   var children = _ref.children;
-  return /*#__PURE__*/React.createElement("span", {
+  return React.createElement("span", {
     className: "menu-toggle"
-  }, children, /*#__PURE__*/React.createElement(IconCaretDown, {
+  }, children, React.createElement(IconCaretDown, {
     className: "toggle-arrow",
     width: 7
   }));

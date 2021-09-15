@@ -23,6 +23,8 @@ type Props = {
     hideLabel?: boolean,
     /** Hides (optional) text from the label */
     hideOptionalLabel?: boolean,
+    /** Icon to display in the input field */
+    icon?: React.Node,
     inputRef?: Function, // @TODO: eventually rename to innerRef for consistancy across all form elements
     /** Renders a loading indicator within the component when true */
     isLoading?: boolean,
@@ -42,6 +44,7 @@ const TextInput = ({
     errorPosition,
     hideLabel,
     hideOptionalLabel,
+    icon,
     inputRef,
     isLoading,
     isRequired,
@@ -55,11 +58,12 @@ const TextInput = ({
         'show-error': hasError,
     });
 
-    const errorMessageID = React.useRef(uniqueId('errorMessage')).current;
+    const descriptionID = React.useRef(uniqueId('description')).current;
+
     const ariaAttrs = {
         'aria-invalid': hasError,
         'aria-required': isRequired,
-        'aria-errormessage': errorMessageID,
+        'aria-describedby': description ? descriptionID : undefined,
     };
 
     return (
@@ -70,15 +74,17 @@ const TextInput = ({
                 text={label}
                 tooltip={labelTooltip}
             >
-                {!!description && <i className="text-input-description">{description}</i>}
+                {!!description && (
+                    <div id={descriptionID} className="text-input-description">
+                        {description}
+                    </div>
+                )}
                 <Tooltip isShown={hasError} position={errorPosition || 'middle-right'} text={error || ''} theme="error">
                     <input ref={inputRef} required={isRequired} {...ariaAttrs} {...rest} />
                 </Tooltip>
                 {isLoading && !isValid && <LoadingIndicator className="text-input-loading" />}
                 {isValid && !isLoading && <IconVerified className="text-input-verified" />}
-                <span id={errorMessageID} className="accessibility-hidden" role="alert">
-                    {error}
-                </span>
+                {!isLoading && !isValid && icon ? icon : null}
             </Label>
         </div>
     );

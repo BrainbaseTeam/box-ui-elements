@@ -7,6 +7,7 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 import * as React from 'react';
 import './RadioButton.scss'; // @NOTE: readonly is not a valid attribute for input type radio so
 // this avoids the propType error that "checked" is set without "onChange"
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 
 var onChangeStub = function onChangeStub() {};
 
@@ -22,20 +23,20 @@ var RadioButton = function RadioButton(_ref) {
       value = _ref.value,
       rest = _objectWithoutProperties(_ref, ["isDisabled", "isSelected", "description", "hideLabel", "label", "name", "value"]);
 
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "radio-container"
-  }, /*#__PURE__*/React.createElement("label", {
+  }, React.createElement("label", {
     className: "radio-label"
-  }, /*#__PURE__*/React.createElement("input", _extends({
+  }, React.createElement("input", _extends({
     checked: isSelected,
     disabled: isDisabled,
     name: name,
     onChange: onChangeStub,
     type: "radio",
     value: value
-  }, rest)), /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", {
+  }, rest)), React.createElement("span", null), React.createElement("span", {
     className: hideLabel ? 'accessibility-hidden' : ''
-  }, label)), description ? /*#__PURE__*/React.createElement("div", {
+  }, label)), description ? React.createElement("div", {
     className: "radio-description"
   }, description) : null);
 };

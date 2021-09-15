@@ -5,7 +5,7 @@ function defaultDropdownRenderer(options) {
   return options.map(function (_ref) {
     var displayText = _ref.displayText,
         value = _ref.value;
-    return /*#__PURE__*/React.createElement(DatalistItem, {
+    return React.createElement(DatalistItem, {
       key: value
     }, displayText);
   });

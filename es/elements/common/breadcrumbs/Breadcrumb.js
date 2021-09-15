@@ -14,16 +14,16 @@ var Breadcrumb = function Breadcrumb(_ref) {
       onClick = _ref.onClick,
       isLast = _ref.isLast,
       delimiter = _ref.delimiter;
-  var title = onClick ? /*#__PURE__*/React.createElement(PlainButton, {
+  var title = onClick ? React.createElement(PlainButton, {
     onClick: onClick,
     type: "button",
     className: "bdl-Breadcrumb-title"
-  }, name) : /*#__PURE__*/React.createElement("div", {
+  }, name) : React.createElement("div", {
     className: "bdl-Breadcrumb-title"
   }, name);
-  return /*#__PURE__*/React.createElement("span", {
+  return React.createElement("span", {
     className: "be-breadcrumb"
-  }, title, isLast ? null : /*#__PURE__*/React.createElement(BreadcrumbDelimiter, {
+  }, title, isLast ? null : React.createElement(BreadcrumbDelimiter, {
     delimiter: delimiter
   }));
 };

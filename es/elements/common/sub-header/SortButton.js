@@ -14,12 +14,12 @@ import Tooltip from '../Tooltip';
 import './SortButton.scss';
 
 var SortButton = function SortButton(props) {
-  return /*#__PURE__*/React.createElement(Tooltip, {
-    text: /*#__PURE__*/React.createElement(FormattedMessage, messages.sort)
-  }, /*#__PURE__*/React.createElement(Button, _extends({
+  return React.createElement(Tooltip, {
+    text: React.createElement(FormattedMessage, messages.sort)
+  }, React.createElement(Button, _extends({
     className: "be-btn-sort",
     type: "button"
-  }, props), /*#__PURE__*/React.createElement(IconSort, null)));
+  }, props), React.createElement(IconSort, null)));
 };
 
 export default SortButton;

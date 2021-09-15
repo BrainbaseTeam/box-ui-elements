@@ -1,17 +1,25 @@
 // @flow
 import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
+import uniqueId from 'lodash/uniqueId';
 
 import { Editor } from 'draft-js';
 import type { EditorState } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 
-import Label from '../label';
 import Tooltip from '../tooltip';
 
+import commonMessages from '../../common/messages';
 import './DraftJSEditor.scss';
 
+const OptionalFormattedMessage = () => (
+    <span className="bdl-Label-optional">
+        (<FormattedMessage {...commonMessages.optional} />)
+    </span>
+);
 type Props = {
+    description?: React.Node,
     editorState: EditorState,
     error?: ?Object,
     hideLabel?: boolean,
@@ -70,6 +78,10 @@ class DraftJSEditor extends React.Component<Props> {
         return 'not-handled';
     };
 
+    labelID = uniqueId('label');
+
+    descriptionID = uniqueId('description');
+
     render() {
         const {
             editorState,
@@ -79,6 +91,7 @@ class DraftJSEditor extends React.Component<Props> {
             isDisabled,
             isRequired,
             label,
+            description,
             onFocus,
             placeholder,
         } = this.props;
@@ -87,7 +100,7 @@ class DraftJSEditor extends React.Component<Props> {
 
         const classes = classNames({
             'draft-js-editor': true,
-            'is-disabled': isDisabled,
+            'is-disabled bdl-is-disabled': isDisabled,
             'show-error': !!error,
         });
 
@@ -98,30 +111,39 @@ class DraftJSEditor extends React.Component<Props> {
                 ariaAutoComplete: inputProps['aria-autocomplete'],
                 ariaExpanded: inputProps['aria-expanded'],
                 ariaOwneeID: inputProps['aria-owns'],
-                role: inputProps.role,
+                ariaMultiline: true,
+                role: 'textbox',
             };
         }
 
         return (
             <div className={classes}>
-                <Label hideLabel={hideLabel} showOptionalText={!isRequired} text={label}>
-                    <Tooltip isShown={!!error} position="bottom-left" text={error ? error.message : ''} theme="error">
-                        {/* need div so tooltip can set aria-describedby */}
-                        <div>
-                            <Editor
-                                {...a11yProps}
-                                editorState={editorState}
-                                handleReturn={this.handleReturn}
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                onFocus={onFocus}
-                                placeholder={placeholder}
-                                readOnly={isDisabled}
-                                stripPastedStyles
-                            />
-                        </div>
-                    </Tooltip>
-                </Label>
+                <span className={classNames('bdl-Label', { 'accessibility-hidden': hideLabel })} id={this.labelID}>
+                    {label}
+                    {!isRequired && <OptionalFormattedMessage />}
+                </span>
+                <span className="accessibility-hidden screenreader-description" id={this.descriptionID}>
+                    {description}
+                </span>
+
+                <Tooltip isShown={!!error} position="bottom-left" text={error ? error.message : ''} theme="error">
+                    {/* need div so tooltip can set aria-describedby */}
+                    <div>
+                        <Editor
+                            {...a11yProps}
+                            ariaLabelledBy={this.labelID}
+                            ariaDescribedBy={this.descriptionID}
+                            editorState={editorState}
+                            handleReturn={this.handleReturn}
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            onFocus={onFocus}
+                            placeholder={placeholder}
+                            readOnly={isDisabled}
+                            stripPastedStyles
+                        />
+                    </div>
+                </Tooltip>
             </div>
         );
     }

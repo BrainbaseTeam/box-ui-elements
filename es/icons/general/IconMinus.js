@@ -11,13 +11,13 @@ var IconMinus = function IconMinus(_ref) {
       title = _ref.title,
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 16 : _ref$width;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: "icon-minus ".concat(className),
     height: height,
     title: title,
     viewBox: "0 0 16 16",
     width: width
-  }, /*#__PURE__*/React.createElement("path", {
+  }, React.createElement("path", {
     d: "M2 5h8v2H2z",
     fill: color,
     fillRule: "evenodd"

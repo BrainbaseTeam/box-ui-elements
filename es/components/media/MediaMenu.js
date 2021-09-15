@@ -6,8 +6,12 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 
 import * as React from 'react';
 import classnames from 'classnames';
+import { injectIntl } from 'react-intl';
+import messages from './messages';
 import IconEllipsis from '../../icons/general/IconEllipsis';
-import PlainButton from '../plain-button';
+import { ButtonType } from '../button';
+import PlainButton from '../plain-button'; // @ts-ignore TODO: migrate DropdownMenu to typescript
+
 import DropdownMenu from '../dropdown-menu';
 import { Menu } from '../menu';
 import { bdlGray50 } from '../../styles/variables';
@@ -16,29 +20,29 @@ import './Media.scss';
 var MediaMenu = function MediaMenu(_ref) {
   var className = _ref.className,
       children = _ref.children,
-      isDisabled = _ref.isDisabled,
-      dropdownProps = _ref.dropdownProps,
-      menuProps = _ref.menuProps,
-      rest = _objectWithoutProperties(_ref, ["className", "children", "isDisabled", "dropdownProps", "menuProps"]);
+      _ref$isDisabled = _ref.isDisabled,
+      isDisabled = _ref$isDisabled === void 0 ? false : _ref$isDisabled,
+      _ref$dropdownProps = _ref.dropdownProps,
+      dropdownProps = _ref$dropdownProps === void 0 ? {} : _ref$dropdownProps,
+      _ref$menuProps = _ref.menuProps,
+      menuProps = _ref$menuProps === void 0 ? {} : _ref$menuProps,
+      intl = _ref.intl,
+      rest = _objectWithoutProperties(_ref, ["className", "children", "isDisabled", "dropdownProps", "menuProps", "intl"]);
 
-  return /*#__PURE__*/React.createElement(DropdownMenu, _extends({
+  return React.createElement(DropdownMenu, _extends({
     constrainToScrollParent: true,
     isRightAligned: true
-  }, dropdownProps), /*#__PURE__*/React.createElement(PlainButton, _extends({
-    isDisabled: isDisabled,
+  }, dropdownProps), React.createElement(PlainButton, _extends({
+    "aria-label": intl.formatMessage(messages.menuButtonArialLabel),
     className: classnames('bdl-Media-menu', className),
-    type: "button"
-  }, rest), /*#__PURE__*/React.createElement(IconEllipsis, {
+    isDisabled: isDisabled,
+    type: ButtonType.BUTTON
+  }, rest), React.createElement(IconEllipsis, {
     color: bdlGray50,
     height: 16,
     width: 16
-  })), /*#__PURE__*/React.createElement(Menu, menuProps, children));
+  })), React.createElement(Menu, menuProps, children));
 };
 
-MediaMenu.defaultProps = {
-  dropdownProps: {},
-  isDisabled: false,
-  menuProps: {}
-};
-export default MediaMenu;
+export default injectIntl(MediaMenu);
 //# sourceMappingURL=MediaMenu.js.map

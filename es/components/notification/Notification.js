@@ -1,6 +1,6 @@
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 var _DURATION_TIMES, _ICON_RENDERER;
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8,19 +8,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -38,20 +34,20 @@ import './Notification.scss'; // @NOTE: We can't import these constants from ./c
 
 var DURATION_SHORT = 'short';
 var DURATION_LONG = 'long';
+var OVERFLOW_WRAP = 'wrap';
 var TYPE_DEFAULT = 'default';
 var TYPE_INFO = 'info';
 var TYPE_WARN = 'warn';
 var TYPE_ERROR = 'error';
-var OVERFLOW_WRAP = 'wrap';
 var DURATION_TIMES = (_DURATION_TIMES = {}, _defineProperty(_DURATION_TIMES, DURATION_SHORT, 5000), _defineProperty(_DURATION_TIMES, DURATION_LONG, 10000), _DURATION_TIMES);
 var ICON_RENDERER = (_ICON_RENDERER = {}, _defineProperty(_ICON_RENDERER, TYPE_DEFAULT, function () {
-  return /*#__PURE__*/React.createElement(IconBell, null);
+  return React.createElement(IconBell, null);
 }), _defineProperty(_ICON_RENDERER, TYPE_ERROR, function () {
-  return /*#__PURE__*/React.createElement(IconAlertCircle, null);
+  return React.createElement(IconAlertCircle, null);
 }), _defineProperty(_ICON_RENDERER, TYPE_INFO, function () {
-  return /*#__PURE__*/React.createElement(IconSync, null);
+  return React.createElement(IconSync, null);
 }), _defineProperty(_ICON_RENDERER, TYPE_WARN, function () {
-  return /*#__PURE__*/React.createElement(IconInfoThin, null);
+  return React.createElement(IconInfoThin, null);
 }), _ICON_RENDERER);
 var messages = defineMessages({
   clearNotificationButtonText: {
@@ -60,12 +56,14 @@ var messages = defineMessages({
   }
 });
 
-var Notification = /*#__PURE__*/function (_React$Component) {
+var Notification =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(Notification, _React$Component);
 
-  var _super = _createSuper(Notification);
-
   function Notification() {
+    var _getPrototypeOf2;
+
     var _this;
 
     _classCallCheck(this, Notification);
@@ -74,7 +72,7 @@ var Notification = /*#__PURE__*/function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    _this = _super.call.apply(_super, [this].concat(args));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Notification)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_this), "onClose", function (event) {
       var onClose = _this.props.onClose;
@@ -103,7 +101,7 @@ var Notification = /*#__PURE__*/function (_React$Component) {
     key: "getChildren",
     value: function getChildren() {
       var children = this.props.children;
-      return typeof children === 'string' ? /*#__PURE__*/React.createElement("span", null, children) : children;
+      return typeof children === 'string' ? React.createElement("span", null, children) : children;
     }
   }, {
     key: "render",
@@ -115,18 +113,18 @@ var Notification = /*#__PURE__*/function (_React$Component) {
           overflow = _this$props2.overflow;
       var formatMessage = intl.formatMessage;
       var classes = classNames('notification', type, overflow);
-      return /*#__PURE__*/React.createElement("div", {
+      return React.createElement("div", {
         className: classes
-      }, /*#__PURE__*/React.cloneElement(ICON_RENDERER[type](), {
+      }, React.cloneElement(ICON_RENDERER[type](), {
         color: '#fff',
         height: 20,
         width: 20
-      }), contents, /*#__PURE__*/React.createElement("button", {
+      }), contents, React.createElement("button", {
         "aria-label": formatMessage(messages.clearNotificationButtonText),
         className: "close-btn",
         onClick: this.onClose,
         type: "button"
-      }, /*#__PURE__*/React.createElement(IconClose, {
+      }, React.createElement(IconClose, {
         color: "#FFF",
         height: 18,
         width: 18

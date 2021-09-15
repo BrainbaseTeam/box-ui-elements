@@ -1,14 +1,22 @@
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -16,19 +24,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -43,25 +47,29 @@ import classNames from 'classnames';
 import cloneDeep from 'lodash/cloneDeep';
 import debounce from 'lodash/debounce';
 import flow from 'lodash/flow';
+import getProp from 'lodash/get';
 import noop from 'lodash/noop';
 import uniqueid from 'lodash/uniqueId';
 import CreateFolderDialog from '../common/create-folder-dialog';
 import UploadDialog from '../common/upload-dialog';
 import Header from '../common/header';
-import Pagination from '../common/pagination';
+import Pagination from '../../features/pagination';
 import SubHeader from '../common/sub-header/SubHeader';
 import makeResponsive from '../common/makeResponsive';
 import openUrlInsideIframe from '../../utils/iframe';
 import Internationalize from '../common/Internationalize';
 import API from '../../api';
+import MetadataQueryAPIHelper from '../../features/metadata-based-view/MetadataQueryAPIHelper';
 import Footer from './Footer';
 import PreviewDialog from './PreviewDialog';
 import ShareDialog from './ShareDialog';
 import RenameDialog from './RenameDialog';
 import DeleteConfirmationDialog from './DeleteConfirmationDialog';
 import Content from './Content';
+import isThumbnailReady from './utils';
 import { isFocusableElement, isInputElement, focus } from '../../utils/dom';
 import { FILE_SHARED_LINK_FIELDS_TO_FETCH, FOLDER_FIELDS_TO_FETCH } from '../../utils/fields';
+import CONTENT_EXPLORER_FOLDER_FIELDS_TO_FETCH from './constants';
 import LocalStore from '../../utils/LocalStore';
 import { withFeatureConsumer, withFeatureProvider } from '../common/feature-checking';
 import { DEFAULT_HOSTNAME_UPLOAD, DEFAULT_HOSTNAME_API, DEFAULT_HOSTNAME_APP, DEFAULT_HOSTNAME_STATIC, DEFAULT_SEARCH_DEBOUNCE, SORT_ASC, FIELD_NAME, DEFAULT_ROOT, VIEW_SEARCH, VIEW_FOLDER, VIEW_ERROR, VIEW_RECENTS, VIEW_METADATA, VIEW_MODE_LIST, TYPE_FILE, TYPE_WEBLINK, TYPE_FOLDER, CLIENT_NAME_CONTENT_EXPLORER, DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, DEFAULT_VIEW_FILES, DEFAULT_VIEW_RECENTS, DEFAULT_VIEW_METADATA, ERROR_CODE_ITEM_NAME_INVALID, ERROR_CODE_ITEM_NAME_TOO_LONG, TYPED_ID_FOLDER_PREFIX } from '../../constants';
@@ -73,10 +81,10 @@ var GRID_VIEW_MAX_COLUMNS = 7;
 var GRID_VIEW_MIN_COLUMNS = 1;
 var localStoreViewMode = 'bce.defaultViewMode';
 
-var ContentExplorer = /*#__PURE__*/function (_Component) {
+var ContentExplorer =
+/*#__PURE__*/
+function (_Component) {
   _inherits(ContentExplorer, _Component);
-
-  var _super = _createSuper(ContentExplorer);
 
   // Keeps track of very 1st load
 
@@ -91,11 +99,32 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
 
     _classCallCheck(this, ContentExplorer);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ContentExplorer).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "firstLoad", true);
 
     _defineProperty(_assertThisInitialized(_this), "store", new LocalStore());
+
+    _defineProperty(_assertThisInitialized(_this), "showMetadataQueryResultsSuccessCallback", function (metadataQueryCollection) {
+      var nextMarker = metadataQueryCollection.nextMarker;
+      var _this$state = _this.state,
+          currentCollection = _this$state.currentCollection,
+          currentPageNumber = _this$state.currentPageNumber,
+          markers = _this$state.markers;
+
+      var cloneMarkers = _toConsumableArray(markers);
+
+      if (nextMarker) {
+        cloneMarkers[currentPageNumber + 1] = nextMarker;
+      }
+
+      _this.setState({
+        currentCollection: _objectSpread({}, currentCollection, {}, metadataQueryCollection, {
+          percentLoaded: 100
+        }),
+        markers: cloneMarkers
+      });
+    });
 
     _defineProperty(_assertThisInitialized(_this), "errorCallback", function (error) {
       _this.setState({
@@ -109,10 +138,10 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "refreshCollection", function () {
-      var _this$state = _this.state,
-          id = _this$state.currentCollection.id,
-          view = _this$state.view,
-          searchQuery = _this$state.searchQuery;
+      var _this$state2 = _this.state,
+          id = _this$state2.currentCollection.id,
+          view = _this$state2.view,
+          searchQuery = _this$state2.searchQuery;
 
       if (view === VIEW_FOLDER && id) {
         _this.fetchFolder(id, false);
@@ -120,6 +149,8 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
         _this.showRecents(false);
       } else if (view === VIEW_SEARCH && searchQuery) {
         _this.search(searchQuery);
+      } else if (view === VIEW_METADATA) {
+        _this.showMetadataQueryResults();
       } else {
         throw new Error('Cannot refresh incompatible view!');
       }
@@ -128,14 +159,14 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
     _defineProperty(_assertThisInitialized(_this), "fetchFolder", function (id) {
       var triggerNavigationEvent = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       var rootFolderId = _this.props.rootFolderId;
-      var _this$state2 = _this.state,
-          currentId = _this$state2.currentCollection.id,
-          currentOffset = _this$state2.currentOffset,
-          limit = _this$state2.currentPageSize,
-          _this$state2$searchQu = _this$state2.searchQuery,
-          searchQuery = _this$state2$searchQu === void 0 ? '' : _this$state2$searchQu,
-          sortBy = _this$state2.sortBy,
-          sortDirection = _this$state2.sortDirection;
+      var _this$state3 = _this.state,
+          currentId = _this$state3.currentCollection.id,
+          currentOffset = _this$state3.currentOffset,
+          limit = _this$state3.currentPageSize,
+          _this$state3$searchQu = _this$state3.searchQuery,
+          searchQuery = _this$state3$searchQu === void 0 ? '' : _this$state3$searchQu,
+          sortBy = _this$state3.sortBy,
+          sortDirection = _this$state3.sortDirection;
       var folderId = typeof id === 'string' ? id : rootFolderId;
       var hasFolderChanged = currentId && currentId !== folderId;
       var hasSearchQuery = !!searchQuery.trim().length;
@@ -163,7 +194,7 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
       _this.api.getFolderAPI().getFolder(folderId, limit, offset, sortBy, sortDirection, function (collection) {
         _this.fetchFolderSuccessCallback(collection, triggerNavigationEvent);
       }, _this.errorCallback, {
-        fields: fields,
+        fields: CONTENT_EXPLORER_FOLDER_FIELDS_TO_FETCH,
         forceFetch: true
       });
     });
@@ -202,22 +233,22 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "debouncedSearch", debounce(function (id, query) {
-      var _this$state3 = _this.state,
-          currentOffset = _this$state3.currentOffset,
-          currentPageSize = _this$state3.currentPageSize;
+      var _this$state4 = _this.state,
+          currentOffset = _this$state4.currentOffset,
+          currentPageSize = _this$state4.currentPageSize;
 
       _this.api.getSearchAPI().search(id, query, currentPageSize, currentOffset, _this.searchSuccessCallback, _this.errorCallback, {
-        fields: FOLDER_FIELDS_TO_FETCH,
+        fields: CONTENT_EXPLORER_FOLDER_FIELDS_TO_FETCH,
         forceFetch: true
       });
     }, DEFAULT_SEARCH_DEBOUNCE));
 
     _defineProperty(_assertThisInitialized(_this), "search", function (query) {
       var rootFolderId = _this.props.rootFolderId;
-      var _this$state4 = _this.state,
-          id = _this$state4.currentCollection.id,
-          currentOffset = _this$state4.currentOffset,
-          searchQuery = _this$state4.searchQuery;
+      var _this$state5 = _this.state,
+          id = _this$state5.currentCollection.id,
+          currentOffset = _this$state5.currentOffset,
+          searchQuery = _this$state5.searchQuery;
       var folderId = typeof id === 'string' ? id : rootFolderId;
       var trimmedQuery = query.trim();
 
@@ -329,13 +360,75 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
       }
     });
 
-    _defineProperty(_assertThisInitialized(_this), "select", function (item) {
-      var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : noop;
-      var _this$state5 = _this.state,
-          selected = _this$state5.selected,
-          currentCollection = _this$state5.currentCollection;
+    _defineProperty(_assertThisInitialized(_this), "attemptThumbnailGeneration",
+    /*#__PURE__*/
+    function () {
+      var _ref = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee(item) {
+        var entries, representation, updatedRepresentation;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                entries = getProp(item, 'representations.entries');
+                representation = getProp(entries, '[0]');
+
+                if (!representation) {
+                  _context.next = 7;
+                  break;
+                }
+
+                _context.next = 5;
+                return _this.api.getFileAPI(false).generateRepresentation(representation);
+
+              case 5:
+                updatedRepresentation = _context.sent;
+
+                if (updatedRepresentation !== representation) {
+                  _this.updateItemInCollection(_objectSpread({}, cloneDeep(item), {
+                    representations: {
+                      entries: [updatedRepresentation].concat(_toConsumableArray(entries.slice(1)))
+                    }
+                  }));
+                }
+
+              case 7:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      return function (_x) {
+        return _ref.apply(this, arguments);
+      };
+    }());
+
+    _defineProperty(_assertThisInitialized(_this), "updateItemInCollection", function (newItem) {
+      var currentCollection = _this.state.currentCollection;
       var _currentCollection$it = currentCollection.items,
           items = _currentCollection$it === void 0 ? [] : _currentCollection$it;
+
+      var newCollection = _objectSpread({}, currentCollection);
+
+      newCollection.items = items.map(function (item) {
+        return item.id === newItem.id ? newItem : item;
+      });
+
+      _this.setState({
+        currentCollection: newCollection
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "select", function (item) {
+      var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : noop;
+      var _this$state6 = _this.state,
+          selected = _this$state6.selected,
+          currentCollection = _this$state6.currentCollection;
+      var _currentCollection$it2 = currentCollection.items,
+          items = _currentCollection$it2 === void 0 ? [] : _currentCollection$it2;
       var onSelect = _this.props.onSelect;
 
       if (item === selected) {
@@ -343,7 +436,7 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
         return;
       }
 
-      var selectedItem = _objectSpread(_objectSpread({}, item), {}, {
+      var selectedItem = _objectSpread({}, item, {
         selected: true
       });
 
@@ -364,11 +457,11 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
     _defineProperty(_assertThisInitialized(_this), "pick", function (item) {
       var id = item.id,
           type = item.type;
-      var _this$state6 = _this.state,
-          picked = _this$state6.picked,
-          currentCollection = _this$state6.currentCollection;
-      var _currentCollection$it2 = currentCollection.items,
-          items = _currentCollection$it2 === void 0 ? [] : _currentCollection$it2;
+      var _this$state7 = _this.state,
+          picked = _this$state7.picked,
+          currentCollection = _this$state7.currentCollection;
+      var _currentCollection$it3 = currentCollection.items,
+          items = _currentCollection$it3 === void 0 ? [] : _currentCollection$it3;
       var selectedKeys = Object.keys(picked);
 
       var cacheKey = _this.api.getAPI(type).getCacheKey(id);
@@ -472,9 +565,9 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
 
     _defineProperty(_assertThisInitialized(_this), "batchCancel", function () {
       var onBatchCancel = _this.props.onBatchCancel;
-      var _this$state7 = _this.state,
-          picked = _this$state7.picked,
-          currentCollection = _this$state7.currentCollection;
+      var _this$state8 = _this.state,
+          picked = _this$state8.picked,
+          currentCollection = _this$state8.currentCollection;
       Object.keys(picked).forEach(function (key) {
         return delete picked[key].picked;
       });
@@ -533,9 +626,9 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "deleteCallback", function () {
-      var _this$state8 = _this.state,
-          selected = _this$state8.selected,
-          isDeleteModalOpen = _this$state8.isDeleteModalOpen;
+      var _this$state9 = _this.state,
+          selected = _this$state9.selected,
+          isDeleteModalOpen = _this$state9.isDeleteModalOpen;
       var _this$props2 = _this.props,
           canDelete = _this$props2.canDelete,
           onDelete = _this$props2.onDelete;
@@ -584,9 +677,9 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "renameCallback", function (nameWithoutExt, extension) {
-      var _this$state9 = _this.state,
-          selected = _this$state9.selected,
-          isRenameModalOpen = _this$state9.isRenameModalOpen;
+      var _this$state10 = _this.state,
+          selected = _this$state10.selected,
+          isRenameModalOpen = _this$state10.isRenameModalOpen;
       var _this$props3 = _this.props,
           canRename = _this$props3.canRename,
           onRename = _this$props3.onRename;
@@ -643,8 +736,8 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
         _this.select(updatedItem);
 
         onRename(cloneDeep(selected));
-      }, function (_ref) {
-        var code = _ref.code;
+      }, function (_ref2) {
+        var code = _ref2.code;
 
         _this.setState({
           errorCode: code,
@@ -658,9 +751,9 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "createFolderCallback", function (name) {
-      var _this$state10 = _this.state,
-          isCreateFolderModalOpen = _this$state10.isCreateFolderModalOpen,
-          currentCollection = _this$state10.currentCollection;
+      var _this$state11 = _this.state,
+          isCreateFolderModalOpen = _this$state11.isCreateFolderModalOpen,
+          currentCollection = _this$state11.currentCollection;
       var _this$props4 = _this.props,
           canCreateNewFolder = _this$props4.canCreateNewFolder,
           onCreate = _this$props4.onCreate;
@@ -719,8 +812,8 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
         _this.select(item);
 
         onCreate(cloneDeep(item));
-      }, function (_ref2) {
-        var code = _ref2.code;
+      }, function (_ref3) {
+        var code = _ref3.code;
 
         _this.setState({
           errorCode: code,
@@ -814,10 +907,10 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
         isPreviewModalOpen: false
       });
 
-      var _this$state11 = _this.state,
-          selected = _this$state11.selected,
-          _this$state11$current = _this$state11.currentCollection.items,
-          items = _this$state11$current === void 0 ? [] : _this$state11$current;
+      var _this$state12 = _this.state,
+          selected = _this$state12.selected,
+          _this$state12$current = _this$state12.currentCollection.items,
+          items = _this$state12$current === void 0 ? [] : _this$state12$current;
 
       if (selected && items.length > 0) {
         focus(_this.rootElement, ".bce-item-row-".concat(focusedRow));
@@ -909,6 +1002,15 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
       }, _this.refreshCollection);
     });
 
+    _defineProperty(_assertThisInitialized(_this), "markerBasedPaginate", function (newOffset) {
+      var currentPageNumber = _this.state.currentPageNumber;
+
+      _this.setState({
+        currentPageNumber: currentPageNumber + newOffset // newOffset could be negative
+
+      }, _this.refreshCollection);
+    });
+
     _defineProperty(_assertThisInitialized(_this), "getViewMode", function () {
       return _this.store.getItem(localStoreViewMode) || VIEW_MODE_LIST;
     });
@@ -947,6 +1049,41 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "updateMetadata", function (item, field, oldValue, newValue) {
+      _this.metadataQueryAPIHelper.updateMetadata(item, field, oldValue, newValue, function () {
+        _this.updateMetadataSuccessCallback(item, field, newValue);
+      }, _this.errorCallback);
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "updateMetadataSuccessCallback", function (item, field, newValue) {
+      var currentCollection = _this.state.currentCollection;
+      var _currentCollection$it4 = currentCollection.items,
+          items = _currentCollection$it4 === void 0 ? [] : _currentCollection$it4,
+          nextMarker = currentCollection.nextMarker;
+      var updatedItems = items.map(function (collectionItem) {
+        var clonedItem = cloneDeep(collectionItem);
+
+        if (item.id === clonedItem.id) {
+          var fields = getProp(clonedItem, 'metadata.enterprise.fields', []);
+          fields.forEach(function (itemField) {
+            if (itemField.key.split('.').pop() === field) {
+              itemField.value = newValue; // set updated metadata value to correct item in currentCollection
+            }
+          });
+        }
+
+        return clonedItem;
+      });
+
+      _this.setState({
+        currentCollection: {
+          items: updatedItems,
+          nextMarker: nextMarker,
+          percentLoaded: 100
+        }
+      });
+    });
+
     var apiHost = props.apiHost,
         initialPage = props.initialPage,
         initialPageSize = props.initialPageSize,
@@ -977,6 +1114,7 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
       currentCollection: {},
       currentOffset: initialPageSize * (initialPage - 1),
       currentPageSize: initialPageSize,
+      currentPageNumber: 0,
       errorCode: '',
       focusedRow: 0,
       gridColumnCount: 4,
@@ -988,6 +1126,7 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
       isShareModalOpen: false,
       isUploadModalOpen: false,
       picked: {},
+      markers: [],
       rootName: '',
       searchQuery: '',
       sortBy: _sortBy,
@@ -1063,8 +1202,8 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
 
   }, {
     key: "componentDidUpdate",
-    value: function componentDidUpdate(_ref3, prevState) {
-      var prevFolderId = _ref3.currentFolderId;
+    value: function componentDidUpdate(_ref4, prevState) {
+      var prevFolderId = _ref4.currentFolderId;
       var currentFolderId = this.props.currentFolderId;
       var id = prevState.currentCollection.id;
 
@@ -1085,40 +1224,45 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
      */
 
   }, {
-    key: "showMetadataQueryResultsSuccessCallback",
-    value: function showMetadataQueryResultsSuccessCallback(metadataQueryCollection) {
-      var currentCollection = this.state.currentCollection;
-      this.setState({
-        currentCollection: _objectSpread(_objectSpread(_objectSpread({}, currentCollection), metadataQueryCollection), {}, {
-          percentLoaded: 100
-        })
-      });
-    }
+    key: "showMetadataQueryResults",
+
     /**
      * Queries metadata_queries/execute API and fetches the result
      *
      * @private
      * @return {void}
      */
-
-  }, {
-    key: "showMetadataQueryResults",
     value: function showMetadataQueryResults() {
-      var _this2 = this;
+      var _this$props$metadataQ = this.props.metadataQuery,
+          metadataQuery = _this$props$metadataQ === void 0 ? {} : _this$props$metadataQ;
+      var _this$state13 = this.state,
+          currentPageNumber = _this$state13.currentPageNumber,
+          markers = _this$state13.markers;
+      var metadataQueryClone = cloneDeep(metadataQuery);
 
-      var metadataQuery = this.props.metadataQuery; // Reset search state, the view and show busy indicator
+      if (currentPageNumber === 0) {
+        // Preserve the marker as part of the original query
+        markers[currentPageNumber] = metadataQueryClone.marker;
+      }
+
+      if (typeof markers[currentPageNumber] === 'string') {
+        // Set marker to the query to get next set of results
+        metadataQueryClone.marker = markers[currentPageNumber];
+      }
+
+      if (typeof metadataQueryClone.limit !== 'number') {
+        // Set limit to the query for pagination support
+        metadataQueryClone.limit = DEFAULT_PAGE_SIZE;
+      } // Reset search state, the view and show busy indicator
+
 
       this.setState({
         searchQuery: '',
         currentCollection: this.currentUnloadedCollection(),
         view: VIEW_METADATA
-      }); // Fetch the Metadata Query Results
-
-      this.api.getMetadataQueryAPI().queryMetadata(metadataQuery, function (metadataQueryCollection) {
-        _this2.showMetadataQueryResultsSuccessCallback(metadataQueryCollection);
-      }, this.errorCallback, {
-        forceFetch: true
       });
+      this.metadataQueryAPIHelper = new MetadataQueryAPIHelper(this.api);
+      this.metadataQueryAPIHelper.fetchMetadataQueryResults(metadataQueryClone, this.showMetadataQueryResultsSuccessCallback, this.errorCallback);
     }
     /**
      * Resets the collection so that the loading bar starts showing
@@ -1191,7 +1335,7 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
      * @return {void}
      */
     value: function fetchFolderSuccessCallback(collection, triggerNavigationEvent) {
-      var _this3 = this;
+      var _this2 = this;
 
       var _this$props7 = this.props,
           onNavigate = _this$props7.onNavigate,
@@ -1199,24 +1343,24 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
       var boxItem = collection.boxItem,
           id = collection.id,
           name = collection.name;
-      var _this$state12 = this.state,
-          selected = _this$state12.selected,
-          picked = _this$state12.picked;
+      var _this$state14 = this.state,
+          selected = _this$state14.selected,
+          picked = _this$state14.picked;
       var rootName = id === rootFolderId ? name : ''; // Close any open modals
 
       this.closeModals();
       this.updateCollection(collection, selected, function () {
         if (triggerNavigationEvent) {
           // Fire folder navigation event
-          _this3.setState({
+          _this2.setState({
             rootName: rootName
-          }, _this3.finishNavigation);
+          }, _this2.finishNavigation);
 
           if (boxItem) {
             onNavigate(cloneDeep(boxItem));
           }
         } else {
-          _this3.setState({
+          _this2.setState({
             rootName: rootName
           });
         }
@@ -1260,7 +1404,7 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
   }, {
     key: "showRecents",
     value: function showRecents() {
-      var _this4 = this;
+      var _this3 = this;
 
       var triggerNavigationEvent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
       var rootFolderId = this.props.rootFolderId; // Reset search state, the view and show busy indicator
@@ -1273,9 +1417,9 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
       }); // Fetch the folder using folder API
 
       this.api.getRecentsAPI().recents(rootFolderId, function (collection) {
-        _this4.recentsSuccessCallback(collection, triggerNavigationEvent);
+        _this3.recentsSuccessCallback(collection, triggerNavigationEvent);
       }, this.errorCallback, {
-        fields: FOLDER_FIELDS_TO_FETCH,
+        fields: CONTENT_EXPLORER_FOLDER_FIELDS_TO_FETCH,
         forceFetch: true
       });
     }
@@ -1303,53 +1447,62 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
      * @return {void}
      */
     value: function () {
-      var _updateCollection = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(collection, selectedItem) {
+      var _updateCollection = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee2(collection, selectedItem) {
+        var _this4 = this;
+
         var callback,
             _collection$items,
             items,
             fileAPI,
             newCollection,
             selectedId,
-            thumbnails,
             newSelectedItem,
+            itemThumbnails,
             picked,
-            _args = arguments;
+            _args2 = arguments;
 
-        return regeneratorRuntime.wrap(function _callee$(_context) {
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context.prev = _context.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
-                callback = _args.length > 2 && _args[2] !== undefined ? _args[2] : noop;
+                callback = _args2.length > 2 && _args2[2] !== undefined ? _args2[2] : noop;
                 _collection$items = collection.items, items = _collection$items === void 0 ? [] : _collection$items;
                 fileAPI = this.api.getFileAPI(false);
                 newCollection = _objectSpread({}, collection);
                 selectedId = selectedItem ? selectedItem.id : null;
-                _context.next = 7;
+                _context2.next = 7;
                 return Promise.all(items.map(function (item) {
-                  return fileAPI.getThumbnailUrl(item);
+                  return item.type === TYPE_FILE ? fileAPI.getThumbnailUrl(item) : null;
                 }));
 
               case 7:
-                thumbnails = _context.sent;
+                itemThumbnails = _context2.sent;
                 picked = this.state.picked;
-                newCollection.items = items.map(function (obj, index) {
-                  var isSelected = obj.id === selectedId;
-                  var currentItem = isSelected ? selectedItem : obj;
-                  var key = "".concat(obj.type, "_").concat(obj.id);
+                newCollection.items = items.map(function (item, index) {
+                  var isSelected = item.id === selectedId;
+                  var currentItem = isSelected ? selectedItem : item;
+                  var thumbnailUrl = itemThumbnails[index];
+                  var key = "".concat(item.type, "_").concat(item.id);
                   var isPicked = false;
 
                   if (key in picked && picked[key].picked) {
                     isPicked = true;
                   }
 
-                  var newItem = _objectSpread(_objectSpread({}, currentItem), {}, {
+                  var newItem = _objectSpread({}, currentItem, {
                     selected: isSelected,
-                    thumbnailUrl: thumbnails[index],
+                    thumbnailUrl: thumbnailUrl,
                     picked: isPicked,
                     // Force metadata always to be updated. This causes thumbnails
                     // to reloaded.
-                    metadata: obj.metadata
-                  }); // Only if selectedItem is in the current collection do we want to set selected state
+                    metadata: item.metadata
+                  });
+
+                  if (item.type === TYPE_FILE && thumbnailUrl && !isThumbnailReady(newItem)) {
+                    _this4.attemptThumbnailGeneration(newItem);
+                  } // Only if selectedItem is in the current collection do we want to set selected state
 
 
                   if (isSelected) {
@@ -1365,25 +1518,24 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
 
               case 11:
               case "end":
-                return _context.stop();
+                return _context2.stop();
             }
           }
-        }, _callee, this);
+        }, _callee2, this);
       }));
 
-      function updateCollection(_x, _x2) {
+      function updateCollection(_x2, _x3) {
         return _updateCollection.apply(this, arguments);
       }
 
       return updateCollection;
     }()
     /**
-     * Selects or unselects an item
+     * Attempts to generate a thumbnail for the given item and assigns the
+     * item its thumbnail url if successful
      *
-     * @private
-     * @param {Object} item - file or folder object
-     * @param {Function|void} [onSelect] - optional on select callback
-     * @return {void}
+     * @param {BoxItem} item - item to generate thumbnail for
+     * @return {Promise<void>}
      */
 
   }, {
@@ -1398,93 +1550,102 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
      */
     value: function render() {
       var _this$props8 = this.props,
-          language = _this$props8.language,
-          messages = _this$props8.messages,
-          rootFolderId = _this$props8.rootFolderId,
-          logoUrl = _this$props8.logoUrl,
-          canUpload = _this$props8.canUpload,
-          canCreateNewFolder = _this$props8.canCreateNewFolder,
-          canSetShareAccess = _this$props8.canSetShareAccess,
-          canDelete = _this$props8.canDelete,
-          canRename = _this$props8.canRename,
-          canDownload = _this$props8.canDownload,
-          canPreview = _this$props8.canPreview,
-          canShare = _this$props8.canShare,
-          token = _this$props8.token,
-          sharedLink = _this$props8.sharedLink,
-          sharedLinkPassword = _this$props8.sharedLinkPassword,
           apiHost = _this$props8.apiHost,
           appHost = _this$props8.appHost,
-          staticHost = _this$props8.staticHost,
-          uploadHost = _this$props8.uploadHost,
-          isSmall = _this$props8.isSmall,
-          isMedium = _this$props8.isMedium,
-          isTouch = _this$props8.isTouch,
+          canCreateNewFolder = _this$props8.canCreateNewFolder,
+          canDelete = _this$props8.canDelete,
+          canDownload = _this$props8.canDownload,
+          canPreview = _this$props8.canPreview,
+          canRename = _this$props8.canRename,
+          canSetShareAccess = _this$props8.canSetShareAccess,
+          canShare = _this$props8.canShare,
+          canUpload = _this$props8.canUpload,
           className = _this$props8.className,
+          contentPreviewProps = _this$props8.contentPreviewProps,
+          contentUploaderProps = _this$props8.contentUploaderProps,
+          defaultView = _this$props8.defaultView,
+          isMedium = _this$props8.isMedium,
+          isSmall = _this$props8.isSmall,
+          isTouch = _this$props8.isTouch,
+          language = _this$props8.language,
+          logoUrl = _this$props8.logoUrl,
           measureRef = _this$props8.measureRef,
-          onPreview = _this$props8.onPreview,
+          messages = _this$props8.messages,
+          fieldsToShow = _this$props8.fieldsToShow,
           onDownload = _this$props8.onDownload,
+          onPreview = _this$props8.onPreview,
           onUpload = _this$props8.onUpload,
           requestInterceptor = _this$props8.requestInterceptor,
           responseInterceptor = _this$props8.responseInterceptor,
-          contentPreviewProps = _this$props8.contentPreviewProps,
-          metadataColumnsToShow = _this$props8.metadataColumnsToShow;
-      var _this$state13 = this.state,
-          view = _this$state13.view,
-          rootName = _this$state13.rootName,
-          currentCollection = _this$state13.currentCollection,
-          currentPageSize = _this$state13.currentPageSize,
-          searchQuery = _this$state13.searchQuery,
-          gridColumnCount = _this$state13.gridColumnCount,
-          isDeleteModalOpen = _this$state13.isDeleteModalOpen,
-          isRenameModalOpen = _this$state13.isRenameModalOpen,
-          isShareModalOpen = _this$state13.isShareModalOpen,
-          isUploadModalOpen = _this$state13.isUploadModalOpen,
-          isPreviewModalOpen = _this$state13.isPreviewModalOpen,
-          isCreateFolderModalOpen = _this$state13.isCreateFolderModalOpen,
-          selected = _this$state13.selected,
-          picked = _this$state13.picked,
-          isLoading = _this$state13.isLoading,
-          errorCode = _this$state13.errorCode,
-          focusedRow = _this$state13.focusedRow;
+          rootFolderId = _this$props8.rootFolderId,
+          sharedLink = _this$props8.sharedLink,
+          sharedLinkPassword = _this$props8.sharedLinkPassword,
+          staticHost = _this$props8.staticHost,
+          staticPath = _this$props8.staticPath,
+          previewLibraryVersion = _this$props8.previewLibraryVersion,
+          token = _this$props8.token,
+          uploadHost = _this$props8.uploadHost;
+      var _this$state15 = this.state,
+          currentCollection = _this$state15.currentCollection,
+          currentPageNumber = _this$state15.currentPageNumber,
+          currentPageSize = _this$state15.currentPageSize,
+          errorCode = _this$state15.errorCode,
+          focusedRow = _this$state15.focusedRow,
+          gridColumnCount = _this$state15.gridColumnCount,
+          isCreateFolderModalOpen = _this$state15.isCreateFolderModalOpen,
+          isDeleteModalOpen = _this$state15.isDeleteModalOpen,
+          isLoading = _this$state15.isLoading,
+          isPreviewModalOpen = _this$state15.isPreviewModalOpen,
+          isRenameModalOpen = _this$state15.isRenameModalOpen,
+          isShareModalOpen = _this$state15.isShareModalOpen,
+          isUploadModalOpen = _this$state15.isUploadModalOpen,
+          markers = _this$state15.markers,
+          rootName = _this$state15.rootName,
+          searchQuery = _this$state15.searchQuery,
+          selected = _this$state15.selected,
+          picked = _this$state15.picked,
+          view = _this$state15.view;
       var id = currentCollection.id,
           offset = currentCollection.offset,
           permissions = currentCollection.permissions,
           totalCount = currentCollection.totalCount;
 
-      var _ref4 = permissions || {},
-          can_upload = _ref4.can_upload;
+      var _ref5 = permissions || {},
+          can_upload = _ref5.can_upload;
 
       var styleClassName = classNames('be bce', className);
       var allowUpload = canUpload && !!can_upload;
       var allowCreate = canCreateNewFolder && !!can_upload;
-      var hasHeader = view !== VIEW_METADATA; // Show Header and SubHeader when it's not metadata view
-
+      var isDefaultViewMetadata = defaultView === DEFAULT_VIEW_METADATA;
+      var isErrorView = view === VIEW_ERROR;
       var pickedCount = Object.keys(picked).length;
       var viewMode = this.getViewMode();
       var maxGridColumnCount = this.getMaxNumberOfGridViewColumnsForWidth();
+      var hasNextMarker = !!markers[currentPageNumber + 1];
+      var hasPreviousMarker = currentPageNumber === 1 || !!markers[currentPageNumber - 1];
       /* eslint-disable jsx-a11y/no-static-element-interactions */
 
       /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 
-      return /*#__PURE__*/React.createElement(Internationalize, {
+      return React.createElement(Internationalize, {
         language: language,
         messages: messages
-      }, /*#__PURE__*/React.createElement("div", {
+      }, React.createElement("div", {
         id: this.id,
         className: styleClassName,
-        ref: measureRef
-      }, /*#__PURE__*/React.createElement("div", {
+        ref: measureRef,
+        "data-testid": "content-explorer"
+      }, React.createElement("div", {
         className: "be-app-element",
         onKeyDown: this.onKeyDown,
         tabIndex: 0
-      }, hasHeader && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Header, {
+      }, !isDefaultViewMetadata && React.createElement(React.Fragment, null, React.createElement(Header, {
         view: view,
         isSmall: isSmall,
         searchQuery: searchQuery,
         logoUrl: logoUrl,
         onSearch: this.search
-      }), /*#__PURE__*/React.createElement(SubHeader, {
+      }), React.createElement(SubHeader, {
         view: view,
         viewMode: viewMode,
         rootId: rootFolderId,
@@ -1503,7 +1664,7 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
         onItemClick: this.fetchFolder,
         onSortChange: this.sort,
         onViewModeChange: this.changeViewMode
-      })), /*#__PURE__*/React.createElement(Content, {
+      })), React.createElement(Content, {
         canDelete: canDelete,
         canDownload: canDownload,
         canPreview: canPreview,
@@ -1516,6 +1677,7 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
         isMedium: isMedium,
         isSmall: isSmall,
         isTouch: isTouch,
+        fieldsToShow: fieldsToShow,
         onItemClick: this.onItemClick,
         onItemCustomShare: this.customShare,
         onItemDelete: this.delete,
@@ -1527,6 +1689,7 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
         onItemRename: this.rename,
         onItemSelect: this.select,
         onItemShare: this.share,
+        onMetadataUpdate: this.updateMetadata,
         onItemSetThumbnail: this.setThumbnail,
         onItemRemoveThumbnail: this.removeThumbnail,
         onSortChange: this.sort,
@@ -1534,18 +1697,20 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
         rootId: rootFolderId,
         tableRef: this.tableRef,
         view: view,
-        viewMode: viewMode,
-        metadataColumnsToShow: metadataColumnsToShow
-      }), /*#__PURE__*/React.createElement(Footer, {
+        viewMode: viewMode
+      }), !isErrorView && React.createElement(Footer, {
         pickedCount: pickedCount,
         onBatchDownload: this.batchDownload,
         onBatchCancel: this.batchCancel
-      }, /*#__PURE__*/React.createElement(Pagination, {
+      }, React.createElement(Pagination, {
+        hasNextMarker: hasNextMarker,
+        hasPrevMarker: hasPreviousMarker,
         offset: offset,
-        onChange: this.paginate,
+        onOffsetChange: this.paginate,
         pageSize: currentPageSize,
-        totalCount: totalCount
-      }))), allowUpload && !!this.appElement ? /*#__PURE__*/React.createElement(UploadDialog, {
+        totalCount: totalCount,
+        onMarkerBasedPageChange: this.markerBasedPaginate
+      }))), allowUpload && !!this.appElement ? React.createElement(UploadDialog, {
         isOpen: isUploadModalOpen,
         currentFolderId: id,
         token: token,
@@ -1557,9 +1722,10 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
         parentElement: this.rootElement,
         appElement: this.appElement,
         onUpload: onUpload,
+        contentUploaderProps: contentUploaderProps,
         requestInterceptor: requestInterceptor,
         responseInterceptor: responseInterceptor
-      }) : null, allowCreate && !!this.appElement ? /*#__PURE__*/React.createElement(CreateFolderDialog, {
+      }) : null, allowCreate && !!this.appElement ? React.createElement(CreateFolderDialog, {
         isOpen: isCreateFolderModalOpen,
         onCreate: this.createFolderCallback,
         onCancel: this.closeModals,
@@ -1567,7 +1733,7 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
         errorCode: errorCode,
         parentElement: this.rootElement,
         appElement: this.appElement
-      }) : null, canDelete && selected && !!this.appElement ? /*#__PURE__*/React.createElement(DeleteConfirmationDialog, {
+      }) : null, canDelete && selected && !!this.appElement ? React.createElement(DeleteConfirmationDialog, {
         isOpen: isDeleteModalOpen,
         onDelete: this.deleteCallback,
         onCancel: this.closeModals,
@@ -1575,7 +1741,7 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
         isLoading: isLoading,
         parentElement: this.rootElement,
         appElement: this.appElement
-      }) : null, canRename && selected && !!this.appElement ? /*#__PURE__*/React.createElement(RenameDialog, {
+      }) : null, canRename && selected && !!this.appElement ? React.createElement(RenameDialog, {
         isOpen: isRenameModalOpen,
         onRename: this.renameCallback,
         onCancel: this.closeModals,
@@ -1584,7 +1750,7 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
         errorCode: errorCode,
         parentElement: this.rootElement,
         appElement: this.appElement
-      }) : null, canShare && selected && !!this.appElement ? /*#__PURE__*/React.createElement(ShareDialog, {
+      }) : null, canShare && selected && !!this.appElement ? React.createElement(ShareDialog, {
         isOpen: isShareModalOpen,
         canSetShareAccess: canSetShareAccess,
         onShareAccessChange: this.changeShareAccess,
@@ -1593,7 +1759,7 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
         isLoading: isLoading,
         parentElement: this.rootElement,
         appElement: this.appElement
-      }) : null, canPreview && selected && !!this.appElement ? /*#__PURE__*/React.createElement(PreviewDialog, {
+      }) : null, canPreview && selected && !!this.appElement ? React.createElement(PreviewDialog, {
         isOpen: isPreviewModalOpen,
         isTouch: isTouch,
         onCancel: this.closeModals,
@@ -1609,6 +1775,8 @@ var ContentExplorer = /*#__PURE__*/function (_Component) {
         apiHost: apiHost,
         appHost: appHost,
         staticHost: staticHost,
+        staticPath: staticPath,
+        previewLibraryVersion: previewLibraryVersion,
         sharedLink: sharedLink,
         sharedLinkPassword: sharedLinkPassword,
         contentPreviewProps: contentPreviewProps,
@@ -1662,7 +1830,8 @@ _defineProperty(ContentExplorer, "defaultProps", {
   initialPageSize: DEFAULT_PAGE_SIZE,
   contentPreviewProps: {
     contentSidebarProps: {}
-  }
+  },
+  contentUploaderProps: {}
 });
 
 export { ContentExplorer as ContentExplorerComponent };

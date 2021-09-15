@@ -27,16 +27,16 @@ var SidebarClassification = function SidebarClassification(_ref) {
     return null;
   }
 
-  return /*#__PURE__*/React.createElement(Collapsible, {
+  return React.createElement(Collapsible, {
     buttonProps: _defineProperty({}, INTERACTION_TARGET, SECTION_TARGETS.CLASSIFICATION),
     className: "bcs-SidebarClassification",
-    headerActionItems: isEditable ? /*#__PURE__*/React.createElement(EditClassificationButton, {
+    headerActionItems: isEditable ? React.createElement(EditClassificationButton, {
       className: "bcs-SidebarClassification-edit",
       isEditing: hasClassification,
       onEdit: onEdit
     }) : null,
-    title: /*#__PURE__*/React.createElement(FormattedMessage, classificationMessages.classification)
-  }, /*#__PURE__*/React.createElement(Classification, _extends({}, classification, {
+    title: React.createElement(FormattedMessage, classificationMessages.classification)
+  }, React.createElement(Classification, _extends({}, classification, {
     messageStyle: "inline"
   })));
 };

@@ -9,55 +9,45 @@ import { FormattedMessage } from 'react-intl';
 import Badgeable from '../../components/badgeable/Badgeable';
 import Tooltip from '../../components/tooltip/Tooltip';
 import Avatar from '../../components/avatar';
-import IconGlobe from '../../icons/general/IconGlobe';
 import IconExpirationBadge from '../../icons/general/IconExpirationBadge';
 import messages from './messages';
 
 var CollaboratorAvatarItem = function CollaboratorAvatarItem(props) {
   var _props$allowBadging = props.allowBadging,
       allowBadging = _props$allowBadging === void 0 ? false : _props$allowBadging,
-      _props$email = props.email,
-      email = _props$email === void 0 ? '' : _props$email,
       expiration = props.expiration,
       _props$isExternalColl = props.isExternalCollab,
       isExternalCollab = _props$isExternalColl === void 0 ? false : _props$isExternalColl,
       hasCustomAvatar = props.hasCustomAvatar,
       avatarUrl = props.avatarUrl,
       name = props.name,
-      rest = _objectWithoutProperties(props, ["allowBadging", "email", "expiration", "isExternalCollab", "hasCustomAvatar", "avatarUrl", "name"]);
+      rest = _objectWithoutProperties(props, ["allowBadging", "expiration", "isExternalCollab", "hasCustomAvatar", "avatarUrl", "name"]);
 
-  var avatarInstance = hasCustomAvatar && avatarUrl ? /*#__PURE__*/React.createElement(Avatar, _extends({
+  var avatarInstance = hasCustomAvatar && avatarUrl ? React.createElement(Avatar, _extends({
     avatarUrl: avatarUrl,
     name: name
-  }, rest)) : /*#__PURE__*/React.createElement(Avatar, _extends({
+  }, rest, {
+    isExternal: isExternalCollab,
+    shouldShowExternal: allowBadging
+  })) : React.createElement(Avatar, _extends({
     name: name || '-'
-  }, rest));
-  var expirationBadge = allowBadging && expiration && expiration.executeAt ? /*#__PURE__*/React.createElement(Tooltip, {
+  }, rest, {
+    isExternal: isExternalCollab,
+    shouldShowExternal: allowBadging
+  }));
+  var expirationBadge = allowBadging && expiration && expiration.executeAt ? React.createElement(Tooltip, {
     position: "middle-right",
-    text: /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.expirationTooltipText, {
+    text: React.createElement(FormattedMessage, _extends({}, messages.expirationTooltipText, {
       values: {
         date: expiration.executeAt
       }
     }))
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(IconExpirationBadge, {
+  }, React.createElement("div", null, React.createElement(IconExpirationBadge, {
     className: "themed",
     height: 14,
     width: 14
   }))) : null;
-  var externalCollabBadge = allowBadging && email && isExternalCollab ? /*#__PURE__*/React.createElement(Tooltip, {
-    position: "middle-right",
-    text: /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.externalCollabTooltipText, {
-      values: {
-        email: email
-      }
-    }))
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(IconGlobe, {
-    className: "themed",
-    height: 14,
-    width: 14
-  }))) : null;
-  return /*#__PURE__*/React.createElement(Badgeable, {
-    bottomLeft: externalCollabBadge,
+  return React.createElement(Badgeable, {
     topLeft: expirationBadge
   }, avatarInstance);
 };

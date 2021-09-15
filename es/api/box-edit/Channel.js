@@ -9,7 +9,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 import CONSTANTS from './constants';
 /* eslint-disable*/
 
-var Channel = /*#__PURE__*/function () {
+var Channel =
+/*#__PURE__*/
+function () {
   function Channel(appName) {
     var _this = this;
 

@@ -1,1 +1,1 @@
-{"version":3,"sources":["../../../src/components/button/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,UAAxB","sourcesContent":["// @flow\nexport { default } from './Button';\n"],"file":"index.js"}
+{"version":3,"sources":["../../../src/components/button/index.ts"],"names":["default","ButtonType"],"mappings":"AAAA,SAASA,OAAT,EAAkBC,UAAlB,QAAoC,UAApC","sourcesContent":["export { default, ButtonType } from './Button';\n"],"file":"index.js"}

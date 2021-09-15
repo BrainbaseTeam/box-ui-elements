@@ -12,19 +12,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -46,7 +42,7 @@ import UploadDialog from '../common/upload-dialog';
 import CreateFolderDialog from '../common/create-folder-dialog';
 import Internationalize from '../common/Internationalize';
 import makeResponsive from '../common/makeResponsive';
-import Pagination from '../common/pagination/Pagination';
+import OffsetBasedPagination from '../../features/pagination/OffsetBasedPagination';
 import { isFocusableElement, isInputElement, focus } from '../../utils/dom';
 import API from '../../api';
 import Content from './Content';
@@ -59,10 +55,10 @@ import '../common/modal.scss';
 import './ContentPicker.scss';
 var defaultType = "".concat(TYPE_FILE, ",").concat(TYPE_WEBLINK);
 
-var ContentPicker = /*#__PURE__*/function (_Component) {
+var ContentPicker =
+/*#__PURE__*/
+function (_Component) {
   _inherits(ContentPicker, _Component);
-
-  var _super = _createSuper(ContentPicker);
 
   // Keeps track of very 1st load
 
@@ -77,29 +73,41 @@ var ContentPicker = /*#__PURE__*/function (_Component) {
 
     _classCallCheck(this, ContentPicker);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ContentPicker).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "firstLoad", true);
 
-    _defineProperty(_assertThisInitialized(_this), "choose", function () {
+    _defineProperty(_assertThisInitialized(_this), "getSelectedItems", function () {
       var selected = _this.state.selected;
-      var onChoose = _this.props.onChoose;
-      var results = Object.keys(selected).map(function (key) {
+      return Object.keys(selected).map(function (key) {
         var clone = _objectSpread({}, selected[key]);
 
         delete clone.selected;
         return clone;
       });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "choose", function () {
+      var onChoose = _this.props.onChoose;
+
+      var results = _this.getSelectedItems();
+
       onChoose(results);
     });
 
-    _defineProperty(_assertThisInitialized(_this), "cancel", function () {
-      var onCancel = _this.props.onCancel;
+    _defineProperty(_assertThisInitialized(_this), "deleteSelectedKeys", function () {
       var selected = _this.state.selected; // Clear out the selected field
 
       Object.keys(selected).forEach(function (key) {
         return delete selected[key].selected;
-      }); // Reset the selected state
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "cancel", function () {
+      var onCancel = _this.props.onCancel;
+
+      _this.deleteSelectedKeys(); // Reset the selected state
+
 
       _this.setState({
         selected: {}
@@ -495,11 +503,12 @@ var ContentPicker = /*#__PURE__*/function (_Component) {
     _defineProperty(_assertThisInitialized(_this), "handleSharedLinkSuccess", function (item) {
       // if no shared link currently exists, create a shared link with enterprise default
       if (!item[FIELD_SHARED_LINK]) {
+        // $FlowFixMe
         _this.changeShareAccess(null, item);
       } else {
         var selected = _this.state.selected;
         var id = item.id,
-            type = item.type;
+            type = item.type; // $FlowFixMe
 
         var cacheKey = _this.api.getAPI(type).getCacheKey(id); // if shared link already exists, update the collection in state
 
@@ -550,7 +559,7 @@ var ContentPicker = /*#__PURE__*/function (_Component) {
       var _currentCollection$it = currentCollection.items,
           items = _currentCollection$it === void 0 ? [] : _currentCollection$it;
       var newState = {
-        currentCollection: _objectSpread(_objectSpread({}, currentCollection), {}, {
+        currentCollection: _objectSpread({}, currentCollection, {
           items: items.map(function (collectionItem) {
             return collectionItem.id === item.id ? item : collectionItem;
           })
@@ -831,15 +840,14 @@ var ContentPicker = /*#__PURE__*/function (_Component) {
       }
     }
     /**
-     * Choose button action.
+     * Gets selected items from state.
      * Clones values before returning so that
      * object references are broken. Also cleans
      * up the selected attribute since it was
      * added by the file picker.
      *
      * @private
-     * @fires choose
-     * @return {void}
+     * @return {BoxItem[]}
      */
 
   }, {
@@ -907,16 +915,25 @@ var ContentPicker = /*#__PURE__*/function (_Component) {
   }, {
     key: "fetchFolderSuccessCallback",
     value: function fetchFolderSuccessCallback(collection, triggerNavigationEvent) {
-      var rootFolderId = this.props.rootFolderId;
+      var _this$props3 = this.props,
+          clearSelectedItemsOnNavigation = _this$props3.clearSelectedItemsOnNavigation,
+          rootFolderId = _this$props3.rootFolderId;
       var id = collection.id,
-          name = collection.name; // New folder state
-
-      var newState = {
+          name = collection.name;
+      var commonState = {
         currentCollection: collection,
         rootName: id === rootFolderId ? name : ''
-      }; // Close any open modals
+      }; // New folder state
 
-      this.closeModals();
+      var newState = clearSelectedItemsOnNavigation ? _objectSpread({}, commonState, {
+        selected: {}
+      }) : commonState; // Close any open modals
+
+      this.closeModals(); // Deletes selected keys
+
+      if (clearSelectedItemsOnNavigation) {
+        this.deleteSelectedKeys();
+      }
 
       if (triggerNavigationEvent) {
         // Fire folder navigation event
@@ -1005,29 +1022,34 @@ var ContentPicker = /*#__PURE__*/function (_Component) {
      * @return {Element}
      */
     value: function render() {
-      var _this$props3 = this.props,
-          language = _this$props3.language,
-          messages = _this$props3.messages,
-          rootFolderId = _this$props3.rootFolderId,
-          logoUrl = _this$props3.logoUrl,
-          canUpload = _this$props3.canUpload,
-          canSetShareAccess = _this$props3.canSetShareAccess,
-          canCreateNewFolder = _this$props3.canCreateNewFolder,
-          extensions = _this$props3.extensions,
-          maxSelectable = _this$props3.maxSelectable,
-          type = _this$props3.type,
-          token = _this$props3.token,
-          sharedLink = _this$props3.sharedLink,
-          sharedLinkPassword = _this$props3.sharedLinkPassword,
-          apiHost = _this$props3.apiHost,
-          uploadHost = _this$props3.uploadHost,
-          isSmall = _this$props3.isSmall,
-          className = _this$props3.className,
-          measureRef = _this$props3.measureRef,
-          chooseButtonLabel = _this$props3.chooseButtonLabel,
-          cancelButtonLabel = _this$props3.cancelButtonLabel,
-          requestInterceptor = _this$props3.requestInterceptor,
-          responseInterceptor = _this$props3.responseInterceptor;
+      var _this$props4 = this.props,
+          language = _this$props4.language,
+          messages = _this$props4.messages,
+          rootFolderId = _this$props4.rootFolderId,
+          logoUrl = _this$props4.logoUrl,
+          canUpload = _this$props4.canUpload,
+          canSetShareAccess = _this$props4.canSetShareAccess,
+          canCreateNewFolder = _this$props4.canCreateNewFolder,
+          contentUploaderProps = _this$props4.contentUploaderProps,
+          extensions = _this$props4.extensions,
+          maxSelectable = _this$props4.maxSelectable,
+          type = _this$props4.type,
+          token = _this$props4.token,
+          sharedLink = _this$props4.sharedLink,
+          sharedLinkPassword = _this$props4.sharedLinkPassword,
+          apiHost = _this$props4.apiHost,
+          uploadHost = _this$props4.uploadHost,
+          isHeaderLogoVisible = _this$props4.isHeaderLogoVisible,
+          isPaginationVisible = _this$props4.isPaginationVisible,
+          isSmall = _this$props4.isSmall,
+          className = _this$props4.className,
+          measureRef = _this$props4.measureRef,
+          chooseButtonLabel = _this$props4.chooseButtonLabel,
+          cancelButtonLabel = _this$props4.cancelButtonLabel,
+          requestInterceptor = _this$props4.requestInterceptor,
+          responseInterceptor = _this$props4.responseInterceptor,
+          renderCustomActionButtons = _this$props4.renderCustomActionButtons,
+          showSelectedButton = _this$props4.showSelectedButton;
       var _this$state9 = this.state,
           view = _this$state9.view,
           rootName = _this$state9.rootName,
@@ -1058,24 +1080,26 @@ var ContentPicker = /*#__PURE__*/function (_Component) {
 
       /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 
-      return /*#__PURE__*/React.createElement(Internationalize, {
+      return React.createElement(Internationalize, {
         language: language,
         messages: messages
-      }, /*#__PURE__*/React.createElement("div", {
+      }, React.createElement("div", {
         id: this.id,
         className: styleClassName,
-        ref: measureRef
-      }, /*#__PURE__*/React.createElement("div", {
+        ref: measureRef,
+        "data-testid": "content-picker"
+      }, React.createElement("div", {
         className: "be-app-element",
         onKeyDown: this.onKeyDown,
         tabIndex: 0
-      }, /*#__PURE__*/React.createElement(Header, {
+      }, React.createElement(Header, {
         view: view,
+        isHeaderLogoVisible: isHeaderLogoVisible,
         isSmall: isSmall,
         searchQuery: searchQuery,
         logoUrl: logoUrl,
         onSearch: this.search
-      }), /*#__PURE__*/React.createElement(SubHeader, {
+      }), React.createElement(SubHeader, {
         view: view,
         rootId: rootFolderId,
         isSmall: isSmall,
@@ -1087,7 +1111,7 @@ var ContentPicker = /*#__PURE__*/function (_Component) {
         onCreate: this.createFolder,
         onItemClick: this.fetchFolder,
         onSortChange: this.sort
-      }), /*#__PURE__*/React.createElement(Content, {
+      }), React.createElement(Content, {
         view: view,
         isSmall: isSmall,
         rootId: rootFolderId,
@@ -1104,21 +1128,25 @@ var ContentPicker = /*#__PURE__*/function (_Component) {
         onItemClick: this.onItemClick,
         onFocusChange: this.onFocusChange,
         onShareAccessChange: this.changeShareAccess
-      }), /*#__PURE__*/React.createElement(Footer, {
+      }), React.createElement(Footer, {
+        currentCollection: currentCollection,
         selectedCount: selectedCount,
+        selectedItems: this.getSelectedItems(),
+        showSelectedButton: showSelectedButton,
         hasHitSelectionLimit: hasHitSelectionLimit,
         isSingleSelect: isSingleSelect,
         onSelectedClick: this.showSelected,
         onChoose: this.choose,
         onCancel: this.cancel,
         chooseButtonLabel: chooseButtonLabel,
-        cancelButtonLabel: cancelButtonLabel
-      }, /*#__PURE__*/React.createElement(Pagination, {
+        cancelButtonLabel: cancelButtonLabel,
+        renderCustomActionButtons: renderCustomActionButtons
+      }, isPaginationVisible ? React.createElement(OffsetBasedPagination, {
         offset: offset,
-        onChange: this.paginate,
+        onOffsetChange: this.paginate,
         pageSize: currentPageSize,
         totalCount: totalCount
-      }))), allowUpload && !!this.appElement ? /*#__PURE__*/React.createElement(UploadDialog, {
+      }) : null)), allowUpload && !!this.appElement ? React.createElement(UploadDialog, {
         isOpen: isUploadModalOpen,
         currentFolderId: id,
         token: token,
@@ -1129,9 +1157,10 @@ var ContentPicker = /*#__PURE__*/function (_Component) {
         onClose: this.uploadSuccessHandler,
         parentElement: this.rootElement,
         appElement: this.appElement,
+        contentUploaderProps: contentUploaderProps,
         requestInterceptor: requestInterceptor,
         responseInterceptor: responseInterceptor
-      }) : null, allowCreate && !!this.appElement ? /*#__PURE__*/React.createElement(CreateFolderDialog, {
+      }) : null, allowCreate && !!this.appElement ? React.createElement(CreateFolderDialog, {
         isOpen: isCreateFolderModalOpen,
         onCreate: this.createFolderCallback,
         onCancel: this.closeModals,
@@ -1168,7 +1197,12 @@ _defineProperty(ContentPicker, "defaultProps", {
   apiHost: DEFAULT_HOSTNAME_API,
   uploadHost: DEFAULT_HOSTNAME_UPLOAD,
   clientName: CLIENT_NAME_CONTENT_PICKER,
-  defaultView: DEFAULT_VIEW_FILES
+  defaultView: DEFAULT_VIEW_FILES,
+  contentUploaderProps: {},
+  showSelectedButton: true,
+  clearSelectedItemsOnNavigation: false,
+  isHeaderLogoVisible: true,
+  isPaginationVisible: true
 });
 
 export { ContentPicker as ContentPickerComponent };

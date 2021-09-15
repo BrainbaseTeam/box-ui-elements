@@ -9,9 +9,9 @@ import * as React from 'react';
 import APIContext from './APIContext';
 
 var withAPIContext = function withAPIContext(WrappedComponent) {
-  return /*#__PURE__*/React.forwardRef(function (props, ref) {
-    return /*#__PURE__*/React.createElement(APIContext.Consumer, null, function (api) {
-      return /*#__PURE__*/React.createElement(WrappedComponent, _extends({
+  return React.forwardRef(function (props, ref) {
+    return React.createElement(APIContext.Consumer, null, function (api) {
+      return React.createElement(WrappedComponent, _extends({
         ref: ref
       }, props, {
         api: api

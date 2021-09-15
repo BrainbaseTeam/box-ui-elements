@@ -1,5 +1,9 @@
 import { defineMessages } from 'react-intl';
 var messages = defineMessages({
+  fileRequestDisplayName: {
+    "id": "be.sidebarVersions.fileRequestDisplayName",
+    "defaultMessage": "File Request"
+  },
   versionsEmpty: {
     "id": "be.sidebarVersions.empty",
     "defaultMessage": "No prior versions are available for this file."

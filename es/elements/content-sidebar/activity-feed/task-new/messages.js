@@ -37,25 +37,41 @@ var messages = defineMessages({
     "id": "be.contentSidebar.activityFeed.taskNew.tasksFeedRejectAction",
     "defaultMessage": "Reject"
   },
-  tasksFeedStatusLabel: {
-    "id": "be.contentSidebar.activityFeed.taskNew.tasksFeedStatusLabel",
-    "defaultMessage": "Status: {taskStatus}"
+  tasksFeedViewDetailsAction: {
+    "id": "be.contentSidebar.activityFeed.taskNew.tasksFeedViewDetailsAction",
+    "defaultMessage": "View Task Details"
   },
   tasksFeedCompletedLabel: {
     "id": "be.contentSidebar.activityFeed.taskNew.tasksFeedCompletedLabel",
     "defaultMessage": "Completed"
   },
+  taskFeedCompletedUppercaseLabel: {
+    "id": "be.contentSidebar.activityFeed.taskNew.tasksFeedCompletedUppercaseLabel",
+    "defaultMessage": "COMPLETED"
+  },
   tasksFeedApprovedLabel: {
     "id": "be.contentSidebar.activityFeed.taskNew.tasksFeedApprovedLabel",
     "defaultMessage": "Approved"
+  },
+  taskFeedApprovedUppercaseLabel: {
+    "id": "be.contentSidebar.activityFeed.taskNew.tasksFeedApprovedUppercaseLabel",
+    "defaultMessage": "APPROVED"
   },
   tasksFeedRejectedLabel: {
     "id": "be.contentSidebar.activityFeed.taskNew.tasksFeedRejectedLabel",
     "defaultMessage": "Rejected"
   },
+  taskFeedRejectedUppercaseLabel: {
+    "id": "be.contentSidebar.activityFeed.taskNew.tasksFeedRejectedUppercaseLabel",
+    "defaultMessage": "REJECTED"
+  },
   tasksFeedInProgressLabel: {
     "id": "be.contentSidebar.activityFeed.taskNew.tasksFeedInProgressLabel",
     "defaultMessage": "In Progress"
+  },
+  taskFeedInProgressUppercaseLabel: {
+    "id": "be.contentSidebar.activityFeed.taskNew.tasksFeedInProgressUppercaseLabel",
+    "defaultMessage": "IN PROGRESS"
   },
   tasksFeedHeadlineApprovalCurrentUser: {
     "id": "be.contentSidebar.activityFeed.taskNew.tasksFeedHeadlineApprovalCurrentUser",
@@ -93,6 +109,10 @@ var messages = defineMessages({
     "id": "be.contentSidebar.activityFeed.taskNew.tasksFeedStatusCompleted",
     "defaultMessage": "Completed {dateTime}"
   },
+  taskFeedStatusDue: {
+    "id": "be.contentSidebar.activityFeed.taskNew.taskFeedStatusDue",
+    "defaultMessage": "DUE {dateTime}"
+  },
   taskAssignmentCompleted: {
     "id": "be.contentSidebar.activityFeed.taskNew.taskAssignmentCompleted",
     "defaultMessage": "Completed"
@@ -112,6 +132,10 @@ var messages = defineMessages({
   taskAnyAffordanceTooltip: {
     "id": "be.contentSidebar.activityFeed.task.taskAnyAffordanceTooltip",
     "defaultMessage": "Only one assignee is required to complete this task"
+  },
+  taskMultipleFilesAffordanceTooltip: {
+    "id": "be.contentSidebar.activityFeed.task.taskMultipleFilesAffordanceTooltip",
+    "defaultMessage": "There are multiple files associated with this task"
   }
 });
 export default messages;

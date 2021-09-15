@@ -10,19 +10,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -57,17 +53,17 @@ import './MetadataSidebar.scss';
 var MARK_NAME_JS_READY = "".concat(ORIGIN_METADATA_SIDEBAR, "_").concat(EVENT_JS_READY);
 mark(MARK_NAME_JS_READY);
 
-var MetadataSidebar = /*#__PURE__*/function (_React$PureComponent) {
+var MetadataSidebar =
+/*#__PURE__*/
+function (_React$PureComponent) {
   _inherits(MetadataSidebar, _React$PureComponent);
-
-  var _super = _createSuper(MetadataSidebar);
 
   function MetadataSidebar(props) {
     var _this;
 
     _classCallCheck(this, MetadataSidebar);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(MetadataSidebar).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "state", {
       isLoading: false
@@ -155,7 +151,7 @@ var MetadataSidebar = /*#__PURE__*/function (_React$PureComponent) {
         return;
       }
 
-      var newEditor = _objectSpread(_objectSpread({}, oldEditor), {}, {
+      var newEditor = _objectSpread({}, oldEditor, {
         isDirty: isDirty
       }); // shallow clone suffices for isDirty setting
 
@@ -312,7 +308,7 @@ var MetadataSidebar = /*#__PURE__*/function (_React$PureComponent) {
   }, {
     key: "onSaveErrorHandler",
     value: function onSaveErrorHandler(oldEditor, error, code) {
-      var clone = _objectSpread(_objectSpread({}, oldEditor), {}, {
+      var clone = _objectSpread({}, oldEditor, {
         hasError: true
       }); // shallow clone suffices for hasError setting
 
@@ -399,8 +395,8 @@ var MetadataSidebar = /*#__PURE__*/function (_React$PureComponent) {
       var canEdit = this.canEdit();
       var showTemplateDropdown = showEditor && canEdit;
       var showEmptyContent = showEditor && editors.length === 0;
-      return /*#__PURE__*/React.createElement(SidebarContent, {
-        actions: showTemplateDropdown ? /*#__PURE__*/React.createElement(TemplateDropdown, {
+      return React.createElement(SidebarContent, {
+        actions: showTemplateDropdown ? React.createElement(TemplateDropdown, {
           hasTemplates: templates && templates.length !== 0,
           isDropdownBusy: false,
           onAdd: this.onAdd // $FlowFixMe checked via showTemplateDropdown & showEditor
@@ -414,15 +410,15 @@ var MetadataSidebar = /*#__PURE__*/function (_React$PureComponent) {
         className: "bcs-metadata",
         elementId: elementId,
         sidebarView: SIDEBAR_VIEW_METADATA,
-        title: /*#__PURE__*/React.createElement(FormattedMessage, messages.sidebarMetadataTitle)
-      }, error && /*#__PURE__*/React.createElement(InlineError, {
-        title: /*#__PURE__*/React.createElement(FormattedMessage, messages.error)
-      }, /*#__PURE__*/React.createElement(FormattedMessage, error)), showLoadingIndicator && /*#__PURE__*/React.createElement(LoadingIndicator, null), showEditor && /*#__PURE__*/React.createElement(LoadingIndicatorWrapper, {
+        title: React.createElement(FormattedMessage, messages.sidebarMetadataTitle)
+      }, error && React.createElement(InlineError, {
+        title: React.createElement(FormattedMessage, messages.error)
+      }, React.createElement(FormattedMessage, error)), showLoadingIndicator && React.createElement(LoadingIndicator, null), showEditor && React.createElement(LoadingIndicatorWrapper, {
         className: "metadata-instance-editor",
         isLoading: isLoading
-      }, showEmptyContent ? /*#__PURE__*/React.createElement(EmptyContent, {
+      }, showEmptyContent ? React.createElement(EmptyContent, {
         canAdd: canEdit
-      }) : /*#__PURE__*/React.createElement(Instances, {
+      }) : React.createElement(Instances, {
         editors: editors,
         onModification: this.onModification,
         onRemove: this.onRemove,

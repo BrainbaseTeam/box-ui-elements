@@ -11,11 +11,11 @@ import './SidebarLoading.scss';
 
 var SidebarLoading = function SidebarLoading(_ref) {
   var title = _ref.title;
-  return /*#__PURE__*/React.createElement(SidebarContent, {
+  return React.createElement(SidebarContent, {
     title: title
-  }, /*#__PURE__*/React.createElement(SidebarSection, {
+  }, React.createElement(SidebarSection, {
     isOpen: true
-  }, /*#__PURE__*/React.createElement(LoadingIndicator, {
+  }, React.createElement(LoadingIndicator, {
     className: "bcs-sidebar-loading"
   })));
 };

@@ -8,19 +8,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 import * as React from 'react';
 import classNames from 'classnames';
@@ -30,17 +26,17 @@ import LeftSidebarLinkCallout from './LeftSidebarLinkCallout';
 import RemoveButton from './RemoveButton';
 import './styles/LeftSidebarLink.scss';
 
-var LeftSidebarLink = /*#__PURE__*/function (_React$Component) {
+var LeftSidebarLink =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(LeftSidebarLink, _React$Component);
-
-  var _super = _createSuper(LeftSidebarLink);
 
   function LeftSidebarLink(props) {
     var _this;
 
     _classCallCheck(this, LeftSidebarLink);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(LeftSidebarLink).call(this, props));
     _this.state = {
       isTextOverflowed: false
     };
@@ -96,13 +92,13 @@ var LeftSidebarLink = /*#__PURE__*/function (_React$Component) {
       var secondaryColor = customTheme.secondaryColor;
       var LinkComponent = RouterLink || LinkBase;
       var routerLinkProps = RouterLink ? routerProps : {};
-      var linkComponent = /*#__PURE__*/React.createElement(LinkComponent, _extends({
+      var linkComponent = React.createElement(LinkComponent, _extends({
         className: className
       }, htmlAttributes, routerLinkProps, {
         style: selected && customTheme ? {
           boxShadow: secondaryColor ? "inset 2px 0 0 ".concat(secondaryColor) : undefined
         } : {}
-      }), icon, /*#__PURE__*/React.createElement("span", {
+      }), icon, React.createElement("span", {
         ref: function ref(leftSidebarLinkText) {
           _this2.leftSidebarLinkText = leftSidebarLinkText;
         },
@@ -111,11 +107,11 @@ var LeftSidebarLink = /*#__PURE__*/function (_React$Component) {
       var component = linkComponent;
 
       if (callout) {
-        component = /*#__PURE__*/React.createElement(LeftSidebarLinkCallout, {
+        component = React.createElement(LeftSidebarLinkCallout, {
           callout: callout
         }, linkComponent);
       } else if (showTooltip) {
-        component = /*#__PURE__*/React.createElement(Tooltip, {
+        component = React.createElement(Tooltip, {
           className: classNames('nav-link-tooltip', {
             'is-visible': this.state.isTextOverflowed && !isScrolling
           }),
@@ -125,9 +121,9 @@ var LeftSidebarLink = /*#__PURE__*/function (_React$Component) {
         }, linkComponent);
       }
 
-      return onClickRemove ? /*#__PURE__*/React.createElement("div", {
+      return onClickRemove ? React.createElement("div", {
         className: "left-sidebar-removeable-link-container"
-      }, component, /*#__PURE__*/React.createElement(RemoveButton, {
+      }, component, React.createElement(RemoveButton, {
         onClickRemove: onClickRemove,
         removeButtonHtmlAttributes: removeButtonHtmlAttributes
       })) : component;

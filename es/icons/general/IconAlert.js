@@ -11,13 +11,13 @@ var IconAlert = function IconAlert(_ref) {
       title = _ref.title,
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 24 : _ref$width;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: "icon-alert ".concat(className),
     height: height,
     title: title,
     viewBox: "0 0 24 24",
     width: width
-  }, /*#__PURE__*/React.createElement("path", {
+  }, React.createElement("path", {
     className: "fill-color",
     d: "M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z",
     fill: color,

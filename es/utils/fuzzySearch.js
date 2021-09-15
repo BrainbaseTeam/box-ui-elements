@@ -21,6 +21,11 @@
 var fuzzySearch = function fuzzySearch(search, content) {
   var minCharacters = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 3;
   var maxGaps = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 2;
+
+  if (!content) {
+    return false;
+  }
+
   var uniformContent = content.toLowerCase().replace(/\s/g, '');
   var uniformSearch = search.toLowerCase().replace(/\s/g, '');
   var contentLength = uniformContent.length;

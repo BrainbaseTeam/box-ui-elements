@@ -8,19 +8,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -33,22 +29,25 @@ import getProp from 'lodash/get';
 import noop from 'lodash/noop';
 import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
-import { scrollIntoView } from '../../../../utils/dom';
 import ActiveState from './ActiveState';
 import CommentForm from '../comment-form';
 import EmptyState from './EmptyState';
-import { collapseFeedState, ItemTypes } from './activityFeedUtils';
 import InlineError from '../../../../components/inline-error/InlineError';
 import LoadingIndicator from '../../../../components/loading-indicator/LoadingIndicator';
 import messages from './messages';
+import { collapseFeedState, ItemTypes } from './activityFeedUtils';
+import { PERMISSION_CAN_CREATE_ANNOTATIONS } from '../../../../constants';
+import { scrollIntoView } from '../../../../utils/dom';
 import './ActivityFeed.scss';
 
-var ActivityFeed = /*#__PURE__*/function (_React$Component) {
+var ActivityFeed =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(ActivityFeed, _React$Component);
 
-  var _super = _createSuper(ActivityFeed);
-
   function ActivityFeed() {
+    var _getPrototypeOf2;
+
     var _this;
 
     _classCallCheck(this, ActivityFeed);
@@ -57,13 +56,13 @@ var ActivityFeed = /*#__PURE__*/function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    _this = _super.call.apply(_super, [this].concat(args));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(ActivityFeed)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_this), "state", {
       isInputOpen: false
     });
 
-    _defineProperty(_assertThisInitialized(_this), "activeFeedItemRef", /*#__PURE__*/React.createRef());
+    _defineProperty(_assertThisInitialized(_this), "activeFeedItemRef", React.createRef());
 
     _defineProperty(_assertThisInitialized(_this), "isEmpty", function () {
       var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _this.props,
@@ -76,12 +75,11 @@ var ActivityFeed = /*#__PURE__*/function (_React$Component) {
       return feedItems.length === 0 || feedItems.length === 1 && feedItems[0].type === ItemTypes.fileVersion;
     });
 
-    _defineProperty(_assertThisInitialized(_this), "hasLoaded", function () {
-      var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _this.props,
-          currentUser = _ref2.currentUser,
-          feedItems = _ref2.feedItems;
-
-      return currentUser !== undefined && feedItems !== undefined;
+    _defineProperty(_assertThisInitialized(_this), "hasLoaded", function (prevCurrentUser, prevFeedItems) {
+      var _this$props = _this.props,
+          currentUser = _this$props.currentUser,
+          feedItems = _this$props.feedItems;
+      return currentUser !== undefined && feedItems !== undefined && (!prevCurrentUser || !prevFeedItems);
     });
 
     _defineProperty(_assertThisInitialized(_this), "resetFeedScroll", function () {
@@ -115,9 +113,9 @@ var ActivityFeed = /*#__PURE__*/function (_React$Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_this), "onCommentCreate", function (_ref3) {
-      var text = _ref3.text,
-          hasMention = _ref3.hasMention;
+    _defineProperty(_assertThisInitialized(_this), "onCommentCreate", function (_ref2) {
+      var text = _ref2.text,
+          hasMention = _ref2.hasMention;
       var _this$props$onComment = _this.props.onCommentCreate,
           onCommentCreate = _this$props$onComment === void 0 ? noop : _this$props$onComment;
       onCommentCreate(text, hasMention);
@@ -125,10 +123,10 @@ var ActivityFeed = /*#__PURE__*/function (_React$Component) {
       _this.commentFormSubmitHandler();
     });
 
-    _defineProperty(_assertThisInitialized(_this), "onTaskCreate", function (_ref4) {
-      var text = _ref4.text,
-          assignees = _ref4.assignees,
-          dueAt = _ref4.dueAt;
+    _defineProperty(_assertThisInitialized(_this), "onTaskCreate", function (_ref3) {
+      var text = _ref3.text,
+          assignees = _ref3.assignees,
+          dueAt = _ref3.dueAt;
       var _this$props$onTaskCre = _this.props.onTaskCreate,
           onTaskCreate = _this$props$onTaskCre === void 0 ? noop : _this$props$onTaskCre;
       onTaskCreate(text, assignees, dueAt);
@@ -152,23 +150,25 @@ var ActivityFeed = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps, prevState) {
-      var prevFeedItems = prevProps.feedItems;
-      var _this$props = this.props,
-          currFeedItems = _this$props.feedItems,
-          activeFeedEntryId = _this$props.activeFeedEntryId;
+      var prevActiveFeedEntryId = prevProps.activeFeedEntryId,
+          prevCurrentUser = prevProps.currentUser,
+          prevFeedItems = prevProps.feedItems;
+      var _this$props2 = this.props,
+          currFeedItems = _this$props2.feedItems,
+          activeFeedEntryId = _this$props2.activeFeedEntryId;
       var prevIsInputOpen = prevState.isInputOpen;
       var currIsInputOpen = this.state.isInputOpen;
-      var hasLoaded = this.hasLoaded();
+      var hasLoaded = this.hasLoaded(prevCurrentUser, prevFeedItems);
       var hasMoreItems = prevFeedItems && currFeedItems && prevFeedItems.length < currFeedItems.length;
       var didLoadFeedItems = prevFeedItems === undefined && currFeedItems !== undefined;
       var hasInputOpened = currIsInputOpen !== prevIsInputOpen;
+      var hasActiveFeedEntryIdChanged = activeFeedEntryId !== prevActiveFeedEntryId;
 
       if ((hasLoaded || hasMoreItems || didLoadFeedItems || hasInputOpened) && activeFeedEntryId === undefined) {
         this.resetFeedScroll();
-      } // do the scroll only once after first fetch of feed items
+      }
 
-
-      if (didLoadFeedItems) {
+      if (didLoadFeedItems || hasActiveFeedEntryIdChanged) {
         this.scrollToActiveFeedItemOrErrorMessage();
       }
     }
@@ -202,73 +202,84 @@ var ActivityFeed = /*#__PURE__*/function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      var _this$props2 = this.props,
-          translations = _this$props2.translations,
-          approverSelectorContacts = _this$props2.approverSelectorContacts,
-          mentionSelectorContacts = _this$props2.mentionSelectorContacts,
-          currentUser = _this$props2.currentUser,
-          isDisabled = _this$props2.isDisabled,
-          getAvatarUrl = _this$props2.getAvatarUrl,
-          getUserProfileUrl = _this$props2.getUserProfileUrl,
-          file = _this$props2.file,
-          onAppActivityDelete = _this$props2.onAppActivityDelete,
-          onCommentCreate = _this$props2.onCommentCreate,
-          getApproverWithQuery = _this$props2.getApproverWithQuery,
-          getMentionWithQuery = _this$props2.getMentionWithQuery,
-          activityFeedError = _this$props2.activityFeedError,
-          onVersionHistoryClick = _this$props2.onVersionHistoryClick,
-          onCommentDelete = _this$props2.onCommentDelete,
-          onCommentUpdate = _this$props2.onCommentUpdate,
-          onTaskDelete = _this$props2.onTaskDelete,
-          onTaskUpdate = _this$props2.onTaskUpdate,
-          onTaskAssignmentUpdate = _this$props2.onTaskAssignmentUpdate,
-          onTaskModalClose = _this$props2.onTaskModalClose,
-          feedItems = _this$props2.feedItems,
-          activeFeedEntryId = _this$props2.activeFeedEntryId,
-          activeFeedEntryType = _this$props2.activeFeedEntryType;
+      var _this$props3 = this.props,
+          activeFeedEntryId = _this$props3.activeFeedEntryId,
+          activeFeedEntryType = _this$props3.activeFeedEntryType,
+          activityFeedError = _this$props3.activityFeedError,
+          approverSelectorContacts = _this$props3.approverSelectorContacts,
+          currentUser = _this$props3.currentUser,
+          feedItems = _this$props3.feedItems,
+          file = _this$props3.file,
+          getApproverWithQuery = _this$props3.getApproverWithQuery,
+          getAvatarUrl = _this$props3.getAvatarUrl,
+          getMentionWithQuery = _this$props3.getMentionWithQuery,
+          getUserProfileUrl = _this$props3.getUserProfileUrl,
+          isDisabled = _this$props3.isDisabled,
+          mentionSelectorContacts = _this$props3.mentionSelectorContacts,
+          contactsLoaded = _this$props3.contactsLoaded,
+          onAnnotationDelete = _this$props3.onAnnotationDelete,
+          onAnnotationEdit = _this$props3.onAnnotationEdit,
+          onAnnotationSelect = _this$props3.onAnnotationSelect,
+          onAppActivityDelete = _this$props3.onAppActivityDelete,
+          onCommentCreate = _this$props3.onCommentCreate,
+          onCommentDelete = _this$props3.onCommentDelete,
+          onCommentUpdate = _this$props3.onCommentUpdate,
+          onTaskAssignmentUpdate = _this$props3.onTaskAssignmentUpdate,
+          onTaskDelete = _this$props3.onTaskDelete,
+          onTaskModalClose = _this$props3.onTaskModalClose,
+          onTaskUpdate = _this$props3.onTaskUpdate,
+          onTaskView = _this$props3.onTaskView,
+          onVersionHistoryClick = _this$props3.onVersionHistoryClick,
+          translations = _this$props3.translations;
       var isInputOpen = this.state.isInputOpen;
+      var hasAnnotationCreatePermission = getProp(file, ['permissions', PERMISSION_CAN_CREATE_ANNOTATIONS], false);
       var hasCommentPermission = getProp(file, 'permissions.can_comment', false);
       var showCommentForm = !!(currentUser && hasCommentPermission && onCommentCreate && feedItems);
       var isEmpty = this.isEmpty(this.props);
       var isLoading = !this.hasLoaded();
-      var activeEntry = Array.isArray(feedItems) && feedItems.find(function (_ref5) {
-        var id = _ref5.id,
-            type = _ref5.type;
+      var activeEntry = Array.isArray(feedItems) && feedItems.find(function (_ref4) {
+        var id = _ref4.id,
+            type = _ref4.type;
         return id === activeFeedEntryId && type === activeFeedEntryType;
       });
       var errorMessageByEntryType = {
+        annotation: messages.annotationMissingError,
         comment: messages.commentMissingError,
         task: messages.taskMissingError
       };
       var inlineFeedItemErrorMessage = activeFeedEntryType ? errorMessageByEntryType[activeFeedEntryType] : undefined;
       var isInlineFeedItemErrorVisible = !isLoading && activeFeedEntryType && !activeEntry;
-      return (
-        /*#__PURE__*/
-        // eslint-disable-next-line
+      var currentFileVersionId = getProp(file, 'file_version.id');
+      return (// eslint-disable-next-line
         React.createElement("div", {
           className: "bcs-activity-feed",
+          "data-testid": "activityfeed",
           onKeyDown: this.onKeyDown
-        }, /*#__PURE__*/React.createElement("div", {
-          ref: function ref(_ref6) {
-            _this2.feedContainer = _ref6;
+        }, React.createElement("div", {
+          ref: function ref(_ref5) {
+            _this2.feedContainer = _ref5;
           },
           className: "bcs-activity-feed-items-container"
-        }, isLoading && /*#__PURE__*/React.createElement("div", {
+        }, isLoading && React.createElement("div", {
           className: "bcs-activity-feed-loading-state"
-        }, /*#__PURE__*/React.createElement(LoadingIndicator, null)), isEmpty && !isLoading && /*#__PURE__*/React.createElement(EmptyState, {
+        }, React.createElement(LoadingIndicator, null)), isEmpty && !isLoading && React.createElement(EmptyState, {
+          showAnnotationMessage: hasAnnotationCreatePermission,
           showCommentMessage: showCommentForm
-        }), !isEmpty && !isLoading && /*#__PURE__*/React.createElement(ActiveState, _extends({}, activityFeedError, {
+        }), !isEmpty && !isLoading && React.createElement(ActiveState, _extends({}, activityFeedError, {
           items: collapseFeedState(feedItems),
           isDisabled: isDisabled,
           currentUser: currentUser,
+          currentFileVersionId: currentFileVersionId,
           onTaskAssignmentUpdate: onTaskAssignmentUpdate,
+          onAnnotationDelete: onAnnotationDelete,
+          onAnnotationEdit: onAnnotationEdit,
+          onAnnotationSelect: onAnnotationSelect,
           onAppActivityDelete: onAppActivityDelete,
           onCommentDelete: hasCommentPermission ? onCommentDelete : noop,
-          onCommentEdit: hasCommentPermission ? onCommentUpdate : noop // We don't know task edit/delete specific permissions,
-          // but you must at least be able to comment to do these operations.
-          ,
-          onTaskDelete: hasCommentPermission ? onTaskDelete : noop,
-          onTaskEdit: hasCommentPermission ? onTaskUpdate : noop,
+          onCommentEdit: hasCommentPermission ? onCommentUpdate : noop,
+          onTaskDelete: onTaskDelete,
+          onTaskEdit: onTaskUpdate,
+          onTaskView: onTaskView,
           onTaskModalClose: onTaskModalClose,
           onVersionInfo: onVersionHistoryClick ? this.openVersionHistoryPopup : null,
           translations: translations,
@@ -281,19 +292,21 @@ var ActivityFeed = /*#__PURE__*/function (_React$Component) {
           activeFeedEntryId: activeFeedEntryId,
           activeFeedEntryType: activeFeedEntryType,
           activeFeedItemRef: this.activeFeedItemRef
-        })), isInlineFeedItemErrorVisible && inlineFeedItemErrorMessage && /*#__PURE__*/React.createElement(InlineError, {
-          title: /*#__PURE__*/React.createElement(FormattedMessage, messages.feedInlineErrorTitle),
+        })), isInlineFeedItemErrorVisible && inlineFeedItemErrorMessage && React.createElement(InlineError, {
+          title: React.createElement(FormattedMessage, messages.feedInlineErrorTitle),
           className: "bcs-feedItemInlineError"
-        }, /*#__PURE__*/React.createElement(FormattedMessage, inlineFeedItemErrorMessage))), showCommentForm ? /*#__PURE__*/React.createElement(CommentForm, {
+        }, React.createElement(FormattedMessage, inlineFeedItemErrorMessage))), showCommentForm ? React.createElement(CommentForm, {
           onSubmit: this.resetFeedScroll,
           isDisabled: isDisabled,
           mentionSelectorContacts: mentionSelectorContacts,
+          contactsLoaded: contactsLoaded,
           className: classNames('bcs-activity-feed-comment-input', {
             'bcs-is-disabled': isDisabled
           }),
           createComment: hasCommentPermission ? this.onCommentCreate : noop,
           getMentionWithQuery: getMentionWithQuery,
-          isOpen: isInputOpen,
+          isOpen: isInputOpen // $FlowFixMe
+          ,
           user: currentUser,
           onCancel: this.commentFormCancelHandler,
           onFocus: this.commentFormFocusHandler,

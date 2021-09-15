@@ -14,7 +14,7 @@ export default (function (_ref) {
       sortDirection = _ref.sortDirection;
   var by = sortBy && sortBy.toLowerCase();
   var direction = sortDirection === SORT_ASC ? 'up' : 'down';
-  return /*#__PURE__*/React.createElement("div", null, label, "\xA0\xA0", by === dataKey && /*#__PURE__*/React.createElement(IconChevron, {
+  return React.createElement("div", null, label, "\xA0\xA0", by === dataKey && React.createElement(IconChevron, {
     color: COLOR_999,
     direction: direction,
     size: "6px",

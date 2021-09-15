@@ -29,7 +29,7 @@ $assignee-dropdown-height: 215px;
             width: 100%;
         }
 
-        .checkbox-container {
+        .checkbox-container-box-ui-elements {
             // default margin is 20px between form input elements
             // this checkbox needs to be 10px below the pill selector input
             margin-top: -10px;
@@ -50,15 +50,15 @@ $assignee-dropdown-height: 215px;
             margin-bottom: 15px;
         }
 
-        input.pill-selector-hidden-input {
+        input.bdl-PillSelector-input--hidden {
             width: 1px;
         }
 
-        .pill-selector-wrapper {
+        .bdl-PillSelectorDropdown {
             width: 100%;
             margin-left: 0;
 
-            .pill-selector-input-wrapper {
+            .bdl-PillSelector {
                 width: auto;
             }
 

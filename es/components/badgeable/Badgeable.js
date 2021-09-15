@@ -1,4 +1,5 @@
 import * as React from 'react';
+import classnames from 'classnames';
 import './Badgeable.scss';
 
 var Badgeable = function Badgeable(props) {
@@ -13,17 +14,17 @@ var Badgeable = function Badgeable(props) {
       bottomLeft = _props$bottomLeft === void 0 ? null : _props$bottomLeft,
       _props$bottomRight = props.bottomRight,
       bottomRight = _props$bottomRight === void 0 ? null : _props$bottomRight;
-  return /*#__PURE__*/React.createElement("div", {
-    className: "badgeable-container ".concat(className)
-  }, children, /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
+    className: classnames('badgeable-container', className)
+  }, children, React.createElement("div", {
     className: "badges"
-  }, topLeft && /*#__PURE__*/React.createElement("div", {
+  }, topLeft && React.createElement("div", {
     className: "top-left-badge"
-  }, topLeft), topRight && /*#__PURE__*/React.createElement("div", {
+  }, topLeft), topRight && React.createElement("div", {
     className: "top-right-badge"
-  }, topRight), bottomLeft && /*#__PURE__*/React.createElement("div", {
+  }, topRight), bottomLeft && React.createElement("div", {
     className: "bottom-left-badge"
-  }, bottomLeft), bottomRight && /*#__PURE__*/React.createElement("div", {
+  }, bottomLeft), bottomRight && React.createElement("div", {
     className: "bottom-right-badge"
   }, bottomRight)));
 };

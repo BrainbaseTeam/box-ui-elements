@@ -18,45 +18,45 @@ var CascadePolicy = function CascadePolicy(_ref) {
       onCascadeToggle = _ref.onCascadeToggle,
       onCascadeModeChange = _ref.onCascadeModeChange,
       shouldShowCascadeOptions = _ref.shouldShowCascadeOptions;
-  var readOnlyState = isCascadingEnabled ? /*#__PURE__*/React.createElement("div", {
+  var readOnlyState = isCascadingEnabled ? React.createElement("div", {
     className: "metadata-cascade-notice"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.metadataCascadePolicyEnabledInfo)) : null;
-  return canEdit ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement(FormattedMessage, messages.metadataCascadePolicyEnabledInfo)) : null;
+  return canEdit ? React.createElement(React.Fragment, null, React.createElement("div", {
     className: "metadata-cascade-editor"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "metadata-cascade-enable"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(FormattedMessage, _extends({
+  }, React.createElement("div", null, React.createElement(FormattedMessage, _extends({
     tagName: "strong"
-  }, messages.enableCascadePolicy)), !isCustomMetadata && /*#__PURE__*/React.createElement(Toggle, {
+  }, messages.enableCascadePolicy)), !isCustomMetadata && React.createElement(Toggle, {
     className: "metadata-cascade-toggle ".concat(isCascadingEnabled ? 'cascade-on' : 'cascade-off'),
     isOn: isCascadingEnabled,
     label: "",
     onChange: function onChange(e) {
       return onCascadeToggle(e.target.checked);
     }
-  })), !isCustomMetadata ? /*#__PURE__*/React.createElement("div", {
+  })), !isCustomMetadata ? React.createElement("div", {
     className: "cascade-policy-text"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.applyCascadePolicyText), "\xA0", /*#__PURE__*/React.createElement(Link, {
+  }, React.createElement(FormattedMessage, messages.applyCascadePolicyText), "\xA0", React.createElement(Link, {
     className: "cascade-policy-learnmore-link",
     href: COMMUNITY_LINK,
     target: "_blank"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.cascadePolicyLearnMore))) : /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(FormattedMessage, messages.cannotApplyCascadePolicyText)))), shouldShowCascadeOptions && /*#__PURE__*/React.createElement("div", {
+  }, React.createElement(FormattedMessage, messages.cascadePolicyLearnMore))) : React.createElement("div", null, React.createElement(FormattedMessage, messages.cannotApplyCascadePolicyText)))), shouldShowCascadeOptions && React.createElement("div", {
     className: "metadata-cascade-editor"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "metadata-cascading-mode"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.cascadePolicyModeQuestion), /*#__PURE__*/React.createElement("div", {
+  }, React.createElement(FormattedMessage, messages.cascadePolicyModeQuestion), React.createElement("div", {
     className: "metadata-operation-not-immediate"
-  }, /*#__PURE__*/React.createElement(IconAlertDefault, null), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement(FormattedMessage, messages.operationNotImmediate))), /*#__PURE__*/React.createElement(RadioGroup, {
+  }, React.createElement(IconAlertDefault, null), React.createElement("span", null, React.createElement(FormattedMessage, messages.operationNotImmediate))), React.createElement(RadioGroup, {
     className: "metadata-cascading-options",
     onChange: function onChange(e) {
       return onCascadeModeChange(e.target.value === 'overwrite');
     },
     value: isCascadingOverwritten ? 'overwrite' : 'skip'
-  }, /*#__PURE__*/React.createElement(RadioButton, {
-    label: /*#__PURE__*/React.createElement(FormattedMessage, messages.cascadePolicySkipMode),
+  }, React.createElement(RadioButton, {
+    label: React.createElement(FormattedMessage, messages.cascadePolicySkipMode),
     value: "skip"
-  }), /*#__PURE__*/React.createElement(RadioButton, {
-    label: /*#__PURE__*/React.createElement(FormattedMessage, messages.cascadePolicyOverwriteMode),
+  }), React.createElement(RadioButton, {
+    label: React.createElement(FormattedMessage, messages.cascadePolicyOverwriteMode),
     value: "overwrite"
   }))))) : readOnlyState;
 };

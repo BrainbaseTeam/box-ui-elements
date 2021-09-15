@@ -10,17 +10,17 @@ var IconCollectionItemLink = function IconCollectionItemLink(_ref) {
       title = _ref.title,
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 32 : _ref$width;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: "bdl-IconCollectionItemLink ".concat(className),
     height: height,
     title: title,
     viewBox: "0 0 32 32",
     width: width
-  }, /*#__PURE__*/React.createElement("path", {
+  }, React.createElement("path", {
     className: "background-color",
     fill: bdlGray,
     d: "M0 16C0 7.138 7.138 0 16 0s16 7.138 16 16-7.138 16-16 16S0 24.862 0 16z"
-  }), /*#__PURE__*/React.createElement("path", {
+  }), React.createElement("path", {
     className: "foreground-color",
     fill: white,
     fillRule: "nonzero",

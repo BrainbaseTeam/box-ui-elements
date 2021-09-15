@@ -11,25 +11,25 @@ import './Logo.scss';
 
 function getLogo(url) {
   if (url === 'box') {
-    return /*#__PURE__*/React.createElement(IconLogo, null);
+    return React.createElement(IconLogo, null);
   }
 
   if (typeof url === 'string') {
-    return /*#__PURE__*/React.createElement("img", {
+    return React.createElement("img", {
       alt: "",
       className: "be-logo-custom",
       src: url
     });
   }
 
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "be-logo-placeholder"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.logo));
+  }, React.createElement(FormattedMessage, messages.logo));
 }
 
 var Logo = function Logo(_ref) {
   var url = _ref.url;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "be-logo"
   }, getLogo(url));
 };

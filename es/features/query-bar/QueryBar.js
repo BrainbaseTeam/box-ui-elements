@@ -22,17 +22,17 @@ var QueryBar = function QueryBar(_ref) {
   var columnsWithoutItemName = columns && columns.filter(function (column) {
     return !isItemName(column);
   });
-  return /*#__PURE__*/React.createElement("section", {
+  return React.createElement("section", {
     className: "metadata-view-query-bar"
-  }, /*#__PURE__*/React.createElement(TemplateButton, {
+  }, React.createElement(TemplateButton, {
     activeTemplate: activeTemplate,
     onTemplateChange: onTemplateChange,
     templates: templates
-  }), /*#__PURE__*/React.createElement(FilterButton, {
+  }), React.createElement(FilterButton, {
     columns: metadataColumns,
     conditions: conditions,
     onFilterChange: onFilterChange
-  }), /*#__PURE__*/React.createElement(ColumnButton, {
+  }), React.createElement(ColumnButton, {
     columns: columnsWithoutItemName,
     onColumnChange: onColumnChange,
     template: activeTemplate

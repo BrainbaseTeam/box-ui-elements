@@ -11,13 +11,13 @@ var IconAlignLeft = function IconAlignLeft(_ref) {
       title = _ref.title,
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 13 : _ref$width;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: "icon-align-left ".concat(className),
     height: height,
     title: title,
     viewBox: "0 0 13 10",
     width: width
-  }, /*#__PURE__*/React.createElement("path", {
+  }, React.createElement("path", {
     className: "stroke-color",
     d: "M.3.5h11.9M.3 3.5h9.3m-9.3 6h9.3m-9.3-3H5",
     fill: "none",

@@ -15,11 +15,13 @@ import VersionsItemBadge from './VersionsItemBadge';
 import VersionsItemRetention from './VersionsItemRetention';
 import { ReadableTime } from '../../../components/time';
 import {
+    FILE_REQUEST_NAME,
     VERSION_DELETE_ACTION,
     VERSION_PROMOTE_ACTION,
     VERSION_RESTORE_ACTION,
     VERSION_UPLOAD_ACTION,
 } from '../../../constants';
+import type { BoxItemVersion } from '../../../common/types/core';
 import type { VersionActionCallback } from './flowTypes';
 import './VersionsItem.scss';
 
@@ -44,6 +46,7 @@ const ACTION_MAP = {
     [VERSION_PROMOTE_ACTION]: messages.versionPromotedBy,
     [VERSION_UPLOAD_ACTION]: messages.versionUploadedBy,
 };
+const FILE_EXTENSIONS_OFFICE = ['xlsb', 'xlsm', 'xlsx'];
 const FIVE_MINUTES_MS = 5 * 60 * 1000;
 
 const VersionsItem = ({
@@ -62,6 +65,7 @@ const VersionsItem = ({
 }: Props) => {
     const {
         created_at: createdAt,
+        extension,
         id: versionId,
         is_download_available,
         permissions = {},
@@ -84,12 +88,18 @@ const VersionsItem = ({
     const versionUserName = selectors.getVersionUser(version).name || (
         <FormattedMessage {...messages.versionUserUnknown} />
     );
-
+    const versionDisplayName =
+        versionUserName !== FILE_REQUEST_NAME ? (
+            versionUserName
+        ) : (
+            <FormattedMessage {...messages.fileRequestDisplayName} />
+        );
     // Version state helpers
     const isDeleted = versionAction === VERSION_DELETE_ACTION;
     const isDownloadable = !!is_download_available;
     const isLimited = versionCount - versionInteger >= versionLimit;
-    const isRestricted = isWatermarked && !isCurrent; // Watermarked files do not support prior version preview
+    const isOffice = FILE_EXTENSIONS_OFFICE.includes(extension);
+    const isRestricted = (isOffice || isWatermarked) && !isCurrent;
     const isRetained = !!retentionAppliedAt && (!retentionDispositionAtDate || retentionDispositionAtDate > new Date());
 
     // Version action helpers
@@ -128,10 +138,10 @@ const VersionsItem = ({
                         </div>
                     )}
 
-                    <div className="bcs-VersionsItem-log" data-testid="bcs-VersionsItem-log" title={versionUserName}>
+                    <div className="bcs-VersionsItem-log" data-testid="bcs-VersionsItem-log" title={versionDisplayName}>
                         <FormattedMessage
                             {...ACTION_MAP[versionAction]}
-                            values={{ name: versionUserName, versionPromoted }}
+                            values={{ name: versionDisplayName, versionPromoted }}
                         />
                     </div>
 

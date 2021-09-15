@@ -1,3 +1,5 @@
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
 /**
  * 
  * @file Open With button when multiple integrations are present
@@ -14,10 +16,12 @@ import OpenWithButtonContents from './OpenWithButtonContents';
 import { CLASS_INTEGRATION_ICON, OPEN_WITH_BUTTON_ICON_SIZE } from '../../constants';
 
 var MultipleIntegrationsOpenWithButton = function MultipleIntegrationsOpenWithButton(buttonProps) {
-  return /*#__PURE__*/React.createElement(Tooltip, {
+  return React.createElement(Tooltip, {
     position: "middle-left",
-    text: /*#__PURE__*/React.createElement(FormattedMessage, messages.defaultOpenWithDescription)
-  }, /*#__PURE__*/React.createElement(Button, buttonProps, /*#__PURE__*/React.createElement(MenuToggle, null, /*#__PURE__*/React.createElement(OpenWithButtonContents, null, /*#__PURE__*/React.createElement(IconOpenWith, {
+    text: React.createElement(FormattedMessage, messages.defaultOpenWithDescription)
+  }, React.createElement(Button, _extends({
+    "data-testid": "multipleintegrationsbutton"
+  }, buttonProps), React.createElement(MenuToggle, null, React.createElement(OpenWithButtonContents, null, React.createElement(IconOpenWith, {
     className: CLASS_INTEGRATION_ICON,
     dimension: OPEN_WITH_BUTTON_ICON_SIZE,
     height: OPEN_WITH_BUTTON_ICON_SIZE,

@@ -3,6 +3,7 @@
  * @file Maintains a mapping of integration names to icons.
  * @author Box
  */
+import * as React from 'react';
 import IconAdobeSign from '../../icons/adobe-sign/IconAdobeSign';
 import IconGoogleDocs from '../../icons/google-docs/IconGoogleDocs';
 import IconGoogleSheets from '../../icons/google-docs/IconGoogleSheets';

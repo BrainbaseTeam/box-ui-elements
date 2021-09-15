@@ -14,10 +14,10 @@ export default (function (onItemSelect, selectableType, extensionsWhitelist, has
         selected = _rowData$selected === void 0 ? false : _rowData$selected;
 
     if (!isRowSelectable(selectableType, extensionsWhitelist, hasHitSelectionLimit, rowData)) {
-      return /*#__PURE__*/React.createElement("span", null);
+      return React.createElement("span", null);
     }
 
-    return /*#__PURE__*/React.createElement(Checkbox, {
+    return React.createElement(Checkbox, {
       hideLabel: true,
       isChecked: selected,
       label: name,

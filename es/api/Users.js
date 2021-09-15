@@ -10,19 +10,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 /**
  * 
@@ -35,15 +31,15 @@ import { getTypedFileId } from '../utils/file';
 import Base from './Base';
 import { ERROR_CODE_FETCH_CURRENT_USER } from '../constants';
 
-var Users = /*#__PURE__*/function (_Base) {
+var Users =
+/*#__PURE__*/
+function (_Base) {
   _inherits(Users, _Base);
-
-  var _super = _createSuper(Users);
 
   function Users() {
     _classCallCheck(this, Users);
 
-    return _super.apply(this, arguments);
+    return _possibleConstructorReturn(this, _getPrototypeOf(Users).apply(this, arguments));
   }
 
   _createClass(Users, [{
@@ -52,7 +48,7 @@ var Users = /*#__PURE__*/function (_Base) {
     /**
      * API URL for Users
      *
-     * @return {string} base url for users
+     * @returns {string} base url for users
      */
     value: function getUrl() {
       return "".concat(this.getBaseApiUrl(), "/users/me");
@@ -61,7 +57,7 @@ var Users = /*#__PURE__*/function (_Base) {
      * API URL for Users avatar
      *
      * @param {string} id - A box user id.
-     * @return {string} base url for users
+     * @returns {string} base url for users
      */
 
   }, {
@@ -78,13 +74,15 @@ var Users = /*#__PURE__*/function (_Base) {
      *
      * @param {string} userId the user id
      * @param {string} fileId the file id
-     * @return {string} the user avatar URL string for a given user with access token attached
+     * @returns {string} the user avatar URL string for a given user with access token attached
      */
 
   }, {
     key: "getAvatarUrlWithAccessToken",
     value: function () {
-      var _getAvatarUrlWithAccessToken = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(userId, fileId) {
+      var _getAvatarUrlWithAccessToken = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee(userId, fileId) {
         var cache, accessToken, options, urlParams, url;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -149,7 +147,7 @@ var Users = /*#__PURE__*/function (_Base) {
     /**
      * API for fetching a user
      *
-     * @param {string} id - a box file id
+     * @param {string} id - a Box item id
      * @param {Function} successCallback - Success callback
      * @param {Function} errorCallback - Error callback
      * @param {Object} requestData - additional request data

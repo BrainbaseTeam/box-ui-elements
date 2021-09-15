@@ -16,7 +16,7 @@ var UploadStateContent = function UploadStateContent(_ref) {
       onChange = _ref.onChange,
       _ref$useButton = _ref.useButton,
       useButton = _ref$useButton === void 0 ? false : _ref$useButton;
-  var messageContent = message ? /*#__PURE__*/React.createElement("div", {
+  var messageContent = message ? React.createElement("div", {
     className: "bcu-upload-state-message"
   }, message) : null;
   var inputLabelClass = useButton ? 'btn btn-primary be-input-btn' : 'be-input-link';
@@ -33,12 +33,12 @@ var UploadStateContent = function UploadStateContent(_ref) {
     currentTarget.value = '';
   };
 
-  var fileInputContent = /*#__PURE__*/React.createElement(UploadInput, {
+  var fileInputContent = React.createElement(UploadInput, {
     handleChange: handleChange,
     inputLabel: fileInputLabel,
     inputLabelClass: inputLabelClass
   });
-  var folderInputContent = shouldShowFolderUploadInput ? /*#__PURE__*/React.createElement(UploadInput, {
+  var folderInputContent = shouldShowFolderUploadInput ? React.createElement(UploadInput, {
     handleChange: handleChange,
     inputLabel: folderInputLabel,
     inputLabelClass: inputLabelClass,
@@ -47,7 +47,7 @@ var UploadStateContent = function UploadStateContent(_ref) {
   var inputsContent;
 
   if (fileInputContent && folderInputContent) {
-    inputsContent = /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.uploadOptions, {
+    inputsContent = React.createElement(FormattedMessage, _extends({}, messages.uploadOptions, {
       values: {
         option1: fileInputContent,
         option2: folderInputContent
@@ -57,7 +57,7 @@ var UploadStateContent = function UploadStateContent(_ref) {
     inputsContent = fileInputContent;
   }
 
-  return /*#__PURE__*/React.createElement("div", null, messageContent, inputsContent && /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", null, messageContent, inputsContent && React.createElement("div", {
     className: "bcu-upload-input-container"
   }, inputsContent));
 };

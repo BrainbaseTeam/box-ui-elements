@@ -14,14 +14,14 @@ export default (function (onChange, canSetShareAccess, selectableType, extension
     var itemCanSetShareAccess = getProp(rowData, 'permissions.can_set_share_access', false);
 
     if (!canSetShareAccess || !itemCanSetShareAccess || !isRowSelectable(selectableType, extensionsWhitelist, hasHitSelectionLimit, rowData) || !rowData.selected) {
-      return /*#__PURE__*/React.createElement("span", null);
+      return React.createElement("span", null);
     }
 
     var allowed_shared_link_access_levels = rowData.allowed_shared_link_access_levels;
     var isLoading = !allowed_shared_link_access_levels;
-    return isLoading ? /*#__PURE__*/React.createElement(LoadingIndicator, {
+    return isLoading ? React.createElement(LoadingIndicator, {
       className: "bcp-share-access-loading"
-    }) : /*#__PURE__*/React.createElement(ShareAccessSelect, {
+    }) : React.createElement(ShareAccessSelect, {
       canSetShareAccess: canSetShareAccess,
       className: "bcp-shared-access-select",
       item: rowData,

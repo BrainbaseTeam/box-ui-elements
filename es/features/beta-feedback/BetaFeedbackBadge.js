@@ -20,23 +20,23 @@ var BetaFeedbackBadge = function BetaFeedbackBadge(_ref) {
 
   var classes = classNames('bdl-HeaderFeedbackBadge', className);
   var formUrl = rest.formUrl;
-  var badge = tooltip ? /*#__PURE__*/React.createElement(Tooltip, {
-    text: /*#__PURE__*/React.createElement(FormattedMessage, messages.feedbackCtaText),
+  var badge = tooltip ? React.createElement(Tooltip, {
+    text: React.createElement(FormattedMessage, messages.feedbackCtaText),
     position: "middle-right"
-  }, /*#__PURE__*/React.createElement(BetaBadge, {
+  }, React.createElement(BetaBadge, {
     "aria-hidden": true,
     className: "bdl-HeaderFeedbackBadge-betaBadge"
-  })) : /*#__PURE__*/React.createElement(BetaBadge, {
+  })) : React.createElement(BetaBadge, {
     className: "bdl-HeaderFeedbackBadge-betaBadge"
   }); // TODO: tooltip may require constrainToScrollParent & constrainToWindow in some contexts
 
-  return /*#__PURE__*/React.createElement("span", {
+  return React.createElement("span", {
     className: classes
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     id: "bdl-HeaderFeedbackBadge-ariaLabel",
     "aria-hidden": "true",
     hidden: true
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.feedbackFormDescription)), /*#__PURE__*/React.createElement(Link, {
+  }, React.createElement(FormattedMessage, messages.feedbackFormDescription)), React.createElement(Link, {
     href: formUrl,
     target: "_blank",
     "aria-labelledby": "bdl-HeaderFeedbackBadge-ariaLabel"

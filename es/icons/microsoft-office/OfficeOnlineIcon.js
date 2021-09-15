@@ -32,7 +32,7 @@ var OfficeOnlineIcon = function OfficeOnlineIcon(_ref) {
   }
 
   if (Component !== null) {
-    return /*#__PURE__*/React.createElement(Component, {
+    return React.createElement(Component, {
       className: className,
       height: dimension,
       title: title,

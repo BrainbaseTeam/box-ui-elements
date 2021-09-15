@@ -13,7 +13,7 @@ var MediaBody = function MediaBody(_ref) {
       children = _ref.children,
       rest = _objectWithoutProperties(_ref, ["className", "children"]);
 
-  return /*#__PURE__*/React.createElement("div", _extends({
+  return React.createElement("div", _extends({
     className: classnames('bdl-Media-body', className)
   }, rest), children);
 };

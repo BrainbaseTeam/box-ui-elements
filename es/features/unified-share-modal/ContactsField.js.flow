@@ -1,37 +1,37 @@
 // @flow
 
-'no babel-plugin-flow-react-proptypes';
-
-// turn off this plugin because it breaks the IntlShape flow type
 import * as React from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import type { IntlShape } from 'react-intl';
 import debounce from 'lodash/debounce';
 import noop from 'lodash/noop';
 import classNames from 'classnames';
 
 import PillSelectorDropdown from '../../components/pill-selector-dropdown';
 import ContactDatalistItem from '../../components/contact-datalist-item';
+import computeSuggestedCollabs from './utils/computeSuggestedCollabs';
 import parseEmails from '../../utils/parseEmails';
 import commonMessages from '../../common/messages';
 
 import messages from './messages';
-import type { contactType as Contact, suggestedCollaboratorsType } from './flowTypes';
+import type { SuggestedCollabLookup, contactType as Contact } from './flowTypes';
 import type { SelectOptionProp } from '../../components/select-field/props';
 
 type Props = {
     disabled: boolean,
     error: string,
     fieldRef?: Object,
+    getContactAvatarUrl?: (contact: Contact) => string,
     getContacts: (query: string) => Promise<Array<Contact>>,
-    intl: IntlShape,
+    getPillClassName?: (option: SelectOptionProp) => string,
+    intl: any,
     label: React.Node,
     onContactAdd: Function,
     onContactRemove: Function,
     onInput?: Function,
     onPillCreate?: (pills: Array<SelectOptionProp | Contact>) => void,
     selectedContacts: Array<Contact>,
-    suggestedCollaborators?: suggestedCollaboratorsType,
+    showContactAvatars?: boolean,
+    suggestedCollaborators?: SuggestedCollabLookup,
     validateForError: Function,
     validator: Function,
 };
@@ -47,6 +47,10 @@ const isSubstring = (value, searchString) => {
 };
 
 class ContactsField extends React.Component<Props, State> {
+    static defaultProps = {
+        showContactAvatars: false,
+    };
+
     constructor(props: Props) {
         super(props);
 
@@ -59,33 +63,22 @@ class ContactsField extends React.Component<Props, State> {
 
     addSuggestedContacts = (contacts: Array<Contact>) => {
         const { suggestedCollaborators = {} } = this.props;
+        const { pillSelectorInputValue } = this.state;
 
-        const suggestedSelectorOptions = contacts
-            .filter(option => {
-                const { id } = option;
-                return id && suggestedCollaborators[id.toString()];
-            })
-            .sort((optionA, optionB) => {
-                const currentSuggestedItemA = suggestedCollaborators[optionA.id.toString()];
-                const currentSuggestedItemB = suggestedCollaborators[optionB.id.toString()];
-                return currentSuggestedItemB.userScore - currentSuggestedItemA.userScore;
-            })
-            .slice(0, 3);
-
-        this.setState({ numSuggestedShowing: suggestedSelectorOptions.length });
-        const selectorOptionsParsed = contacts.filter(
-            option => !suggestedSelectorOptions.map(suggestion => suggestion.id).includes(option.id),
+        const [suggestedOptions, otherOptions] = computeSuggestedCollabs(
+            contacts,
+            suggestedCollaborators,
+            pillSelectorInputValue,
         );
-
-        return [...suggestedSelectorOptions, ...selectorOptionsParsed];
+        this.setState({ numSuggestedShowing: suggestedOptions.length });
+        return [...suggestedOptions, ...otherOptions];
     };
 
-    filterContacts = (contacts: Array<Contact>) => {
+    filterContacts = (contacts: Array<Contact>): Array<Contact> => {
         const { pillSelectorInputValue } = this.state;
         const { selectedContacts, suggestedCollaborators } = this.props;
-
         if (pillSelectorInputValue && contacts) {
-            const fullContacts = contacts
+            let fullContacts = contacts
                 .filter(
                     // filter contacts whose name or email don't match input value
                     ({ name, email }) =>
@@ -94,22 +87,22 @@ class ContactsField extends React.Component<Props, State> {
                 .filter(
                     // filter contacts who have already been selected
                     ({ email, id }) => !selectedContacts.find(({ value }) => value === email || value === id),
-                )
-                .map<Object>(({ email, id, isExternalUser, name, type }) => ({
-                    // map to standardized DatalistItem format
-                    email,
-                    id,
-                    isExternalUser,
-                    text: name,
-                    type,
-                    value: email || id, // if email doesn't exist, contact is a group, use id
-                }));
+                );
 
             if (suggestedCollaborators) {
-                return this.addSuggestedContacts(fullContacts);
+                fullContacts = this.addSuggestedContacts(fullContacts);
             }
 
-            return fullContacts;
+            return fullContacts.map<Contact>(({ email, id, isExternalUser, name, type }) => ({
+                // map to standardized DatalistItem format
+                // TODO: refactor this so inline conversions aren't required at every usage
+                email,
+                id,
+                isExternalUser,
+                text: name,
+                type,
+                value: email || id, // if email doesn't exist, contact is a group, use id
+            }));
         }
 
         // return empty selector options if input value is empty
@@ -135,6 +128,19 @@ class ContactsField extends React.Component<Props, State> {
 
     debouncedGetContacts = debounce(this.getContactsPromise, 200);
 
+    handleParseItems = (inputValue: string): Array<string> => {
+        const { validator } = this.props;
+
+        // ContactField allows invalid pills to be displayed in
+        // in some cases (e.g., when user is external and external
+        // collab is restricted). We don't allow, however, invalid
+        // emails from the pill selector input to be turned into pills.
+        const emails = parseEmails(inputValue);
+        const validEmails = emails.filter(email => validator(email));
+
+        return validEmails;
+    };
+
     handlePillSelectorInput = (value: string) => {
         const { onInput } = this.props;
         const trimmedValue = value.trim();
@@ -157,21 +163,24 @@ class ContactsField extends React.Component<Props, State> {
 
     render() {
         const {
-            intl,
             disabled,
             error,
             fieldRef,
+            getContactAvatarUrl,
+            getPillClassName,
+            intl,
             label,
-            selectedContacts,
             onContactAdd,
             onContactRemove,
             onPillCreate,
+            selectedContacts,
+            showContactAvatars,
             validateForError,
             validator,
         } = this.props;
         const { contacts, numSuggestedShowing } = this.state;
         const groupLabel = <FormattedMessage {...messages.groupLabel} />;
-        const shouldShowSuggested = numSuggestedShowing > 0 && contacts.length !== numSuggestedShowing;
+        const shouldShowSuggested = numSuggestedShowing > 0;
         const pillSelectorOverlayClasses = classNames({
             scrollable: contacts.length > 5,
         });
@@ -179,10 +188,13 @@ class ContactsField extends React.Component<Props, State> {
         return (
             <PillSelectorDropdown
                 allowCustomPills
+                allowInvalidPills
                 className={pillSelectorOverlayClasses}
                 dividerIndex={shouldShowSuggested ? numSuggestedShowing : undefined}
                 disabled={disabled}
                 error={error}
+                getPillClassName={getPillClassName}
+                getPillImageUrl={getContactAvatarUrl}
                 inputProps={{
                     autoFocus: true,
                     onChange: noop,
@@ -193,16 +205,26 @@ class ContactsField extends React.Component<Props, State> {
                 onSelect={onContactAdd}
                 onPillCreate={onPillCreate}
                 overlayTitle={shouldShowSuggested ? intl.formatMessage(messages.suggestedCollabsTitle) : undefined}
-                parseItems={parseEmails}
+                parseItems={this.handleParseItems}
                 placeholder={intl.formatMessage(commonMessages.pillSelectorPlaceholder)}
                 ref={fieldRef}
                 selectedOptions={selectedContacts}
+                showRoundedPills
                 selectorOptions={contacts}
                 validateForError={validateForError}
                 validator={validator}
             >
-                {contacts.map(({ email, text = null, id }) => (
-                    <ContactDatalistItem key={id} name={text} subtitle={email || groupLabel} title={text} />
+                {contacts.map(({ email, isExternalUser, text = null, id }) => (
+                    <ContactDatalistItem
+                        getContactAvatarUrl={getContactAvatarUrl}
+                        key={id}
+                        id={id}
+                        isExternal={isExternalUser}
+                        name={text}
+                        subtitle={email || groupLabel}
+                        title={text}
+                        showAvatar={showContactAvatars}
+                    />
                 ))}
             </PillSelectorDropdown>
         );

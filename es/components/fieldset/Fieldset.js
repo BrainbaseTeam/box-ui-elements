@@ -14,9 +14,9 @@ var Fieldset = function Fieldset(_ref) {
       title = _ref.title,
       rest = _objectWithoutProperties(_ref, ["children", "className", "title"]);
 
-  return /*#__PURE__*/React.createElement("fieldset", _extends({
+  return React.createElement("fieldset", _extends({
     className: "fieldset ".concat(className)
-  }, rest), /*#__PURE__*/React.createElement("legend", {
+  }, rest), React.createElement("legend", {
     className: "label"
   }, title), children);
 };

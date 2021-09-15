@@ -6,34 +6,33 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 import * as React from 'react';
 import TetherComponent from 'react-tether';
 import uniqueId from 'lodash/uniqueId';
+import noop from 'lodash/noop';
 import { KEYS } from '../../constants';
 import './DropdownMenu.scss';
 
-var DropdownMenu = /*#__PURE__*/function (_React$Component) {
+var DropdownMenu =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(DropdownMenu, _React$Component);
 
-  var _super = _createSuper(DropdownMenu);
-
   function DropdownMenu() {
+    var _getPrototypeOf2;
+
     var _this;
 
     _classCallCheck(this, DropdownMenu);
@@ -42,7 +41,7 @@ var DropdownMenu = /*#__PURE__*/function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    _this = _super.call.apply(_super, [this].concat(args));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(DropdownMenu)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_this), "menuID", uniqueId('menu'));
 
@@ -60,9 +59,14 @@ var DropdownMenu = /*#__PURE__*/function (_React$Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_this), "closeMenu", function () {
+    _defineProperty(_assertThisInitialized(_this), "closeMenu", function (event) {
+      var _this$props$onMenuClo = _this.props.onMenuClose,
+          onMenuClose = _this$props$onMenuClo === void 0 ? noop : _this$props$onMenuClo;
+
       _this.setState({
         isOpen: false
+      }, function () {
+        return onMenuClose(event);
       });
     });
 
@@ -81,7 +85,7 @@ var DropdownMenu = /*#__PURE__*/function (_React$Component) {
       event.preventDefault();
 
       if (isOpen) {
-        _this.closeMenu();
+        _this.closeMenu(event);
       } else {
         _this.openMenuAndSetFocusIndex(null);
       }
@@ -116,7 +120,7 @@ var DropdownMenu = /*#__PURE__*/function (_React$Component) {
 
           event.preventDefault();
 
-          _this.closeMenu();
+          _this.closeMenu(event);
 
           break;
 
@@ -126,15 +130,9 @@ var DropdownMenu = /*#__PURE__*/function (_React$Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "handleMenuClose", function (isKeyboardEvent, event) {
-      var onMenuClose = _this.props.onMenuClose;
-
-      _this.closeMenu();
+      _this.closeMenu(event);
 
       _this.focusButton();
-
-      if (onMenuClose) {
-        onMenuClose(event);
-      }
     });
 
     _defineProperty(_assertThisInitialized(_this), "handleDocumentClick", function (event) {
@@ -142,7 +140,7 @@ var DropdownMenu = /*#__PURE__*/function (_React$Component) {
       var menuButtonEl = document.getElementById(_this.menuButtonID); // Some DOM magic to get global click handlers to close menu when not interacting with menu or associated button
 
       if (menuEl && menuButtonEl && event.target instanceof Node && !menuEl.contains(event.target) && !menuButtonEl.contains(event.target)) {
-        _this.closeMenu();
+        _this.closeMenu(event);
       }
     });
 
@@ -152,10 +150,12 @@ var DropdownMenu = /*#__PURE__*/function (_React$Component) {
   _createClass(DropdownMenu, [{
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps, prevState) {
+      var useBubble = this.props.useBubble;
+
       if (!prevState.isOpen && this.state.isOpen) {
         // When menu is being opened
-        document.addEventListener('click', this.handleDocumentClick, true);
-        document.addEventListener('contextmenu', this.handleDocumentClick, true);
+        document.addEventListener('click', this.handleDocumentClick, !useBubble);
+        document.addEventListener('contextmenu', this.handleDocumentClick, !useBubble);
         var onMenuOpen = this.props.onMenuOpen;
 
         if (onMenuOpen) {
@@ -163,17 +163,19 @@ var DropdownMenu = /*#__PURE__*/function (_React$Component) {
         }
       } else if (prevState.isOpen && !this.state.isOpen) {
         // When menu is being closed
-        document.removeEventListener('contextmenu', this.handleDocumentClick, true);
-        document.removeEventListener('click', this.handleDocumentClick, true);
+        document.removeEventListener('contextmenu', this.handleDocumentClick, !useBubble);
+        document.removeEventListener('click', this.handleDocumentClick, !useBubble);
       }
     }
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
+      var useBubble = this.props.useBubble;
+
       if (this.state.isOpen) {
         // Clean-up global click handlers
-        document.removeEventListener('contextmenu', this.handleDocumentClick, true);
-        document.removeEventListener('click', this.handleDocumentClick, true);
+        document.removeEventListener('contextmenu', this.handleDocumentClick, !useBubble);
+        document.removeEventListener('click', this.handleDocumentClick, !useBubble);
       }
     }
   }, {
@@ -204,9 +206,13 @@ var DropdownMenu = /*#__PURE__*/function (_React$Component) {
         // NOTE: Overrides button's handler
         onKeyDown: this.handleButtonKeyDown,
         // NOTE: Overrides button's handler
-        'aria-haspopup': 'true',
         'aria-expanded': isOpen ? 'true' : 'false'
-      }; // Add this only when its open, otherwise the menuID element isn't rendered
+      };
+
+      if (menuButton.props['aria-haspopup'] === undefined) {
+        menuButtonProps['aria-haspopup'] = 'true';
+      } // Add this only when its open, otherwise the menuID element isn't rendered
+
 
       if (isOpen) {
         menuButtonProps['aria-controls'] = this.menuID;
@@ -244,7 +250,7 @@ var DropdownMenu = /*#__PURE__*/function (_React$Component) {
       }
 
       var bodyEl = bodyElement instanceof HTMLElement ? bodyElement : document.body;
-      return /*#__PURE__*/React.createElement(TetherComponent, {
+      return React.createElement(TetherComponent, {
         attachment: attachment,
         bodyElement: bodyEl,
         className: className,
@@ -252,7 +258,7 @@ var DropdownMenu = /*#__PURE__*/function (_React$Component) {
         constraints: constraints,
         enabled: isOpen,
         targetAttachment: targetAttachment
-      }, /*#__PURE__*/React.cloneElement(menuButton, menuButtonProps), isOpen ? /*#__PURE__*/React.cloneElement(menu, menuProps) : null);
+      }, React.cloneElement(menuButton, menuButtonProps), isOpen ? React.cloneElement(menu, menuProps) : null);
     }
   }]);
 

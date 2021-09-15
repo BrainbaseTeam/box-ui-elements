@@ -11,13 +11,13 @@ var IconHome = function IconHome(_ref) {
       title = _ref.title,
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 20 : _ref$width;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: "icon-home ".concat(className),
     height: height,
     title: title,
     viewBox: "0 0 20 18",
     width: width
-  }, /*#__PURE__*/React.createElement("path", {
+  }, React.createElement("path", {
     className: "fill-color",
     d: "M8 17.5v-6h4v6h5v-8h3l-10-9-10 9h3v8h5z",
     fill: color,

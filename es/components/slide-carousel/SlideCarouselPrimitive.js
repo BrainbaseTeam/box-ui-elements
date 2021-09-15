@@ -22,11 +22,11 @@ var SlideCarouselPrimitive = function SlideCarouselPrimitive(_ref) {
     return "".concat(idPrefix && "".concat(idPrefix, "-"), "slide-panel-").concat(val);
   };
 
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: classNames('slide-carousel', className)
-  }, title && /*#__PURE__*/React.createElement(CarouselHeader, {
+  }, title && React.createElement(CarouselHeader, {
     title: title
-  }), /*#__PURE__*/React.createElement(SlidePanels, {
+  }), React.createElement(SlidePanels, {
     getButtonIdFromValue: buttonIdGenerator,
     getPanelIdFromValue: panelIdGenerator,
     onSelection: onSelection,
@@ -34,7 +34,7 @@ var SlideCarouselPrimitive = function SlideCarouselPrimitive(_ref) {
     style: {
       height: contentHeight
     }
-  }, children), /*#__PURE__*/React.createElement(SlideNavigator, {
+  }, children), React.createElement(SlideNavigator, {
     getButtonIdFromValue: buttonIdGenerator,
     getPanelIdFromValue: panelIdGenerator // $FlowFixMe
     ,

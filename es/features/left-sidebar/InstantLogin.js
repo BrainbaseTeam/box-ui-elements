@@ -11,10 +11,10 @@ var InstantLogin = function InstantLogin(_ref) {
       message = _ref$message === void 0 ? '' : _ref$message,
       _ref$showTooltip = _ref.showTooltip,
       showTooltip = _ref$showTooltip === void 0 ? false : _ref$showTooltip;
-  return /*#__PURE__*/React.createElement(LeftSidebarLink, {
+  return React.createElement(LeftSidebarLink, {
     className: "instant-login-link",
     htmlAttributes: htmlAttributes,
-    icon: Icon ? /*#__PURE__*/React.createElement(LeftSidebarIconWrapper, null, /*#__PURE__*/React.createElement(Icon, null)) : null,
+    icon: Icon ? React.createElement(LeftSidebarIconWrapper, null, React.createElement(Icon, null)) : null,
     message: message,
     showTooltip: showTooltip
   });

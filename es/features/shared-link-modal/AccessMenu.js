@@ -8,19 +8,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -37,12 +33,14 @@ import AccessLabel from './AccessLabel';
 import RemoveLinkConfirmModal from './RemoveLinkConfirmModal';
 var accessLevels = [PEOPLE_WITH_LINK, PEOPLE_IN_COMPANY, PEOPLE_IN_ITEM];
 
-var AccessMenu = /*#__PURE__*/function (_Component) {
+var AccessMenu =
+/*#__PURE__*/
+function (_Component) {
   _inherits(AccessMenu, _Component);
 
-  var _super = _createSuper(AccessMenu);
-
   function AccessMenu() {
+    var _getPrototypeOf2;
+
     var _this;
 
     _classCallCheck(this, AccessMenu);
@@ -51,7 +49,7 @@ var AccessMenu = /*#__PURE__*/function (_Component) {
       args[_key] = arguments[_key];
     }
 
-    _this = _super.call.apply(_super, [this].concat(args));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(AccessMenu)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_this), "state", {
       isConfirmModalOpen: false
@@ -83,23 +81,23 @@ var AccessMenu = /*#__PURE__*/function (_Component) {
           enterpriseName = _this$props.enterpriseName,
           itemType = _this$props.itemType,
           removeLinkButtonProps = _this$props.removeLinkButtonProps;
-      return /*#__PURE__*/React.createElement(Menu, {
+      return React.createElement(Menu, {
         className: "share-access-menu"
-      }, /*#__PURE__*/React.createElement(MenuSectionHeader, null, /*#__PURE__*/React.createElement(FormattedMessage, messages.accessTypeTitle)), accessLevels.map(function (level) {
-        return allowedAccessLevels[level] ? /*#__PURE__*/React.createElement(SelectMenuItem, {
+      }, React.createElement(MenuSectionHeader, null, React.createElement(FormattedMessage, messages.accessTypeTitle)), accessLevels.map(function (level) {
+        return allowedAccessLevels[level] ? React.createElement(SelectMenuItem, {
           key: level,
           isSelected: level === accessLevel,
           onClick: function onClick() {
             return changeAccessLevel(level);
           }
-        }, /*#__PURE__*/React.createElement(AccessLabel, {
+        }, React.createElement(AccessLabel, {
           accessLevel: level,
           enterpriseName: enterpriseName,
           itemType: itemType
         })) : null;
-      }), canRemoveLink && /*#__PURE__*/React.createElement(MenuSeparator, null), canRemoveLink && /*#__PURE__*/React.createElement(SelectMenuItem, _extends({
+      }), canRemoveLink && React.createElement(MenuSeparator, null), canRemoveLink && React.createElement(SelectMenuItem, _extends({
         onClick: this.openConfirmModal
-      }, removeLinkButtonProps), /*#__PURE__*/React.createElement(FormattedMessage, messages.removeLink)));
+      }, removeLinkButtonProps), React.createElement(FormattedMessage, messages.removeLink)));
     }
   }, {
     key: "render",
@@ -113,16 +111,16 @@ var AccessMenu = /*#__PURE__*/function (_Component) {
           removeLink = _this$props2.removeLink,
           submitting = _this$props2.submitting;
       var isConfirmModalOpen = this.state.isConfirmModalOpen;
-      return /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement(DropdownMenu, accessDropdownMenuProps, /*#__PURE__*/React.createElement(PlainButton, _extends({
+      return React.createElement("span", null, React.createElement(DropdownMenu, accessDropdownMenuProps, React.createElement(PlainButton, _extends({
         className: classNames('lnk', {
-          'is-disabled': submitting
+          'is-disabled bdl-is-disabled': submitting
         }),
         disabled: submitting
-      }, accessMenuButtonProps), /*#__PURE__*/React.createElement(MenuToggle, null, /*#__PURE__*/React.createElement(AccessLabel, {
+      }, accessMenuButtonProps), React.createElement(MenuToggle, null, React.createElement(AccessLabel, {
         accessLevel: accessLevel,
         enterpriseName: enterpriseName,
         itemType: itemType
-      }))), this.renderMenu()), /*#__PURE__*/React.createElement(RemoveLinkConfirmModal, {
+      }))), this.renderMenu()), React.createElement(RemoveLinkConfirmModal, {
         isOpen: isConfirmModalOpen,
         onRequestClose: this.closeConfirmModal,
         removeLink: removeLink,

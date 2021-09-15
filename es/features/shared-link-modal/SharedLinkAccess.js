@@ -21,16 +21,16 @@ var SharedLinkAccess = function SharedLinkAccess(props) {
       removeLink = props.removeLink,
       removeLinkButtonProps = props.removeLinkButtonProps,
       submitting = props.submitting;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "shared-link-access"
-  }, /*#__PURE__*/React.createElement(AccessDescription, {
+  }, React.createElement(AccessDescription, {
     accessLevel: accessLevel,
     enterpriseName: enterpriseName,
     isDownloadAllowed: isDownloadAllowed,
     isEditAllowed: isEditAllowed,
     isPreviewAllowed: isPreviewAllowed,
     itemType: itemType
-  }), /*#__PURE__*/React.createElement(AccessMenu, {
+  }), React.createElement(AccessMenu, {
     accessDropdownMenuProps: accessDropdownMenuProps,
     accessLevel: accessLevel,
     accessMenuButtonProps: accessMenuButtonProps,
@@ -45,7 +45,7 @@ var SharedLinkAccess = function SharedLinkAccess(props) {
     removeLink: removeLink,
     removeLinkButtonProps: removeLinkButtonProps,
     submitting: submitting
-  }), /*#__PURE__*/React.createElement(PermissionMenu, {
+  }), React.createElement(PermissionMenu, {
     changePermissionLevel: changePermissionLevel,
     permissionLevel: permissionLevel,
     submitting: submitting

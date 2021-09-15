@@ -2,9 +2,9 @@ import * as React from 'react';
 
 var ThumbnailCardThumbnail = function ThumbnailCardThumbnail(_ref) {
   var thumbnail = _ref.thumbnail;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "thumbnail-card-thumbnail-container"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "thumbnail-card-thumbnail-viewport"
   }, thumbnail));
 };

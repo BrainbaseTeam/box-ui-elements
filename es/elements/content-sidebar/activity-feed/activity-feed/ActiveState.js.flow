@@ -3,27 +3,41 @@
  * @file Active state component for Activity Feed
  */
 import * as React from 'react';
-import classNames from 'classnames';
 import getProp from 'lodash/get';
+import ActivityItem from './ActivityItem';
 import AppActivity from '../app-activity';
+import AnnotationActivity from '../annotations';
 import Comment from '../comment';
 import TaskNew from '../task-new';
 import Version, { CollapsedVersion } from '../version';
 import withErrorHandling from '../../withErrorHandling';
-import type { FocusableFeedItemType } from '../../../../common/types/feed';
+import type {
+    Annotation,
+    AnnotationPermission,
+    FeedItem,
+    FeedItems,
+    FocusableFeedItemType,
+} from '../../../../common/types/feed';
+import type { SelectorItems, User } from '../../../../common/types/core';
+import type { GetAvatarUrlCallback, GetProfileUrlCallback } from '../../../common/flowTypes';
+import type { Translations } from '../../flowTypes';
 
 type Props = {
     activeFeedEntryId?: string,
     activeFeedEntryType?: FocusableFeedItemType,
     activeFeedItemRef: { current: null | HTMLElement },
-    approverSelectorContacts?: SelectorItems,
+    approverSelectorContacts?: SelectorItems<>,
+    currentFileVersionId: string,
     currentUser?: User,
     getApproverWithQuery?: Function,
     getAvatarUrl: GetAvatarUrlCallback,
     getMentionWithQuery?: Function,
     getUserProfileUrl?: GetProfileUrlCallback,
     items: FeedItems,
-    mentionSelectorContacts?: SelectorItems,
+    mentionSelectorContacts?: SelectorItems<>,
+    onAnnotationDelete?: ({ id: string, permissions: AnnotationPermission }) => void,
+    onAnnotationEdit?: (id: string, text: string, permissions: AnnotationPermission) => void,
+    onAnnotationSelect?: (annotation: Annotation) => void,
     onAppActivityDelete?: Function,
     onCommentDelete?: Function,
     onCommentEdit?: Function,
@@ -31,6 +45,7 @@ type Props = {
     onTaskDelete?: Function,
     onTaskEdit?: Function,
     onTaskModalClose?: Function,
+    onTaskView?: Function,
     onVersionInfo?: Function,
     translations?: Translations,
 };
@@ -40,15 +55,20 @@ const ActiveState = ({
     activeFeedEntryType,
     activeFeedItemRef,
     approverSelectorContacts,
+    currentFileVersionId,
     currentUser,
     items,
     mentionSelectorContacts,
     getMentionWithQuery,
+    onAnnotationDelete,
+    onAnnotationEdit,
+    onAnnotationSelect,
     onAppActivityDelete,
     onCommentDelete,
     onCommentEdit,
     onTaskDelete,
     onTaskEdit,
+    onTaskView,
     onTaskAssignmentUpdate,
     onTaskModalClose,
     onVersionInfo,
@@ -64,14 +84,16 @@ const ActiveState = ({
             {items.map((item: FeedItem) => {
                 const isFocused = item === activeEntry;
                 const refValue = isFocused ? activeFeedItemRef : undefined;
+                const itemFileVersionId = getProp(item, 'file_version.id');
 
                 switch (item.type) {
                     case 'comment':
                         return (
-                            <li
+                            <ActivityItem
                                 key={item.type + item.id}
-                                className={classNames('bcs-activity-feed-comment', { 'bcs-is-focused': isFocused })}
+                                className="bcs-activity-feed-comment"
                                 data-testid="comment"
+                                isFocused={isFocused}
                                 ref={refValue}
                             >
                                 <Comment
@@ -89,14 +111,15 @@ const ActiveState = ({
                                     }}
                                     translations={translations}
                                 />
-                            </li>
+                            </ActivityItem>
                         );
                     case 'task':
                         return (
-                            <li
+                            <ActivityItem
                                 key={item.type + item.id}
-                                className={classNames('bcs-activity-feed-task-new', { 'bcs-is-focused': isFocused })}
+                                className="bcs-activity-feed-task-new"
                                 data-testid="task"
+                                isFocused={isFocused}
                                 ref={refValue}
                             >
                                 <TaskNew
@@ -109,30 +132,56 @@ const ActiveState = ({
                                     onAssignmentUpdate={onTaskAssignmentUpdate}
                                     onDelete={onTaskDelete}
                                     onEdit={onTaskEdit}
+                                    onView={onTaskView}
                                     onModalClose={onTaskModalClose}
                                     translations={translations}
                                 />
-                            </li>
+                            </ActivityItem>
                         );
                     case 'file_version':
                         return (
-                            <li key={item.type + item.id} className="bcs-version-item" data-testid="version">
+                            <ActivityItem key={item.type + item.id} className="bcs-version-item" data-testid="version">
                                 {item.versions ? (
+                                    // $FlowFixMe
                                     <CollapsedVersion {...item} onInfo={onVersionInfo} />
                                 ) : (
+                                    // $FlowFixMe
                                     <Version {...item} onInfo={onVersionInfo} />
                                 )}
-                            </li>
+                            </ActivityItem>
                         );
                     case 'app_activity':
                         return (
-                            <li
+                            <ActivityItem
                                 key={item.type + item.id}
                                 className="bcs-activity-feed-app-activity"
                                 data-testid="app-activity"
                             >
                                 <AppActivity currentUser={currentUser} onDelete={onAppActivityDelete} {...item} />
-                            </li>
+                            </ActivityItem>
+                        );
+                    case 'annotation':
+                        return (
+                            <ActivityItem
+                                key={item.type + item.id}
+                                className="bcs-activity-feed-annotation-activity"
+                                data-testid="annotation-activity"
+                                isFocused={isFocused}
+                                ref={refValue}
+                            >
+                                <AnnotationActivity
+                                    currentUser={currentUser}
+                                    getAvatarUrl={getAvatarUrl}
+                                    getUserProfileUrl={getUserProfileUrl}
+                                    getMentionWithQuery={getMentionWithQuery}
+                                    isCurrentVersion={currentFileVersionId === itemFileVersionId}
+                                    item={item}
+                                    mentionSelectorContacts={mentionSelectorContacts}
+                                    onEdit={onAnnotationEdit}
+                                    onDelete={onAnnotationDelete}
+                                    onSelect={onAnnotationSelect}
+                                />
+                            </ActivityItem>
                         );
                     default:
                         return null;

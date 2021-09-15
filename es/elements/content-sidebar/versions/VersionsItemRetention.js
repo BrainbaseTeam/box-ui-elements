@@ -33,9 +33,9 @@ var VersionsItemRetention = function VersionsItemRetention(_ref) {
     return null;
   }
 
-  return retentionLength === VERSION_RETENTION_INDEFINITE || !dispositionAtTime ? /*#__PURE__*/React.createElement(FormattedMessage, messages.versionRetentionIndefinite) : /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, RETENTION_MAP[dispositionAction], {
+  return retentionLength === VERSION_RETENTION_INDEFINITE || !dispositionAtTime ? React.createElement(FormattedMessage, messages.versionRetentionIndefinite) : React.createElement(FormattedMessage, _extends({}, RETENTION_MAP[dispositionAction], {
     values: {
-      time: /*#__PURE__*/React.createElement(ReadableTime, {
+      time: React.createElement(ReadableTime, {
         timestamp: dispositionAtTime,
         showWeekday: true
       })

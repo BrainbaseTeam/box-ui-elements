@@ -19,16 +19,16 @@ import './OverallUploadsProgressBar.scss';
 var getUploadStatus = function getUploadStatus(view) {
   switch (view) {
     case VIEW_UPLOAD_IN_PROGRESS:
-      return /*#__PURE__*/React.createElement(FormattedMessage, messages.uploadsManagerUploadInProgress);
+      return React.createElement(FormattedMessage, messages.uploadsManagerUploadInProgress);
 
     case VIEW_UPLOAD_SUCCESS:
-      return /*#__PURE__*/React.createElement(FormattedMessage, messages.uploadsManagerUploadComplete);
+      return React.createElement(FormattedMessage, messages.uploadsManagerUploadComplete);
 
     case VIEW_UPLOAD_EMPTY:
-      return /*#__PURE__*/React.createElement(FormattedMessage, messages.uploadsManagerUploadPrompt);
+      return React.createElement(FormattedMessage, messages.uploadsManagerUploadPrompt);
 
     case VIEW_ERROR:
-      return /*#__PURE__*/React.createElement(FormattedMessage, messages.uploadsManagerUploadFailed);
+      return React.createElement(FormattedMessage, messages.uploadsManagerUploadFailed);
 
     default:
       return '';
@@ -70,23 +70,23 @@ var OverallUploadsProgressBar = function OverallUploadsProgressBar(_ref) {
   // Show the upload prompt and set progress to 0 when the uploads manager
   // is invisible or is having files dragged to it
   var shouldShowPrompt = isDragging || !isVisible;
-  var status = shouldShowPrompt ? /*#__PURE__*/React.createElement(FormattedMessage, messages.uploadsManagerUploadPrompt) : getUploadStatus(view);
+  var status = shouldShowPrompt ? React.createElement(FormattedMessage, messages.uploadsManagerUploadPrompt) : getUploadStatus(view);
   var updatedPercent = shouldShowPrompt ? 0 : getPercent(view, percent);
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "bcu-overall-progress-bar",
     "data-resin-target": isExpanded ? 'uploadcollapse' : 'uploadexpand',
     onClick: onClick,
     onKeyDown: onKeyDown,
     role: "button",
     tabIndex: isVisible ? '0' : '-1'
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "bcu-upload-status"
-  }, status), /*#__PURE__*/React.createElement(ProgressBar, {
+  }, status), React.createElement(ProgressBar, {
     percent: updatedPercent
-  }), isResumeVisible && /*#__PURE__*/React.createElement(UploadsManagerItemAction, {
+  }), isResumeVisible && React.createElement(UploadsManagerItemAction, {
     hasMultipleFailedUploads: hasMultipleFailedUploads,
     onClick: onUploadsManagerActionClick
-  }), /*#__PURE__*/React.createElement("span", {
+  }), React.createElement("span", {
     className: "bcu-uploads-manager-toggle"
   }));
 };

@@ -5,24 +5,33 @@ function _objectWithoutProperties(source, excluded) { if (source == null) return
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
 import * as React from 'react';
+import classNames from 'classnames';
 import ThumbnailCardDetails from './ThumbnailCardDetails';
 import ThumbnailCardThumbnail from './ThumbnailCardThumbnail';
 import './ThumbnailCard.scss';
 
 var ThumbnailCard = function ThumbnailCard(_ref) {
-  var _ref$className = _ref.className,
+  var actionItem = _ref.actionItem,
+      _ref$className = _ref.className,
       className = _ref$className === void 0 ? '' : _ref$className,
       icon = _ref.icon,
+      _ref$highlightOnHover = _ref.highlightOnHover,
+      highlightOnHover = _ref$highlightOnHover === void 0 ? false : _ref$highlightOnHover,
       subtitle = _ref.subtitle,
       title = _ref.title,
       thumbnail = _ref.thumbnail,
-      rest = _objectWithoutProperties(_ref, ["className", "icon", "subtitle", "title", "thumbnail"]);
+      rest = _objectWithoutProperties(_ref, ["actionItem", "className", "icon", "highlightOnHover", "subtitle", "title", "thumbnail"]);
 
-  return /*#__PURE__*/React.createElement("div", _extends({
-    className: "thumbnail-card ".concat(className)
-  }, rest), /*#__PURE__*/React.createElement(ThumbnailCardThumbnail, {
+  return React.createElement("div", _extends({
+    role: "button",
+    tabIndex: "0",
+    className: classNames('thumbnail-card', className, {
+      'is-highlight-applied': highlightOnHover
+    })
+  }, rest), React.createElement(ThumbnailCardThumbnail, {
     thumbnail: thumbnail
-  }), /*#__PURE__*/React.createElement(ThumbnailCardDetails, {
+  }), React.createElement(ThumbnailCardDetails, {
+    actionItem: actionItem,
     icon: icon,
     subtitle: subtitle,
     title: title

@@ -12,14 +12,14 @@ var ReadOnlyTranscriptRow = function ReadOnlyTranscriptRow(_ref) {
       text = _ref$text === void 0 ? '' : _ref$text,
       onClick = _ref.onClick,
       interactionTarget = _ref.interactionTarget;
-  return /*#__PURE__*/React.createElement(PlainButton, {
+  return React.createElement(PlainButton, {
     className: "be-transcript-row",
     "data-resin-target": interactionTarget,
     onClick: onClick,
     type: "button"
-  }, time && /*#__PURE__*/React.createElement("div", {
+  }, time && React.createElement("div", {
     className: "be-transcript-time"
-  }, time), /*#__PURE__*/React.createElement("div", {
+  }, time), React.createElement("div", {
     className: "be-transcript-text"
   }, text));
 };

@@ -21,7 +21,7 @@ var PresenceAvatar = function PresenceAvatar(_ref) {
       isDropDownAvatar = _ref.isDropDownAvatar,
       rest = _objectWithoutProperties(_ref, ["avatarUrl", "id", "isActive", "name", "onMouseEnter", "onMouseLeave", "onFocus", "onBlur", "isDropDownAvatar"]);
 
-  return /*#__PURE__*/React.createElement("div", _extends({
+  return React.createElement("div", _extends({
     className: classnames('presence-avatar', {
       'presence-avatar-notehead': !isDropDownAvatar,
       'presence-avatar-dropdown': isDropDownAvatar,
@@ -33,7 +33,7 @@ var PresenceAvatar = function PresenceAvatar(_ref) {
     onMouseLeave: onMouseLeave // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
     ,
     tabIndex: !isDropDownAvatar ? '0' : ''
-  }, rest), /*#__PURE__*/React.createElement(Avatar, {
+  }, rest), React.createElement(Avatar, {
     avatarUrl: avatarUrl,
     className: !isDropDownAvatar ? 'presence-notehead' : '',
     id: id,

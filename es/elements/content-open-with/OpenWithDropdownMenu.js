@@ -15,12 +15,12 @@ var OpenWithDropdownMenu = function OpenWithDropdownMenu(_ref) {
       dropdownAlignment = _ref$dropdownAlignmen === void 0 ? RIGHT_ALIGNMENT : _ref$dropdownAlignmen,
       integrations = _ref.integrations,
       onClick = _ref.onClick;
-  return /*#__PURE__*/React.createElement(DropdownMenu, {
+  return React.createElement(DropdownMenu, {
     isRightAligned: dropdownAlignment === RIGHT_ALIGNMENT
-  }, /*#__PURE__*/React.createElement(MultipleIntegrationsOpenWithButton, null), /*#__PURE__*/React.createElement(Menu, {
+  }, React.createElement(MultipleIntegrationsOpenWithButton, null), React.createElement(Menu, {
     className: "bcow-menu"
   }, integrations.map(function (integration) {
-    return /*#__PURE__*/React.createElement(OpenWithDropdownMenuItem, {
+    return React.createElement(OpenWithDropdownMenuItem, {
       key: integration.appIntegrationId,
       integration: integration,
       onClick: onClick

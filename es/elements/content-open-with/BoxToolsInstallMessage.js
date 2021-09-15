@@ -23,11 +23,9 @@ var BoxToolsInstallMessage = function BoxToolsInstallMessage(_ref) {
     window.open(boxToolsInstallUrl);
   };
 
-  return /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.boxToolsInstallMessage, {
+  return React.createElement(FormattedMessage, _extends({}, messages.boxToolsInstallMessage, {
     values: {
-      boxTools:
-      /*#__PURE__*/
-      // eslint-disable-next-line jsx-a11y/anchor-is-valid
+      boxTools: // eslint-disable-next-line jsx-a11y/anchor-is-valid
       React.createElement("a", {
         href: "#",
         onClick: onLinkClick,

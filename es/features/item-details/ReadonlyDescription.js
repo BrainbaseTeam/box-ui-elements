@@ -11,7 +11,7 @@ var ReadonlyDescription = function ReadonlyDescription(_ref) {
     regex: NEWLINE_REGEX,
     // eslint-disable-next-line react/display-name
     fn: function fn(key) {
-      return /*#__PURE__*/React.createElement("br", {
+      return React.createElement("br", {
         key: key
       });
     }
@@ -19,7 +19,7 @@ var ReadonlyDescription = function ReadonlyDescription(_ref) {
     regex: URL_REGEX,
     // eslint-disable-next-line react/display-name
     fn: function fn(key, result) {
-      return /*#__PURE__*/React.createElement("a", {
+      return React.createElement("a", {
         key: key,
         href: result[0],
         rel: "noopener noreferrer",

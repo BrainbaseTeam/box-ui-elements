@@ -79,7 +79,7 @@ var MoreOptions = function MoreOptions(_ref) {
       type = item.type;
 
   if (!permissions) {
-    return /*#__PURE__*/React.createElement("span", null);
+    return React.createElement("span", null);
   }
 
   var allowPreview = type === TYPE_FILE && canPreview && permissions[PERMISSION_CAN_PREVIEW];
@@ -95,64 +95,45 @@ var MoreOptions = function MoreOptions(_ref) {
   var allowed = allowDelete || allowRename || allowDownload || allowPreview || allowShare || allowOpen || allowMoveTo || allowCopy || allowSetThumbnail || allowRemoveThumbnail;
 
   if (!allowed) {
-    return /*#__PURE__*/React.createElement("span", null);
+    return React.createElement("span", null);
   }
 
-  var moveToMenuItem = {
-    id: 'be.moveTo',
-    description: 'Move to...',
-    defaultMessage: 'Move to...'
-  };
-  var copyMenuItem = {
-    id: 'be.copy',
-    description: 'Copy',
-    defaultMessage: 'Copy'
-  };
-  var setThumbnailMenuItem = {
-    id: 'be.setThumbnail',
-    description: 'Set custom thumbnail',
-    defaultMessage: 'Set custom thumbnail'
-  };
-  var removeThumbnailMenuItem = {
-    id: 'be.removeThumbnail',
-    description: 'Remove custom thumbnail',
-    defaultMessage: 'Remove custom thumbnail'
-  };
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "bce-more-options"
-  }, /*#__PURE__*/React.createElement(DropdownMenu, {
+  }, React.createElement(DropdownMenu, {
     constrainToScrollParent: true,
     isRightAligned: true
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     className: "bce-btn-more-options",
+    "data-testid": "bce-btn-more-options",
     onFocus: onFocus,
     type: "button"
-  }, /*#__PURE__*/React.createElement(IconEllipsis, {
+  }, React.createElement(IconEllipsis, {
     color: bdlGray50,
     height: 10,
     width: 16
-  })), /*#__PURE__*/React.createElement(Menu, null, allowPreview && /*#__PURE__*/React.createElement(MenuItem, {
+  })), React.createElement(Menu, null, allowPreview && React.createElement(MenuItem, {
     onClick: onPreview
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.preview)), allowOpen && /*#__PURE__*/React.createElement(MenuItem, {
+  }, React.createElement(FormattedMessage, messages.preview)), allowOpen && React.createElement(MenuItem, {
     onClick: onPreview
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.open)), allowDelete && /*#__PURE__*/React.createElement(MenuItem, {
+  }, React.createElement(FormattedMessage, messages.open)), allowDelete && React.createElement(MenuItem, {
     onClick: onDelete
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.delete)), allowDownload && /*#__PURE__*/React.createElement(MenuItem, {
+  }, React.createElement(FormattedMessage, messages.delete)), allowDownload && React.createElement(MenuItem, {
     onClick: onDownload
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.download)), allowRename && /*#__PURE__*/React.createElement(MenuItem, {
+  }, React.createElement(FormattedMessage, messages.download)), allowRename && React.createElement(MenuItem, {
     onClick: onRename
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.rename)), allowShare && /*#__PURE__*/React.createElement(MenuItem, {
+  }, React.createElement(FormattedMessage, messages.rename)), allowShare && React.createElement(MenuItem, {
     onClick: onCustomShare
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.share)), allowMoveTo && /*#__PURE__*/React.createElement(MenuItem, {
+  }, React.createElement(FormattedMessage, messages.share)), allowMoveTo && React.createElement(MenuItem, {
     onClick: onMoveTo
-  }, /*#__PURE__*/React.createElement(FormattedMessage, moveToMenuItem)), allowCopy && /*#__PURE__*/React.createElement(MenuItem, {
+  }, React.createElement(FormattedMessage, messages.moveTo)), allowCopy && React.createElement(MenuItem, {
     onClick: onCopy
-  }, /*#__PURE__*/React.createElement(FormattedMessage, copyMenuItem)), allowSetThumbnail && /*#__PURE__*/React.createElement(MenuItem, {
+  }, React.createElement(FormattedMessage, messages.copy)), allowSetThumbnail && React.createElement(MenuItem, {
     className: "menu-item-set-thumbnail",
     onClick: onSetThumbnail
-  }, /*#__PURE__*/React.createElement(FormattedMessage, setThumbnailMenuItem)), allowRemoveThumbnail && /*#__PURE__*/React.createElement(MenuItem, {
+  }, React.createElement(FormattedMessage, messages.setThumbnailMenuItem)), allowRemoveThumbnail && React.createElement(MenuItem, {
     onClick: onRemoveThumbnail
-  }, /*#__PURE__*/React.createElement(FormattedMessage, removeThumbnailMenuItem)))));
+  }, React.createElement(FormattedMessage, messages.removeThumbnailMenuItem)))));
 };
 
 export default MoreOptions;

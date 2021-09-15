@@ -103,7 +103,7 @@ const messages = defineMessages({
         id: 'boxui.contentExplorer.emptyFolder',
     },
     newFolderModalTitle: {
-        defaultMessage: 'Create a New Folder in "{ parentFolderName }"',
+        defaultMessage: 'Create a New Folder in "{parentFolderName}"',
         description:
             'Title shown in the modal used to create a new folder. "parentFolderName" should not be translated',
         id: 'boxui.newFolderModal.title',
@@ -127,6 +127,21 @@ const messages = defineMessages({
         defaultMessage: 'Create',
         description: 'Text shown on button to create a new folder',
         id: 'boxui.newFolderModal.create',
+    },
+    selectAll: {
+        defaultMessage: 'Select All',
+        description: 'Select All label for select all items check box',
+        id: 'boxui.contentExplorer.selectAll',
+    },
+    results: {
+        defaultMessage: '{itemsCount} results',
+        description: 'Results label for number of items on list',
+        id: 'boxui.contentExplorer.results',
+    },
+    result: {
+        defaultMessage: '{itemsCount} result',
+        description: "Results label for number of items on list when it's just 1",
+        id: 'boxui.contentExplorer.result',
     },
 });
 

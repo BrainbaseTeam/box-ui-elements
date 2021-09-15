@@ -15,6 +15,7 @@ import TextInputWithCopyButton from '../../components/text-input-with-copy-butto
 import Fieldset from '../../components/fieldset';
 import Tooltip from '../../components/tooltip';
 import messages from './messages';
+import './AllowDownloadSection.scss';
 
 var AllowDownloadSection = function AllowDownloadSection(_ref) {
   var canChangeDownload = _ref.canChangeDownload,
@@ -27,6 +28,7 @@ var AllowDownloadSection = function AllowDownloadSection(_ref) {
       isDirectLinkAvailable = _ref.isDirectLinkAvailable,
       isDirectLinkUnavailableDueToDownloadSettings = _ref.isDirectLinkUnavailableDueToDownloadSettings,
       isDirectLinkUnavailableDueToAccessPolicy = _ref.isDirectLinkUnavailableDueToAccessPolicy,
+      isDirectLinkUnavailableDueToMaliciousContent = _ref.isDirectLinkUnavailableDueToMaliciousContent,
       isDownloadAvailable = _ref.isDownloadAvailable,
       isDownloadEnabled = _ref.isDownloadEnabled,
       onChange = _ref.onChange;
@@ -35,48 +37,59 @@ var AllowDownloadSection = function AllowDownloadSection(_ref) {
     return null;
   }
 
-  var directLinkSection = /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(TextInputWithCopyButton, _extends({
+  var directLinkSection = React.createElement("div", null, React.createElement(TextInputWithCopyButton, _extends({
     className: "direct-link-input",
-    label: /*#__PURE__*/React.createElement(FormattedMessage, messages.directLinkLabel),
+    label: React.createElement(FormattedMessage, messages.directLinkLabel),
     type: "url",
     value: directLink
   }, directLinkInputProps)));
-  var tooltipMessage = classification ? _objectSpread({}, messages.directDownloadBlockedByAccessPolicyWithClassification) : _objectSpread({}, messages.directDownloadBlockedByAccessPolicyWithoutClassification);
+  var isDirectLinkUnavailable = isDirectLinkUnavailableDueToAccessPolicy || isDirectLinkUnavailableDueToMaliciousContent;
   var allowDownloadSectionClass = classNames('bdl-AllowDownloadSection', {
-    'bdl-is-disabled': isDirectLinkUnavailableDueToAccessPolicy
+    'bdl-is-disabled': isDirectLinkUnavailable
   });
   var isDirectLinkSectionVisible = (isDirectLinkAvailable || isDirectLinkUnavailableDueToDownloadSettings) && isDownloadEnabled;
+  var tooltipMessage = null;
+
+  if (isDirectLinkUnavailableDueToMaliciousContent) {
+    tooltipMessage = _objectSpread({}, messages.directDownloadBlockedByMaliciousContent);
+  } else if (classification) {
+    tooltipMessage = _objectSpread({}, messages.directDownloadBlockedByAccessPolicyWithClassification);
+  } else {
+    tooltipMessage = _objectSpread({}, messages.directDownloadBlockedByAccessPolicyWithoutClassification);
+  }
 
   if (isDownloadAvailable) {
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: allowDownloadSectionClass
-    }, /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement(Tooltip, {
-      isDisabled: !isDirectLinkUnavailableDueToAccessPolicy,
-      text: /*#__PURE__*/React.createElement(FormattedMessage, tooltipMessage),
+    }, React.createElement("hr", null), React.createElement(Tooltip, {
+      isDisabled: !isDirectLinkUnavailable,
+      text: React.createElement(FormattedMessage, tooltipMessage),
       position: "middle-left"
-    }, /*#__PURE__*/React.createElement(Fieldset, {
-      disabled: isDirectLinkUnavailableDueToAccessPolicy,
-      title: /*#__PURE__*/React.createElement(FormattedMessage, messages.allowDownloadTitle)
-    }, /*#__PURE__*/React.createElement(Checkbox, _extends({
+    }, React.createElement(Fieldset, {
+      className: "be",
+      disabled: isDirectLinkUnavailable,
+      title: React.createElement(FormattedMessage, messages.allowDownloadTitle)
+    }, React.createElement(Checkbox, _extends({
       isChecked: isDownloadEnabled,
-      isDisabled: !canChangeDownload || isDirectLinkUnavailableDueToAccessPolicy,
-      label: /*#__PURE__*/React.createElement(FormattedMessage, messages.allowDownloadLabel),
+      isDisabled: !canChangeDownload || isDirectLinkUnavailable,
+      label: React.createElement(FormattedMessage, messages.allowDownloadLabel),
       name: "isDownloadEnabled",
       onChange: onChange
     }, downloadCheckboxProps)), isDirectLinkSectionVisible && directLinkSection)));
   } // When download section not available but direct link is available
 
 
-  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("hr", null), directLinkSection);
+  return React.createElement("div", null, React.createElement("hr", null), directLinkSection);
 };
 
 AllowDownloadSection.propTypes = {
   canChangeDownload: PropTypes.bool.isRequired,
-  classification: PropTypes.object,
+  classification: PropTypes.string,
   directLink: PropTypes.string.isRequired,
   directLinkInputProps: PropTypes.object,
   downloadCheckboxProps: PropTypes.object,
   isDirectLinkAvailable: PropTypes.bool.isRequired,
+  isDirectLinkUnavailableDueToMaliciousContent: PropTypes.bool,
   isDirectLinkUnavailableDueToAccessPolicy: PropTypes.bool,
   isDirectLinkUnavailableDueToDownloadSettings: PropTypes.bool.isRequired,
   isDownloadAvailable: PropTypes.bool.isRequired,

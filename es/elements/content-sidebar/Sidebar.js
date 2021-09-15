@@ -6,19 +6,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -31,6 +27,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import flow from 'lodash/flow';
 import getProp from 'lodash/get';
+import noop from 'lodash/noop';
 import uniqueid from 'lodash/uniqueId';
 import { withRouter } from 'react-router-dom';
 import LoadingIndicator from '../../components/loading-indicator/LoadingIndicator';
@@ -43,21 +40,21 @@ export var SIDEBAR_FORCE_KEY = 'bcs.force';
 export var SIDEBAR_FORCE_VALUE_CLOSED = 'closed';
 export var SIDEBAR_FORCE_VALUE_OPEN = 'open';
 
-var Sidebar = /*#__PURE__*/function (_React$Component) {
+var Sidebar =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(Sidebar, _React$Component);
-
-  var _super = _createSuper(Sidebar);
 
   function Sidebar(props) {
     var _this;
 
     _classCallCheck(this, Sidebar);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Sidebar).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "id", uniqueid('bcs_'));
 
-    _defineProperty(_assertThisInitialized(_this), "sidebarPanels", /*#__PURE__*/React.createRef());
+    _defineProperty(_assertThisInitialized(_this), "sidebarPanels", React.createRef());
 
     _defineProperty(_assertThisInitialized(_this), "store", new LocalStore());
 
@@ -182,10 +179,11 @@ var Sidebar = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "refresh",
     value: function refresh() {
+      var shouldRefreshCache = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
       var sidebarPanels = this.sidebarPanels.current;
 
       if (sidebarPanels) {
-        sidebarPanels.refresh();
+        sidebarPanels.refresh(shouldRefreshCache);
       }
     }
     /**
@@ -220,6 +218,7 @@ var Sidebar = /*#__PURE__*/function (_React$Component) {
           isLoading = _this$props3.isLoading,
           metadataEditors = _this$props3.metadataEditors,
           metadataSidebarProps = _this$props3.metadataSidebarProps,
+          onAnnotationSelect = _this$props3.onAnnotationSelect,
           onVersionChange = _this$props3.onVersionChange,
           versionsSidebarProps = _this$props3.versionsSidebarProps;
       var isOpen = this.isForcedSet() ? this.isForcedOpen() : !!isDefaultOpen;
@@ -231,12 +230,12 @@ var Sidebar = /*#__PURE__*/function (_React$Component) {
       var styleClassName = classNames('be bcs', className, {
         'bcs-is-open': isOpen
       });
-      return /*#__PURE__*/React.createElement("aside", {
+      return React.createElement("aside", {
         id: this.id,
         className: styleClassName
-      }, isLoading ? /*#__PURE__*/React.createElement("div", {
+      }, isLoading ? React.createElement("div", {
         className: "bcs-loading"
-      }, /*#__PURE__*/React.createElement(LoadingIndicator, null)) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(SidebarNav, {
+      }, React.createElement(LoadingIndicator, null)) : React.createElement(React.Fragment, null, React.createElement(SidebarNav, {
         additionalTabs: additionalTabs,
         elementId: this.id,
         fileId: fileId,
@@ -246,7 +245,7 @@ var Sidebar = /*#__PURE__*/function (_React$Component) {
         hasMetadata: hasMetadata,
         hasSkills: hasSkills,
         isOpen: isOpen
-      }), /*#__PURE__*/React.createElement(SidebarPanels, {
+      }), React.createElement(SidebarPanels, {
         activitySidebarProps: activitySidebarProps,
         currentUser: currentUser,
         elementId: this.id,
@@ -263,6 +262,7 @@ var Sidebar = /*#__PURE__*/function (_React$Component) {
         isOpen: isOpen,
         key: file.id,
         metadataSidebarProps: metadataSidebarProps,
+        onAnnotationSelect: onAnnotationSelect,
         onVersionChange: onVersionChange,
         onVersionHistoryClick: onVersionHistoryClick,
         ref: this.sidebarPanels,
@@ -275,8 +275,11 @@ var Sidebar = /*#__PURE__*/function (_React$Component) {
 }(React.Component);
 
 _defineProperty(Sidebar, "defaultProps", {
+  annotatorState: {},
   isDefaultOpen: true,
-  isLoading: false
+  isLoading: false,
+  getAnnotationsMatchPath: noop,
+  getAnnotationsPath: noop
 });
 
 export { Sidebar as SidebarComponent };

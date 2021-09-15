@@ -37,7 +37,7 @@ var IntegrationPortal = function IntegrationPortal(_ref) {
   var containerElement = integrationWindow.document.createElement('div');
   copyStyles(document, integrationWindow);
   integrationWindow.document.body.appendChild(containerElement);
-  return /*#__PURE__*/createPortal(children, containerElement);
+  return createPortal(children, containerElement);
 };
 
 export default IntegrationPortal;

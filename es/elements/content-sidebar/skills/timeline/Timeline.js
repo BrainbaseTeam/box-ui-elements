@@ -38,20 +38,18 @@ var Timeline = function Timeline(_ref) {
     }
   };
 
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "be-timeline"
-  }, text && /*#__PURE__*/React.createElement("div", {
+  }, text && React.createElement("div", {
     className: "be-timeline-label"
-  }, text), /*#__PURE__*/React.createElement("div", {
+  }, text), React.createElement("div", {
     className: "be-timeline-line-wrapper"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "be-timeline-line"
   }), timeslices.map(function (_ref2, index) {
     var start = _ref2.start,
         end = _ref2.end;
     return (
-      /*#__PURE__*/
-
       /* eslint-disable react/no-array-index-key */
       React.createElement(Timeslice, {
         key: index,
@@ -65,24 +63,24 @@ var Timeline = function Timeline(_ref) {
     );
   }
   /* eslint-enable react/no-array-index-key */
-  )), /*#__PURE__*/React.createElement("div", {
+  )), React.createElement("div", {
     className: "be-timeline-btns"
-  }, /*#__PURE__*/React.createElement(PlainButton, {
+  }, React.createElement(PlainButton, {
     "data-resin-target": SKILLS_TARGETS.TIMELINE.PREVIOUS,
     onClick: function onClick() {
       return playSegment(timeSliceIndex, -1);
     },
     type: "button"
-  }, /*#__PURE__*/React.createElement(IconTrackPrevious, {
-    title: /*#__PURE__*/React.createElement(FormattedMessage, messages.previousSegment)
-  })), /*#__PURE__*/React.createElement(PlainButton, {
+  }, React.createElement(IconTrackPrevious, {
+    title: React.createElement(FormattedMessage, messages.previousSegment)
+  })), React.createElement(PlainButton, {
     "data-resin-target": SKILLS_TARGETS.TIMELINE.NEXT,
     onClick: function onClick() {
       return playSegment(timeSliceIndex, 1);
     },
     type: "button"
-  }, /*#__PURE__*/React.createElement(IconTrackNext, {
-    title: /*#__PURE__*/React.createElement(FormattedMessage, messages.nextSegment)
+  }, React.createElement(IconTrackNext, {
+    title: React.createElement(FormattedMessage, messages.nextSegment)
   }))));
 };
 

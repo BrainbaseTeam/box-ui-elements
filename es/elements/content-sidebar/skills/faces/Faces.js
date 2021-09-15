@@ -6,19 +6,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -43,10 +39,10 @@ import Face from './Face';
 import Timeline from '../timeline';
 import './Faces.scss';
 
-var Faces = /*#__PURE__*/function (_React$PureComponent) {
+var Faces =
+/*#__PURE__*/
+function (_React$PureComponent) {
   _inherits(Faces, _React$PureComponent);
-
-  var _super = _createSuper(Faces);
 
   /**
    * [constructor]
@@ -59,7 +55,7 @@ var Faces = /*#__PURE__*/function (_React$PureComponent) {
 
     _classCallCheck(this, Faces);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Faces).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "toggleIsEditing", function () {
       _this.setState(function (prevState) {
@@ -173,22 +169,20 @@ var Faces = /*#__PURE__*/function (_React$PureComponent) {
       var editClassName = classNames('be-face-edit', {
         'be-faces-is-editing': isEditing
       });
-      return /*#__PURE__*/React.createElement(LoadingIndicatorWrapper, {
+      return React.createElement(LoadingIndicatorWrapper, {
         className: "be-faces",
         isLoading: isLoading
-      }, hasFaces && isEditable && !isLoading && /*#__PURE__*/React.createElement(Tooltip, {
-        text: /*#__PURE__*/React.createElement(FormattedMessage, messages.editLabel)
-      }, /*#__PURE__*/React.createElement(PlainButton, {
+      }, hasFaces && isEditable && !isLoading && React.createElement(Tooltip, {
+        text: React.createElement(FormattedMessage, messages.editLabel)
+      }, React.createElement(PlainButton, {
         className: editClassName,
         "data-resin-target": SKILLS_TARGETS.FACES.EDIT,
         onClick: this.toggleIsEditing,
         type: "button"
-      }, /*#__PURE__*/React.createElement(IconEdit, null))), hasError && /*#__PURE__*/React.createElement(InlineError, {
-        title: /*#__PURE__*/React.createElement(FormattedMessage, messages.sidebarSkillsErrorTitle)
-      }, /*#__PURE__*/React.createElement(FormattedMessage, messages.sidebarSkillsErrorContent)), hasFaces ? entries.map(function (face, index) {
+      }, React.createElement(IconEdit, null))), hasError && React.createElement(InlineError, {
+        title: React.createElement(FormattedMessage, messages.sidebarSkillsErrorTitle)
+      }, React.createElement(FormattedMessage, messages.sidebarSkillsErrorContent)), hasFaces ? entries.map(function (face, index) {
         return (
-          /*#__PURE__*/
-
           /* eslint-disable react/no-array-index-key */
           React.createElement(Face, {
             key: index,
@@ -201,22 +195,22 @@ var Faces = /*#__PURE__*/function (_React$PureComponent) {
           /* eslint-enable react/no-array-index-key */
 
         );
-      }) : /*#__PURE__*/React.createElement(FormattedMessage, messages.skillNoInfoFoundError), !!selected && !isEditing && Array.isArray(selected.appears) && selected.appears.length > 0 && /*#__PURE__*/React.createElement(Timeline, {
+      }) : React.createElement(FormattedMessage, messages.skillNoInfoFoundError), !!selected && !isEditing && Array.isArray(selected.appears) && selected.appears.length > 0 && React.createElement(Timeline, {
         duration: duration,
         getViewer: getViewer,
         interactionTarget: SKILLS_TARGETS.FACES.TIMELINE,
         timeslices: selected.appears
-      }), isEditing && /*#__PURE__*/React.createElement("div", {
+      }), isEditing && React.createElement("div", {
         className: "be-faces-buttons"
-      }, /*#__PURE__*/React.createElement(Button, {
+      }, React.createElement(Button, {
         "data-resin-target": SKILLS_TARGETS.FACES.EDIT_CANCEL,
         onClick: this.onCancel,
         type: "button"
-      }, /*#__PURE__*/React.createElement(FormattedMessage, messages.cancel)), /*#__PURE__*/React.createElement(PrimaryButton, {
+      }, React.createElement(FormattedMessage, messages.cancel)), React.createElement(PrimaryButton, {
         "data-resin-target": SKILLS_TARGETS.FACES.EDIT_SAVE,
         onClick: this.onSave,
         type: "button"
-      }, /*#__PURE__*/React.createElement(FormattedMessage, messages.save))));
+      }, React.createElement(FormattedMessage, messages.save))));
     }
   }]);
 

@@ -31,35 +31,36 @@ var Select = function Select(_ref) {
 
   var classes = classNames(className, 'select-input-container', {
     'show-error': !!error || showErrorOutline,
-    'is-disabled': isDisabled
+    'is-disabled': isDisabled,
+    'bdl-is-disabled': isDisabled
   });
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: classes
-  }, /*#__PURE__*/React.createElement(Label, {
+  }, React.createElement(Label, {
     hideLabel: !showLabel,
     text: label,
     tooltip: labelTooltip
-  }, /*#__PURE__*/React.createElement(Tooltip, {
+  }, React.createElement(Tooltip, {
     isShown: !!error,
     position: "middle-right",
     text: error || '',
     theme: "error"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "select-container"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "select-container-inner"
-  }, /*#__PURE__*/React.createElement("select", _extends({
+  }, React.createElement("select", _extends({
     disabled: isDisabled,
     name: name,
     onChange: onChange
-  }, rest), children), /*#__PURE__*/React.createElement("span", {
+  }, rest), children), React.createElement("span", {
     className: "select-overlay"
-  })), infoTooltip && /*#__PURE__*/React.createElement(Tooltip, {
+  })), infoTooltip && React.createElement(Tooltip, {
     position: "middle-right",
     text: infoTooltip
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "tooltip-icon-container"
-  }, /*#__PURE__*/React.createElement(IconInfo, _extends({
+  }, React.createElement(IconInfo, _extends({
     height: 16,
     width: 16
   }, infoIconProps))))))));

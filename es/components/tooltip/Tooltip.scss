@@ -8,7 +8,7 @@ $arrow-size: 6px;
 $horizontal-offset: 10px;
 $tooltip-offset: 4px; /* amount of space between target and tooltip arrow */
 
-.tooltip {
+.bdl-Tooltip {
     position: relative;
     max-width: 200px;
     padding: 8px $horizontal-offset;
@@ -41,14 +41,27 @@ $tooltip-offset: 4px; /* amount of space between target and tooltip arrow */
         background-color: $bdl-watermelon-red-10;
         border: 1px solid $bdl-watermelon-red-50;
 
-        .tooltip-close-button .icon-close .fill-color {
+        .tooltip-close-button .bdl-Tooltip-iconClose path {
             fill: $bdl-gray;
         }
     }
 
     &.is-callout {
-        background-color: $bdl-purple-rain;
-        border-color: $bdl-purple-rain;
+        color: $bdl-dark-blue-02;
+        background-color: $bdl-dark-blue;
+        border-color: $bdl-dark-blue;
+
+        a {
+            color: $bdl-dark-blue-02;
+        }
+
+        .tooltip-close-button {
+            .bdl-Tooltip-iconClose {
+                path {
+                    fill: $bdl-dark-blue-02;
+                }
+            }
+        }
     }
 
     &.is-metadata-tooltip {
@@ -63,12 +76,13 @@ $tooltip-offset: 4px; /* amount of space between target and tooltip arrow */
         position: absolute;
         top: 9px;
         right: 3px;
+        width: 22px;
         cursor: pointer;
 
-        .icon-close {
+        .bdl-Tooltip-iconClose {
             height: 16px;
 
-            .fill-color {
+            path {
                 fill: $white;
             }
         }
@@ -219,4 +233,12 @@ $tooltip-offset: 4px; /* amount of space between target and tooltip arrow */
     @include common-typography;
 
     z-index: $tooltip-z-index;
+}
+
+/*
+* Section below is for bdl-namespace backwards compatibility.
+* Do not add changes below this line.
+*/
+.tooltip {
+    @extend .bdl-Tooltip;
 }

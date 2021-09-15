@@ -63,7 +63,7 @@ var AccessDescription = function AccessDescription(props) {
       return null;
   }
 
-  return /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, description, {
+  return React.createElement("p", null, React.createElement(FormattedMessage, _extends({}, description, {
     values: {
       company: enterpriseName
     }

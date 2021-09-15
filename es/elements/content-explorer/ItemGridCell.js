@@ -30,13 +30,13 @@ var ItemGridCell = function ItemGridCell(_ref) {
       picked = _item$picked === void 0 ? false : _item$picked,
       permissions = item.permissions;
   var allowDownload = permissions[PERMISSION_CAN_DOWNLOAD];
-  return /*#__PURE__*/React.createElement("figure", {
+  return React.createElement("figure", {
     className: "bce-ItemGridCell"
-  }, /*#__PURE__*/React.createElement(ItemGridThumbnail, {
+  }, React.createElement(ItemGridThumbnail, {
     item: item
-  }), /*#__PURE__*/React.createElement("figcaption", {
+  }), React.createElement("figcaption", {
     className: "bce-ItemGridCell-figcaption"
-  }, /*#__PURE__*/React.createElement(Name, {
+  }, React.createElement(Name, {
     canPreview: canPreview,
     isTouch: isTouch,
     item: item,
@@ -45,14 +45,14 @@ var ItemGridCell = function ItemGridCell(_ref) {
     rootId: rootId,
     showDetails: true,
     view: view
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "bce-ItemGridCell-rightwrapper"
-  }, /*#__PURE__*/React.createElement(MoreOptions, _extends({
+  }, React.createElement(MoreOptions, _extends({
     canPreview: canPreview,
     isSmall: true,
     item: item,
     onItemSelect: onItemSelect
-  }, rest)), allowDownload && /*#__PURE__*/React.createElement(Checkbox, {
+  }, rest)), allowDownload && React.createElement(Checkbox, {
     hideLabel: true,
     label: name,
     name: name,

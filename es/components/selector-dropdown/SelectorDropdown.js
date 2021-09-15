@@ -6,19 +6,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -35,17 +31,17 @@ function stopDefaultEvent(event) {
   event.stopPropagation();
 }
 
-var SelectorDropdown = /*#__PURE__*/function (_React$Component) {
+var SelectorDropdown =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(SelectorDropdown, _React$Component);
-
-  var _super = _createSuper(SelectorDropdown);
 
   function SelectorDropdown(props) {
     var _this;
 
     _classCallCheck(this, SelectorDropdown);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(SelectorDropdown).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "setActiveItem", function (index) {
       _this.setState({
@@ -246,7 +242,7 @@ var SelectorDropdown = /*#__PURE__*/function (_React$Component) {
       activeItemIndex: -1,
       shouldOpen: false
     };
-    _this.selectorDropdownRef = /*#__PURE__*/React.createRef();
+    _this.selectorDropdownRef = React.createRef();
     return _this;
   }
 
@@ -305,11 +301,11 @@ var SelectorDropdown = /*#__PURE__*/function (_React$Component) {
         inputProps['aria-owns'] = listboxID;
       }
 
-      var list = /*#__PURE__*/React.createElement("ul", {
-        className: "overlay",
+      var list = React.createElement("ul", {
+        className: classNames('overlay', overlayTitle ? overlayTitle.toLowerCase() : ''),
         id: listboxID,
         role: "listbox"
-      }, overlayTitle && /*#__PURE__*/React.createElement("h5", {
+      }, overlayTitle && React.createElement("h5", {
         className: "SelectorDropdown-title"
       }, overlayTitle), React.Children.map(children, function (item, index) {
         var itemProps = {
@@ -335,17 +331,15 @@ var SelectorDropdown = /*#__PURE__*/function (_React$Component) {
         }
 
         var hasDivider = index === dividerIndex;
-        return /*#__PURE__*/React.createElement(React.Fragment, null, hasDivider && /*#__PURE__*/React.createElement("hr", {
+        return React.createElement(React.Fragment, null, hasDivider && React.createElement("hr", {
           className: "SelectorDropdown-divider"
-        }), /*#__PURE__*/React.cloneElement(item, itemProps));
+        }), React.cloneElement(item, itemProps));
       })); // change onKeyPress/onPaste back to onInput when React fixes this IE11 bug: https://github.com/facebook/react/issues/7280
       // We're simulating the blur event with the tab key listener and the
       // click listener as a proxy because IE will trigger a blur when
       // using the scrollbar in the dropdown which indavertently closes the dropdown.
 
-      return (
-        /*#__PURE__*/
-        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+      return (// eslint-disable-next-line jsx-a11y/no-static-element-interactions
         React.createElement("div", {
           className: classNames('SelectorDropdown', className),
           onFocus: this.handleFocus,
@@ -353,11 +347,11 @@ var SelectorDropdown = /*#__PURE__*/function (_React$Component) {
           onKeyPress: this.handleInput,
           onPaste: this.handleInput,
           ref: this.selectorDropdownRef
-        }, /*#__PURE__*/React.cloneElement(selector, {
+        }, React.cloneElement(selector, {
           inputProps: inputProps
-        }), isOpen && /*#__PURE__*/React.createElement("div", {
+        }), isOpen && React.createElement("div", {
           className: "".concat(OVERLAY_WRAPPER_CLASS, " is-visible")
-        }, title, shouldScroll ? /*#__PURE__*/React.createElement(ScrollWrapper, null, list) : list))
+        }, title, shouldScroll ? React.createElement(ScrollWrapper, null, list) : list))
       );
     }
   }]);

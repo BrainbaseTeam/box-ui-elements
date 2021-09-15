@@ -10,19 +10,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -40,12 +36,14 @@ import FileAPI from './File';
 import WebLinkAPI from './WebLink';
 import { CACHE_PREFIX_FOLDER, ERROR_CODE_FETCH_FOLDER, ERROR_CODE_CREATE_FOLDER, FIELD_REPRESENTATIONS, X_REP_HINT_HEADER_DIMENSIONS_DEFAULT } from '../constants';
 
-var Folder = /*#__PURE__*/function (_Item) {
+var Folder =
+/*#__PURE__*/
+function (_Item) {
   _inherits(Folder, _Item);
 
-  var _super = _createSuper(Folder);
-
   function Folder() {
+    var _getPrototypeOf2;
+
     var _this;
 
     _classCallCheck(this, Folder);
@@ -54,7 +52,7 @@ var Folder = /*#__PURE__*/function (_Item) {
       args[_key] = arguments[_key];
     }
 
-    _this = _super.call.apply(_super, [this].concat(args));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Folder)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_this), "folderSuccessHandler", function (_ref) {
       var data = _ref.data;
@@ -81,8 +79,8 @@ var Folder = /*#__PURE__*/function (_Item) {
       var flattened = flatten(entries, new Folder(_this.options), new FileAPI(_this.options), new WebLinkAPI(_this.options));
       _this.itemCache = (_this.itemCache || []).concat(flattened);
 
-      _this.getCache().set(_this.key, _objectSpread(_objectSpread({}, data), {}, {
-        item_collection: _objectSpread(_objectSpread({}, item_collection), {}, {
+      _this.getCache().set(_this.key, _objectSpread({}, data, {
+        item_collection: _objectSpread({}, item_collection, {
           entries: _this.itemCache
         })
       }));
@@ -99,7 +97,7 @@ var Folder = /*#__PURE__*/function (_Item) {
 
       var cachedEntry = _this.getCache().get(_this.key);
 
-      var updatedCacheEntry = _objectSpread(_objectSpread({}, cachedEntry), data);
+      var updatedCacheEntry = _objectSpread({}, cachedEntry, {}, data);
 
       _this.getCache().set(_this.key, updatedCacheEntry);
 
@@ -306,7 +304,7 @@ var Folder = /*#__PURE__*/function (_Item) {
       };
 
       if (!noPagination) {
-        params = _objectSpread(_objectSpread({}, params), {}, {
+        params = _objectSpread({}, params, {
           direction: this.sortDirection.toLowerCase(),
           limit: this.limit,
           offset: this.offset,
@@ -347,7 +345,7 @@ var Folder = /*#__PURE__*/function (_Item) {
       this.key = this.getCacheKey(id);
       this.successCallback = successCallback;
       this.errorCallback = errorCallback;
-      this.folderRequest(_objectSpread(_objectSpread({}, options), {}, {
+      this.folderRequest(_objectSpread({}, options, {
         noPagination: true
       }), this.folderDetailsSuccessHandler);
     }

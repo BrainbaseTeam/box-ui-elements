@@ -187,7 +187,9 @@ function initBoxToolsLogData() {
   };
 }
 
-var ComServerClient = /*#__PURE__*/function () {
+var ComServerClient =
+/*#__PURE__*/
+function () {
   function ComServerClient(appName) {
     _classCallCheck(this, ComServerClient);
 

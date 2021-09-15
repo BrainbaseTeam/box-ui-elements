@@ -15,7 +15,7 @@ var Table = function Table(_ref) {
       isCompact = _ref$isCompact === void 0 ? false : _ref$isCompact,
       rest = _objectWithoutProperties(_ref, ["children", "className", "isCompact"]);
 
-  return /*#__PURE__*/React.createElement("table", _extends({
+  return React.createElement("table", _extends({
     className: classNames('table', className, {
       'is-compact': isCompact
     })

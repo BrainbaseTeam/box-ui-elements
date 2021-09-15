@@ -5,11 +5,14 @@
 
 import * as React from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import IconInfoInverted from '../../../../icons/general/IconInfoInverted';
+import type { InjectIntlProvidedProps } from 'react-intl';
+import ActivityCard from '../ActivityCard';
+import IconInfo from '../../../../icons/general/IconInfo';
 import PlainButton from '../../../../components/plain-button';
 import messages from '../../../common/messages';
 import selectors from '../../../common/selectors/version';
 import { ACTIVITY_TARGETS } from '../../../common/interactionTargets';
+import type { User, FileVersions } from '../../../../common/types/core';
 import './Version.scss';
 
 function getMessageForAction(
@@ -65,11 +68,12 @@ type Props = {
 } & InjectIntlProvidedProps;
 
 const CollapsedVersion = (props: Props): React.Node => {
+    // $FlowFixMe
     const action = selectors.getVersionAction(props);
     const { collaborators, intl, onInfo, versions, version_start, version_end } = props;
 
     return (
-        <div className="bcs-Version">
+        <ActivityCard className="bcs-Version">
             <span className="bcs-Version-message">
                 {getMessageForAction(action, collaborators, version_start, version_end)}
             </span>
@@ -84,11 +88,11 @@ const CollapsedVersion = (props: Props): React.Node => {
                         }}
                         type="button"
                     >
-                        <IconInfoInverted height={16} width={16} />
+                        <IconInfo height={16} width={16} />
                     </PlainButton>
                 </span>
             ) : null}
-        </div>
+        </ActivityCard>
     );
 };
 

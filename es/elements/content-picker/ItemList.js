@@ -15,6 +15,7 @@ import shareAccessCellRenderer from './shareAccessCellRenderer';
 import selectionCellRenderer from './selectionCellRenderer';
 import isRowSelectable from './cellRendererHelper';
 import { VIEW_SELECTED, FIELD_NAME, FIELD_ID, FIELD_SHARED_LINK, TYPE_FOLDER } from '../../constants';
+import 'react-virtualized/styles.css';
 import './ItemList.scss';
 
 var ItemList = function ItemList(_ref) {
@@ -74,7 +75,7 @@ var ItemList = function ItemList(_ref) {
     }
   };
 
-  return /*#__PURE__*/React.createElement(KeyBinder, {
+  return React.createElement(KeyBinder, {
     columnCount: 1,
     rowCount: rowCount,
     className: "bcp-item-grid",
@@ -91,10 +92,10 @@ var ItemList = function ItemList(_ref) {
     var onSectionRendered = _ref5.onSectionRendered,
         scrollToRow = _ref5.scrollToRow,
         focusOnRender = _ref5.focusOnRender;
-    return /*#__PURE__*/React.createElement(AutoSizer, null, function (_ref6) {
+    return React.createElement(AutoSizer, null, function (_ref6) {
       var width = _ref6.width,
           height = _ref6.height;
-      return /*#__PURE__*/React.createElement(Table, {
+      return React.createElement(Table, {
         width: width,
         height: height,
         disableHeader: true,
@@ -121,22 +122,22 @@ var ItemList = function ItemList(_ref) {
             focus(rootElement, ".bcp-item-row-".concat(scrollToRow));
           }
         }
-      }, /*#__PURE__*/React.createElement(Column, {
+      }, React.createElement(Column, {
         dataKey: FIELD_ID,
         cellRenderer: iconCell,
         width: isSmall ? 30 : 50,
         flexShrink: 0
-      }), /*#__PURE__*/React.createElement(Column, {
+      }), React.createElement(Column, {
         dataKey: FIELD_NAME,
         cellRenderer: nameCell,
         width: 300,
         flexGrow: 1
-      }), isSmall ? null : /*#__PURE__*/React.createElement(Column, {
+      }), isSmall ? null : React.createElement(Column, {
         dataKey: FIELD_SHARED_LINK,
         cellRenderer: shareAccessCell,
-        width: 220,
+        width: 260,
         flexShrink: 0
-      }), /*#__PURE__*/React.createElement(Column, {
+      }), React.createElement(Column, {
         dataKey: FIELD_ID,
         cellRenderer: selectionCell,
         width: isSmall ? 20 : 30,

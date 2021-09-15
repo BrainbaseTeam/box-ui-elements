@@ -4,7 +4,7 @@ import Button from '../../button';
 import ButtonGroup from '..';
 describe('components/button-group/ButtonGroup', function () {
   test('should render correct ButtonGroup', function () {
-    var wrapper = mount( /*#__PURE__*/React.createElement(ButtonGroup, null, /*#__PURE__*/React.createElement(Button, null, "Add"), /*#__PURE__*/React.createElement(Button, null, "Update"), /*#__PURE__*/React.createElement(Button, null, "Remove")));
+    var wrapper = mount(React.createElement(ButtonGroup, null, React.createElement(Button, null, "Add"), React.createElement(Button, null, "Update"), React.createElement(Button, null, "Remove")));
     expect(wrapper.find('.btn-group')).toBeTruthy();
     expect(wrapper.find('.btn').length).toBe(3);
   });

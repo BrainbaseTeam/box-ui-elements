@@ -7,21 +7,21 @@ import commonMessages from '../../common/messages';
 var badInput = function badInput() {
   return {
     code: 'badInput',
-    message: /*#__PURE__*/React.createElement(FormattedMessage, commonMessages.invalidInputError)
+    message: React.createElement(FormattedMessage, commonMessages.invalidInputError)
   };
 };
 
 var patternMismatch = function patternMismatch() {
   return {
     code: 'patternMismatch',
-    message: /*#__PURE__*/React.createElement(FormattedMessage, commonMessages.invalidInputError)
+    message: React.createElement(FormattedMessage, commonMessages.invalidInputError)
   };
 };
 
 var tooShort = function tooShort(minLength) {
   return {
     code: 'tooShort',
-    message: /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, commonMessages.minLengthError, {
+    message: React.createElement(FormattedMessage, _extends({}, commonMessages.minLengthError, {
       values: {
         min: minLength
       }
@@ -32,7 +32,7 @@ var tooShort = function tooShort(minLength) {
 var tooLong = function tooLong(maxLength) {
   return {
     code: 'tooLong',
-    message: /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, commonMessages.maxLengthError, {
+    message: React.createElement(FormattedMessage, _extends({}, commonMessages.maxLengthError, {
       values: {
         max: maxLength
       }
@@ -43,21 +43,21 @@ var tooLong = function tooLong(maxLength) {
 var typeMismatchEmail = function typeMismatchEmail() {
   return {
     code: 'typeMismatch',
-    message: /*#__PURE__*/React.createElement(FormattedMessage, commonMessages.invalidEmailError)
+    message: React.createElement(FormattedMessage, commonMessages.invalidEmailError)
   };
 };
 
 var typeMismatchUrl = function typeMismatchUrl() {
   return {
     code: 'typeMismatch',
-    message: /*#__PURE__*/React.createElement(FormattedMessage, commonMessages.invalidURLError)
+    message: React.createElement(FormattedMessage, commonMessages.invalidURLError)
   };
 };
 
 var valueMissing = function valueMissing() {
   return {
     code: 'valueMissing',
-    message: /*#__PURE__*/React.createElement(FormattedMessage, commonMessages.requiredFieldError)
+    message: React.createElement(FormattedMessage, commonMessages.requiredFieldError)
   };
 };
 

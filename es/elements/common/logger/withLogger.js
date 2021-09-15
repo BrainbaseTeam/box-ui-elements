@@ -10,10 +10,10 @@ import Logger from './Logger';
 
 var withLogger = function withLogger(source) {
   return function (WrappedComponent) {
-    return /*#__PURE__*/React.forwardRef(function (props, ref) {
-      return /*#__PURE__*/React.createElement(Logger, _extends({}, props, {
+    return React.forwardRef(function (props, ref) {
+      return React.createElement(Logger, _extends({}, props, {
         source: source
-      }), /*#__PURE__*/React.createElement(WrappedComponent, {
+      }), React.createElement(WrappedComponent, {
         ref: ref
       }));
     });

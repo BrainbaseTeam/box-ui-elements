@@ -35,22 +35,22 @@ var SubHeaderRight = function SubHeaderRight(_ref) {
   var isFolder = view === VIEW_FOLDER;
   var showSort = isFolder && hasItems;
   var showAdd = (!!canUpload || !!canCreateNewFolder) && isFolder;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "be-sub-header-right"
-  }, hasItems && viewMode === VIEW_MODE_GRID && /*#__PURE__*/React.createElement(GridViewSlider, {
+  }, hasItems && viewMode === VIEW_MODE_GRID && React.createElement(GridViewSlider, {
     columnCount: gridColumnCount,
     gridMaxColumns: gridMaxColumns,
     gridMinColumns: gridMinColumns,
     maxColumnCount: maxGridColumnCountForWidth,
     onChange: onGridViewSliderChange
-  }), hasItems && hasGridView && /*#__PURE__*/React.createElement(ViewModeChangeButton, {
+  }), hasItems && hasGridView && React.createElement(ViewModeChangeButton, {
     viewMode: viewMode,
     onViewModeChange: onViewModeChange
-  }), showSort && !!sortBy && !!sortDirection && /*#__PURE__*/React.createElement(Sort, {
+  }), showSort && !!sortBy && !!sortDirection && React.createElement(Sort, {
     onSortChange: onSortChange,
     sortBy: sortBy,
     sortDirection: sortDirection
-  }), showAdd && /*#__PURE__*/React.createElement(Add, {
+  }), showAdd && React.createElement(Add, {
     isDisabled: !isFolder,
     onCreate: onCreate,
     onUpload: onUpload,

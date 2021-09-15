@@ -34,14 +34,27 @@ class ContentExplorerModalContainer extends Component {
         onNewFolderModalShown: PropTypes.func,
         /** Called when the NewFolderModal is closed. */
         onNewFolderModalClosed: PropTypes.func,
+        /** Called when selected button is clicked */
+        onSelectedClick: PropTypes.func,
+        /**
+         * Called when an item is selected
+         *
+         * @param {Object} selectedItem
+         * @param {number} selectedItemIndex
+         */
+        onSelectItem: PropTypes.func,
         /** Folder is in the process of being created. */
         isCreatingFolder: PropTypes.bool,
+        /** Whether the user can see select all checkbox */
+        isSelectAllAllowed: PropTypes.bool,
         /** Message that will be shown when there was an error creating the folder. */
         createFolderError: PropTypes.string,
         /** Configures the content explorer based on the user's intended action (ex. select file or move/copy) */
         contentExplorerMode: ContentExplorerModePropType.isRequired,
         /** Initial path of folders. The last folder in the array is the current folder. */
         initialFoldersPath: FoldersPathPropType.isRequired,
+        /** Initial items that will show up as selected */
+        initialSelectedItems: PropTypes.object,
         /**
          * Called when the current folder changes
          *
@@ -165,6 +178,8 @@ class ContentExplorerModalContainer extends Component {
             isCreateNewFolderAllowed,
             onSearchSubmit,
             onExitSearch,
+            onSelectedClick,
+            onSelectItem,
             items,
             numItemsPerPage,
             numTotalItems,
@@ -175,6 +190,8 @@ class ContentExplorerModalContainer extends Component {
             showCreateNewFolderButton,
             searchInputProps,
             chooseButtonText,
+            initialSelectedItems,
+            isSelectAllAllowed,
         } = this.props;
         const { foldersPath, isNewFolderModalOpen } = this.state;
         const currentFolder = foldersPath[foldersPath.length - 1];
@@ -194,8 +211,11 @@ class ContentExplorerModalContainer extends Component {
                     onChooseItems={onChooseItems}
                     onMoveItem={onMoveItem}
                     onCopyItem={onCopyItem}
+                    onSelectedClick={onSelectedClick}
+                    onSelectItem={onSelectItem}
                     onCreateNewFolderButtonClick={this.handleCreateNewFolderButtonClick}
                     isCreateNewFolderAllowed={isCreateNewFolderAllowed}
+                    isSelectAllAllowed={isSelectAllAllowed}
                     onSearchSubmit={onSearchSubmit}
                     onExitSearch={onExitSearch}
                     items={items}
@@ -208,6 +228,7 @@ class ContentExplorerModalContainer extends Component {
                     showCreateNewFolderButton={showCreateNewFolderButton}
                     searchInputProps={searchInputProps}
                     chooseButtonText={chooseButtonText}
+                    initialSelectedItems={initialSelectedItems}
                 />
                 {isNewFolderModalOpen && (
                     <NewFolderModal

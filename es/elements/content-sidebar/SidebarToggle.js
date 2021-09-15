@@ -11,8 +11,10 @@ import { SIDEBAR_NAV_TARGETS } from '../common/interactionTargets';
 var SidebarToggle = function SidebarToggle(_ref) {
   var history = _ref.history,
       isOpen = _ref.isOpen;
-  return /*#__PURE__*/React.createElement(SidebarToggleButton, {
+  return React.createElement(SidebarToggleButton, {
     "data-resin-target": SIDEBAR_NAV_TARGETS.TOGGLE,
+    "data-testid": "sidebartoggle" // $FlowFixMe
+    ,
     isOpen: isOpen,
     onClick: function onClick(event) {
       event.preventDefault();

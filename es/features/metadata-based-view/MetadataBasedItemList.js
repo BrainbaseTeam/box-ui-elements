@@ -10,19 +10,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -32,8 +28,12 @@ import AutoSizer from 'react-virtualized/dist/es/AutoSizer';
 import classNames from 'classnames';
 import find from 'lodash/find';
 import getProp from 'lodash/get';
+import isEqual from 'lodash/isEqual';
+import isNil from 'lodash/isNil';
+import isString from 'lodash/isString';
 import MultiGrid from 'react-virtualized/dist/es/MultiGrid/MultiGrid';
-import Field from '../metadata-instance-editor/fields/Field';
+import MetadataField from '../metadata-instance-fields/MetadataField';
+import ReadOnlyMetadataField from '../metadata-instance-fields/ReadOnlyMetadataField';
 import FileIcon from '../../icons/file-icon';
 import IconWithTooltip from './IconWithTooltip';
 import PlainButton from '../../components/plain-button';
@@ -41,18 +41,47 @@ import { getFileExtension } from '../../utils/file';
 import messages from '../../elements/common/messages';
 import './MetadataBasedItemList.scss';
 import { CANCEL_ICON_TYPE, EDIT_ICON_TYPE, FILE_ICON_COLUMN_INDEX, FILE_ICON_COLUMN_WIDTH, FILE_ICON_SIZE, FILE_NAME_COLUMN_INDEX, FILE_NAME_COLUMN_WIDTH, FIXED_COLUMNS_NUMBER, FIXED_ROW_NUMBER, HEADER_ROW_INDEX, MIN_METADATA_COLUMN_WIDTH, SAVE_ICON_TYPE } from './constants';
+import { FIELD_TYPE_FLOAT, FIELD_TYPE_INTEGER, FIELD_TYPE_STRING } from '../metadata-instance-fields/constants';
+import { FIELD_METADATA } from '../../constants';
 
-var MetadataBasedItemList = /*#__PURE__*/function (_React$Component) {
+var MetadataBasedItemList =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(MetadataBasedItemList, _React$Component);
-
-  var _super = _createSuper(MetadataBasedItemList);
 
   function MetadataBasedItemList(props) {
     var _this;
 
     _classCallCheck(this, MetadataBasedItemList);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(MetadataBasedItemList).call(this, props));
+
+    _defineProperty(_assertThisInitialized(_this), "getInitialState", function () {
+      return {
+        editedColumnIndex: -1,
+        editedRowIndex: -1,
+        hoveredRowIndex: -1,
+        hoveredColumnIndex: -1,
+        isUpdating: false,
+        scrollLeftOffset: 0,
+        scrollRightOffset: 0
+      };
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "getItemWithPermissions", function (item) {
+      /*
+          - @TODO: Remove permissions object once its part of API response.
+          - add "can_preview: true" so that users can click to launch the Preview modal. If users don't have access, they will see the error when Preview loads.
+          - add "can_upload: true" so that users can update the metadata values.
+      */
+      var permissions = {
+        can_preview: true,
+        can_upload: true
+      };
+      return _objectSpread({}, item, {
+        permissions: permissions
+      });
+    });
 
     _defineProperty(_assertThisInitialized(_this), "handleCancelEdit", function () {
       _this.setState({
@@ -61,8 +90,13 @@ var MetadataBasedItemList = /*#__PURE__*/function (_React$Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_this), "handleSave", function () {
-      /* Implement me */
+    _defineProperty(_assertThisInitialized(_this), "handleSave", function (item, field, type, currentValue, editedValue) {
+      var onMetadataUpdate = _this.props.onMetadataUpdate;
+      onMetadataUpdate(_this.getItemWithPermissions(item), field, currentValue, _this.getValueForType(type, editedValue));
+
+      _this.setState({
+        isUpdating: true
+      });
     });
 
     _defineProperty(_assertThisInitialized(_this), "handleMouseEnter", function (columnIndex, rowIndex) {
@@ -79,11 +113,22 @@ var MetadataBasedItemList = /*#__PURE__*/function (_React$Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_this), "cellRenderer", function (_ref) {
-      var columnIndex = _ref.columnIndex,
-          rowIndex = _ref.rowIndex,
-          key = _ref.key,
-          style = _ref.style;
+    _defineProperty(_assertThisInitialized(_this), "handleContentScroll", function (_ref) {
+      var clientWidth = _ref.clientWidth,
+          scrollLeft = _ref.scrollLeft,
+          scrollWidth = _ref.scrollWidth;
+
+      _this.setState({
+        scrollLeftOffset: scrollLeft,
+        scrollRightOffset: scrollWidth - clientWidth - scrollLeft
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "cellRenderer", function (_ref2) {
+      var columnIndex = _ref2.columnIndex,
+          rowIndex = _ref2.rowIndex,
+          key = _ref2.key,
+          style = _ref2.style;
       var hoveredRowIndex = _this.state.hoveredRowIndex;
       var isHeaderRow = rowIndex === HEADER_ROW_INDEX;
       var isFileIconCell = !isHeaderRow && columnIndex === FILE_ICON_COLUMN_INDEX;
@@ -95,38 +140,56 @@ var MetadataBasedItemList = /*#__PURE__*/function (_React$Component) {
         'bdl-MetadataBasedItemList-cell--filename': isFileNameCell,
         'bdl-MetadataBasedItemList-cell--hover': isGridRowHovered
       });
-      return /*#__PURE__*/React.createElement("div", {
-        key: key,
+      return React.createElement("div", {
         className: classes,
-        style: style,
-        onMouseLeave: _this.handleMouseLeave,
+        key: key,
         onMouseEnter: function onMouseEnter() {
           return _this.handleMouseEnter(columnIndex, rowIndex);
-        }
+        },
+        onMouseLeave: _this.handleMouseLeave,
+        style: style
       }, data);
     });
 
-    _this.state = {
-      // initial MultiGrid load
-      editedColumnIndex: -1,
-      editedRowIndex: -1,
-      hoveredRowIndex: -1,
-      hoveredColumnIndex: -1
-    };
+    _this.state = _this.getInitialState();
     return _this;
   }
 
   _createClass(MetadataBasedItemList, [{
-    key: "getMetadataColumnName",
-    value: function getMetadataColumnName(column) {
-      return typeof column === 'string' ? column : getProp(column, 'name');
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps) {
+      var prevItems = getProp(prevProps, 'currentCollection.items');
+      var currentItems = getProp(this.props, 'currentCollection.items');
+
+      if (!isEqual(currentItems, prevItems)) {
+        // Either the view was refreshed or metadata was updated, reset edit part of the state to initial values
+        this.setState({
+          editedColumnIndex: -1,
+          editedRowIndex: -1,
+          isUpdating: false,
+          valueBeingEdited: undefined
+        });
+      }
+    }
+  }, {
+    key: "getQueryResponseFields",
+    value: function getQueryResponseFields() {
+      var fields = getProp(this.props, 'currentCollection.items[0].metadata.enterprise.fields', []);
+      return fields.map(function (_ref3) {
+        var key = _ref3.key,
+            displayName = _ref3.displayName;
+        return {
+          key: key,
+          displayName: displayName
+        };
+      });
     }
   }, {
     key: "getColumnWidth",
     value: function getColumnWidth(width) {
-      var metadataColumnsToShow = this.props.metadataColumnsToShow;
-      return function (_ref2) {
-        var index = _ref2.index;
+      var fieldsToShow = this.props.fieldsToShow;
+      return function (_ref4) {
+        var index = _ref4.index;
 
         if (index === FILE_ICON_COLUMN_INDEX) {
           return FILE_ICON_COLUMN_WIDTH;
@@ -139,36 +202,46 @@ var MetadataBasedItemList = /*#__PURE__*/function (_React$Component) {
         var availableWidth = width - FILE_NAME_COLUMN_WIDTH - FILE_ICON_COLUMN_WIDTH; // total width minus width of sticky columns
         // Maintain min column width, else occupy the rest of the space equally
 
-        return Math.max(availableWidth / metadataColumnsToShow.length, MIN_METADATA_COLUMN_WIDTH);
+        return Math.max(availableWidth / fieldsToShow.length, MIN_METADATA_COLUMN_WIDTH);
       };
     }
   }, {
     key: "handleItemClick",
     value: function handleItemClick(item) {
       var onItemClick = this.props.onItemClick;
-      /*
-          - @TODO: Remove permissions object once its part of API response.
-          - In Content Explorer element, if can_preview permission is false, there is no action taken onClick(item).
-          - Until the response has permissions, add "can_preview: true" so that users can click to launch the Preview modal. If users don't have access, they will see the error when Preview loads.
-      */
-
-      var permissions = {
-        can_preview: true
-      };
-
-      var itemWithPreviewPermission = _objectSpread(_objectSpread({}, item), {}, {
-        permissions: permissions
-      });
-
-      onItemClick(itemWithPreviewPermission);
+      onItemClick(this.getItemWithPermissions(item));
     }
   }, {
     key: "handleEditIconClick",
-    value: function handleEditIconClick(columnIndex, rowIndex) {
+    value: function handleEditIconClick(columnIndex, rowIndex, value) {
       this.setState({
         editedColumnIndex: columnIndex,
-        editedRowIndex: rowIndex
+        editedRowIndex: rowIndex,
+        valueBeingEdited: value
       });
+    }
+  }, {
+    key: "getValueForType",
+    value: function getValueForType(type, value) {
+      if (type === FIELD_TYPE_FLOAT && !isNil(value)) {
+        return parseFloat(value);
+      }
+
+      if (type === FIELD_TYPE_INTEGER && !isNil(value)) {
+        return parseInt(value, 10);
+      }
+
+      return value;
+    }
+  }, {
+    key: "isMetadataField",
+    value: function isMetadataField(key) {
+      return key.startsWith("".concat(FIELD_METADATA, "."));
+    }
+  }, {
+    key: "getFieldNameFromKey",
+    value: function getFieldNameFromKey(key) {
+      return key.split('.').pop();
     }
   }, {
     key: "getGridCellData",
@@ -176,32 +249,36 @@ var MetadataBasedItemList = /*#__PURE__*/function (_React$Component) {
       var _this2 = this;
 
       var _this$props = this.props,
-          items = _this$props.currentCollection.items,
-          metadataColumnsToShow = _this$props.metadataColumnsToShow;
+          _this$props$currentCo = _this$props.currentCollection.items,
+          items = _this$props$currentCo === void 0 ? [] : _this$props$currentCo,
+          fieldsToShow = _this$props.fieldsToShow;
       var _this$state = this.state,
+          editedColumnIndex = _this$state.editedColumnIndex,
+          editedRowIndex = _this$state.editedRowIndex,
           hoveredColumnIndex = _this$state.hoveredColumnIndex,
           hoveredRowIndex = _this$state.hoveredRowIndex,
-          editedColumnIndex = _this$state.editedColumnIndex,
-          editedRowIndex = _this$state.editedRowIndex;
+          isUpdating = _this$state.isUpdating,
+          valueBeingEdited = _this$state.valueBeingEdited;
       var isCellBeingEdited = columnIndex === editedColumnIndex && rowIndex === editedRowIndex;
       var isCellHovered = columnIndex === hoveredColumnIndex && rowIndex === hoveredRowIndex;
-      var metadataColumn = metadataColumnsToShow[columnIndex - FIXED_COLUMNS_NUMBER];
-      var isCellEditable = !isCellBeingEdited && isCellHovered && !!getProp(metadataColumn, 'canEdit', false);
+      var fieldToShow = fieldsToShow[columnIndex - FIXED_COLUMNS_NUMBER];
+      var isCellEditable = !isCellBeingEdited && isCellHovered && getProp(fieldToShow, 'canEdit', false);
       var item = items[rowIndex - 1];
-      var name = item.name;
-      var fields = getProp(item, 'metadata.fields', []);
+      var id = item.id,
+          name = item.name;
+      var fields = getProp(item, 'metadata.enterprise.fields', []);
       var cellData;
 
       switch (columnIndex) {
         case FILE_ICON_COLUMN_INDEX:
-          cellData = /*#__PURE__*/React.createElement(FileIcon, {
+          cellData = React.createElement(FileIcon, {
             dimension: FILE_ICON_SIZE,
             extension: getFileExtension(name)
           });
           break;
 
         case FILE_NAME_COLUMN_INDEX:
-          cellData = /*#__PURE__*/React.createElement(PlainButton, {
+          cellData = React.createElement(PlainButton, {
             type: "button",
             onClick: function onClick() {
               return _this2.handleItemClick(item);
@@ -211,48 +288,75 @@ var MetadataBasedItemList = /*#__PURE__*/function (_React$Component) {
 
         default:
           {
-            var mdFieldName = this.getMetadataColumnName(metadataColumn);
-            var field = find(fields, ['name', mdFieldName]);
+            var key = isString(fieldToShow) ? fieldToShow : fieldToShow.key;
+            var field;
+            var type = FIELD_TYPE_STRING;
+            var value;
+            var options = [];
+            var isMetadataField = this.isMetadataField(key);
 
-            if (!field) {
-              return cellData;
+            if (isMetadataField) {
+              // If field is metadata instance field
+              field = find(fields, ['key', key]);
+
+              if (!field) {
+                return cellData;
+              }
+
+              var _field = field;
+              type = _field.type;
+              value = _field.value;
+              var _field$options = _field.options;
+              options = _field$options === void 0 ? [] : _field$options;
+            } else {
+              // If field is item field, e.g. name, size, description etc.
+              value = getProp(item, key);
             }
 
-            var type = field.type,
-                value = field.value,
-                _field$options = field.options,
-                options = _field$options === void 0 ? [] : _field$options;
-            cellData = /*#__PURE__*/React.createElement(React.Fragment, null, !isCellBeingEdited && value, value && isCellEditable && /*#__PURE__*/React.createElement(IconWithTooltip, {
-              type: EDIT_ICON_TYPE,
-              tooltipText: /*#__PURE__*/React.createElement(FormattedMessage, messages.editLabel),
-              onClick: function onClick() {
-                return _this2.handleEditIconClick(columnIndex, rowIndex);
-              }
-            }), value && isCellBeingEdited && /*#__PURE__*/React.createElement("div", {
-              className: "bdl-MetadataBasedItemList-cell--edit"
-            }, /*#__PURE__*/React.createElement(Field, {
-              canEdit: true,
-              dataKey: value,
+            var fieldName = this.getFieldNameFromKey(key);
+            var shouldShowEditIcon = isCellEditable && isString(type);
+            cellData = React.createElement(React.Fragment, null, !isCellBeingEdited && React.createElement(ReadOnlyMetadataField, {
               dataValue: value,
               displayName: "",
+              type: type
+            }), shouldShowEditIcon && React.createElement(IconWithTooltip, {
+              type: EDIT_ICON_TYPE,
+              tooltipText: React.createElement(FormattedMessage, messages.editLabel),
+              onClick: function onClick() {
+                return _this2.handleEditIconClick(columnIndex, rowIndex, value);
+              }
+            }), isCellBeingEdited && React.createElement("div", {
+              className: "bdl-MetadataBasedItemList-cell--edit"
+            }, React.createElement(MetadataField, {
+              canEdit: true,
+              dataKey: "".concat(id).concat(key),
+              dataValue: valueBeingEdited,
+              displayName: "",
               type: type,
-              onChange: function onChange() {
-                /* implement me */
+              onChange: function onChange(changeKey, changedValue) {
+                _this2.setState({
+                  valueBeingEdited: changedValue
+                });
               },
               onRemove: function onRemove() {
-                /* implement me */
+                _this2.setState({
+                  valueBeingEdited: undefined
+                });
               },
               options: options
-            }), /*#__PURE__*/React.createElement(IconWithTooltip, {
+            }), React.createElement(IconWithTooltip, {
               className: "bdl-MetadataBasedItemList-cell--cancelIcon",
               onClick: this.handleCancelEdit,
-              tooltipText: /*#__PURE__*/React.createElement(FormattedMessage, messages.cancel),
+              tooltipText: React.createElement(FormattedMessage, messages.cancel),
               type: CANCEL_ICON_TYPE
-            }), /*#__PURE__*/React.createElement(IconWithTooltip, {
+            }), value !== valueBeingEdited && React.createElement(IconWithTooltip, {
               className: "bdl-MetadataBasedItemList-cell--saveIcon",
-              onClick: this.handleSave,
-              tooltipText: /*#__PURE__*/React.createElement(FormattedMessage, messages.save),
-              type: SAVE_ICON_TYPE
+              onClick: function onClick() {
+                return _this2.handleSave(item, fieldName, type, value, valueBeingEdited);
+              },
+              tooltipText: React.createElement(FormattedMessage, messages.save),
+              type: SAVE_ICON_TYPE,
+              isUpdating: isUpdating
             })));
           }
       }
@@ -262,13 +366,47 @@ var MetadataBasedItemList = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "getGridHeaderData",
     value: function getGridHeaderData(columnIndex) {
-      var metadataColumnsToShow = this.props.metadataColumnsToShow;
+      var fieldsToShow = this.props.fieldsToShow;
+      if (columnIndex === 0) return undefined;
 
       if (columnIndex === FILE_NAME_COLUMN_INDEX) {
-        return /*#__PURE__*/React.createElement(FormattedMessage, messages.name); // "Name" column header
+        return React.createElement(FormattedMessage, messages.name); // "Name" column header
       }
 
-      return this.getMetadataColumnName(metadataColumnsToShow[columnIndex - FIXED_COLUMNS_NUMBER]); // column header
+      var responseFields = this.getQueryResponseFields();
+      var field = fieldsToShow[columnIndex - FIXED_COLUMNS_NUMBER];
+      var key = isString(field) ? field : field.key; // Derive displayName in following order:
+      // 1. fieldsToShow prop ||
+      // 2. metadata template instance ||
+      // 3. field key
+
+      var displayName = getProp(field, 'displayName') || getProp(find(responseFields, ['key', key]), 'displayName', key);
+      return displayName;
+    }
+  }, {
+    key: "getScrollPositionClasses",
+    value: function getScrollPositionClasses(width) {
+      var _this$state2 = this.state,
+          scrollLeftOffset = _this$state2.scrollLeftOffset,
+          scrollRightOffset = _this$state2.scrollRightOffset;
+      var isViewScrolledLeft = this.calculateContentWidth() > width && scrollRightOffset > 0;
+      var isViewScrolledRight = scrollLeftOffset > 0;
+      var isViewScrolledInMiddle = isViewScrolledLeft && isViewScrolledRight;
+      return {
+        'is-scrolledLeft': isViewScrolledLeft && !isViewScrolledInMiddle,
+        // content scrolled all the way to the left
+        'is-scrolledRight': isViewScrolledRight && !isViewScrolledInMiddle,
+        // content scrolled all the way to the right
+        'is-scrolledMiddle': isViewScrolledInMiddle // content scrolled somewhere in between
+
+      };
+    }
+  }, {
+    key: "calculateContentWidth",
+    value: function calculateContentWidth() {
+      var fieldsToShow = this.props.fieldsToShow; // total width = sum of widths of sticky & non-sticky columns
+
+      return FILE_ICON_COLUMN_WIDTH + FILE_NAME_COLUMN_WIDTH + fieldsToShow.length * MIN_METADATA_COLUMN_WIDTH;
     }
   }, {
     key: "render",
@@ -277,16 +415,23 @@ var MetadataBasedItemList = /*#__PURE__*/function (_React$Component) {
 
       var _this$props2 = this.props,
           currentCollection = _this$props2.currentCollection,
-          metadataColumnsToShow = _this$props2.metadataColumnsToShow;
+          fieldsToShow = _this$props2.fieldsToShow;
       var rowCount = currentCollection.items ? currentCollection.items.length : 0;
-      return /*#__PURE__*/React.createElement(AutoSizer, null, function (_ref3) {
-        var width = _ref3.width,
-            height = _ref3.height;
-        return /*#__PURE__*/React.createElement("div", {
+      return React.createElement(AutoSizer, null, function (_ref5) {
+        var width = _ref5.width,
+            height = _ref5.height;
+
+        var scrollClasses = _this3.getScrollPositionClasses(width);
+
+        var classesTopRightGrid = classNames('bdl-MetadataBasedItemList-topRightGrid', scrollClasses);
+        var classesBottomRightGrid = classNames('bdl-MetadataBasedItemList-bottomRightGrid', scrollClasses);
+        return React.createElement("div", {
           className: "bdl-MetadataBasedItemList"
-        }, /*#__PURE__*/React.createElement(MultiGrid, {
+        }, React.createElement(MultiGrid, {
           cellRenderer: _this3.cellRenderer,
-          columnCount: metadataColumnsToShow.length + FIXED_COLUMNS_NUMBER,
+          classNameBottomRightGrid: classesBottomRightGrid,
+          classNameTopRightGrid: classesTopRightGrid,
+          columnCount: fieldsToShow.length + FIXED_COLUMNS_NUMBER,
           columnWidth: _this3.getColumnWidth(width),
           fixedColumnCount: FIXED_COLUMNS_NUMBER,
           fixedRowCount: FIXED_ROW_NUMBER,
@@ -295,7 +440,8 @@ var MetadataBasedItemList = /*#__PURE__*/function (_React$Component) {
           hideTopRightGridScrollbar: true,
           rowCount: rowCount + FIXED_ROW_NUMBER,
           rowHeight: 50,
-          width: width
+          width: width,
+          onScroll: _this3.handleContentScroll
         }));
       });
     }

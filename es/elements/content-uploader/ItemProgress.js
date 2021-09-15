@@ -8,11 +8,11 @@ import './ItemProgress.scss';
 
 var ItemProgress = function ItemProgress(_ref) {
   var progress = _ref.progress;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "bcu-item-progress"
-  }, /*#__PURE__*/React.createElement(ProgressBar, {
+  }, React.createElement(ProgressBar, {
     percent: progress
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "bcu-progress-label"
   }, progress, "%"));
 };

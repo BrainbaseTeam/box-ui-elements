@@ -9,40 +9,41 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
  * @file Version component
  */
 import * as React from 'react';
-import { injectIntl, FormattedMessage } from 'react-intl';
-import IconInfoInverted from '../../../../icons/general/IconInfoInverted';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import ActivityCard from '../ActivityCard';
+import IconInfo from '../../../../icons/general/IconInfo';
 import messages from '../../../common/messages';
 import PlainButton from '../../../../components/plain-button';
 import selectors from '../../../common/selectors/version';
 import { ACTIVITY_TARGETS } from '../../../common/interactionTargets';
-import { VERSION_UPLOAD_ACTION, VERSION_DELETE_ACTION, VERSION_PROMOTE_ACTION, VERSION_RESTORE_ACTION } from '../../../../constants';
+import { FILE_REQUEST_NAME, VERSION_UPLOAD_ACTION, VERSION_DELETE_ACTION, VERSION_PROMOTE_ACTION, VERSION_RESTORE_ACTION } from '../../../../constants';
 import './Version.scss';
 var ACTION_MAP = (_ACTION_MAP = {}, _defineProperty(_ACTION_MAP, VERSION_DELETE_ACTION, messages.versionDeleted), _defineProperty(_ACTION_MAP, VERSION_PROMOTE_ACTION, messages.versionPromoted), _defineProperty(_ACTION_MAP, VERSION_RESTORE_ACTION, messages.versionRestored), _defineProperty(_ACTION_MAP, VERSION_UPLOAD_ACTION, messages.versionUploaded), _ACTION_MAP);
 
 var Version = function Version(props) {
+  // $FlowFixMe
   var action = selectors.getVersionAction(props);
   var id = props.id,
       intl = props.intl,
       onInfo = props.onInfo,
       version_number = props.version_number,
-      version_promoted = props.version_promoted;
+      version_promoted = props.version_promoted; // $FlowFixMe
 
-  var _selectors$getVersion = selectors.getVersionUser(props),
-      name = _selectors$getVersion.name;
-
-  return /*#__PURE__*/React.createElement("div", {
+  var user = selectors.getVersionUser(props);
+  var name = user.name === FILE_REQUEST_NAME ? intl.formatMessage(messages.fileRequestDisplayName) : user.name;
+  return React.createElement(ActivityCard, {
     className: "bcs-Version"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "bcs-Version-message"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, ACTION_MAP[action], {
+  }, React.createElement(FormattedMessage, _extends({}, ACTION_MAP[action], {
     values: {
-      name: /*#__PURE__*/React.createElement("strong", null, name),
+      name: React.createElement("strong", null, name),
       version_number: version_number,
       version_promoted: version_promoted
     }
-  }))), onInfo ? /*#__PURE__*/React.createElement("span", {
+  }))), onInfo ? React.createElement("span", {
     className: "bcs-Version-actions"
-  }, /*#__PURE__*/React.createElement(PlainButton, {
+  }, React.createElement(PlainButton, {
     "aria-label": intl.formatMessage(messages.getVersionInfo),
     className: "bcs-Version-info",
     "data-resin-target": ACTIVITY_TARGETS.VERSION_CARD,
@@ -53,7 +54,7 @@ var Version = function Version(props) {
       });
     },
     type: "button"
-  }, /*#__PURE__*/React.createElement(IconInfoInverted, {
+  }, React.createElement(IconInfo, {
     height: 16,
     width: 16
   }))) : null);

@@ -2,17 +2,17 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -20,23 +20,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -69,23 +61,26 @@ import './TaskForm.scss';
 function convertAssigneesToSelectorItems(approvers) {
   return approvers.map(function (_ref) {
     var target = _ref.target;
-
-    var newSelectorItem = _objectSpread(_objectSpread({}, target), {}, {
-      item: {},
+    var newSelectorItem = {
+      id: target.id,
+      name: target.name,
+      item: target,
       value: target.id,
-      text: target.name
-    });
+      text: target.name // for PillSelectorDropdown SelectorOptions type
 
+    };
     return newSelectorItem;
   });
 }
 
-var TaskForm = /*#__PURE__*/function (_React$Component) {
+var TaskForm =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(TaskForm, _React$Component);
 
-  var _super = _createSuper(TaskForm);
-
   function TaskForm() {
+    var _getPrototypeOf2;
+
     var _this;
 
     _classCallCheck(this, TaskForm);
@@ -94,7 +89,7 @@ var TaskForm = /*#__PURE__*/function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    _this = _super.call.apply(_super, [this].concat(args));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(TaskForm)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_this), "state", _this.getInitialFormState());
 
@@ -126,7 +121,7 @@ var TaskForm = /*#__PURE__*/function (_React$Component) {
         });
         return {
           isValid: isValid,
-          formValidityState: only ? _objectSpread(_objectSpread({}, state.formValidityState), {}, _defineProperty({}, only, formValidityState[only])) : formValidityState
+          formValidityState: only ? _objectSpread({}, state.formValidityState, _defineProperty({}, only, formValidityState[only])) : formValidityState
         };
       });
     });
@@ -182,7 +177,12 @@ var TaskForm = /*#__PURE__*/function (_React$Component) {
         'data-resin-taskid': id,
         'data-resin-tasktype': taskType,
         'data-resin-isediting': editMode === TASK_EDIT_MODE_EDIT,
-        'data-resin-numassigneesadded': addedAssignees.length,
+        'data-resin-numassigneesadded': addedAssignees.filter(function (assignee) {
+          return assignee.target.type === 'user';
+        }).length,
+        'data-resin-numgroupssadded': addedAssignees.filter(function (assignee) {
+          return assignee.target.type === 'group';
+        }).length,
         'data-resin-numassigneesremoved': removedAssignees.length,
         'data-resin-assigneesadded': addedAssignees.map(function (assignee) {
           return assignee.target.id;
@@ -291,11 +291,7 @@ var TaskForm = /*#__PURE__*/function (_React$Component) {
         approvers: _this.state.approvers.concat(pills.map(function (pill) {
           return {
             id: '',
-            target: {
-              id: pill.id,
-              name: pill.text,
-              type: 'user'
-            },
+            target: pill.item,
             role: 'ASSIGNEE',
             type: 'task_collaborator',
             status: 'NOT_STARTED',
@@ -365,7 +361,7 @@ var TaskForm = /*#__PURE__*/function (_React$Component) {
     key: "render",
     value: function render() {
       var _this2 = this,
-          _ref6;
+          _ref5;
 
       var _this$props4 = this.props,
           approverSelectorContacts = _this$props4.approverSelectorContacts,
@@ -384,45 +380,45 @@ var TaskForm = /*#__PURE__*/function (_React$Component) {
           completionRule = _this$state2.completionRule;
       var inputContainerClassNames = classNames('bcs-task-input-container', 'bcs-task-input-is-open', className);
       var isCreateEditMode = editMode === TASK_EDIT_MODE_CREATE;
-      var renderApprovers = convertAssigneesToSelectorItems(approvers); // filter out selected approvers
+      var selectedApprovers = convertAssigneesToSelectorItems(approvers); // filter out selected approvers
       // map to datalist item format
 
       var approverOptions = approverSelectorContacts.filter(function (_ref2) {
         var id = _ref2.id;
-        return !renderApprovers.find(function (_ref3) {
+        return !selectedApprovers.find(function (_ref3) {
           var value = _ref3.value;
           return value === id;
-        });
-      }).map(function (_ref4) {
-        var id = _ref4.id,
-            item = _ref4.item;
-        return _objectSpread(_objectSpread({}, item), {}, {
-          text: item.name,
-          value: id
         });
       });
       var pillSelectorOverlayClasses = classNames({
         scrollable: approverOptions.length > 4
       });
       var submitButtonMessage = isCreateEditMode ? messages.tasksAddTaskFormSubmitLabel : messages.tasksEditTaskFormSubmitLabel;
-      var shouldShowCompletionRule = approvers.length > 0;
-      var isCompletionRuleCheckboxDisabled = approvers.length <= 1;
+      var shouldShowCompletionRule = approvers.length > 0; // Enable checkbox when there is a group or multiple users being assigned
+      // TODO: consider setting contants for assignee types to src/constants.js
+      // - move from src/features/collaborator-avatars/constants.js
+
+      var isCompletionRuleCheckboxDisabled = approvers.filter(function (approver) {
+        return approver.target.type === 'group';
+      }).length <= 0 && approvers.filter(function (approver) {
+        return approver.target.type === 'user';
+      }).length <= 1;
       var isCompletionRuleCheckboxChecked = completionRule === TASK_COMPLETION_RULE_ANY;
       var isForbiddenErrorOnEdit = isLoading || getProp(error, 'status') === 403 && !isCreateEditMode;
-      return /*#__PURE__*/React.createElement("div", {
+      return React.createElement("div", {
         className: inputContainerClassNames,
         "data-resin-component": "taskform"
-      }, /*#__PURE__*/React.createElement("div", {
+      }, React.createElement("div", {
         className: "bcs-task-input-form-container"
-      }, /*#__PURE__*/React.createElement(TaskError, {
+      }, React.createElement(TaskError, {
         editMode: editMode,
         error: error,
         taskType: taskType
-      }), /*#__PURE__*/React.createElement(Form, {
+      }), React.createElement(Form, {
         formValidityState: formValidityState,
         onInvalidSubmit: this.handleInvalidSubmit,
         onValidSubmit: this.handleValidSubmit
-      }, /*#__PURE__*/React.createElement(PillSelectorDropdown, {
+      }, React.createElement(PillSelectorDropdown, {
         className: pillSelectorOverlayClasses,
         error: this.getErrorByFieldname('taskAssignees'),
         disabled: isForbiddenErrorOnEdit,
@@ -430,7 +426,7 @@ var TaskForm = /*#__PURE__*/function (_React$Component) {
           'data-testid': 'task-form-assignee-input'
         },
         isRequired: true,
-        label: /*#__PURE__*/React.createElement(FormattedMessage, messages.tasksAddTaskFormSelectAssigneesLabel),
+        label: React.createElement(FormattedMessage, messages.tasksAddTaskFormSelectAssigneesLabel),
         name: "taskAssignees",
         onBlur: function onBlur() {
           return _this2.validateForm('taskAssignees');
@@ -439,37 +435,52 @@ var TaskForm = /*#__PURE__*/function (_React$Component) {
         onRemove: this.handleApproverSelectorRemove,
         onSelect: this.handleApproverSelectorSelect,
         placeholder: intl.formatMessage(commentFormMessages.approvalAddAssignee),
-        selectedOptions: renderApprovers,
+        selectedOptions: selectedApprovers,
         selectorOptions: approverOptions,
         shouldSetActiveItemOnOpen: true,
         shouldClearUnmatchedInput: true,
         validateForError: function validateForError() {
           return _this2.validateForm('taskAssignees');
         }
-      }, approverOptions.map(function (_ref5) {
-        var id = _ref5.id,
-            name = _ref5.name,
-            email = _ref5.email;
-        return /*#__PURE__*/React.createElement(ContactDatalistItem, {
+      }, approverOptions.map(function (_ref4) {
+        var id = _ref4.id,
+            name = _ref4.name,
+            _ref4$item = _ref4.item,
+            item = _ref4$item === void 0 ? {} : _ref4$item;
+        return React.createElement(ContactDatalistItem, {
           key: id,
+          "data-testid": "task-assignee-option",
           name: name,
-          subtitle: email
+          subtitle: item.type === 'group' ? React.createElement(FormattedMessage, messages.taskCreateGroupLabel) : item.email
         });
-      })), shouldShowCompletionRule && /*#__PURE__*/React.createElement(FeatureFlag, {
-        feature: "activityFeed.tasks.anyTask"
-      }, /*#__PURE__*/React.createElement(Checkbox, {
+      })), shouldShowCompletionRule && React.createElement(React.Fragment, null, React.createElement(FeatureFlag, {
+        feature: "activityFeed.tasks.assignToGroup"
+      }, React.createElement(Checkbox, {
+        "data-testid": "task-form-completion-rule-checkbox-group",
         isChecked: isCompletionRuleCheckboxChecked,
         isDisabled: isCompletionRuleCheckboxDisabled || isForbiddenErrorOnEdit,
-        label: /*#__PURE__*/React.createElement(FormattedMessage, messages.taskAnyCheckboxLabel),
+        label: React.createElement(FormattedMessage, messages.taskAnyCheckboxLabel),
+        tooltip: intl.formatMessage(messages.taskAnyInfoGroupTooltip),
+        name: "completionRule",
+        onChange: this.handleCompletionRuleChange
+      })), React.createElement(FeatureFlag, {
+        not: true,
+        feature: "activityFeed.tasks.assignToGroup"
+      }, React.createElement(Checkbox, {
+        "data-testid": "task-form-completion-rule-checkbox",
+        isChecked: isCompletionRuleCheckboxChecked,
+        isDisabled: isCompletionRuleCheckboxDisabled || isForbiddenErrorOnEdit,
+        label: React.createElement(FormattedMessage, messages.taskAnyCheckboxLabel),
         tooltip: intl.formatMessage(messages.taskAnyInfoTooltip),
         name: "completionRule",
         onChange: this.handleCompletionRuleChange
-      })), /*#__PURE__*/React.createElement(TextArea, {
+      }))), React.createElement(TextArea, {
         className: "bcs-task-name-input",
+        "data-testid": "task-form-name-input",
         disabled: isDisabled || isForbiddenErrorOnEdit,
         error: this.getErrorByFieldname('taskName'),
         isRequired: true,
-        label: /*#__PURE__*/React.createElement(FormattedMessage, messages.tasksAddTaskFormMessageLabel),
+        label: React.createElement(FormattedMessage, messages.tasksAddTaskFormMessageLabel),
         name: "taskName",
         onBlur: function onBlur() {
           return _this2.validateForm('taskName');
@@ -477,32 +488,34 @@ var TaskForm = /*#__PURE__*/function (_React$Component) {
         onChange: this.handleChangeMessage,
         placeholder: intl.formatMessage(commentFormMessages.commentWrite),
         value: message
-      }), /*#__PURE__*/React.createElement(DatePicker, {
+      }), React.createElement(DatePicker, {
         className: "bcs-task-add-due-date-input",
         error: this.getErrorByFieldname('taskDueDate'),
-        inputProps: (_ref6 = {}, _defineProperty(_ref6, INTERACTION_TARGET, ACTIVITY_TARGETS.TASK_DATE_PICKER), _defineProperty(_ref6, 'data-testid', 'task-form-date-input'), _ref6),
+        inputProps: (_ref5 = {}, _defineProperty(_ref5, INTERACTION_TARGET, ACTIVITY_TARGETS.TASK_DATE_PICKER), _defineProperty(_ref5, 'data-testid', 'task-form-date-input'), _ref5),
         isDisabled: isForbiddenErrorOnEdit,
         isRequired: false,
-        label: /*#__PURE__*/React.createElement(FormattedMessage, messages.tasksAddTaskFormDueDateLabel),
+        label: React.createElement(FormattedMessage, messages.tasksAddTaskFormDueDateLabel),
         minDate: new Date(),
         name: "taskDueDate",
         onChange: this.handleDueDateChange,
         placeholder: intl.formatMessage(commentFormMessages.approvalSelectDate),
         value: dueDate || undefined
-      }), /*#__PURE__*/React.createElement("div", {
+      }), React.createElement("div", {
         className: "bcs-task-input-controls"
-      }, /*#__PURE__*/React.createElement(Button, _extends({
+      }, React.createElement(Button, _extends({
         className: "bcs-task-input-cancel-btn",
         "data-resin-target": ACTIVITY_TARGETS.APPROVAL_FORM_CANCEL,
+        "data-testid": "task-form-cancel-button",
         onClick: this.handleCancelClick,
         isDisabled: isLoading,
         type: "button"
-      }, this.addResinInfo()), /*#__PURE__*/React.createElement(FormattedMessage, messages.tasksAddTaskFormCancelLabel)), /*#__PURE__*/React.createElement(PrimaryButton, _extends({
+      }, this.addResinInfo()), React.createElement(FormattedMessage, messages.tasksAddTaskFormCancelLabel)), React.createElement(PrimaryButton, _extends({
         className: "bcs-task-input-submit-btn",
         "data-resin-target": ACTIVITY_TARGETS.APPROVAL_FORM_POST,
+        "data-testid": "task-form-submit-button",
         isDisabled: isForbiddenErrorOnEdit,
         isLoading: isLoading
-      }, this.addResinInfo()), /*#__PURE__*/React.createElement(FormattedMessage, submitButtonMessage))))));
+      }, this.addResinInfo()), React.createElement(FormattedMessage, submitButtonMessage))))));
     }
   }]);
 

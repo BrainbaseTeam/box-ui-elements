@@ -20,20 +20,20 @@ var GridViewSlider = function GridViewSlider(_ref) {
   var RANGE_MIN = gridMaxColumns - maxColumnCount + 1;
   var RANGE_MAX = gridMaxColumns - gridMinColumns + 1;
   var sliderValue = RANGE_MAX - columnCount + 1;
-  return gridMinColumns < maxColumnCount && /*#__PURE__*/React.createElement("div", {
+  return gridMinColumns < maxColumnCount && React.createElement("div", {
     className: "bdl-GridViewSlider"
-  }, /*#__PURE__*/React.createElement(PlainButton, {
+  }, React.createElement(PlainButton, {
     className: "bdl-GridViewSlider-button",
     onClick: function onClick() {
       _onChange(Math.max(RANGE_MIN, sliderValue - RANGE_STEP));
     },
     type: "button",
     "aria-label": intl.formatMessage(messages.gridViewDecreaseColumnSize)
-  }, /*#__PURE__*/React.createElement(IconMinusThin, {
+  }, React.createElement(IconMinusThin, {
     color: bdlGray50,
     width: 14,
     height: 14
-  })), /*#__PURE__*/React.createElement("input", {
+  })), React.createElement("input", {
     className: "bdl-GridViewSlider-range",
     max: RANGE_MAX,
     min: RANGE_MIN,
@@ -43,14 +43,14 @@ var GridViewSlider = function GridViewSlider(_ref) {
     step: RANGE_STEP,
     type: "range",
     value: sliderValue
-  }), /*#__PURE__*/React.createElement(PlainButton, {
+  }), React.createElement(PlainButton, {
     className: "bdl-GridViewSlider-button",
     onClick: function onClick() {
       _onChange(Math.min(RANGE_MAX, sliderValue + RANGE_STEP));
     },
     type: "button",
     "aria-label": intl.formatMessage(messages.gridViewIncreaseColumnSize)
-  }, /*#__PURE__*/React.createElement(IconPlusThin, {
+  }, React.createElement(IconPlusThin, {
     color: bdlGray50,
     width: 14,
     height: 14

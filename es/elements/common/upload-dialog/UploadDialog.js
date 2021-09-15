@@ -1,3 +1,5 @@
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
 /**
  * 
  * @file Content Explorer Delete Confirmation Dialog
@@ -22,10 +24,11 @@ var UploadDialog = function UploadDialog(_ref) {
       parentElement = _ref.parentElement,
       appElement = _ref.appElement,
       onUpload = _ref.onUpload,
+      contentUploaderProps = _ref.contentUploaderProps,
       requestInterceptor = _ref.requestInterceptor,
       responseInterceptor = _ref.responseInterceptor,
       intl = _ref.intl;
-  return /*#__PURE__*/React.createElement(Modal, {
+  return React.createElement(Modal, {
     appElement: appElement,
     className: CLASS_MODAL_CONTENT_FULL_BLEED,
     contentLabel: intl.formatMessage(messages.upload),
@@ -36,7 +39,7 @@ var UploadDialog = function UploadDialog(_ref) {
       return parentElement;
     },
     portalClassName: "".concat(CLASS_MODAL, " be-modal-upload")
-  }, /*#__PURE__*/React.createElement(ContentUploader, {
+  }, React.createElement(ContentUploader, _extends({}, contentUploaderProps, {
     apiHost: apiHost,
     onClose: onClose,
     onComplete: onUpload,
@@ -47,7 +50,7 @@ var UploadDialog = function UploadDialog(_ref) {
     sharedLinkPassword: sharedLinkPassword,
     token: token,
     uploadHost: uploadHost
-  }));
+  })));
 };
 
 export default injectIntl(UploadDialog);

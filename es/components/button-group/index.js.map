@@ -1,1 +1,1 @@
-{"version":3,"sources":["../../../src/components/button-group/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,eAAxB","sourcesContent":["// @flow\nexport { default } from './ButtonGroup';\n"],"file":"index.js"}
+{"version":3,"sources":["../../../src/components/button-group/index.ts"],"names":["default"],"mappings":"AAAA,SAASA,OAAT,QAAwB,eAAxB","sourcesContent":["export { default } from './ButtonGroup';\n"],"file":"index.js"}

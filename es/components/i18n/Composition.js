@@ -1,3 +1,11 @@
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24,7 +32,9 @@ var Node = require('ilib-tree-node').default; // ES5 CommonJS module
  */
 
 
-var Composition = /*#__PURE__*/function () {
+var Composition =
+/*#__PURE__*/
+function () {
   function Composition(element) {
     _classCallCheck(this, Composition);
 
@@ -46,7 +56,7 @@ var Composition = /*#__PURE__*/function () {
               return _this.recompose(subelement);
             });
           } else if (element) {
-            if (element.type === 'Param') {
+            if (element.type === 'Param' || element.type.name === 'Param') {
               this.ma.addParam(element);
             } else {
               this.ma.push(element);
@@ -118,17 +128,22 @@ var Composition = /*#__PURE__*/function () {
       var el = node.extra;
 
       if (children.length === 0 && el && el.props) {
-        children = el.props.children;
+        var temp = el.props.temp;
+        children = temp;
       }
 
       if (children && children.length === 1 && typeof children[0] === 'string') {
-        children = children[0];
+        var _children = children;
+
+        var _children2 = _slicedToArray(_children, 1);
+
+        children = _children2[0];
       }
 
       if (el) {
-        return children && children.length ? /*#__PURE__*/React.cloneElement(el, {
+        return children && children.length ? React.cloneElement(el, {
           key: el.key || this.nextKey()
-        }, children) : /*#__PURE__*/React.cloneElement(el, {
+        }, children) : React.cloneElement(el, {
           key: el.key || this.nextKey()
         });
       }

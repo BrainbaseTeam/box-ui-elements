@@ -31,14 +31,14 @@ var DateField = function DateField(_ref) {
   var isYesterdaysDate = isYesterday(d);
 
   if (relative && (isTodaysDate || isYesterdaysDate)) {
-    var Message = /*#__PURE__*/React.createElement(FormattedMessage, messages.today);
+    var Message = React.createElement(FormattedMessage, messages.today);
 
     if (isYesterdaysDate) {
-      Message = /*#__PURE__*/React.createElement(FormattedMessage, messages.yesterday);
+      Message = React.createElement(FormattedMessage, messages.yesterday);
     }
 
     if (capitalize) {
-      return /*#__PURE__*/React.createElement("span", {
+      return React.createElement("span", {
         className: "be-date-capitalize"
       }, Message);
     }

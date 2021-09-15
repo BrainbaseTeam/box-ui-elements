@@ -5,22 +5,16 @@ function _objectWithoutProperties(source, excluded) { if (source == null) return
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
 import * as React from 'react';
-import Button from '../button';
+import Button from '../button/Button';
 
 var PrimaryButton = function PrimaryButton(_ref) {
   var children = _ref.children,
       _ref$className = _ref.className,
       className = _ref$className === void 0 ? '' : _ref$className,
-      isDisabled = _ref.isDisabled,
-      isSelected = _ref.isSelected,
-      isLoading = _ref.isLoading,
-      rest = _objectWithoutProperties(_ref, ["children", "className", "isDisabled", "isSelected", "isLoading"]);
+      rest = _objectWithoutProperties(_ref, ["children", "className"]);
 
-  return /*#__PURE__*/React.createElement(Button, _extends({
-    className: "btn-primary ".concat(className),
-    isDisabled: isDisabled,
-    isLoading: isLoading,
-    isSelected: isSelected
+  return React.createElement(Button, _extends({
+    className: "btn-primary ".concat(className)
   }, rest), children);
 };
 

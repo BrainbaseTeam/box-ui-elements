@@ -11,20 +11,20 @@ var RemoveLinkConfirmModal = function RemoveLinkConfirmModal(props) {
       onRequestClose = props.onRequestClose,
       removeLink = props.removeLink,
       submitting = props.submitting;
-  return /*#__PURE__*/React.createElement(Modal, {
+  return React.createElement(Modal, {
     focusElementSelector: ".btn-primary",
     isOpen: isOpen,
     onRequestClose: submitting ? undefined : onRequestClose,
-    title: /*#__PURE__*/React.createElement(FormattedMessage, messages.removeLinkConfirmationTitle),
+    title: React.createElement(FormattedMessage, messages.removeLinkConfirmationTitle),
     type: "alert"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.removeLinkConfirmationDescription), /*#__PURE__*/React.createElement(ModalActions, null, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(FormattedMessage, messages.removeLinkConfirmationDescription), React.createElement(ModalActions, null, React.createElement(Button, {
     isDisabled: submitting,
     onClick: onRequestClose
-  }, /*#__PURE__*/React.createElement(FormattedMessage, commonMessages.cancel)), /*#__PURE__*/React.createElement(PrimaryButton, {
+  }, React.createElement(FormattedMessage, commonMessages.cancel)), React.createElement(PrimaryButton, {
     isDisabled: submitting,
     isLoading: submitting,
     onClick: removeLink
-  }, /*#__PURE__*/React.createElement(FormattedMessage, commonMessages.okay))));
+  }, React.createElement(FormattedMessage, commonMessages.okay))));
 };
 
 RemoveLinkConfirmModal.displayName = 'RemoveLinkConfirmModal';

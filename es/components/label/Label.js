@@ -6,16 +6,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import commonMessages from '../../common/messages';
 import InfoIconWithTooltip from './InfoIconWithTooltip';
 import StandardLabel from './StandardLabel';
-import HiddenLabel from './HiddenLabel';
+import HiddenLabel from './HiddenLabel'; // @ts-ignore flow import
+
+import commonMessages from '../../common/messages';
 import './Label.scss';
 
 var OptionalFormattedMessage = function OptionalFormattedMessage() {
-  return /*#__PURE__*/React.createElement("span", {
-    className: "label-optional"
-  }, "(", /*#__PURE__*/React.createElement(FormattedMessage, commonMessages.optional), ")");
+  return React.createElement("span", {
+    className: "label-optional bdl-Label-optional"
+  }, "(", React.createElement(FormattedMessage, commonMessages.optional), ")");
 };
 
 var Label = function Label(_ref) {
@@ -26,14 +27,14 @@ var Label = function Label(_ref) {
       showOptionalText = _ref.showOptionalText,
       hideLabel = _ref.hideLabel,
       children = _ref.children;
-  var labelContent = [/*#__PURE__*/React.createElement("span", {
+  var labelContent = [React.createElement("span", {
     key: "labelText"
-  }, text), showOptionalText ? /*#__PURE__*/React.createElement(OptionalFormattedMessage, {
+  }, text), showOptionalText ? React.createElement(OptionalFormattedMessage, {
     key: "optionalMessage"
   }) : null];
 
   if (infoTooltip) {
-    labelContent.push( /*#__PURE__*/React.createElement(InfoIconWithTooltip, {
+    labelContent.push(React.createElement(InfoIconWithTooltip, {
       key: "infoTooltip",
       iconProps: _objectSpread({
         className: 'tooltip-icon'
@@ -43,12 +44,12 @@ var Label = function Label(_ref) {
   }
 
   if (hideLabel) {
-    return /*#__PURE__*/React.createElement(HiddenLabel, {
+    return React.createElement(HiddenLabel, {
       labelContent: labelContent
     }, children);
   }
 
-  return /*#__PURE__*/React.createElement(StandardLabel, {
+  return React.createElement(StandardLabel, {
     labelContent: labelContent,
     tooltip: tooltip
   }, children);

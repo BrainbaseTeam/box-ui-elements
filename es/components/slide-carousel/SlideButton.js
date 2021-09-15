@@ -14,7 +14,7 @@ var SlideButton = function SlideButton(_ref) {
       isSelected = _ref$isSelected === void 0 ? false : _ref$isSelected,
       rest = _objectWithoutProperties(_ref, ["buttonRef", "onClick", "isSelected"]);
 
-  return /*#__PURE__*/React.createElement(PlainButton, _extends({
+  return React.createElement(PlainButton, _extends({
     "aria-selected": isSelected,
     className: "slide-selector ".concat(isSelected ? 'is-selected' : ''),
     getDOMRef: buttonRef,

@@ -9,14 +9,19 @@ import RadioButton from './RadioButton';
 
 var RadioButtonField = function RadioButtonField(_ref) {
   var field = _ref.field,
-      form = _ref.form,
       value = _ref.value,
-      rest = _objectWithoutProperties(_ref, ["field", "form", "value"]);
+      rest = _objectWithoutProperties(_ref, ["field", "value"]);
+
+  if (!field) {
+    return React.createElement(RadioButton, _extends({
+      value: value
+    }, rest));
+  }
 
   var fieldValue = field.value,
       fieldRest = _objectWithoutProperties(field, ["value"]);
 
-  return /*#__PURE__*/React.createElement(RadioButton, _extends({}, fieldRest, rest, {
+  return React.createElement(RadioButton, _extends({}, fieldRest, rest, {
     value: value,
     isSelected: value === fieldValue
   }));

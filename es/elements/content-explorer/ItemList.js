@@ -18,6 +18,7 @@ import sizeCellRenderer from './sizeCellRenderer';
 import dateCellRenderer from './dateCellRenderer';
 import moreOptionsCellRenderer from './moreOptionsCellRenderer';
 import { FIELD_DATE, FIELD_ID, FIELD_NAME, FIELD_SIZE, VIEW_FOLDER, VIEW_RECENTS } from '../../constants';
+import 'react-virtualized/styles.css';
 import './ItemList.scss';
 
 var ItemList = function ItemList(_ref) {
@@ -84,7 +85,7 @@ var ItemList = function ItemList(_ref) {
     onSortChange(by, direction);
   };
 
-  return /*#__PURE__*/React.createElement(KeyBinder, {
+  return React.createElement(KeyBinder, {
     id: id,
     items: items,
     columnCount: 1,
@@ -105,10 +106,10 @@ var ItemList = function ItemList(_ref) {
     var onSectionRendered = _ref5.onSectionRendered,
         scrollToRow = _ref5.scrollToRow,
         focusOnRender = _ref5.focusOnRender;
-    return /*#__PURE__*/React.createElement(AutoSizer, null, function (_ref6) {
+    return React.createElement(AutoSizer, null, function (_ref6) {
       var width = _ref6.width,
           height = _ref6.height;
-      return /*#__PURE__*/React.createElement(Table, {
+      return React.createElement(Table, {
         width: width,
         height: height,
         headerHeight: isSmall ? 0 : 40,
@@ -140,13 +141,13 @@ var ItemList = function ItemList(_ref) {
             focus(rootElement, ".bce-item-row-".concat(scrollToRow));
           }
         }
-      }, /*#__PURE__*/React.createElement(Column, {
+      }, React.createElement(Column, {
         disableSort: true,
         dataKey: FIELD_ID,
         cellRenderer: iconCell,
         width: isSmall ? 30 : 50,
         flexShrink: 0
-      }), /*#__PURE__*/React.createElement(Column, {
+      }), React.createElement(Column, {
         disableSort: !hasSort,
         label: intl.formatMessage(messages.name),
         dataKey: FIELD_NAME,
@@ -154,7 +155,7 @@ var ItemList = function ItemList(_ref) {
         headerRenderer: headerCellRenderer,
         width: 300,
         flexGrow: 1
-      }), isSmall ? null : /*#__PURE__*/React.createElement(Column, {
+      }), isSmall ? null : React.createElement(Column, {
         className: "bce-item-coloumn",
         disableSort: !hasSort,
         label: isRecents ? intl.formatMessage(messages.interacted) : intl.formatMessage(messages.modified),
@@ -163,7 +164,7 @@ var ItemList = function ItemList(_ref) {
         headerRenderer: headerCellRenderer,
         width: isRecents ? 120 : 300,
         flexGrow: 1
-      }), isSmall || isMedium ? null : /*#__PURE__*/React.createElement(Column, {
+      }), isSmall || isMedium ? null : React.createElement(Column, {
         className: "bce-item-coloumn",
         disableSort: !hasSort,
         label: intl.formatMessage(messages.size),
@@ -172,7 +173,7 @@ var ItemList = function ItemList(_ref) {
         headerRenderer: headerCellRenderer,
         width: 80,
         flexShrink: 0
-      }), /*#__PURE__*/React.createElement(Column, {
+      }), React.createElement(Column, {
         disableSort: true,
         dataKey: FIELD_ID,
         cellRenderer: moreOptionsCell,

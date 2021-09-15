@@ -11,15 +11,15 @@ import { ACTIVITY_TARGETS } from '../../../common/interactionTargets';
 
 var CommentInputControls = function CommentInputControls(_ref) {
   var onCancel = _ref.onCancel;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "bcs-CommentFormControls"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     "data-resin-target": ACTIVITY_TARGETS.APPROVAL_FORM_CANCEL,
     onClick: onCancel,
     type: "button"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.commentCancel)), /*#__PURE__*/React.createElement(PrimaryButton, {
+  }, React.createElement(FormattedMessage, messages.commentCancel)), React.createElement(PrimaryButton, {
     "data-resin-target": ACTIVITY_TARGETS.APPROVAL_FORM_POST
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.commentPost)));
+  }, React.createElement(FormattedMessage, messages.commentPost)));
 };
 
 export default CommentInputControls;

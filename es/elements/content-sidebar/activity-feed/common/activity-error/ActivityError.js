@@ -18,10 +18,10 @@ var ActivityError = function ActivityError(_ref) {
       className = _ref.className,
       rest = _objectWithoutProperties(_ref, ["action", "message", "title", "className"]);
 
-  return /*#__PURE__*/React.createElement(InlineError, {
+  return React.createElement(InlineError, {
     className: classnames('bcs-ActivityError', className),
-    title: /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, title, rest))
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(FormattedMessage, message)), action ? /*#__PURE__*/React.createElement(PlainButton, {
+    title: React.createElement(FormattedMessage, _extends({}, title, rest))
+  }, React.createElement("div", null, React.createElement(FormattedMessage, message)), action ? React.createElement(PlainButton, {
     className: "bcs-ActivityError-action lnk",
     onClick: action.onAction,
     type: "button"

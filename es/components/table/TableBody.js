@@ -5,7 +5,7 @@ var TableBody = function TableBody(_ref) {
   var children = _ref.children,
       _ref$className = _ref.className,
       className = _ref$className === void 0 ? '' : _ref$className;
-  return /*#__PURE__*/React.createElement("tbody", {
+  return React.createElement("tbody", {
     className: classNames('table-body', className)
   }, children);
 };

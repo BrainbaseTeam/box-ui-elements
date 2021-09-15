@@ -20,25 +20,26 @@ var ItemListButton = function ItemListButton(_ref) {
       name = _ref.name;
 
   if (contentExplorerMode === ContentExplorerModes.MULTI_SELECT) {
-    return /*#__PURE__*/React.createElement(Checkbox, {
+    return React.createElement(Checkbox, {
       hideLabel: true,
       isChecked: !isDisabled && isSelected,
       isDisabled: isDisabled,
-      label: /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.selectItem, {
+      label: React.createElement(FormattedMessage, _extends({}, messages.selectItem, {
         values: {
           name: name
         }
       })),
       name: "item",
+      readOnly: true,
       value: id
     });
   }
 
-  return /*#__PURE__*/React.createElement(RadioButton, {
+  return React.createElement(RadioButton, {
     hideLabel: true,
     isDisabled: isDisabled,
     isSelected: !isDisabled && isSelected,
-    label: /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.selectItem, {
+    label: React.createElement(FormattedMessage, _extends({}, messages.selectItem, {
       values: {
         name: name
       }

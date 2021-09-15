@@ -4,21 +4,25 @@ import classNames from 'classnames';
 import noop from 'lodash/noop';
 import { FormattedMessage } from 'react-intl';
 import TetherComponent from 'react-tether';
+import Trash16 from '../../../../icon/line/Trash16';
+import Pencil16 from '../../../../icon/line/Pencil16';
 import Avatar from '../Avatar';
 import Media from '../../../../components/media';
 import { MenuItem } from '../../../../components/menu';
-import IconTrash from '../../../../icons/general/IconTrash';
-import IconPencil from '../../../../icons/general/IconPencil';
 import { ACTIVITY_TARGETS } from '../../../common/interactionTargets';
 import DeleteConfirmation from '../common/delete-confirmation';
 import ActivityTimestamp from '../common/activity-timestamp';
 import UserLink from '../common/user-link';
+import ActivityCard from '../ActivityCard';
 import ActivityError from '../common/activity-error';
 import ActivityMessage from '../common/activity-message';
 import CommentForm from '../comment-form';
-import { bdlGray80 } from '../../../../styles/variables';
 import { PLACEHOLDER_USER } from '../../../../constants';
 import messages from './messages';
+import type { GetAvatarUrlCallback, GetProfileUrlCallback } from '../../../common/flowTypes';
+import type { Translations } from '../../flowTypes';
+import type { SelectorItems, User } from '../../../../common/types/core';
+import type { BoxCommentPermission, ActionItemError } from '../../../../common/types/feed';
 import './Comment.scss';
 
 type Props = {
@@ -32,7 +36,7 @@ type Props = {
     id: string,
     isDisabled?: boolean,
     isPending?: boolean,
-    mentionSelectorContacts?: SelectorItems,
+    mentionSelectorContacts?: SelectorItems<>,
     modified_at?: string | number,
     onDelete: ({ id: string, permissions?: BoxCommentPermission }) => any,
     onEdit: (id: string, text: string, hasMention: boolean, permissions?: BoxCommentPermission) => any,
@@ -116,7 +120,7 @@ class Comment extends React.Component<Props, State> {
         const isMenuVisible = (canDelete || canEdit) && !isPending;
 
         return (
-            <div className="bcs-Comment">
+            <ActivityCard className="bcs-Comment">
                 <Media
                     className={classNames('bcs-Comment-media', {
                         'bcs-is-pending': isPending || error,
@@ -146,7 +150,7 @@ class Comment extends React.Component<Props, State> {
                                             data-testid="edit-comment"
                                             onClick={this.handleEditClick}
                                         >
-                                            <IconPencil color={bdlGray80} />
+                                            <Pencil16 />
                                             <FormattedMessage {...messages.commentEditMenuItem} />
                                         </MenuItem>
                                     )}
@@ -156,7 +160,7 @@ class Comment extends React.Component<Props, State> {
                                             data-testid="delete-comment"
                                             onClick={this.handleDeleteClick}
                                         >
-                                            <IconTrash color={bdlGray80} />
+                                            <Trash16 />
                                             <FormattedMessage {...messages.commentDeleteMenuItem} />
                                         </MenuItem>
                                     )}
@@ -191,6 +195,7 @@ class Comment extends React.Component<Props, State> {
                                 })}
                                 updateComment={this.handleUpdate}
                                 isOpen={isInputOpen}
+                                // $FlowFixMe
                                 user={currentUser}
                                 onCancel={this.commentFormCancelHandler}
                                 onFocus={this.commentFormFocusHandler}
@@ -213,8 +218,9 @@ class Comment extends React.Component<Props, State> {
                         )}
                     </Media.Body>
                 </Media>
+                {/* $FlowFixMe */}
                 {error ? <ActivityError {...error} /> : null}
-            </div>
+            </ActivityCard>
         );
     }
 }

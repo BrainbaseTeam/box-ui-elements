@@ -40,14 +40,14 @@ var Content = function Content(_ref) {
       onShareAccessChange = _ref.onShareAccessChange,
       onFocusChange = _ref.onFocusChange,
       extensionsWhitelist = _ref.extensionsWhitelist;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "bcp-content"
-  }, view === VIEW_ERROR || view === VIEW_SELECTED ? null : /*#__PURE__*/React.createElement(ProgressBar, {
+  }, view === VIEW_ERROR || view === VIEW_SELECTED ? null : React.createElement(ProgressBar, {
     percent: currentCollection.percentLoaded
-  }), isEmpty(view, currentCollection) ? /*#__PURE__*/React.createElement(EmptyState, {
+  }), isEmpty(view, currentCollection) ? React.createElement(EmptyState, {
     view: view,
     isLoading: currentCollection.percentLoaded !== 100
-  }) : /*#__PURE__*/React.createElement(ItemList, {
+  }) : React.createElement(ItemList, {
     view: view,
     rootId: rootId,
     isSmall: isSmall,

@@ -21,7 +21,7 @@ function withInfiniteLoader(WrappedComponent) {
         threshold = _ref$infiniteLoaderPr.threshold,
         rest = _objectWithoutProperties(_ref, ["infiniteLoaderProps"]);
 
-    return /*#__PURE__*/React.createElement(InfiniteLoader, {
+    return React.createElement(InfiniteLoader, {
       isRowLoaded: isRowLoaded,
       loadMoreRows: loadMoreRows,
       minimumBatchSize: minimumBatchSize,
@@ -30,7 +30,7 @@ function withInfiniteLoader(WrappedComponent) {
     }, function (_ref2) {
       var onRowsRendered = _ref2.onRowsRendered,
           registerChild = _ref2.registerChild;
-      return /*#__PURE__*/React.createElement(WrappedComponent, _extends({}, rest, {
+      return React.createElement(WrappedComponent, _extends({}, rest, {
         ref: registerChild,
         onRowsRendered: onRowsRendered
       }));

@@ -16,9 +16,9 @@ export default (function (canPreview, canShare, canDownload, canDelete, canRenam
         picked = _rowData$picked === void 0 ? false : _rowData$picked,
         permissions = rowData.permissions;
     var allowDownload = permissions[PERMISSION_CAN_DOWNLOAD];
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "bce-item-coloumn-moreoptions-wrapper"
-    }, /*#__PURE__*/React.createElement(MoreOptions, {
+    }, React.createElement(MoreOptions, {
       canPreview: canPreview,
       canShare: canShare,
       canDownload: canDownload,
@@ -37,7 +37,7 @@ export default (function (canPreview, canShare, canDownload, canDelete, canRenam
       onItemRemoveThumbnail: onItemRemoveThumbnail,
       isSmall: isSmall,
       item: rowData
-    }), allowDownload && /*#__PURE__*/React.createElement(Checkbox, {
+    }), allowDownload && React.createElement(Checkbox, {
       hideLabel: true,
       label: name,
       name: name,

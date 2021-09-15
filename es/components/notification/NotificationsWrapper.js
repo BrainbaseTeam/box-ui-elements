@@ -4,10 +4,10 @@ import Portal from '../portal';
 
 var NotificationsWrapper = function NotificationsWrapper(_ref) {
   var children = _ref.children;
-  return /*#__PURE__*/React.createElement(Portal, {
+  return React.createElement(Portal, {
     className: "notifications-wrapper",
     "aria-live": "polite"
-  }, children ? /*#__PURE__*/React.createElement(FocusTrap, null, children) : null);
+  }, children ? React.createElement(FocusTrap, null, children) : null);
 };
 
 export default NotificationsWrapper;

@@ -26,7 +26,7 @@ var LinkBase = function LinkBase(_ref) {
 
   var ref = _defineProperty({}, refProp || 'ref', linkRef);
 
-  return /*#__PURE__*/React.createElement(LinkComponent, _extends({
+  return React.createElement(LinkComponent, _extends({
     href: href,
     rel: linkRel,
     target: target

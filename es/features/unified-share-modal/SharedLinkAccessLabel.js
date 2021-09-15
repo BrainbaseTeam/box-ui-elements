@@ -24,15 +24,15 @@ var SharedLinkAccessLabel = function SharedLinkAccessLabel(_ref) {
     return null;
   }
 
-  return hasDescription ? /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages[messageName], {
+  return hasDescription ? React.createElement("span", null, React.createElement("strong", null, React.createElement(FormattedMessage, _extends({}, messages[messageName], {
     values: {
       enterpriseName: enterpriseName
     }
-  }))), /*#__PURE__*/React.createElement(SharedLinkAccessDescription, {
+  }))), React.createElement(SharedLinkAccessDescription, {
     accessLevel: accessLevel,
     enterpriseName: enterpriseName,
     itemType: itemType
-  })) : /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages[messageName], {
+  })) : React.createElement(FormattedMessage, _extends({}, messages[messageName], {
     values: {
       enterpriseName: enterpriseName
     }

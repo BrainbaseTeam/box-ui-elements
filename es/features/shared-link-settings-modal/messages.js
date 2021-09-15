@@ -2,7 +2,7 @@ import { defineMessages } from 'react-intl';
 var messages = defineMessages({
   allowDownloadLabel: {
     "id": "boxui.share.sharedLinkSettings.allowDownloadLabel",
-    "defaultMessage": "Allow users with the Shared Link to download this item"
+    "defaultMessage": "Allow users with the shared link to download this item"
   },
   allowDownloadTitle: {
     "id": "boxui.share.sharedLinkSettings.allowDownloadTitle",
@@ -14,7 +14,11 @@ var messages = defineMessages({
   },
   directDownloadBlockedByAccessPolicyWithClassification: {
     "id": "boxui.share.sharedLinkSettings.directDownloadBlockedByAccessPolicyWithClassification",
-    "defaultMessage": "Download has been disabled for content due to the classification"
+    "defaultMessage": "Download has been disabled for content due to the classification."
+  },
+  directDownloadBlockedByMaliciousContent: {
+    "id": "boxui.share.sharedLinkSettings.directDownloadBlockedByMaliciousContent",
+    "defaultMessage": "Download for this content has been disabled due to a security policy."
   },
   directDownloadBlockedByAccessPolicyWithoutClassification: {
     "id": "boxui.share.sharedLinkSettings.directDownloadBlockedByAccessPolicyWithoutClassification",

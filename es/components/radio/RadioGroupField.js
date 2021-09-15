@@ -9,13 +9,15 @@ import RadioGroupPrimitive from './RadioGroup';
 
 var RadioGroupField = function RadioGroupField(_ref) {
   var field = _ref.field,
-      form = _ref.form,
-      rest = _objectWithoutProperties(_ref, ["field", "form"]);
+      rest = _objectWithoutProperties(_ref, ["field"]);
 
-  var value = field.value;
-  return /*#__PURE__*/React.createElement(RadioGroupPrimitive, _extends({
-    key: value
-  }, field, rest));
+  if (!field) {
+    return React.createElement(RadioGroupPrimitive, _extends({
+      value: ""
+    }, rest));
+  }
+
+  return React.createElement(RadioGroupPrimitive, _extends({}, field, rest));
 };
 
 export default RadioGroupField;

@@ -19,15 +19,15 @@ var AsyncLoad = function AsyncLoad() {
     }, DEFAULT_NUM_TIMES, DEFAULT_INITIAL_DELAY, DEFAULT_BACKOFF_FACTOR);
   };
 
-  var LazyComponent = /*#__PURE__*/React.lazy(function () {
+  var LazyComponent = React.lazy(function () {
     return loader().catch(lazyRetry);
   });
-  return /*#__PURE__*/React.forwardRef(function (props, ref) {
-    return /*#__PURE__*/React.createElement(AsyncError, {
+  return React.forwardRef(function (props, ref) {
+    return React.createElement(AsyncError, {
       component: errorComponent
-    }, /*#__PURE__*/React.createElement(React.Suspense, {
+    }, React.createElement(React.Suspense, {
       fallback: fallback || null
-    }, /*#__PURE__*/React.createElement(LazyComponent, _extends({
+    }, React.createElement(LazyComponent, _extends({
       ref: ref
     }, props))));
   });

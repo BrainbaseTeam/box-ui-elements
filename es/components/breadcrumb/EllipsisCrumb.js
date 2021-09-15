@@ -5,9 +5,9 @@ import PlainButton from '../plain-button';
 
 var EllipsisCrumb = function EllipsisCrumb(_ref) {
   var children = _ref.children;
-  return /*#__PURE__*/React.createElement(DropdownMenu, null, /*#__PURE__*/React.createElement(PlainButton, {
+  return React.createElement(DropdownMenu, null, React.createElement(PlainButton, {
     className: "breadcrumb-toggler"
-  }, "\u22EF"), /*#__PURE__*/React.createElement(Menu, null, children));
+  }, "\u22EF"), React.createElement(Menu, null, children));
 };
 
 export default EllipsisCrumb;

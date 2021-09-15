@@ -17,6 +17,7 @@ import LoadingIndicatorWrapper from '../../components/loading-indicator/LoadingI
 import getFileSize from '../../utils/getFileSize';
 import { INTERACTION_TARGET, DETAILS_TARGETS } from '../common/interactionTargets';
 import withErrorHandling from './withErrorHandling';
+import { PLACEHOLDER_USER } from '../../constants';
 
 var SidebarFileProperties = function SidebarFileProperties(_ref) {
   var file = _ref.file,
@@ -26,20 +27,21 @@ var SidebarFileProperties = function SidebarFileProperties(_ref) {
       onRetentionPolicyExtendClick = _ref.onRetentionPolicyExtendClick,
       isLoading = _ref.isLoading,
       intl = _ref.intl;
-  return /*#__PURE__*/React.createElement(LoadingIndicatorWrapper, {
+  return React.createElement(LoadingIndicatorWrapper, {
     isLoading: isLoading
-  }, /*#__PURE__*/React.createElement(ItemProperties, {
+  }, React.createElement(ItemProperties, {
     createdAt: file.content_created_at,
     description: file.description,
     descriptionTextareaProps: _defineProperty({}, INTERACTION_TARGET, DETAILS_TARGETS.DESCRIPTION),
     modifiedAt: file.content_modified_at,
     onDescriptionChange: getProp(file, 'permissions.can_rename') ? onDescriptionChange : undefined,
     owner: getProp(file, 'owned_by.name'),
-    retentionPolicyProps: hasRetentionPolicy ? _objectSpread(_objectSpread({}, retentionPolicy), {}, {
+    retentionPolicyProps: hasRetentionPolicy ? _objectSpread({}, retentionPolicy, {
       openModal: onRetentionPolicyExtendClick
     }) : {},
-    size: getFileSize(file.size, intl.locale),
-    uploader: getProp(file, 'created_by.name')
+    size: getFileSize(file.size, intl.locale) // use uploader_display_name if uploaded anonymously
+    ,
+    uploader: getProp(file, 'created_by.id') === PLACEHOLDER_USER.id ? getProp(file, 'uploader_display_name') : getProp(file, 'created_by.name')
   }));
 };
 

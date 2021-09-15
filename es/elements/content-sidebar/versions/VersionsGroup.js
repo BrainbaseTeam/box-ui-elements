@@ -15,11 +15,11 @@ var VersionsGroup = function VersionsGroup(_ref) {
   var heading = _ref.heading,
       rest = _objectWithoutProperties(_ref, ["heading"]);
 
-  return /*#__PURE__*/React.createElement("section", {
+  return React.createElement("section", {
     className: "bcs-VersionsGroup"
-  }, /*#__PURE__*/React.createElement("h1", {
+  }, React.createElement("h4", {
     className: "bcs-VersionsGroup-heading"
-  }, heading), /*#__PURE__*/React.createElement(VersionsList, rest));
+  }, heading), React.createElement(VersionsList, rest));
 };
 
 export default VersionsGroup;

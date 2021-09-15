@@ -13,9 +13,8 @@ var Internationalize = function Internationalize(_ref) {
   var shouldInternationalize = !!language && !!messages;
 
   if (shouldInternationalize) {
-    var locale = language && language.substr(0, language.indexOf('-'));
-    return /*#__PURE__*/React.createElement(IntlProvider, {
-      locale: locale,
+    return React.createElement(IntlProvider, {
+      locale: language,
       messages: messages
     }, children);
   }

@@ -151,17 +151,17 @@ var Condition = function Condition(_ref) {
         break;
     }
 
-    return messageText && /*#__PURE__*/React.createElement(FormattedMessage, messageText);
+    return messageText && React.createElement(FormattedMessage, messageText);
   };
 
   var renderDeleteButton = function renderDeleteButton() {
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "condition-delete-button"
-    }, /*#__PURE__*/React.createElement("button", {
+    }, React.createElement("button", {
       className: "delete-button",
       onClick: onDeleteButtonClick,
       type: "button"
-    }, /*#__PURE__*/React.createElement(IconClose, {
+    }, React.createElement(IconClose, {
       width: deleteButtonIconWidth,
       height: deleteButtonIconHeight,
       color: "#999EA4"
@@ -175,11 +175,11 @@ var Condition = function Condition(_ref) {
         value: connector
       };
     });
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "condition-connector"
-    }, index === 0 ? /*#__PURE__*/React.createElement("p", {
+    }, index === 0 ? React.createElement("p", {
       className: "condition-connector-text"
-    }, /*#__PURE__*/React.createElement(FormattedMessage, messages.connectorWhereText)) : /*#__PURE__*/React.createElement(SingleSelectField, {
+    }, React.createElement(FormattedMessage, messages.connectorWhereText)) : React.createElement(SingleSelectField, {
       isDisabled: false,
       onChange: onConnectorChange,
       options: connectorOptions,
@@ -199,15 +199,15 @@ var Condition = function Condition(_ref) {
         value: id
       };
     });
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "condition-column-dropdown-container"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "filter-dropdown-single-select-field-container"
-    }, /*#__PURE__*/React.createElement(SingleSelectField, {
+    }, React.createElement(SingleSelectField, {
       fieldType: COLUMN,
       isDisabled: false,
       onChange: handleColumnChange,
-      options: columnOptions,
+      options: columnOptions || [],
       selectedValue: columnId
     })));
   };
@@ -223,11 +223,11 @@ var Condition = function Condition(_ref) {
         value: key
       };
     });
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "condition-operator-dropdown-container"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "filter-dropdown-single-select-field-container"
-    }, /*#__PURE__*/React.createElement(SingleSelectField, {
+    }, React.createElement(SingleSelectField, {
       fieldType: OPERATOR,
       isDisabled: false,
       onChange: handleOperatorChange,
@@ -250,9 +250,9 @@ var Condition = function Condition(_ref) {
     var classnames = classNames('condition-value-dropdown-container', {
       'show-error': error
     });
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: classnames
-    }, /*#__PURE__*/React.createElement(ValueField, {
+    }, React.createElement(ValueField, {
       onChange: handleValueChange,
       selectedValues: condition.values,
       valueOptions: valueOptions,
@@ -262,16 +262,16 @@ var Condition = function Condition(_ref) {
 
   var renderErrorIcon = function renderErrorIcon() {
     var error = getErrorMessage();
-    return error && /*#__PURE__*/React.createElement("div", {
+    return error && React.createElement("div", {
       className: "condition-error-icon-status"
-    }, /*#__PURE__*/React.createElement(Tooltip, {
+    }, React.createElement(Tooltip, {
       text: error || '',
       position: "middle-right",
       theme: "error"
-    }, /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement(IconAlertDefault, null))));
+    }, React.createElement("span", null, React.createElement(IconAlertDefault, null))));
   };
 
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "condition-container"
   }, renderDeleteButton(), renderConnectorField(), renderColumnField(), renderOperatorField(), renderValueField(), renderErrorIcon());
 };

@@ -12,9 +12,9 @@ function withFeatureProvider(WrappedComponent) {
     var features = _ref.features,
         props = _objectWithoutProperties(_ref, ["features"]);
 
-    return /*#__PURE__*/React.createElement(FeatureProvider, {
+    return React.createElement(FeatureProvider, {
       features: features
-    }, /*#__PURE__*/React.createElement(WrappedComponent, _extends({}, props, {
+    }, React.createElement(WrappedComponent, _extends({}, props, {
       ref: ref
     })));
   }
@@ -22,7 +22,7 @@ function withFeatureProvider(WrappedComponent) {
   var wrappedName = WrappedComponent.displayName || WrappedComponent.name || 'component';
   wrapComponent.displayName = "withFeatureProvider(".concat(wrappedName, ")"); // $FlowFixMe forwardRef not supported until Flow 0.89.0
 
-  return /*#__PURE__*/React.forwardRef(wrapComponent);
+  return React.forwardRef(wrapComponent);
 }
 
 export default withFeatureProvider;

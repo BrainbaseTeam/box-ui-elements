@@ -11,23 +11,23 @@ var IconExpiration = function IconExpiration(_ref) {
       title = _ref.title,
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 14 : _ref$width;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: "icon-expiration ".concat(className),
     height: height,
     title: title,
     viewBox: "0 0 14 15",
     width: width
-  }, /*#__PURE__*/React.createElement("g", {
+  }, React.createElement("g", {
     fill: "none",
     fillRule: "evenodd",
     transform: "translate(0 -1)"
-  }, /*#__PURE__*/React.createElement("circle", {
+  }, React.createElement("circle", {
     className: "stroke-color",
     cx: "7.16",
     cy: "9.5",
     r: "5.5",
     stroke: color
-  }), /*#__PURE__*/React.createElement("rect", {
+  }), React.createElement("rect", {
     className: "fill-color",
     fill: color,
     height: "5",
@@ -35,7 +35,7 @@ var IconExpiration = function IconExpiration(_ref) {
     width: "1",
     x: "6.66",
     y: "6"
-  }), /*#__PURE__*/React.createElement("rect", {
+  }), React.createElement("rect", {
     className: "fill-color",
     fill: color,
     height: "1",
@@ -43,7 +43,7 @@ var IconExpiration = function IconExpiration(_ref) {
     width: "3",
     x: "6.66",
     y: "10"
-  }), /*#__PURE__*/React.createElement("rect", {
+  }), React.createElement("rect", {
     className: "fill-color",
     fill: color,
     height: "1",
@@ -52,7 +52,7 @@ var IconExpiration = function IconExpiration(_ref) {
     width: "5",
     x: "8.66",
     y: "2"
-  }), /*#__PURE__*/React.createElement("rect", {
+  }), React.createElement("rect", {
     className: "fill-color",
     fill: color,
     height: "1",

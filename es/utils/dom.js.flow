@@ -3,7 +3,9 @@
  * @file File for some simple dom utilities
  * @author Box
  */
+import * as React from 'react';
 import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed';
+
 import { KEYS, OVERLAY_WRAPPER_CLASS } from '../constants';
 import './domPolyfill';
 
@@ -51,7 +53,9 @@ export function isFocusableElement(element: HTMLElement | EventTarget | null): b
 
     const isButton =
         element.classList.contains('btn-content') ||
-        (element.parentElement instanceof HTMLElement ? element.parentElement.classList.contains('btn') : false);
+        (element.parentElement instanceof HTMLElement && element.parentElement.classList.contains('btn')) ||
+        (element.parentElement instanceof HTMLElement && element.parentElement.classList.contains('bdl-Button')) ||
+        false;
 
     return isInputElement(element) || tag === 'button' || tag === 'a' || tag === 'option' || isCheckbox || isButton;
 }
@@ -119,4 +123,32 @@ export function scrollIntoView(itemEl: ?HTMLElement, options?: Object = {}): voi
             ...options,
         });
     }
+}
+
+/**
+ *
+ * A React hook that tells you if an element (passed in as a ref) has content that overflows its container,
+ * i.e., if the text is wider than the box around it.
+ *
+ * @param {{ current: null | HTMLElement }} contentRef
+ * @return {boolean}
+ */
+export function useIsContentOverflowed(contentRef: { current: null | HTMLElement }): boolean {
+    const [isContentOverflowed, setIsContentOverflowed] = React.useState<boolean>(false);
+
+    // This function should be set as the ref prop for the measured component.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    React.useLayoutEffect(() => {
+        const { current } = contentRef;
+        if (!current) {
+            return;
+        }
+        const { offsetWidth, scrollWidth } = current;
+        const willOverflow = offsetWidth < scrollWidth;
+        if (willOverflow !== isContentOverflowed) {
+            setIsContentOverflowed(willOverflow);
+        }
+    });
+
+    return isContentOverflowed;
 }

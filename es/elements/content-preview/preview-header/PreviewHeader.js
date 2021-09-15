@@ -32,6 +32,7 @@ var LoadableContentOpenWith = AsyncLoad({
 var PreviewHeader = function PreviewHeader(_ref) {
   var canAnnotate = _ref.canAnnotate,
       canDownload = _ref.canDownload,
+      canPrint = _ref.canPrint,
       _ref$contentOpenWithP = _ref.contentOpenWithProps,
       contentOpenWithProps = _ref$contentOpenWithP === void 0 ? {} : _ref$contentOpenWithP,
       file = _ref.file,
@@ -53,67 +54,67 @@ var PreviewHeader = function PreviewHeader(_ref) {
   var downloadMsg = intl.formatMessage(messages.download);
   var drawMsg = intl.formatMessage(messages.drawAnnotation);
   var pointMsg = intl.formatMessage(messages.pointAnnotation);
-  return /*#__PURE__*/React.createElement("header", {
+  return React.createElement("header", {
     className: classNames('bcpr-PreviewHeader', {
       'bcpr-PreviewHeader--basic': !isPreviewingCurrentVersion
     })
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "bcpr-PreviewHeader-content bp-header bp-base-header"
-  }, logoUrl ? /*#__PURE__*/React.createElement(Logo, {
+  }, logoUrl ? React.createElement(Logo, {
     url: logoUrl
-  }) : /*#__PURE__*/React.createElement(FileInfo, {
+  }) : React.createElement(FileInfo, {
     file: file,
     version: selectedVersion
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "bcpr-PreviewHeader-controls"
-  }, isPreviewingCurrentVersion && /*#__PURE__*/React.createElement(React.Fragment, null, shouldRenderOpenWith && /*#__PURE__*/React.createElement(LoadableContentOpenWith, _extends({
+  }, isPreviewingCurrentVersion && React.createElement(React.Fragment, null, shouldRenderOpenWith && React.createElement(LoadableContentOpenWith, _extends({
     className: "bcpr-bcow-btn",
     fileId: fileId,
     token: token
-  }, contentOpenWithProps)), canAnnotate && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PlainButton, {
+  }, contentOpenWithProps)), canAnnotate && React.createElement(React.Fragment, null, React.createElement(PlainButton, {
     "aria-label": drawMsg,
     className: "bcpr-PreviewHeader-button bp-btn-annotate-draw bp-is-hidden",
     title: drawMsg,
     type: "button"
-  }, /*#__PURE__*/React.createElement(IconDrawAnnotationMode, {
+  }, React.createElement(IconDrawAnnotationMode, {
     color: bdlGray50,
     height: 18,
     width: 18
-  })), /*#__PURE__*/React.createElement(PlainButton, {
+  })), React.createElement(PlainButton, {
     "aria-label": pointMsg,
     className: "bcpr-PreviewHeader-button bp-btn-annotate-point bp-is-hidden",
     title: pointMsg,
     type: "button"
-  }, /*#__PURE__*/React.createElement(IconPointAnnotation, {
+  }, React.createElement(IconPointAnnotation, {
     color: bdlGray50,
     height: 18,
     width: 18
-  }))), canDownload && /*#__PURE__*/React.createElement(PlainButton, {
+  }))), canPrint && React.createElement(PlainButton, {
     "aria-label": printMsg,
     className: "bcpr-PreviewHeader-button",
     onClick: onPrint,
     title: printMsg,
     type: "button"
-  }, /*#__PURE__*/React.createElement(IconPrint, {
+  }, React.createElement(IconPrint, {
     color: bdlGray50,
     height: 22,
     width: 22
-  })), canDownload && /*#__PURE__*/React.createElement(PlainButton, {
+  })), canDownload && React.createElement(PlainButton, {
     "aria-label": downloadMsg,
     className: "bcpr-PreviewHeader-button",
     onClick: onDownload,
     title: downloadMsg,
     type: "button"
-  }, /*#__PURE__*/React.createElement(IconDownload, {
+  }, React.createElement(IconDownload, {
     color: bdlGray50,
     height: 18,
     width: 18
-  }))), onClose && /*#__PURE__*/React.createElement(PlainButton, {
+  }))), onClose && React.createElement(PlainButton, {
     "aria-label": isPreviewingCurrentVersion && closeMsg,
     className: "bcpr-PreviewHeader-button bcpr-PreviewHeader-button-close",
     onClick: onClose,
     type: "button"
-  }, isPreviewingCurrentVersion ? /*#__PURE__*/React.createElement(IconClose, {
+  }, isPreviewingCurrentVersion ? React.createElement(IconClose, {
     color: bdlGray50,
     height: 24,
     width: 24

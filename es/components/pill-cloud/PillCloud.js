@@ -12,19 +12,20 @@ var PillCloud = function PillCloud(_ref) {
       selectedOptions = _ref$selectedOptions === void 0 ? [] : _ref$selectedOptions,
       _ref$buttonProps = _ref.buttonProps,
       buttonProps = _ref$buttonProps === void 0 ? {} : _ref$buttonProps;
-  return /*#__PURE__*/React.createElement("div", {
-    className: "pill-cloud-container"
+  return React.createElement("div", {
+    className: "bdl-PillCloud pill-cloud-container"
   }, options && options.map(function (option) {
-    return /*#__PURE__*/React.createElement(Button, _extends({
+    return React.createElement(Button, _extends({
       key: option.value,
-      className: classNames('pill', 'pill-cloud-button', {
+      className: classNames('bdl-Pill', 'bdl-PillCloud-button', 'pill', 'pill-cloud-button', {
         'is-selected': selectedOptions.find(function (op) {
           return isEqual(op, option);
         })
       }),
       onClick: onSelect ? function () {
         return onSelect(option);
-      } : undefined
+      } : undefined,
+      "data-resin-target": option.value
     }, buttonProps), option.displayText);
   }));
 };

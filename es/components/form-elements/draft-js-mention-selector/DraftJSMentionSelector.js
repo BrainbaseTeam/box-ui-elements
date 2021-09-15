@@ -6,19 +6,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -29,6 +25,7 @@ import DraftJSMentionSelectorCore from './DraftJSMentionSelectorCore';
 import DraftMentionItem from './DraftMentionItem';
 import FormInput from '../form/FormInput';
 import * as messages from '../input-messages';
+
 /**
  * Scans a Draft ContentBlock for entity ranges, so they can be annotated
  * @see docs at {@link https://draftjs.org/docs/advanced-topics-decorators.html#compositedecorator}
@@ -36,7 +33,6 @@ import * as messages from '../input-messages';
  * @param {function} callback
  * @param {ContentState} contentState
  */
-
 var mentionStrategy = function mentionStrategy(contentBlock, callback, contentState) {
   contentBlock.findEntityRanges(function (character) {
     var entityKey = character.getEntity();
@@ -45,17 +41,17 @@ var mentionStrategy = function mentionStrategy(contentBlock, callback, contentSt
   }, callback);
 };
 
-var DraftJSMentionSelector = /*#__PURE__*/function (_React$Component) {
+var DraftJSMentionSelector =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(DraftJSMentionSelector, _React$Component);
-
-  var _super = _createSuper(DraftJSMentionSelector);
 
   function DraftJSMentionSelector(props) {
     var _this;
 
     _classCallCheck(this, DraftJSMentionSelector);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(DraftJSMentionSelector).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "handleBlur", function (event) {
       if (_this.props.validateOnBlur && _this.containerEl && event.relatedTarget instanceof Node && !_this.containerEl.contains(event.relatedTarget)) {
@@ -228,11 +224,13 @@ var DraftJSMentionSelector = /*#__PURE__*/function (_React$Component) {
       var _this$props2 = this.props,
           _this$props2$classNam = _this$props2.className,
           className = _this$props2$classNam === void 0 ? '' : _this$props2$classNam,
+          contactsLoaded = _this$props2.contactsLoaded,
           externalEditorState = _this$props2.editorState,
           hideLabel = _this$props2.hideLabel,
           isDisabled = _this$props2.isDisabled,
           isRequired = _this$props2.isRequired,
           label = _this$props2.label,
+          description = _this$props2.description,
           mentionTriggers = _this$props2.mentionTriggers,
           name = _this$props2.name,
           onMention = _this$props2.onMention,
@@ -248,22 +246,24 @@ var DraftJSMentionSelector = /*#__PURE__*/function (_React$Component) {
           handleChange = this.handleChange,
           handleFocus = this.handleFocus;
       var editorState = internalEditorState || externalEditorState;
-      return /*#__PURE__*/React.createElement("div", {
+      return React.createElement("div", {
         ref: function ref(containerEl) {
           _this2.containerEl = containerEl;
         },
         className: className
-      }, /*#__PURE__*/React.createElement(FormInput, {
+      }, React.createElement(FormInput, {
         name: name,
         onValidityStateUpdate: this.handleValidityStateUpdateHandler
-      }, /*#__PURE__*/React.createElement(DraftJSMentionSelectorCore, {
+      }, React.createElement(DraftJSMentionSelectorCore, {
         contacts: contacts,
+        contactsLoaded: contactsLoaded,
         editorState: editorState,
         error: error,
         hideLabel: hideLabel,
         isDisabled: isDisabled,
         isRequired: isRequired,
         label: label,
+        description: description,
         mentionTriggers: mentionTriggers,
         onBlur: handleBlur,
         onChange: handleChange,

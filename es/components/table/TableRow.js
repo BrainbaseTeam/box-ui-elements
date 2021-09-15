@@ -14,7 +14,7 @@ var TableRow = function TableRow(_ref) {
       rowRef = _ref.rowRef,
       rest = _objectWithoutProperties(_ref, ["children", "className", "rowRef"]);
 
-  return /*#__PURE__*/React.createElement("tr", _extends({
+  return React.createElement("tr", _extends({
     ref: rowRef,
     className: classNames('table-row', className)
   }, rest), children);

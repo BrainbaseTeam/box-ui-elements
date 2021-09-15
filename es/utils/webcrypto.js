@@ -1,3 +1,4 @@
+import sha1 from 'js-sha1';
 /**
  * 
  * @file Wrapper to provide a consistent interface for the webcrypto API
@@ -9,6 +10,7 @@
  *
  * @return {Object}
  */
+
 function getCrypto() {
   return window.crypto || window.msCrypto;
 }
@@ -32,15 +34,25 @@ function digest(algorithm, buffer) {
 
 
   return new Promise(function (resolve, reject) {
-    var cryptoOperation = cryptoRef.subtle.digest({
-      name: algorithm
-    }, buffer);
+    // Microsoft has dropped support for SHA-1 and so SHA-1 needs to be calculated differently
+    if (algorithm === 'SHA-1') {
+      try {
+        var hashBuffer = sha1.arrayBuffer(buffer);
+        resolve(hashBuffer);
+      } catch (e) {
+        reject(e);
+      }
+    } else {
+      var cryptoOperation = cryptoRef.subtle.digest({
+        name: algorithm
+      }, buffer);
 
-    cryptoOperation.oncomplete = function (event) {
-      resolve(event.target.result);
-    };
+      cryptoOperation.oncomplete = function (event) {
+        resolve(event.target.result);
+      };
 
-    cryptoOperation.onerror = reject;
+      cryptoOperation.onerror = reject;
+    }
   });
 }
 /**

@@ -6,19 +6,23 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 
 import * as React from 'react';
 import classnames from 'classnames';
-import LoadingIndicator from './LoadingIndicator';
+import LoadingIndicator, { LoadingIndicatorSize } from './LoadingIndicator';
 import './LoadingIndicatorWrapper.scss';
-var CENTER = 'center';
-var TOP = 'top';
+export var LoadingIndicatorWrapperPosition;
+
+(function (LoadingIndicatorWrapperPosition) {
+  LoadingIndicatorWrapperPosition["CENTER"] = "center";
+  LoadingIndicatorWrapperPosition["TOP"] = "top";
+})(LoadingIndicatorWrapperPosition || (LoadingIndicatorWrapperPosition = {}));
 
 var LoadingIndicatorWrapper = function LoadingIndicatorWrapper(_ref) {
   var children = _ref.children,
       _ref$className = _ref.className,
       className = _ref$className === void 0 ? '' : _ref$className,
       _ref$crawlerPosition = _ref.crawlerPosition,
-      crawlerPosition = _ref$crawlerPosition === void 0 ? CENTER : _ref$crawlerPosition,
+      crawlerPosition = _ref$crawlerPosition === void 0 ? LoadingIndicatorWrapperPosition.CENTER : _ref$crawlerPosition,
       _ref$crawlerSize = _ref.crawlerSize,
-      crawlerSize = _ref$crawlerSize === void 0 ? 'default' : _ref$crawlerSize,
+      crawlerSize = _ref$crawlerSize === void 0 ? LoadingIndicatorSize.DEFAULT : _ref$crawlerSize,
       _ref$isLoading = _ref.isLoading,
       isLoading = _ref$isLoading === void 0 ? false : _ref$isLoading,
       _ref$hideContent = _ref.hideContent,
@@ -26,14 +30,14 @@ var LoadingIndicatorWrapper = function LoadingIndicatorWrapper(_ref) {
       rest = _objectWithoutProperties(_ref, ["children", "className", "crawlerPosition", "crawlerSize", "isLoading", "hideContent"]);
 
   var crawlerPositionClassName = classnames('loading-indicator-veil', {
-    'is-with-top-crawler': crawlerPosition === TOP,
-    'is-with-center-crawler': crawlerPosition === CENTER
+    'is-with-top-crawler': crawlerPosition === LoadingIndicatorWrapperPosition.TOP,
+    'is-with-center-crawler': crawlerPosition === LoadingIndicatorWrapperPosition.CENTER
   }, hideContent ? 'hide-content' : 'blur-content');
-  return /*#__PURE__*/React.createElement("div", _extends({
+  return React.createElement("div", _extends({
     className: "loading-indicator-wrapper ".concat(className)
-  }, rest), children, isLoading && /*#__PURE__*/React.createElement("div", {
+  }, rest), children, isLoading && React.createElement("div", {
     className: crawlerPositionClassName
-  }, /*#__PURE__*/React.createElement(LoadingIndicator, {
+  }, React.createElement(LoadingIndicator, {
     size: crawlerSize
   })));
 };

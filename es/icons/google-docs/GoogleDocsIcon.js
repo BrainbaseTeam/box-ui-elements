@@ -37,7 +37,7 @@ var GoogleDocsIcon = function GoogleDocsIcon(_ref) {
   }
 
   if (Component !== null) {
-    return /*#__PURE__*/React.createElement(Component, {
+    return React.createElement(Component, {
       className: className,
       height: dimension,
       title: title,

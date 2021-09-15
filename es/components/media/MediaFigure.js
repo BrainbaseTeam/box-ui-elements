@@ -9,21 +9,16 @@ import classnames from 'classnames';
 import './Media.scss';
 
 var MediaFigure = function MediaFigure(_ref) {
-  var Wrapper = _ref.as,
+  var _ref$as = _ref.as,
+      Wrapper = _ref$as === void 0 ? 'figure' : _ref$as,
       className = _ref.className,
       children = _ref.children,
       rest = _objectWithoutProperties(_ref, ["as", "className", "children"]);
 
-  return /*#__PURE__*/React.createElement(Wrapper, _extends({
+  return React.createElement(Wrapper, _extends({
     className: classnames('bdl-Media-figure', className)
   }, rest), children);
-}; // Use this instead of default value because of param destructuring bug in Flow
-// that affects union types
-// https://github.com/facebook/flow/issues/5461
-
-
-MediaFigure.defaultProps = {
-  as: 'figure'
 };
+
 export default MediaFigure;
 //# sourceMappingURL=MediaFigure.js.map

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import AccessibleSVG from '../accessible-svg';
 
 var IconFolderCustom = function IconFolderCustom(_ref) {
   var _ref$className = _ref.className,
@@ -10,7 +9,8 @@ var IconFolderCustom = function IconFolderCustom(_ref) {
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 32 : _ref$width,
       thumbnailUrl = _ref.thumbnailUrl;
-  return /*#__PURE__*/React.createElement("img", {
+  return React.createElement("img", {
+    alt: "Folder icon",
     src: thumbnailUrl,
     style: {
       height: height,

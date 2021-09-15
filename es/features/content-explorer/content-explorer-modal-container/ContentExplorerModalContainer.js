@@ -6,19 +6,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -29,17 +25,17 @@ import { ContentExplorerModePropType, FoldersPathPropType, ItemsPropType } from 
 import ContentExplorerModal from '../content-explorer-modal';
 import NewFolderModal from '../new-folder-modal';
 
-var ContentExplorerModalContainer = /*#__PURE__*/function (_Component) {
+var ContentExplorerModalContainer =
+/*#__PURE__*/
+function (_Component) {
   _inherits(ContentExplorerModalContainer, _Component);
-
-  var _super = _createSuper(ContentExplorerModalContainer);
 
   function ContentExplorerModalContainer(props) {
     var _this;
 
     _classCallCheck(this, ContentExplorerModalContainer);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ContentExplorerModalContainer).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "handleEnterFolder", function (enteredFolder, newFoldersPath) {
       var onEnterFolder = _this.props.onEnterFolder;
@@ -113,6 +109,8 @@ var ContentExplorerModalContainer = /*#__PURE__*/function (_Component) {
           isCreateNewFolderAllowed = _this$props.isCreateNewFolderAllowed,
           onSearchSubmit = _this$props.onSearchSubmit,
           onExitSearch = _this$props.onExitSearch,
+          onSelectedClick = _this$props.onSelectedClick,
+          onSelectItem = _this$props.onSelectItem,
           items = _this$props.items,
           numItemsPerPage = _this$props.numItemsPerPage,
           numTotalItems = _this$props.numTotalItems,
@@ -122,14 +120,16 @@ var ContentExplorerModalContainer = /*#__PURE__*/function (_Component) {
           itemButtonRenderer = _this$props.itemButtonRenderer,
           showCreateNewFolderButton = _this$props.showCreateNewFolderButton,
           searchInputProps = _this$props.searchInputProps,
-          chooseButtonText = _this$props.chooseButtonText;
+          chooseButtonText = _this$props.chooseButtonText,
+          initialSelectedItems = _this$props.initialSelectedItems,
+          isSelectAllAllowed = _this$props.isSelectAllAllowed;
       var _this$state = this.state,
           foldersPath = _this$state.foldersPath,
           isNewFolderModalOpen = _this$state.isNewFolderModalOpen;
       var currentFolder = foldersPath[foldersPath.length - 1];
-      return /*#__PURE__*/React.createElement("div", {
+      return React.createElement("div", {
         className: classNames('content-explorer-modal-container', className)
-      }, /*#__PURE__*/React.createElement(ContentExplorerModal, {
+      }, React.createElement(ContentExplorerModal, {
         className: isNewFolderModalOpen ? 'hidden' : '',
         headerActionsAccessory: headerActionsAccessory,
         title: modalTitle,
@@ -142,8 +142,11 @@ var ContentExplorerModalContainer = /*#__PURE__*/function (_Component) {
         onChooseItems: onChooseItems,
         onMoveItem: onMoveItem,
         onCopyItem: onCopyItem,
+        onSelectedClick: onSelectedClick,
+        onSelectItem: onSelectItem,
         onCreateNewFolderButtonClick: this.handleCreateNewFolderButtonClick,
         isCreateNewFolderAllowed: isCreateNewFolderAllowed,
+        isSelectAllAllowed: isSelectAllAllowed,
         onSearchSubmit: onSearchSubmit,
         onExitSearch: onExitSearch,
         items: items,
@@ -155,8 +158,9 @@ var ContentExplorerModalContainer = /*#__PURE__*/function (_Component) {
         itemButtonRenderer: itemButtonRenderer,
         showCreateNewFolderButton: showCreateNewFolderButton,
         searchInputProps: searchInputProps,
-        chooseButtonText: chooseButtonText
-      }), isNewFolderModalOpen && /*#__PURE__*/React.createElement(NewFolderModal, {
+        chooseButtonText: chooseButtonText,
+        initialSelectedItems: initialSelectedItems
+      }), isNewFolderModalOpen && React.createElement(NewFolderModal, {
         isOpen: true,
         parentFolderName: currentFolder.name,
         onRequestClose: this.handleNewFolderModalClose,
@@ -207,8 +211,22 @@ _defineProperty(ContentExplorerModalContainer, "propTypes", {
   /** Called when the NewFolderModal is closed. */
   onNewFolderModalClosed: PropTypes.func,
 
+  /** Called when selected button is clicked */
+  onSelectedClick: PropTypes.func,
+
+  /**
+   * Called when an item is selected
+   *
+   * @param {Object} selectedItem
+   * @param {number} selectedItemIndex
+   */
+  onSelectItem: PropTypes.func,
+
   /** Folder is in the process of being created. */
   isCreatingFolder: PropTypes.bool,
+
+  /** Whether the user can see select all checkbox */
+  isSelectAllAllowed: PropTypes.bool,
 
   /** Message that will be shown when there was an error creating the folder. */
   createFolderError: PropTypes.string,
@@ -218,6 +236,9 @@ _defineProperty(ContentExplorerModalContainer, "propTypes", {
 
   /** Initial path of folders. The last folder in the array is the current folder. */
   initialFoldersPath: FoldersPathPropType.isRequired,
+
+  /** Initial items that will show up as selected */
+  initialSelectedItems: PropTypes.object,
 
   /**
    * Called when the current folder changes

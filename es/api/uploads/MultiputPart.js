@@ -10,19 +10,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -43,10 +39,14 @@ var PART_STATE_DIGEST_READY = 1;
 var PART_STATE_UPLOADING = 2;
 var PART_STATE_UPLOADED = 3;
 
-var MultiputPart = /*#__PURE__*/function (_BaseMultiput) {
+var MultiputPart =
+/*#__PURE__*/
+function (_BaseMultiput) {
   _inherits(MultiputPart, _BaseMultiput);
 
-  var _super = _createSuper(MultiputPart);
+  // For resumable uploads.  When an error happens, all parts for an upload get paused.  This
+  // is not a separate state because a paused upload transitions to the DIGEST_READY state immediately
+  // so MultiputUpload can upload the part again.
 
   /**
    * [constructor]
@@ -69,7 +69,7 @@ var MultiputPart = /*#__PURE__*/function (_BaseMultiput) {
 
     _classCallCheck(this, MultiputPart);
 
-    _this = _super.call(this, options, sessionEndpoints, config);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(MultiputPart).call(this, options, sessionEndpoints, config));
 
     _defineProperty(_assertThisInitialized(_this), "toJSON", function () {
       return JSON.stringify({
@@ -90,7 +90,7 @@ var MultiputPart = /*#__PURE__*/function (_BaseMultiput) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "upload", function () {
-      if (_this.isDestroyed()) {
+      if (_this.isDestroyedOrPaused()) {
         return;
       }
 
@@ -133,7 +133,7 @@ var MultiputPart = /*#__PURE__*/function (_BaseMultiput) {
     _defineProperty(_assertThisInitialized(_this), "uploadSuccessHandler", function (_ref) {
       var data = _ref.data;
 
-      if (_this.isDestroyed()) {
+      if (_this.isDestroyedOrPaused()) {
         return;
       }
 
@@ -151,7 +151,7 @@ var MultiputPart = /*#__PURE__*/function (_BaseMultiput) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "uploadProgressHandler", function (event) {
-      if (_this.isDestroyed()) {
+      if (_this.isDestroyedOrPaused()) {
         return;
       }
 
@@ -162,14 +162,18 @@ var MultiputPart = /*#__PURE__*/function (_BaseMultiput) {
       _this.onProgress(prevUploadedBytes, newUploadedBytes);
     });
 
-    _defineProperty(_assertThisInitialized(_this), "uploadErrorHandler", /*#__PURE__*/function () {
-      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(error) {
+    _defineProperty(_assertThisInitialized(_this), "uploadErrorHandler",
+    /*#__PURE__*/
+    function () {
+      var _ref2 = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee(error) {
         var xhr_ready_state, xhr_status_text, eventInfo, eventInfoString, retryDelayMs;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (!_this.isDestroyed()) {
+                if (!_this.isDestroyedOrPaused()) {
                   _context.next = 2;
                   break;
                 }
@@ -235,13 +239,17 @@ var MultiputPart = /*#__PURE__*/function (_BaseMultiput) {
       };
     }());
 
-    _defineProperty(_assertThisInitialized(_this), "retryUpload", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+    _defineProperty(_assertThisInitialized(_this), "retryUpload",
+    /*#__PURE__*/
+    _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee2() {
       var parts, response;
       return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              if (!_this.isDestroyed()) {
+              if (!_this.isDestroyedOrPaused()) {
                 _context2.next = 2;
                 break;
               }
@@ -299,8 +307,12 @@ var MultiputPart = /*#__PURE__*/function (_BaseMultiput) {
       }, _callee2, null, [[2, 15]]);
     })));
 
-    _defineProperty(_assertThisInitialized(_this), "listParts", /*#__PURE__*/function () {
-      var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(partIndex, limit) {
+    _defineProperty(_assertThisInitialized(_this), "listParts",
+    /*#__PURE__*/
+    function () {
+      var _ref4 = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee3(partIndex, limit) {
         var params, endpoint, response;
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
@@ -350,6 +362,7 @@ var MultiputPart = /*#__PURE__*/function (_BaseMultiput) {
       _this.rangeEnd = fileSize - 1;
     }
 
+    _this.isPaused = false;
     _this.onSuccess = onSuccess || noop;
     _this.onError = onError || noop;
     _this.onProgress = onProgress || noop;
@@ -370,6 +383,58 @@ var MultiputPart = /*#__PURE__*/function (_BaseMultiput) {
       this.blob = null;
       this.data = {};
       this.destroy();
+    }
+    /**
+     * Pauses upload for this Part.
+     *
+     * @return {void}
+     */
+
+  }, {
+    key: "pause",
+    value: function pause() {
+      clearTimeout(this.retryTimeout); // Cancel timeout so that we don't keep retrying while paused
+
+      this.isPaused = true;
+      this.state = PART_STATE_DIGEST_READY;
+      this.xhr.abort(); //  This calls the error handler.
+    }
+    /**
+     * Unpauses upload for this Part.
+     *
+     * @return {void}
+     */
+
+  }, {
+    key: "unpause",
+    value: function unpause() {
+      this.isPaused = false;
+      this.state = PART_STATE_UPLOADING;
+      this.retryUpload();
+    }
+    /**
+     * Resets upload for this Part.
+     *
+     * @return {void}
+     */
+
+  }, {
+    key: "reset",
+    value: function reset() {
+      this.numUploadRetriesPerformed = 0;
+      this.timing = {};
+      this.uploadedBytes = 0;
+    }
+    /**
+     * Checks if this Part is destroyed or paused
+     *
+     * @return {boolean}
+     */
+
+  }, {
+    key: "isDestroyedOrPaused",
+    value: function isDestroyedOrPaused() {
+      return this.isDestroyed() || this.isPaused;
     }
     /**
      * List specified parts

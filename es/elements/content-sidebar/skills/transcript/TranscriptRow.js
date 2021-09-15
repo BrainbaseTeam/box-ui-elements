@@ -22,13 +22,13 @@ var TranscriptRow = function TranscriptRow(_ref) {
   var isValid = isValidTimeSlice(appears) && Array.isArray(appears) && appears.length === 1;
   var timeSlice = appears;
   var start = isValid ? formatTime(timeSlice[0].start) : undefined;
-  return isEditing ? /*#__PURE__*/React.createElement(EditingTranscriptRow, {
+  return isEditing ? React.createElement(EditingTranscriptRow, {
     onCancel: onCancel,
     onChange: onChange,
     onSave: onSave,
     text: text,
     time: start
-  }) : /*#__PURE__*/React.createElement(ReadOnlyTranscriptRow, {
+  }) : React.createElement(ReadOnlyTranscriptRow, {
     interactionTarget: interactionTarget,
     onClick: onClick,
     text: text,

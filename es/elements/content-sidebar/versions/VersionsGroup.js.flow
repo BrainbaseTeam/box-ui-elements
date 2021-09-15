@@ -6,6 +6,7 @@
 
 import React from 'react';
 import VersionsList from './VersionsList';
+import type { BoxItemVersion } from '../../../common/types/core';
 import './VersionsGroup.scss';
 
 type Props = {
@@ -19,7 +20,7 @@ type Props = {
 const VersionsGroup = ({ heading, ...rest }: Props) => {
     return (
         <section className="bcs-VersionsGroup">
-            <h1 className="bcs-VersionsGroup-heading">{heading}</h1>
+            <h4 className="bcs-VersionsGroup-heading">{heading}</h4>
             <VersionsList {...rest} />
         </section>
     );

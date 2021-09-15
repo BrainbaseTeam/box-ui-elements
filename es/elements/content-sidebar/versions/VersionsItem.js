@@ -19,9 +19,10 @@ import VersionsItemButton from './VersionsItemButton';
 import VersionsItemBadge from './VersionsItemBadge';
 import VersionsItemRetention from './VersionsItemRetention';
 import { ReadableTime } from '../../../components/time';
-import { VERSION_DELETE_ACTION, VERSION_PROMOTE_ACTION, VERSION_RESTORE_ACTION, VERSION_UPLOAD_ACTION } from '../../../constants';
+import { FILE_REQUEST_NAME, VERSION_DELETE_ACTION, VERSION_PROMOTE_ACTION, VERSION_RESTORE_ACTION, VERSION_UPLOAD_ACTION } from '../../../constants';
 import './VersionsItem.scss';
 var ACTION_MAP = (_ACTION_MAP = {}, _defineProperty(_ACTION_MAP, VERSION_DELETE_ACTION, messages.versionDeletedBy), _defineProperty(_ACTION_MAP, VERSION_RESTORE_ACTION, messages.versionRestoredBy), _defineProperty(_ACTION_MAP, VERSION_PROMOTE_ACTION, messages.versionPromotedBy), _defineProperty(_ACTION_MAP, VERSION_UPLOAD_ACTION, messages.versionUploadedBy), _ACTION_MAP);
+var FILE_EXTENSIONS_OFFICE = ['xlsb', 'xlsm', 'xlsx'];
 var FIVE_MINUTES_MS = 5 * 60 * 1000;
 
 var VersionsItem = function VersionsItem(_ref) {
@@ -41,6 +42,7 @@ var VersionsItem = function VersionsItem(_ref) {
       versionCount = _ref.versionCount,
       versionLimit = _ref.versionLimit;
   var createdAt = version.created_at,
+      extension = version.extension,
       versionId = version.id,
       is_download_available = version.is_download_available,
       _version$permissions = version.permissions,
@@ -66,13 +68,14 @@ var VersionsItem = function VersionsItem(_ref) {
   var versionInteger = versionNumber ? parseInt(versionNumber, 10) : 1;
   var versionTime = restoredAt || trashedAt || createdAt;
   var versionTimestamp = versionTime && new Date(versionTime).getTime();
-  var versionUserName = selectors.getVersionUser(version).name || /*#__PURE__*/React.createElement(FormattedMessage, messages.versionUserUnknown); // Version state helpers
+  var versionUserName = selectors.getVersionUser(version).name || React.createElement(FormattedMessage, messages.versionUserUnknown);
+  var versionDisplayName = versionUserName !== FILE_REQUEST_NAME ? versionUserName : React.createElement(FormattedMessage, messages.fileRequestDisplayName); // Version state helpers
 
   var isDeleted = versionAction === VERSION_DELETE_ACTION;
   var isDownloadable = !!is_download_available;
   var isLimited = versionCount - versionInteger >= versionLimit;
-  var isRestricted = isWatermarked && !isCurrent; // Watermarked files do not support prior version preview
-
+  var isOffice = FILE_EXTENSIONS_OFFICE.includes(extension);
+  var isRestricted = (isOffice || isWatermarked) && !isCurrent;
   var isRetained = !!retentionAppliedAt && (!retentionDispositionAtDate || retentionDispositionAtDate > new Date()); // Version action helpers
 
   var canPreview = can_preview && !isDeleted && !isLimited && !isRestricted;
@@ -91,52 +94,53 @@ var VersionsItem = function VersionsItem(_ref) {
     };
   };
 
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "bcs-VersionsItem"
-  }, /*#__PURE__*/React.createElement(VersionsItemButton, {
+  }, React.createElement(VersionsItemButton, {
     fileId: fileId,
     isCurrent: isCurrent,
     isDisabled: !canPreview,
     isSelected: isSelected,
     onClick: handleAction(onPreview)
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "bcs-VersionsItem-badge"
-  }, /*#__PURE__*/React.createElement(VersionsItemBadge, {
+  }, React.createElement(VersionsItemBadge, {
     versionNumber: versionNumber
-  })), /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", {
     className: "bcs-VersionsItem-details"
-  }, isCurrent && /*#__PURE__*/React.createElement("div", {
+  }, isCurrent && React.createElement("div", {
     className: "bcs-VersionsItem-current"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.versionCurrent)), /*#__PURE__*/React.createElement("div", {
+  }, React.createElement(FormattedMessage, messages.versionCurrent)), React.createElement("div", {
     className: "bcs-VersionsItem-log",
-    title: versionUserName
-  }, /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, ACTION_MAP[versionAction], {
+    "data-testid": "bcs-VersionsItem-log",
+    title: versionDisplayName
+  }, React.createElement(FormattedMessage, _extends({}, ACTION_MAP[versionAction], {
     values: {
-      name: versionUserName,
+      name: versionDisplayName,
       versionPromoted: versionPromoted
     }
-  }))), /*#__PURE__*/React.createElement("div", {
+  }))), React.createElement("div", {
     className: "bcs-VersionsItem-info"
-  }, versionTimestamp && /*#__PURE__*/React.createElement("time", {
+  }, versionTimestamp && React.createElement("time", {
     className: "bcs-VersionsItem-date",
     dateTime: versionTime
-  }, /*#__PURE__*/React.createElement(ReadableTime, {
+  }, React.createElement(ReadableTime, {
     alwaysShowTime: true,
     relativeThreshold: FIVE_MINUTES_MS,
     timestamp: versionTimestamp
-  })), !!size && /*#__PURE__*/React.createElement("span", {
+  })), !!size && React.createElement("span", {
     className: "bcs-VersionsItem-size"
-  }, sizeUtil(size))), isRetained && /*#__PURE__*/React.createElement("div", {
+  }, sizeUtil(size))), isRetained && React.createElement("div", {
     className: "bcs-VersionsItem-retention"
-  }, /*#__PURE__*/React.createElement(VersionsItemRetention, {
+  }, React.createElement(VersionsItemRetention, {
     retention: retention
-  })), isLimited && hasActions && /*#__PURE__*/React.createElement("div", {
+  })), isLimited && hasActions && React.createElement("div", {
     className: "bcs-VersionsItem-footer"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.versionLimitExceeded, {
+  }, React.createElement(FormattedMessage, _extends({}, messages.versionLimitExceeded, {
     values: {
       versionLimit: versionLimit
     }
-  }))))), !isLimited && hasActions && /*#__PURE__*/React.createElement(VersionsItemActions, {
+  }))))), !isLimited && hasActions && React.createElement(VersionsItemActions, {
     fileId: fileId,
     isCurrent: isCurrent,
     isRetained: isRetained,

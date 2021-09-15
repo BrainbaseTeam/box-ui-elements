@@ -4,8 +4,8 @@
  * @author Box
  */
 import Browser from './utils/Browser';
-
 /* ------------------------ API ---------------------------- */
+
 export var API_PAGE_LIMIT = 1000; // default limit for paginated api calls
 
 /* ----------------------- Size ---------------------------- */
@@ -98,6 +98,9 @@ export var FIELD_RESTORED_FROM = 'restored_from';
 export var FIELD_CREATED_AT = 'created_at';
 export var FIELD_INTERACTED_AT = 'interacted_at';
 export var FIELD_SHARED_LINK = 'shared_link';
+export var FIELD_SHARED_LINK_ACCESS_LEVELS_DISABLED_REASONS = 'allowed_shared_link_access_levels_disabled_reasons';
+export var FIELD_SHARED_LINK_FEATURES = 'shared_link_features';
+export var FIELD_ALLOWED_INVITEE_ROLES = 'allowed_invitee_roles';
 export var FIELD_ALLOWED_SHARED_LINK_ACCESS_LEVELS = 'allowed_shared_link_access_levels';
 export var FIELD_HAS_COLLABORATIONS = 'has_collaborations';
 export var FIELD_IS_EXTERNALLY_OWNED = 'is_externally_owned';
@@ -139,36 +142,49 @@ export var FIELD_APP = 'app';
 export var FIELD_OCCURRED_AT = 'occurred_at';
 export var FIELD_RENDERED_TEXT = 'rendered_text';
 export var FIELD_RETENTION = 'retention';
+export var FIELD_UPLOADER_DISPLAY_NAME = 'uploader_display_name';
+export var FIELD_CLASSIFICATION = 'classification';
+export var FIELD_ENTERPRISE = 'enterprise';
+export var FIELD_HOSTNAME = 'hostname';
 /* ----------------------- Permissions --------------------------- */
 
+export var PERMISSION_CAN_COMMENT = 'can_comment';
+export var PERMISSION_CAN_CREATE_ANNOTATIONS = 'can_create_annotations';
+export var PERMISSION_CAN_DELETE = 'can_delete';
+export var PERMISSION_CAN_DOWNLOAD = 'can_download';
+export var PERMISSION_CAN_EDIT = 'can_edit';
 export var PERMISSION_CAN_PREVIEW = 'can_preview';
 export var PERMISSION_CAN_RENAME = 'can_rename';
-export var PERMISSION_CAN_DOWNLOAD = 'can_download';
-export var PERMISSION_CAN_DELETE = 'can_delete';
-export var PERMISSION_CAN_UPLOAD = 'can_upload';
-export var PERMISSION_CAN_SHARE = 'can_share';
 export var PERMISSION_CAN_SET_SHARE_ACCESS = 'can_set_share_access';
-export var PERMISSION_CAN_COMMENT = 'can_comment';
-export var PERMISSION_CAN_EDIT = 'can_edit';
+export var PERMISSION_CAN_SHARE = 'can_share';
+export var PERMISSION_CAN_UPLOAD = 'can_upload';
+export var PERMISSION_CAN_VIEW_ANNOTATIONS = 'can_view_annotations';
+/* --------------------- Invitee roles --------------------------- */
+
+export var INVITEE_ROLE_EDITOR = 'editor';
 /* ------------- Delimiters for bread crumbs ---------------- */
 
 export var DELIMITER_SLASH = 'slash';
 export var DELIMITER_CARET = 'caret';
 /* ---------------------- Defaults -------------------------- */
 
-export var DEFAULT_PREVIEW_VERSION = '2.16.0';
+export var DEFAULT_PREVIEW_VERSION = '2.72.0';
 export var DEFAULT_LOCALE = 'en-US';
 export var DEFAULT_PATH_STATIC = 'platform/elements';
 export var DEFAULT_PATH_STATIC_PREVIEW = 'platform/preview';
 export var DEFAULT_HOSTNAME_API = 'https://api.box.com';
 export var DEFAULT_HOSTNAME_STATIC = 'https://cdn01.boxcdn.net';
 export var DEFAULT_HOSTNAME_UPLOAD = 'https://upload.box.com';
+export var DEFAULT_HOSTNAME_UPLOAD_APP = 'https://upload.app.box.com';
+export var DEFAULT_HOSTNAME_UPLOAD_GOV = 'https://upload.app.box-gov.com';
 export var DEFAULT_HOSTNAME_APP = 'https://app.box.com';
 export var DEFAULT_CONTAINER = 'body';
 export var DEFAULT_ROOT = '0';
 export var DEFAULT_SEARCH_DEBOUNCE = 500;
 export var DEFAULT_COLLAB_DEBOUNCE = 500;
+export var DEFAULT_FORMAT_DEBOUNCE = 1000;
 export var DEFAULT_MAX_COLLABORATORS = 25;
+export var DEFAULT_MAX_CONTACTS = 50;
 export var DEFAULT_PAGE_NUMBER = 1;
 export var DEFAULT_PAGE_SIZE = 50;
 export var DEFAULT_FETCH_START = 0;
@@ -176,14 +192,15 @@ export var DEFAULT_FETCH_END = 1000;
 export var DEFAULT_VIEW_FILES = 'files';
 export var DEFAULT_VIEW_RECENTS = 'recents';
 export var DEFAULT_VIEW_METADATA = 'metadata';
+export var CLIENT_NAME_CONTENT_EXPLORER = 'ContentExplorer';
+export var CLIENT_NAME_OPEN_WITH = 'ContentOpenWith';
 export var CLIENT_NAME_CONTENT_PICKER = 'ContentPicker';
+export var CLIENT_NAME_CONTENT_PREVIEW = 'ContentPreview';
+export var CLIENT_NAME_CONTENT_SHARING = 'ContentSharing';
+export var CLIENT_NAME_CONTENT_SIDEBAR = 'ContentSidebar';
+export var CLIENT_NAME_CONTENT_UPLOADER = 'ContentUploader';
 export var CLIENT_NAME_FILE_PICKER = 'FilePicker';
 export var CLIENT_NAME_FOLDER_PICKER = 'FolderPicker';
-export var CLIENT_NAME_CONTENT_UPLOADER = 'ContentUploader';
-export var CLIENT_NAME_CONTENT_EXPLORER = 'ContentExplorer';
-export var CLIENT_NAME_CONTENT_PREVIEW = 'ContentPreview';
-export var CLIENT_NAME_CONTENT_SIDEBAR = 'ContentSidebar';
-export var CLIENT_NAME_OPEN_WITH = 'ContentOpenWith';
 /* ---------------------- Statuses -------------------------- */
 
 export var STATUS_PENDING = 'pending';
@@ -191,6 +208,8 @@ export var STATUS_IN_PROGRESS = 'inprogress';
 export var STATUS_STAGED = 'staged';
 export var STATUS_COMPLETE = 'complete';
 export var STATUS_ERROR = 'error';
+export var STATUS_ACCEPTED = 'accepted';
+export var STATUS_INACTIVE = 'inactive';
 /* ------------------- Styles ------------------------ */
 
 export var CLASS_MODAL_CONTENT = 'be-modal-dialog-content';
@@ -212,6 +231,11 @@ export var ERROR_CODE_UPLOAD_CHILD_FOLDER_FAILED = 'child_folder_failed_upload';
 export var ERROR_CODE_UPLOAD_STORAGE_LIMIT_EXCEEDED = 'storage_limit_exceeded';
 export var ERROR_CODE_UPLOAD_FILE_SIZE_LIMIT_EXCEEDED = 'file_size_limit_exceeded';
 export var ERROR_CODE_UPLOAD_PENDING_APP_FOLDER_SIZE_LIMIT = 'pending_app_folder_size_limit';
+export var ERROR_CODE_UPLOAD_BAD_DIGEST = 'bad_digest';
+export var ERROR_CODE_UPLOAD_FAILED_PACKAGE = 'failed_package_upload';
+export var ERROR_CODE_FETCH_ACTIVITY = 'fetch_activity_error';
+export var ERROR_CODE_FETCH_ANNOTATION = 'fetch_annotation_error';
+export var ERROR_CODE_FETCH_ANNOTATIONS = 'fetch_annotations_error';
 export var ERROR_CODE_FETCH_FILE = 'fetch_file_error';
 export var ERROR_CODE_FETCH_FILE_DUE_TO_POLICY = 'forbidden_by_policy';
 export var ERROR_CODE_FETCH_FOLDER = 'fetch_folder_error';
@@ -222,6 +246,8 @@ export var ERROR_CODE_FETCH_VERSION = 'fetch_version_error';
 export var ERROR_CODE_FETCH_VERSIONS = 'fetch_versions_error';
 export var ERROR_CODE_FETCH_TASKS = 'fetch_tasks_error';
 export var ERROR_CODE_FETCH_CURRENT_USER = 'fetch_current_user_error';
+export var ERROR_CODE_FETCH_ENTERPRISE_GROUPS = 'fetch_enterprise_groups_error';
+export var ERROR_CODE_FETCH_ENTERPRISE_USERS = 'fetch_enterprise_users_error';
 export var ERROR_CODE_FETCH_TASK_ASSIGNMENT = 'fetch_task_assignment_error';
 export var ERROR_CODE_FETCH_TASK_COLLABORATOR = 'fetch_task_collaborator_error';
 export var ERROR_CODE_FETCH_INTEGRATIONS = 'fetch_integrations_error';
@@ -231,6 +257,7 @@ export var ERROR_CODE_FETCH_ACCESS_STATS = 'fetch_access_stats_error';
 export var ERROR_CODE_FETCH_SKILLS = 'fetch_skills_error';
 export var ERROR_CODE_FETCH_RECENTS = 'fetch_recents_error';
 export var ERROR_CODE_EXECUTE_INTEGRATION = 'execute_integrations_error';
+export var ERROR_CODE_CREATE_ANNOTATION = 'create_annotation_error';
 export var ERROR_CODE_CREATE_COMMENT = 'create_comment_error';
 export var ERROR_CODE_CREATE_TASK = 'create_task_error';
 export var ERROR_CODE_CREATE_TASK_LINK = 'create_task_link_error';
@@ -239,6 +266,8 @@ export var ERROR_CODE_CREATE_TASK_COLLABORATOR = 'create_task_collaborator_error
 export var ERROR_CODE_CREATE_FOLDER = 'create_folder_error';
 export var ERROR_CODE_CREATE_METADATA = 'create_metadata_error';
 export var ERROR_CODE_DELETE_APP_ACTIVITY = 'delete_app_activity_error';
+export var ERROR_CODE_DELETE_ANNOTATION = 'delete_annotation_error';
+export var ERROR_CODE_EDIT_ANNOTATION = 'edit_annotation_error';
 export var ERROR_CODE_DELETE_COMMENT = 'delete_comment_error';
 export var ERROR_CODE_DELETE_TASK = 'delete_task_error';
 export var ERROR_CODE_DELETE_TASK_ASSIGNMENT = 'delete_task_assignment_error';
@@ -246,6 +275,7 @@ export var ERROR_CODE_DELETE_TASK_COLLABORATOR = 'delete_task_collaborator_error
 export var ERROR_CODE_DELETE_ITEM = 'delete_item_error';
 export var ERROR_CODE_DELETE_METADATA = 'delete_metadata_error';
 export var ERROR_CODE_DELETE_VERSION = 'delete_version_error';
+export var ERROR_CODE_GROUP_EXCEEDS_LIMIT = 'group_exceeds_limit';
 export var ERROR_CODE_PROMOTE_VERSION = 'promote_version_error';
 export var ERROR_CODE_RESTORE_VERSION = 'restore_version_error';
 export var ERROR_CODE_UPDATE_TASK = 'update_task_error';
@@ -286,7 +316,7 @@ export var IS_ERROR_DISPLAYED = 'isErrorDisplayed'; // used to determine if user
 
 /* ------------- Representation Hints ------------------- */
 
-var X_REP_HINT_BASE = '[3d][pdf][text][mp3]';
+var X_REP_HINT_BASE = '[3d][pdf][text][mp3][json]';
 var X_REP_HINT_DOC_THUMBNAIL = '[jpg?dimensions=1024x1024&paged=false]';
 var X_REP_HINT_IMAGE = '[jpg?dimensions=2048x2048,png?dimensions=2048x2048]';
 var X_REP_HINT_VIDEO_DASH = '[dash,mp4][filmstrip]';
@@ -321,15 +351,27 @@ export var SKILLS_STATUS_INVOKED = 'skills_invoked_status';
 /* ------------------ File Extensions ---------------------- */
 
 export var FILE_EXTENSION_BOX_NOTE = 'boxnote';
+export var FILE_EXTENSION_GOOGLE_DOC = 'gdoc';
+export var FILE_EXTENSION_GOOGLE_SHEET = 'gsheet';
+export var FILE_EXTENSION_GOOGLE_SLIDE = 'gslides';
+export var FILE_EXTENSION_GOOGLE_SLIDE_LEGACY = 'gslide';
 /* ------------------ X-Rep-Hints ---------------------- */
 // available dimensions for JPG: "32x32", "94x94", "160x160", "320x320", "1024x1024", "2048x2048"
 
 export var X_REP_HINT_JPG_DIMENSIONS_DEFAULT = '1024x1024'; // available dimensions for PNG: "1024x1024", "2048x2048"
 
-export var X_REP_HINT_PNG_DIMENSIONS_DEFAULT = '1024x1024'; // if unable to fetch jpg thumbnail, grab png rep of first page. Certain file types do
-// not have a thumbnail rep but do have a first page rep.
+export var X_REP_HINT_PNG_DIMENSIONS_DEFAULT = '1024x1024'; // If unable to fetch jpg thumbnail, grab png rep of first page. Certain file types do not have a thumbnail rep but do have a first page rep.
+// Get the PDF rep as well, which ensures that the Preview SDK loads linearized reps for customers with PDF optimization enabled.
+// Get the text rep as well, which ensures that large text files load in the Preview SDK.
 
-export var X_REP_HINT_HEADER_DIMENSIONS_DEFAULT = "[jpg?dimensions=".concat(X_REP_HINT_JPG_DIMENSIONS_DEFAULT, "&paged=false,png?dimensions=").concat(X_REP_HINT_PNG_DIMENSIONS_DEFAULT, "]");
+export var X_REP_HINT_HEADER_DIMENSIONS_DEFAULT = "[jpg?dimensions=".concat(X_REP_HINT_JPG_DIMENSIONS_DEFAULT, "&paged=false,png?dimensions=").concat(X_REP_HINT_PNG_DIMENSIONS_DEFAULT, "][pdf][text]");
+/* ------------------ Representations Response ---------- */
+
+export var REPRESENTATIONS_RESPONSE_ERROR = 'error';
+export var REPRESENTATIONS_RESPONSE_NONE = 'none';
+export var REPRESENTATIONS_RESPONSE_PENDING = 'pending';
+export var REPRESENTATIONS_RESPONSE_SUCCESS = 'success';
+export var REPRESENTATIONS_RESPONSE_VIEWABLE = 'viewable';
 /* ------------------ Sidebar View ---------------------- */
 
 export var SIDEBAR_VIEW_SKILLS = 'skills';
@@ -347,10 +389,11 @@ export var HTTP_OPTIONS = 'OPTIONS';
 export var HTTP_HEAD = 'HEAD';
 /* ------------------ HTTP Codes  ---------------------- */
 
+export var HTTP_STATUS_CODE_BAD_REQUEST = 400;
+export var HTTP_STATUS_CODE_UNAUTHORIZED = 401;
 export var HTTP_STATUS_CODE_FORBIDDEN = 403;
 export var HTTP_STATUS_CODE_NOT_FOUND = 404;
 export var HTTP_STATUS_CODE_CONFLICT = 409;
-export var HTTP_STATUS_CODE_UNAUTHORIZED = 401;
 export var HTTP_STATUS_CODE_RATE_LIMIT = 429;
 export var HTTP_STATUS_CODE_INTERNAL_SERVER_ERROR = 500;
 export var HTTP_STATUS_CODE_NOT_IMPLEMENTED = 501;
@@ -375,6 +418,7 @@ export var PLACEHOLDER_USER = {
   id: '2',
   name: ''
 };
+export var FILE_REQUEST_NAME = 'File Request';
 /* ------------------ Open With ------------------------- */
 
 export var APP_INTEGRATION = 'app_integration';
@@ -382,20 +426,14 @@ export var BOX_EDIT_INTEGRATION_ID = '1338';
 export var BOX_EDIT_SFC_INTEGRATION_ID = '13418';
 export var OPEN_WITH_BUTTON_ICON_SIZE = 26;
 export var OPEN_WITH_MENU_ITEM_ICON_SIZE = 30;
-/* ------------------ Legacy Task Assignment Statuses ----------------- */
-
-export var TASK_APPROVED = 'approved';
-export var TASK_COMPLETED = 'completed';
-export var TASK_INCOMPLETE = 'incomplete';
-export var TASK_REJECTED = 'rejected';
-/* ------------------ New Task Statuses ----------------- */
+/* ------------------ Task Statuses ----------------- */
 
 export var TASK_NEW_APPROVED = 'APPROVED';
 export var TASK_NEW_COMPLETED = 'COMPLETED';
 export var TASK_NEW_NOT_STARTED = 'NOT_STARTED';
 export var TASK_NEW_IN_PROGRESS = 'IN_PROGRESS';
 export var TASK_NEW_REJECTED = 'REJECTED';
-/* ------------------ New Task types ----------------- */
+/* ------------------ Task types ----------------- */
 
 export var TASK_TYPE_GENERAL = 'GENERAL';
 export var TASK_TYPE_APPROVAL = 'APPROVAL';
@@ -407,6 +445,17 @@ export var TASK_COMPLETION_RULE_ANY = 'ANY_ASSIGNEE';
 
 export var TASK_EDIT_MODE_CREATE = 'CREATE';
 export var TASK_EDIT_MODE_EDIT = 'EDIT';
+/* ----------------- Task Validation ---------------- */
+
+export var TASK_MAX_GROUP_ASSIGNEES = 250;
+/* ----------------- Theme ---------------------------*/
+
+export var THEME_VERY_DARK = 'vDark';
+export var THEME_DARK = 'dark';
+export var THEME_MID_DARK = 'midDark';
+export var THEME_MIDTONE = 'midTone';
+export var THEME_MID_LIGHT = 'midLight';
+export var THEME_VERY_LIGHT = 'vLight';
 /* ------------------ Keyboard Events ----------------- */
 
 export var KEYS = {

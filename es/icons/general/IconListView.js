@@ -13,13 +13,13 @@ var IconListView = function IconListView(_ref) {
       title = _ref.title,
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 9 : _ref$width;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: "icon-list-view ".concat(className),
     height: height,
     title: title,
     viewBox: "0 0 9 9",
     width: width
-  }, /*#__PURE__*/React.createElement("path", {
+  }, React.createElement("path", {
     className: "fill-color",
     d: "M0 5h9V4H0v1zm0 4h9V8H0v1zm0-9v1h9V0H0z",
     fill: color,

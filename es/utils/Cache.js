@@ -11,7 +11,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  */
 import _merge from 'lodash/merge';
 
-var Cache = /*#__PURE__*/function () {
+var Cache =
+/*#__PURE__*/
+function () {
   /**
    * @property {*}
    */

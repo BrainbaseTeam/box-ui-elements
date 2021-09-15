@@ -5,12 +5,16 @@ import uniqueId from 'lodash/uniqueId';
 
 import Label from '../label';
 import Tooltip from '../tooltip';
+import type { Position } from '../tooltip';
 
 import './TextArea.scss';
 
 type Props = {
     className?: string,
+    description?: React.Node,
     error?: React.Node,
+    /** Renders error tooltip at the specified position (positions are those from Tooltip) */
+    errorTooltipPosition?: Position,
     /** Hides the label */
     hideLabel?: boolean,
     /** Hides (optional) text from the label */
@@ -26,7 +30,9 @@ type Props = {
 
 const TextArea = ({
     className = '',
+    description,
     error,
+    errorTooltipPosition,
     hideLabel,
     hideOptionalLabel,
     isRequired,
@@ -41,16 +47,29 @@ const TextArea = ({
     });
 
     const errorMessageID = React.useRef(uniqueId('errorMessage')).current;
+    const descriptionID = React.useRef(uniqueId('description')).current;
+
     const ariaAttrs = {
         'aria-invalid': hasError,
         'aria-required': isRequired,
         'aria-errormessage': errorMessageID,
+        'aria-describedby': description ? descriptionID : undefined,
     };
 
     return (
         <div className={classes}>
             <Label hideLabel={hideLabel} showOptionalText={!hideOptionalLabel && !isRequired} text={label}>
-                <Tooltip isShown={hasError} position="bottom-left" text={error || ''} theme="error">
+                {!!description && (
+                    <div id={descriptionID} className="text-area-description">
+                        {description}
+                    </div>
+                )}
+                <Tooltip
+                    isShown={hasError}
+                    position={errorTooltipPosition || 'bottom-left'}
+                    text={error || ''}
+                    theme="error"
+                >
                     <textarea
                         ref={textareaRef}
                         required={isRequired}

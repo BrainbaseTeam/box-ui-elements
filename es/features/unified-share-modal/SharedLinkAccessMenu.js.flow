@@ -10,7 +10,13 @@ import Tooltip from '../../components/tooltip';
 import type { ItemType } from '../../common/types/core';
 
 import SharedLinkAccessLabel from './SharedLinkAccessLabel';
-import { ANYONE_WITH_LINK, ANYONE_IN_COMPANY, PEOPLE_IN_ITEM } from './constants';
+import {
+    ANYONE_WITH_LINK,
+    ANYONE_IN_COMPANY,
+    DISABLED_REASON_ACCESS_POLICY,
+    DISABLED_REASON_MALICIOUS_CONTENT,
+    PEOPLE_IN_ITEM,
+} from './constants';
 import messages from './messages';
 import type { accessLevelType, accessLevelsDisabledReasonType, allowedAccessLevelsType } from './flowTypes';
 
@@ -59,7 +65,14 @@ class SharedLinkAccessMenu extends React.Component<Props> {
             <Menu className="usm-share-access-menu">
                 {accessLevels.map(level => {
                     const isDisabled = !allowedAccessLevels[level];
-                    const isDisabledByPolicy = accessLevelsDisabledReason[level] === 'access_policy';
+                    const isDisabledByAccessPolicy =
+                        accessLevelsDisabledReason[level] === DISABLED_REASON_ACCESS_POLICY;
+                    const isDisabledByMaliciousContent =
+                        accessLevelsDisabledReason[level] === DISABLED_REASON_MALICIOUS_CONTENT;
+                    const isDisabledByPolicy = isDisabledByAccessPolicy || isDisabledByMaliciousContent;
+                    const tooltipMessage = isDisabledByMaliciousContent
+                        ? messages.disabledMaliciousContentShareLinkPermission
+                        : messages.disabledShareLinkPermission;
 
                     // If an access level is disabled for reasons other than access policy enforcement
                     // then we just don't show that menu item. If it is disabled because of an access policy
@@ -73,7 +86,7 @@ class SharedLinkAccessMenu extends React.Component<Props> {
                             isDisabled={!isDisabledByPolicy}
                             key={`tooltip-${level}`}
                             position="top-center"
-                            text={<FormattedMessage {...messages.disabledShareLinkPermission} />}
+                            text={<FormattedMessage {...tooltipMessage} />}
                         >
                             <SelectMenuItem
                                 key={level}
@@ -121,6 +134,7 @@ class SharedLinkAccessMenu extends React.Component<Props> {
                     <PlainButton
                         className={classNames('lnk', {
                             'is-disabled': submitting,
+                            'bdl-is-disabled': submitting,
                         })}
                         disabled={submitting}
                         {...sharedLinkAccessMenuButtonProps}

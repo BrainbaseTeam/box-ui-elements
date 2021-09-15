@@ -17,7 +17,7 @@ var HotkeyFriendlyModal = function HotkeyFriendlyModal(_ref) {
     return null;
   }
 
-  return /*#__PURE__*/React.createElement(HotkeyLayer, null, /*#__PURE__*/React.createElement(Modal, _extends({
+  return React.createElement(HotkeyLayer, null, React.createElement(Modal, _extends({
     isOpen: true
   }, rest)));
 };

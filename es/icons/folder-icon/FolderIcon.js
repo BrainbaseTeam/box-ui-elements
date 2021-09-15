@@ -1,7 +1,7 @@
 import * as React from 'react';
-import IconFolderCollab from '../folder/IconFolderCollab';
-import IconFolderExternal from '../folder/IconFolderExternal';
-import IconFolderPersonal from '../folder/IconFolderPersonal';
+import IconFolderCollab from '../../icon/content/FolderShared32';
+import IconFolderExternal from '../../icon/content/FolderExternal32';
+import IconFolderPersonal from '../../icon/content/FolderPersonal32';
 import IconFolderCustom from '../folder/IconFolderCustom';
 
 var FolderIcon = function FolderIcon(_ref) {
@@ -16,7 +16,7 @@ var FolderIcon = function FolderIcon(_ref) {
 
   // Display our own custom thumbnail
   if (thumbnailUrl) {
-    return /*#__PURE__*/React.createElement(IconFolderCustom, {
+    return React.createElement(IconFolderCustom, {
       height: dimension,
       title: title,
       width: dimension,
@@ -25,7 +25,7 @@ var FolderIcon = function FolderIcon(_ref) {
   }
 
   if (isExternal) {
-    return /*#__PURE__*/React.createElement(IconFolderExternal, {
+    return React.createElement(IconFolderExternal, {
       height: dimension,
       title: title,
       width: dimension
@@ -33,14 +33,14 @@ var FolderIcon = function FolderIcon(_ref) {
   }
 
   if (isCollab) {
-    return /*#__PURE__*/React.createElement(IconFolderCollab, {
+    return React.createElement(IconFolderCollab, {
       height: dimension,
       title: title,
       width: dimension
     });
   }
 
-  return /*#__PURE__*/React.createElement(IconFolderPersonal, {
+  return React.createElement(IconFolderPersonal, {
     height: dimension,
     title: title,
     width: dimension

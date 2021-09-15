@@ -36,28 +36,28 @@ var SidebarToggleButton = function SidebarToggleButton(_ref) {
 
   var renderButton = function renderButton() {
     if (direction === DIRECTION_LEFT) {
-      return isOpen ? /*#__PURE__*/React.createElement(IconShow, {
+      return isOpen ? React.createElement(IconShow, {
         height: 16,
         width: 16
-      }) : /*#__PURE__*/React.createElement(IconHide, {
+      }) : React.createElement(IconHide, {
         height: 16,
         width: 16
       });
     }
 
-    return isOpen ? /*#__PURE__*/React.createElement(IconHide, {
+    return isOpen ? React.createElement(IconHide, {
       height: 16,
       width: 16
-    }) : /*#__PURE__*/React.createElement(IconShow, {
+    }) : React.createElement(IconShow, {
       height: 16,
       width: 16
     });
   };
 
-  return /*#__PURE__*/React.createElement(Tooltip, {
+  return React.createElement(Tooltip, {
     position: tooltipPosition,
     text: intlText
-  }, /*#__PURE__*/React.createElement(PlainButton, _extends({
+  }, React.createElement(PlainButton, _extends({
     "aria-label": intlText,
     className: classes,
     onClick: onClick,

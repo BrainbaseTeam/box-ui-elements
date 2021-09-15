@@ -21,10 +21,10 @@ export default (function (onItemSelect, selectableType, extensionsWhitelist, has
     var Component = isRadio ? RadioButton : Checkbox;
 
     if (!isRowSelectable(selectableType, extensionsWhitelist, hasHitSelectionLimit, rowData)) {
-      return /*#__PURE__*/React.createElement("span", null);
+      return React.createElement("span", null);
     }
 
-    return /*#__PURE__*/React.createElement(Component, _extends({
+    return React.createElement(Component, _extends({
       hideLabel: true,
       label: name,
       name: name,

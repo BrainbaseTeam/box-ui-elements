@@ -8,19 +8,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -36,6 +32,7 @@ import { withAPIContext } from '../../../common/api-context';
 import Avatar from '../Avatar';
 import Media from '../../../../components/media';
 import { MenuItem } from '../../../../components/menu';
+import ActivityCard from '../ActivityCard';
 import ActivityError from '../common/activity-error';
 import ActivityMessage from '../common/activity-message';
 import ActivityTimestamp from '../common/activity-timestamp';
@@ -55,32 +52,19 @@ import TaskDueDate from './TaskDueDate';
 import TaskStatus from './TaskStatus';
 import AssigneeList from './AssigneeList';
 import TaskModal from '../../TaskModal';
+import TaskMultiFileIcon from './TaskMultiFileIcon';
 import commonMessages from '../../../common/messages';
 import messages from './messages';
 import './Task.scss';
 
-var getMessageForTask = function getMessageForTask(isCurrentUser, taskType) {
-  if (isCurrentUser) {
-    if (taskType === TASK_TYPE_APPROVAL) {
-      return messages.tasksFeedHeadlineApprovalCurrentUser;
-    }
-
-    return messages.tasksFeedHeadlineGeneralCurrentUser;
-  }
-
-  if (taskType === TASK_TYPE_APPROVAL) {
-    return messages.tasksFeedHeadlineApproval;
-  }
-
-  return messages.tasksFeedHeadlineGeneral;
-};
-
-var Task = /*#__PURE__*/function (_React$Component) {
+var Task =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(Task, _React$Component);
 
-  var _super = _createSuper(Task);
-
   function Task() {
+    var _getPrototypeOf2;
+
     var _this;
 
     _classCallCheck(this, Task);
@@ -89,7 +73,7 @@ var Task = /*#__PURE__*/function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    _this = _super.call.apply(_super, [this].concat(args));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Task)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_this), "state", {
       loadCollabError: undefined,
@@ -259,8 +243,10 @@ var Task = /*#__PURE__*/function (_React$Component) {
           isPending = _this$props3.isPending,
           description = _this$props3.description,
           onEdit = _this$props3.onEdit,
+          onView = _this$props3.onView,
           permissions = _this$props3.permissions,
           status = _this$props3.status,
+          task_links = _this$props3.task_links,
           task_type = _this$props3.task_type,
           translatedTaggedMessage = _this$props3.translatedTaggedMessage,
           translations = _this$props3.translations;
@@ -273,31 +259,49 @@ var Task = /*#__PURE__*/function (_React$Component) {
           isAssigneeListOpen = _this$state.isAssigneeListOpen,
           isConfirmingDelete = _this$state.isConfirmingDelete;
       var inlineError = loadCollabError || error;
-      var currentUserAssignment = assigned_to && assigned_to.entries ? assigned_to.entries.find(function (_ref) {
+      var assignments = assigned_to && assigned_to.entries;
+      var currentUserAssignment = assignments && assignments.find(function (_ref) {
         var target = _ref.target;
         return target.id === currentUser.id;
-      }) : null;
+      });
       var createdByUser = created_by.target || PLACEHOLDER_USER;
       var createdAtTimestamp = new Date(created_at).getTime();
-      var shouldShowActions = currentUserAssignment && currentUserAssignment.permissions && currentUserAssignment.permissions.can_update && currentUserAssignment.status === TASK_NEW_NOT_STARTED && (status === TASK_NEW_NOT_STARTED || status === TASK_NEW_IN_PROGRESS);
+      var isTaskCompleted = !(status === TASK_NEW_NOT_STARTED || status === TASK_NEW_IN_PROGRESS);
+      var isCreator = created_by.target.id === currentUser.id;
+      var isMultiFile = task_links.entries.length > 1;
+      var shouldShowActions;
+
+      if (isTaskCompleted) {
+        shouldShowActions = false;
+      } else if (isMultiFile && isCreator) {
+        shouldShowActions = true;
+      } else {
+        shouldShowActions = currentUserAssignment && currentUserAssignment.permissions && currentUserAssignment.permissions.can_update && currentUserAssignment.status === TASK_NEW_NOT_STARTED;
+      }
+
       var TaskTypeIcon = task_type === TASK_TYPE_APPROVAL ? IconTaskApproval : IconTaskGeneral;
       var isMenuVisible = (permissions.can_delete || permissions.can_update) && !isPending;
-      return /*#__PURE__*/React.createElement("div", {
-        className: "bcs-Task"
-      }, inlineError ? /*#__PURE__*/React.createElement(ActivityError, inlineError) : null, /*#__PURE__*/React.createElement(Media, {
+      return React.createElement(ActivityCard, {
+        className: "bcs-Task",
+        "data-resin-feature": "tasks",
+        "data-resin-taskid": id,
+        "data-resin-tasktype": task_type,
+        "data-resin-numassignees": assignments && assignments.length
+      }, inlineError ? React.createElement(ActivityError, inlineError) : null, React.createElement(Media, {
         className: classNames('bcs-Task-media', {
           'bcs-is-pending': isPending || isLoading
-        })
-      }, /*#__PURE__*/React.createElement(Media.Figure, {
+        }),
+        "data-testid": "task-card"
+      }, React.createElement(Media.Figure, {
         className: "bcs-Task-avatar"
-      }, /*#__PURE__*/React.createElement(Avatar, {
+      }, React.createElement(Avatar, {
         getAvatarUrl: getAvatarUrl,
         user: createdByUser
-      }), /*#__PURE__*/React.createElement(TaskTypeIcon, {
+      }), React.createElement(TaskTypeIcon, {
         width: 20,
         height: 20,
         className: "bcs-Task-avatarBadge"
-      })), /*#__PURE__*/React.createElement(Media.Body, null, isMenuVisible && /*#__PURE__*/React.createElement(TetherComponent, {
+      })), React.createElement(Media.Body, null, isMenuVisible && React.createElement(TetherComponent, {
         attachment: "top right",
         className: "bcs-Task-deleteConfirmationModal",
         constraints: [{
@@ -305,77 +309,90 @@ var Task = /*#__PURE__*/function (_React$Component) {
           attachment: 'together'
         }],
         targetAttachment: "bottom right"
-      }, /*#__PURE__*/React.createElement(Media.Menu, {
+      }, React.createElement(Media.Menu, {
         isDisabled: isConfirmingDelete,
+        "data-testid": "task-actions-menu",
         menuProps: {
           'data-resin-component': ACTIVITY_TARGETS.TASK_OPTIONS
         }
-      }, permissions.can_update && /*#__PURE__*/React.createElement(MenuItem, {
+      }, permissions.can_update && React.createElement(MenuItem, {
         "data-resin-target": ACTIVITY_TARGETS.TASK_OPTIONS_EDIT,
+        "data-testid": "edit-task",
         onClick: this.handleEditClick
-      }, /*#__PURE__*/React.createElement(IconPencil, {
+      }, React.createElement(IconPencil, {
         color: bdlGray80
-      }), /*#__PURE__*/React.createElement(FormattedMessage, messages.taskEditMenuItem)), permissions.can_delete && /*#__PURE__*/React.createElement(MenuItem, {
+      }), React.createElement(FormattedMessage, messages.taskEditMenuItem)), permissions.can_delete && React.createElement(MenuItem, {
         "data-resin-target": ACTIVITY_TARGETS.TASK_OPTIONS_DELETE,
+        "data-testid": "delete-task",
         onClick: this.handleDeleteClick
-      }, /*#__PURE__*/React.createElement(IconTrash, {
+      }, React.createElement(IconTrash, {
         color: bdlGray80
-      }), /*#__PURE__*/React.createElement(FormattedMessage, messages.taskDeleteMenuItem))), isConfirmingDelete && /*#__PURE__*/React.createElement(DeleteConfirmation, {
+      }), React.createElement(FormattedMessage, messages.taskDeleteMenuItem))), isConfirmingDelete && React.createElement(DeleteConfirmation, {
         "data-resin-component": ACTIVITY_TARGETS.TASK_OPTIONS,
         isOpen: isConfirmingDelete,
         message: messages.taskDeletePrompt,
         onDeleteCancel: this.handleDeleteCancel,
         onDeleteConfirm: this.handleDeleteConfirm
-      })), /*#__PURE__*/React.createElement("div", {
+      })), React.createElement("div", {
         className: "bcs-Task-headline"
-      }, /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, getMessageForTask(!!currentUserAssignment, task_type), {
-        values: {
-          user: /*#__PURE__*/React.createElement(UserLink, _extends({}, createdByUser, {
-            "data-resin-target": ACTIVITY_TARGETS.PROFILE,
-            getUserProfileUrl: getUserProfileUrl
-          }))
-        }
-      }))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(ActivityTimestamp, {
+      }, React.createElement(UserLink, _extends({}, createdByUser, {
+        "data-resin-target": ACTIVITY_TARGETS.PROFILE,
+        getUserProfileUrl: getUserProfileUrl
+      }))), React.createElement("div", null, React.createElement(ActivityTimestamp, {
         date: createdAtTimestamp
-      })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(ActivityMessage, _extends({
+      })), React.createElement("div", {
+        className: "bcs-Task-status"
+      }, React.createElement(TaskStatus, {
+        status: status
+      }), React.createElement(TaskMultiFileIcon, {
+        isMultiFile: isMultiFile
+      }), React.createElement(TaskCompletionRuleIcon, {
+        completionRule: completion_rule
+      })), React.createElement("div", {
+        className: "bcs-Task-dueDate"
+      }, !!due_at && React.createElement(TaskDueDate, {
+        dueDate: due_at,
+        status: status
+      })), React.createElement("div", null, React.createElement(ActivityMessage, _extends({
         id: id,
         tagged_message: description,
         translatedTaggedMessage: translatedTaggedMessage
       }, translations, {
         translationFailed: error ? true : null,
         getUserProfileUrl: getUserProfileUrl
-      }))), /*#__PURE__*/React.createElement("div", {
-        className: "bcs-Task-statusContainer"
-      }, !!due_at && /*#__PURE__*/React.createElement(TaskDueDate, {
-        dueDate: due_at,
-        status: status
-      }), /*#__PURE__*/React.createElement(TaskStatus, {
-        status: status
-      }), /*#__PURE__*/React.createElement(TaskCompletionRuleIcon, {
-        completionRule: completion_rule
-      })), /*#__PURE__*/React.createElement("div", {
+      }))), React.createElement("div", {
         className: "bcs-Task-assigneeListContainer"
-      }, /*#__PURE__*/React.createElement(AssigneeList, {
+      }, React.createElement(AssigneeList, {
         isOpen: isAssigneeListOpen,
         onCollapse: this.handleAssigneeListCollapse,
         onExpand: this.handleAssigneeListExpand,
         getAvatarUrl: getAvatarUrl,
         initialAssigneeCount: 3,
         users: isAssigneeListOpen ? assignedToFull : assigned_to
-      })), currentUserAssignment && shouldShowActions && /*#__PURE__*/React.createElement("div", {
-        className: "bcs-Task-actionsContainer"
-      }, /*#__PURE__*/React.createElement(TaskActions, {
+      })), shouldShowActions && React.createElement("div", {
+        className: "bcs-Task-actionsContainer",
+        "data-testid": "action-container"
+      }, React.createElement(TaskActions, {
+        isMultiFile: isMultiFile,
         taskType: task_type,
         onTaskApproval: isPending ? noop : function () {
-          _this2.handleTaskAction(id, currentUserAssignment.id, TASK_NEW_APPROVED);
+          return (// $FlowFixMe checked by shouldShowActions
+            _this2.handleTaskAction(id, currentUserAssignment.id, TASK_NEW_APPROVED)
+          );
         },
         onTaskReject: isPending ? noop : function () {
-          return _this2.handleTaskAction(id, currentUserAssignment.id, TASK_NEW_REJECTED);
+          return (// $FlowFixMe checked by shouldShowActions
+            _this2.handleTaskAction(id, currentUserAssignment.id, TASK_NEW_REJECTED)
+          );
         },
         onTaskComplete: isPending ? noop : function () {
-          return _this2.handleTaskAction(id, currentUserAssignment.id, TASK_NEW_COMPLETED);
+          return _this2.handleTaskAction(id, // $FlowFixMe checked by shouldShowActions
+          currentUserAssignment.id, TASK_NEW_COMPLETED);
+        },
+        onTaskView: onView && function () {
+          return onView(id, isCreator);
         }
-      })))), /*#__PURE__*/React.createElement(TaskModal, {
+      })))), React.createElement(TaskModal, {
         editMode: TASK_EDIT_MODE_EDIT,
         error: modalError,
         feedbackUrl: getFeatureConfig(features, 'activityFeed.tasks').feedbackUrl || '',

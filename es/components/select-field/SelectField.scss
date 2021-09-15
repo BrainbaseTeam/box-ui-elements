@@ -1,5 +1,6 @@
 @import '../../styles/variables';
 
+.bdl-SelectField,
 .select-field {
     .overlay {
         min-width: 100%;
@@ -9,12 +10,32 @@
         margin: 10px 0;
         border-bottom: 1px solid $bdl-gray-20;
     }
+
+    .select-field-search-container {
+        width: 100%;
+        padding-right: $bdl-grid-unit;
+        padding-bottom: $bdl-grid-unit * 2;
+        padding-left: $bdl-grid-unit;
+
+        .search-input {
+            width: 100%;
+        }
+    }
 }
 
 .select-option {
     display: flex;
     align-items: center;
     white-space: nowrap;
+}
+
+.select-option.is-clear-option {
+    color: $box-blue;
+    font-weight: bold;
+}
+
+.select-option.is-disabled {
+    pointer-events: none;
 }
 
 .select-option-check-icon {
@@ -28,4 +49,16 @@
 .bdl-SelectField-overlay--scrollable {
     max-height: 340px; // show at most 12 items in the dropdown menu
     overflow-y: auto;
+}
+
+.bdl-SelectFieldDropdown {
+    z-index: 4;
+    min-width: 100%;
+    overflow-x: hidden;
+}
+
+.bdl-SelectField-optionText {
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }

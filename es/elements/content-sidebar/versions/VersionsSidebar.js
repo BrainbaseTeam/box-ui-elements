@@ -32,29 +32,30 @@ var VersionsSidebar = function VersionsSidebar(_ref) {
   var showVersions = !!versions.length;
   var showEmpty = !isLoading && !showVersions;
   var showError = !!error;
-  return /*#__PURE__*/React.createElement(SidebarContent, {
+  return React.createElement(SidebarContent, {
     className: "bcs-Versions",
     "data-resin-component": "preview",
     "data-resin-feature": "versions",
-    title: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(BackButton, {
+    title: React.createElement(React.Fragment, null, React.createElement(BackButton, {
       "data-resin-target": "back",
       to: "/".concat(parentName)
-    }), /*#__PURE__*/React.createElement(FormattedMessage, messages.versionsTitle))
-  }, /*#__PURE__*/React.createElement(LoadingIndicatorWrapper, {
+    }), React.createElement(FormattedMessage, messages.versionsTitle))
+  }, React.createElement(LoadingIndicatorWrapper, {
     className: "bcs-Versions-content",
     crawlerPosition: "top",
     isLoading: isLoading
-  }, showError && /*#__PURE__*/React.createElement(InlineError, {
-    title: /*#__PURE__*/React.createElement(FormattedMessage, messages.versionServerError)
-  }, /*#__PURE__*/React.createElement(FormattedMessage, error)), showEmpty && /*#__PURE__*/React.createElement("div", {
+  }, showError && React.createElement(InlineError, {
+    title: React.createElement(FormattedMessage, messages.versionServerError)
+  }, React.createElement(FormattedMessage, error)), showEmpty && React.createElement("div", {
     className: "bcs-Versions-empty"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.versionsEmpty)), showVersions && /*#__PURE__*/React.createElement("div", {
+  }, React.createElement(FormattedMessage, messages.versionsEmpty)), showVersions && React.createElement("div", {
     className: "bcs-Versions-menu"
-  }, /*#__PURE__*/React.createElement(VersionsMenu, _extends({
+  }, React.createElement(VersionsMenu, _extends({
     versions: versions
-  }, rest))), showLimit && /*#__PURE__*/React.createElement("div", {
-    className: "bcs-Versions-maxEntries"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.versionMaxEntries, {
+  }, rest))), showLimit && React.createElement("div", {
+    className: "bcs-Versions-maxEntries",
+    "data-testid": "max-versions"
+  }, React.createElement(FormattedMessage, _extends({}, messages.versionMaxEntries, {
     values: {
       maxVersions: MAX_VERSIONS
     }

@@ -2,10 +2,11 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import Checkbox from '../../components/checkbox';
 import TextInput from '../../components/text-input';
 import Fieldset from '../../components/fieldset';
+import ExclamationMarkBadge16 from '../../icon/line/ExclamationMarkBadge16';
 import messages from './messages';
 
 var PasswordSection = function PasswordSection(_ref) {
@@ -20,6 +21,7 @@ var PasswordSection = function PasswordSection(_ref) {
       password = _ref.password,
       _ref$passwordCheckbox = _ref.passwordCheckboxProps,
       passwordCheckboxProps = _ref$passwordCheckbox === void 0 ? {} : _ref$passwordCheckbox,
+      passwordInformationText = _ref.passwordInformationText,
       _ref$passwordInputPro = _ref.passwordInputProps,
       passwordInputProps = _ref$passwordInputPro === void 0 ? {} : _ref$passwordInputPro;
 
@@ -27,12 +29,12 @@ var PasswordSection = function PasswordSection(_ref) {
     return null;
   }
 
-  var passwordInput = /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(TextInput, _extends({
+  var passwordInput = React.createElement("div", null, React.createElement(TextInput, _extends({
     disabled: !canChangePassword,
     error: error,
     hideLabel: true,
     isRequired: !isPasswordInitiallyEnabled,
-    label: /*#__PURE__*/React.createElement(FormattedMessage, messages.passwordPlaceholder),
+    label: React.createElement(FormattedMessage, messages.passwordPlaceholder),
     maxLength: 100
     /* maxlength due to backend constraint */
     ,
@@ -41,14 +43,22 @@ var PasswordSection = function PasswordSection(_ref) {
     placeholder: isPasswordInitiallyEnabled ? '••••••••' : formatMessage(messages.passwordPlaceholder),
     type: "password",
     value: password
-  }, passwordInputProps)));
-  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement(Fieldset, {
-    className: "password-section",
-    title: /*#__PURE__*/React.createElement(FormattedMessage, messages.passwordTitle)
-  }, /*#__PURE__*/React.createElement(Checkbox, _extends({
+  }, passwordInputProps)), passwordInformationText && React.createElement("div", {
+    className: "be password-section-information"
+  }, React.createElement("span", null, React.createElement(ExclamationMarkBadge16, {
+    className: "password-section-information-icon",
+    height: 12,
+    width: 12
+  })), React.createElement("span", {
+    className: "password-section-information-text"
+  }, passwordInformationText)));
+  return React.createElement("div", null, React.createElement("hr", null), React.createElement(Fieldset, {
+    className: "be password-section",
+    title: React.createElement(FormattedMessage, messages.passwordTitle)
+  }, React.createElement(Checkbox, _extends({
     isChecked: isPasswordEnabled,
     isDisabled: !canChangePassword,
-    label: /*#__PURE__*/React.createElement(FormattedMessage, messages.passwordLabel),
+    label: React.createElement(FormattedMessage, messages.passwordLabel),
     name: "isPasswordEnabled",
     onChange: onCheckboxChange,
     subsection: isPasswordEnabled ? passwordInput : undefined
@@ -58,7 +68,7 @@ var PasswordSection = function PasswordSection(_ref) {
 PasswordSection.propTypes = {
   canChangePassword: PropTypes.bool.isRequired,
   error: PropTypes.string,
-  intl: intlShape.isRequired,
+  intl: PropTypes.any,
   isPasswordAvailable: PropTypes.bool.isRequired,
   isPasswordEnabled: PropTypes.bool.isRequired,
   isPasswordInitiallyEnabled: PropTypes.bool.isRequired,
@@ -66,6 +76,7 @@ PasswordSection.propTypes = {
   onPasswordChange: PropTypes.func.isRequired,
   password: PropTypes.string,
   passwordCheckboxProps: PropTypes.object,
+  passwordInformationText: PropTypes.string,
   passwordInputProps: PropTypes.object
 };
 export { PasswordSection as PasswordSectionBase };

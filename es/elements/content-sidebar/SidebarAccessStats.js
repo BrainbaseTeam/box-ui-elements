@@ -19,7 +19,11 @@ var SidebarAccessStats = function SidebarAccessStats(_ref) {
   var onAccessStatsClick = _ref.onAccessStatsClick,
       _ref$accessStats = _ref.accessStats,
       accessStats = _ref$accessStats === void 0 ? {
-    has_count_overflowed: false
+    comment_count: undefined,
+    download_count: undefined,
+    edit_count: undefined,
+    has_count_overflowed: false,
+    preview_count: undefined
   } : _ref$accessStats,
       file = _ref.file,
       error = _ref.error,
@@ -34,10 +38,10 @@ var SidebarAccessStats = function SidebarAccessStats(_ref) {
   }
 
   var errorMessage = error ? intl.formatMessage(error) : undefined;
-  return /*#__PURE__*/React.createElement(SidebarSection, {
+  return React.createElement(SidebarSection, {
     interactionTarget: SECTION_TARGETS.ACCESS_STATS,
-    title: /*#__PURE__*/React.createElement(FormattedMessage, messages.sidebarAccessStats)
-  }, /*#__PURE__*/React.createElement(AccessStats, {
+    title: React.createElement(FormattedMessage, messages.sidebarAccessStats)
+  }, React.createElement(AccessStats, {
     errorMessage: errorMessage,
     commentCount: comment_count,
     commentStatButtonProps: _defineProperty({}, INTERACTION_TARGET, DETAILS_TARGETS.ACCESS_STATS.COMMENTS),

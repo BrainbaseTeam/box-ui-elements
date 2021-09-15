@@ -1,2 +1,2 @@
-export { default } from './DatePicker';
+export { default, DateFormat } from './DatePicker';
 //# sourceMappingURL=index.js.map

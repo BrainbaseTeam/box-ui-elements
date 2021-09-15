@@ -6,7 +6,11 @@ var messages = defineMessages({
   },
   disabledShareLinkPermission: {
     "id": "boxui.unifiedShare.disabledShareLinkPermission",
-    "defaultMessage": "This option isn\u2019t available for this item due to a security restriction or classification."
+    "defaultMessage": "This option is not available due to a security policy."
+  },
+  disabledMaliciousContentShareLinkPermission: {
+    "id": "boxui.unifiedShare.disabledMaliciousContentShareLinkPermission",
+    "defaultMessage": "This option isn\u2019t available for this item due to a security policy."
   },
   enterAtLeastOneEmailError: {
     "id": "boxui.unifiedShare.enterAtLeastOneEmail",
@@ -36,9 +40,17 @@ var messages = defineMessages({
     "id": "boxui.unifiedShare.ftuxConfirmLabel",
     "defaultMessage": "Got it"
   },
+  ftuxEditPermissionTooltipBody: {
+    "id": "boxui.unifiedShare.ftuxEditPermissionTooltipBody",
+    "defaultMessage": "Select the new edit option to easily share your file with people or groups."
+  },
+  ftuxEditPermissionTooltipTitle: {
+    "id": "boxui.unifiedShare.ftuxEditPermissionTooltipTitle",
+    "defaultMessage": "Collaboration made easy"
+  },
   collaboratorListTitle: {
     "id": "boxui.unifiedShare.collaboratorListTitle",
-    "defaultMessage": "People in '{itemName}'"
+    "defaultMessage": "People in \u2018{itemName}\u2019"
   },
   expirationTooltipClickableText: {
     "id": "boxui.unifiedShare.collaborators.expirationTooltipClickableText",
@@ -50,11 +62,11 @@ var messages = defineMessages({
   },
   modalTitle: {
     "id": "boxui.unifiedShare.modalTitle",
-    "defaultMessage": "Share '{itemName}'"
+    "defaultMessage": "Share \u2018{itemName}\u2019"
   },
   emailModalTitle: {
     "id": "boxui.unifiedShare.emailModalTitle",
-    "defaultMessage": "Send Link to '{itemName}'"
+    "defaultMessage": "Send Link to \u2018{itemName}\u2019"
   },
   inviteDisabledTooltip: {
     "id": "boxui.unifiedShare.inviteDisabledTooltip",
@@ -72,17 +84,21 @@ var messages = defineMessages({
     "id": "boxui.unifiedShare.sharedLinkSectionLabel",
     "defaultMessage": "Share Link"
   },
+  sharedLinkURLLabel: {
+    "id": "boxui.share.sharedLinkURLLabel",
+    "defaultMessage": "URL"
+  },
   settingsButtonLabel: {
     "id": "boxui.unifiedShare.settingsButtonLabel",
     "defaultMessage": "Open shared link settings popup"
   },
   linkShareOff: {
     "id": "boxui.unifiedShare.linkShareOff",
-    "defaultMessage": "Enable shared link"
+    "defaultMessage": "Create shared link"
   },
   linkShareOn: {
     "id": "boxui.unifiedShare.linkShareOn",
-    "defaultMessage": "Shared link is enabled"
+    "defaultMessage": "Shared link is created"
   },
   messageTitle: {
     "id": "boxui.unifiedShare.message",
@@ -125,6 +141,10 @@ var messages = defineMessages({
     "id": "boxui.unifiedShare.removeLinkTooltip",
     "defaultMessage": "You do not have permission to remove the link."
   },
+  disabledCreateLinkTooltip: {
+    "id": "boxui.unifiedShare.disabledCreateLinkTooltip",
+    "defaultMessage": "You do not have permission to create the link."
+  },
   sendSharedLink: {
     "id": "boxui.unifiedShare.sendSharedLink",
     "defaultMessage": "Send Shared Link"
@@ -142,13 +162,13 @@ var messages = defineMessages({
     "id": "boxui.unifiedShare.sharedLinkPermissionsViewDownload",
     "defaultMessage": "Can view and download"
   },
-  sharedLinkPermissionsViewDownloadDescription: {
-    "id": "boxui.unifiedShare.sharedLinkPermissionsViewDownloadDescription",
-    "defaultMessage": "Users can view and download"
-  },
   sharedLinkPermissionsViewOnly: {
     "id": "boxui.unifiedShare.sharedLinkPermissionsViewOnly",
     "defaultMessage": "Can view only"
+  },
+  ftuxSharedLinkPermissionsEditTag: {
+    "id": "boxui.unifiedShare.ftuxSharedLinkPermissionsEditTag",
+    "defaultMessage": "NEW"
   },
   sharedLinkPermissionsEdit: {
     "id": "boxui.unifiedShare.sharedLinkPermissionsEdit",
@@ -157,10 +177,6 @@ var messages = defineMessages({
   sharedLinkPermissionsEditTooltip: {
     "id": "boxui.unifiedShare.sharedLinkPermissionsEditTooltip",
     "defaultMessage": "This permission can only be changed in Box Notes"
-  },
-  sharedLinkPermissionsViewOnlyDescription: {
-    "id": "boxui.unifiedShare.sharedLinkPermissionsViewOnlyDescription",
-    "defaultMessage": "Users can view only"
   },
   sharedLinkDisabledTooltipCopy: {
     "id": "boxui.unifiedShare.sharedLinkDisabledTooltipCopy",
@@ -173,6 +189,14 @@ var messages = defineMessages({
   sharedLinkPubliclyAvailable: {
     "id": "boxui.unifiedShare.sharedLinkPubliclyAvailable",
     "defaultMessage": "This content is publicly available to anyone with the link."
+  },
+  sharedLinkEditablePubliclyAvailable: {
+    "id": "boxui.unifiedShare.sharedLinkEditablePubliclyAvailable",
+    "defaultMessage": "Publicly available for anyone to view and download. Any logged in users with the link can edit."
+  },
+  sharedLinkElevatedEditableCompanyAvailable: {
+    "id": "boxui.unifiedShare.sharedLinkElevatedEditableCompanyAvailable",
+    "defaultMessage": "People who have access to this link can edit."
   },
   upgradeGetMoreAccessControlsDescription: {
     "id": "boxui.unifiedShare.upgradeGetMoreAccessControlsDescription",
@@ -317,6 +341,47 @@ var messages = defineMessages({
   recommendedSharingTooltipCalloutText: {
     "id": "boxui.unifiedShare.recommendedSharingTooltipCalloutText",
     "defaultMessage": "Based on your usage, we think {fullName} would be interested in this file."
+  },
+  // External collab restrictions and business justifications
+  justificationSelectPlaceholder: {
+    "id": "boxui.unifiedShare.justificationSelectPlaceholder",
+    "defaultMessage": "Select Justification"
+  },
+  justificationRequiredError: {
+    "id": "boxui.unifiedShare.justificationRequiredError",
+    "defaultMessage": "Select a justification or remove people to continue"
+  },
+  restrictedContactsError: {
+    "id": "boxui.unifiedShare.restrictedContactsError",
+    "defaultMessage": "Remove people to continue"
+  },
+  justifiableContactRestrictionNotice: {
+    "id": "boxui.unifiedShare.justifiableContactRestrictionNotice",
+    "defaultMessage": "This content requires a business justification to invite {count, plural, one {{count} person} other {{count} people}}. Please select a business justification below."
+  },
+  justifiableContactRestrictionNoticeSingular: {
+    "id": "boxui.unifiedShare.justifiableContactRestrictionNoticeSingular",
+    "defaultMessage": "This content requires a business justification to invite {email}. Please select a business justification below."
+  },
+  justifiableContactRestrictionRemoveButtonLabel: {
+    "id": "boxui.unifiedShare.justifiableContactRestrictionRemoveButtonLabel",
+    "defaultMessage": "Alternatively, remove {count, plural, one {the person} other {{count} people}} and continue"
+  },
+  contactRestrictionNotice: {
+    "id": "boxui.unifiedShare.contactRestrictionNotice",
+    "defaultMessage": "Invitations cannot be sent to {count, plural, one {{count} person} other {{count} people}} because external collaboration is restricted due to the applied security policy."
+  },
+  contactRestrictionNoticeSingular: {
+    "id": "boxui.unifiedShare.contactRestrictionNoticeSingular",
+    "defaultMessage": "Invitations cannot be sent to {email} because external collaboration is restricted due to the applied security policy."
+  },
+  contactRestrictionRemoveButtonLabel: {
+    "id": "boxui.unifiedShare.contactRestrictionRemoveButtonLabel",
+    "defaultMessage": "Remove {count, plural, one {the person} other {{count} people}} and continue"
+  },
+  contactEmailsTooltipText: {
+    "id": "boxui.unifiedShare.contactEmailsTooltipText",
+    "defaultMessage": "{emails}, and {remainingEmailsCount} more"
   }
 });
 export default messages;

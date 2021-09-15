@@ -25,7 +25,7 @@ var Ghost = function Ghost(_ref) {
       style = _ref$style === void 0 ? {} : _ref$style,
       rest = _objectWithoutProperties(_ref, ["isAnimated", "className", "height", "width", "borderRadius", "style"]);
 
-  return /*#__PURE__*/React.createElement("span", _extends({
+  return React.createElement("span", _extends({
     className: classNames(className, 'bdl-Ghost', {
       'bdl-Ghost--isAnimated': isAnimated
     }),

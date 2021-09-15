@@ -18,11 +18,11 @@ function getErrorMessage() {
   var message; // Use the first disabled reason as the description if the integration is disabled.
 
   var code = disabledReasons[0];
-  var defaultErrorMessage = /*#__PURE__*/React.createElement(FormattedMessage, messages.errorOpenWithDescription);
+  var defaultErrorMessage = React.createElement(FormattedMessage, messages.errorOpenWithDescription);
 
   switch (code) {
     case 'blocked_by_shield_access_policy':
-      message = /*#__PURE__*/React.createElement(FormattedMessage, messages.boxEditErrorBlockedByPolicy);
+      message = React.createElement(FormattedMessage, messages.boxEditErrorBlockedByPolicy);
       break;
 
     case 'collaborators_hidden':
@@ -49,20 +49,20 @@ var OpenWithDropdownMenuItem = function OpenWithDropdownMenuItem(_ref) {
   var className = classNames({
     'bcow-box-tools-uninstalled': utils.isDisabledBecauseBoxToolsIsNotInstalled(integration)
   });
-  return /*#__PURE__*/React.createElement(MenuItem, {
+  return React.createElement(MenuItem, {
     className: className,
     isDisabled: isDisabled,
     onClick: function onClick() {
       return _onClick(integration);
     }
-  }, /*#__PURE__*/React.createElement(Icon, {
+  }, React.createElement(Icon, {
     dimension: OPEN_WITH_MENU_ITEM_ICON_SIZE,
     extension: extension,
     height: OPEN_WITH_MENU_ITEM_ICON_SIZE,
     width: OPEN_WITH_MENU_ITEM_ICON_SIZE
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("p", {
+  }), React.createElement("span", null, React.createElement("p", {
     className: "bcow-menu-item-title"
-  }, displayName), /*#__PURE__*/React.createElement("p", {
+  }, displayName), React.createElement("p", {
     className: "bcow-menu-item-description"
   }, description)));
 };

@@ -23,7 +23,9 @@ import { getEntryFromDataTransferItem, getFile, getFileAPIOptions, getDataTransf
 import FolderUploadNode from './FolderUploadNode';
 var PATH_DELIMITER = '/';
 
-var FolderUpload = /*#__PURE__*/function () {
+var FolderUpload =
+/*#__PURE__*/
+function () {
   /**
    * [constructor]
    *
@@ -113,7 +115,9 @@ var FolderUpload = /*#__PURE__*/function () {
   }, {
     key: "buildFolderTreeFromDataTransferItem",
     value: function () {
-      var _buildFolderTreeFromDataTransferItem = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(dataTransferItem) {
+      var _buildFolderTreeFromDataTransferItem = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee(dataTransferItem) {
         var item, apiOptions, entry, name;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -151,7 +155,7 @@ var FolderUpload = /*#__PURE__*/function () {
   }, {
     key: "createFolderUploadNode",
     value: function createFolderUploadNode(name, apiOptions, entry) {
-      return new FolderUploadNode(name, this.addFilesToUploadQueue, this.addFolderToUploadQueue, apiOptions, _objectSpread(_objectSpread({}, this.baseAPIOptions), apiOptions), entry);
+      return new FolderUploadNode(name, this.addFilesToUploadQueue, this.addFolderToUploadQueue, apiOptions, _objectSpread({}, this.baseAPIOptions, {}, apiOptions), entry);
     }
     /**
      * Upload folders
@@ -165,7 +169,9 @@ var FolderUpload = /*#__PURE__*/function () {
   }, {
     key: "upload",
     value: function () {
-      var _upload = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(_ref) {
+      var _upload = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee2(_ref) {
         var errorCallback, successCallback, newFolderId;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {

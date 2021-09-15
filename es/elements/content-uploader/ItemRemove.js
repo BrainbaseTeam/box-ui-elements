@@ -28,16 +28,16 @@ var ItemRemove = function ItemRemove(_ref) {
     resin['data-resin-target'] = target;
   }
 
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "bcu-item-action"
-  }, /*#__PURE__*/React.createElement(Tooltip, {
+  }, React.createElement(Tooltip, {
     position: "top-left",
-    text: /*#__PURE__*/React.createElement(FormattedMessage, messages.remove)
-  }, /*#__PURE__*/React.createElement(PlainButton, _extends({
+    text: React.createElement(FormattedMessage, messages.remove)
+  }, React.createElement(PlainButton, _extends({
     onClick: onClick,
     type: "button",
     isDisabled: status === STATUS_STAGED
-  }, resin), /*#__PURE__*/React.createElement(IconClose, null))));
+  }, resin), React.createElement(IconClose, null))));
 };
 
 export default ItemRemove;

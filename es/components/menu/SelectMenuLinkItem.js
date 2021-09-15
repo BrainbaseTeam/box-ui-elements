@@ -4,7 +4,7 @@ import * as React from 'react';
 import MenuLinkItem from './MenuLinkItem';
 
 var SelectMenuLinkItem = function SelectMenuLinkItem(props) {
-  return /*#__PURE__*/React.createElement(MenuLinkItem, _extends({
+  return React.createElement(MenuLinkItem, _extends({
     isSelectItem: true
   }, props));
 };

@@ -16,7 +16,7 @@ function FeatureFlag(_ref) {
       children = _ref.children,
       _ref$not = _ref.not,
       not = _ref$not === void 0 ? false : _ref$not;
-  return /*#__PURE__*/React.createElement(FeatureConsumer, null, function (features) {
+  return React.createElement(FeatureConsumer, null, function (features) {
     var isEnabled = not ? !isFeatureEnabled(features, feature) : isFeatureEnabled(features, feature);
     var featureConfig = getFeatureConfig(features, feature);
     if (children) return isEnabled && children;

@@ -40,7 +40,7 @@ const messages = defineMessages({
     previewErrorBlockedByPolicy: {
         id: 'be.previewErrorBlockedByPolicy',
         description: 'Error message when Preview fails due to the files call which is blocked by an access policy.',
-        defaultMessage: 'Your access is restricted due to the classification applied to this content.',
+        defaultMessage: 'Your access to this content is restricted due to a security policy.',
     },
     boxEditErrorBlockedByPolicy: {
         id: 'be.boxEditErrorBlockedByPolicy',
@@ -712,6 +712,11 @@ const messages = defineMessages({
         description: 'Error message shown when one or more child folders failed to upload',
         defaultMessage: 'One or more child folders failed to upload.',
     },
+    uploadsPackageUploadErrorMessage: {
+        id: 'be.uploadsPackageUploadErrorMessage',
+        description: 'Error message to display when a macOS package failed to upload',
+        defaultMessage: 'Failed to upload package file. Please retry by saving as a single file.',
+    },
     uploadsDefaultErrorMessage: {
         id: 'be.uploadsDefaultErrorMessage',
         description: 'Default error message shown when upload fails',
@@ -739,13 +744,18 @@ const messages = defineMessages({
     },
     keywordsList: {
         id: 'be.keywordsList',
-        defaultMessage: 'Keywords: { words }',
+        defaultMessage: 'Keywords: {words}',
         description: 'Label for a list of keywords. {words} are the list of keywords.',
     },
     noActivity: {
         id: 'be.noActivity',
-        defaultMessage: 'No Activity Yet',
+        defaultMessage: 'No activity to show',
         description: 'Message displayed in an empty activity feed',
+    },
+    noActivityAnnotationPrompt: {
+        id: 'be.noActivityAnnotationPrompt',
+        defaultMessage: 'Hover over the preview and use the controls at the bottom to annotate the file.',
+        description: 'Message shown alongside empty activity feed when user can annotate',
     },
     noActivityCommentPrompt: {
         id: 'be.noActivityCommentPrompt',
@@ -787,6 +797,12 @@ const messages = defineMessages({
         defaultMessage: '{name} uploaded v{version_number}',
         description:
             'Message displayed in the activity feed for a newly uploaded version. {name} is the user who performed the action. {version_number} is the file version string.',
+    },
+    fileRequestDisplayName: {
+        defaultMessage: 'File Request',
+        description:
+            'name of the File Request feature used to translate when a File Request is uploaded by the service',
+        id: 'be.fileRequestDisplayName',
     },
     defaultInlineErrorContentMessage: {
         id: 'be.defaultInlineErrorContentMessage',
@@ -938,6 +954,21 @@ const messages = defineMessages({
         description:
             'If a user has been deleted, we call the user "a prior collaborator" - meaning someone who used to be able to collaborate on the content.',
         defaultMessage: 'A Prior Collaborator',
+    },
+    moveTo: {
+        id: 'be.moveTo',
+        description: 'Label for move to action',
+        defaultMessage: 'Move to...',
+    },
+    setThumbnailMenuItem: {
+        id: 'be.setThumbnailMenuItem',
+        description: 'Label for set custom thumbnail action',
+        defaultMessage: 'Set custom thumbnail',
+    },
+    removeThumbnailMenuItem: {
+        id: 'be.removeThumbnailMenuItem',
+        description: 'Label for remove custom thumbnail action',
+        defaultMessage: 'Remove custom thumbnail',
     },
 });
 

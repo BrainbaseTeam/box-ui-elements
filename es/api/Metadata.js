@@ -2,15 +2,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -24,19 +20,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 /**
  * 
@@ -50,15 +42,15 @@ import { getTypedFileId } from '../utils/file';
 import File from './File';
 import { HEADER_CONTENT_TYPE, METADATA_SCOPE_ENTERPRISE, METADATA_SCOPE_GLOBAL, METADATA_TEMPLATE_FETCH_LIMIT, METADATA_TEMPLATE_PROPERTIES, METADATA_TEMPLATE_CLASSIFICATION, METADATA_TEMPLATE_SKILLS, FIELD_METADATA_SKILLS, CACHE_PREFIX_METADATA, ERROR_CODE_UPDATE_SKILLS, ERROR_CODE_UPDATE_METADATA, ERROR_CODE_CREATE_METADATA, ERROR_CODE_DELETE_METADATA, ERROR_CODE_FETCH_METADATA, ERROR_CODE_FETCH_METADATA_TEMPLATES, ERROR_CODE_FETCH_SKILLS } from '../constants';
 
-var Metadata = /*#__PURE__*/function (_File) {
+var Metadata =
+/*#__PURE__*/
+function (_File) {
   _inherits(Metadata, _File);
-
-  var _super = _createSuper(Metadata);
 
   function Metadata() {
     _classCallCheck(this, Metadata);
 
-    return _super.apply(this, arguments);
+    return _possibleConstructorReturn(this, _getPrototypeOf(Metadata).apply(this, arguments));
   }
 
   _createClass(Metadata, [{
@@ -141,6 +133,18 @@ var Metadata = /*#__PURE__*/function (_File) {
       return "".concat(this.getMetadataTemplateUrl(), "?metadata_instance_id=").concat(id);
     }
     /**
+     * API URL for getting metadata template schema by template key
+     *
+     * @param {string} templateKey - metadata template key
+     * @return {string} API url for getting template schema by template key
+     */
+
+  }, {
+    key: "getMetadataTemplateSchemaUrl",
+    value: function getMetadataTemplateSchemaUrl(templateKey) {
+      return "".concat(this.getMetadataTemplateUrl(), "/enterprise/").concat(templateKey, "/schema");
+    }
+    /**
      * API URL for metadata templates
      *
      * @param {string} scope - metadata scope or id
@@ -209,7 +213,9 @@ var Metadata = /*#__PURE__*/function (_File) {
   }, {
     key: "getTemplates",
     value: function () {
-      var _getTemplates = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(id, scope, instanceId) {
+      var _getTemplates = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee(id, scope, instanceId) {
         var templates, url, status;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -264,6 +270,21 @@ var Metadata = /*#__PURE__*/function (_File) {
       return getTemplates;
     }()
     /**
+     * Gets metadata template schema by template key
+     *
+     * @param {string} templateKey - template key
+     * @return {Promise} Promise object of metadata template
+     */
+
+  }, {
+    key: "getSchemaByTemplateKey",
+    value: function getSchemaByTemplateKey(templateKey) {
+      var url = this.getMetadataTemplateSchemaUrl(templateKey);
+      return this.xhr.get({
+        url: url
+      });
+    }
+    /**
      * Gets metadata instances for a Box file
      *
      * @param {string} id - file id
@@ -273,7 +294,9 @@ var Metadata = /*#__PURE__*/function (_File) {
   }, {
     key: "getInstances",
     value: function () {
-      var _getInstances = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(id) {
+      var _getInstances = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee2(id) {
         var instances, status;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
@@ -379,7 +402,9 @@ var Metadata = /*#__PURE__*/function (_File) {
   }, {
     key: "getTemplateForInstance",
     value: function () {
-      var _getTemplateForInstance = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(id, instance, templates) {
+      var _getTemplateForInstance = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee3(id, instance, templates) {
         var instanceId, templateKey, scope, template, crossEnterpriseTemplate;
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
@@ -437,7 +462,9 @@ var Metadata = /*#__PURE__*/function (_File) {
   }, {
     key: "getEditors",
     value: function () {
-      var _getEditors = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(id, instances, customPropertiesTemplate, enterpriseTemplates, globalTemplates, canEdit) {
+      var _getEditors = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee5(id, instances, customPropertiesTemplate, enterpriseTemplates, globalTemplates, canEdit) {
         var _this = this;
 
         var templates, filteredInstances, editors;
@@ -453,8 +480,12 @@ var Metadata = /*#__PURE__*/function (_File) {
 
                 editors = [];
                 _context5.next = 5;
-                return Promise.all(filteredInstances.map( /*#__PURE__*/function () {
-                  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(instance) {
+                return Promise.all(filteredInstances.map(
+                /*#__PURE__*/
+                function () {
+                  var _ref = _asyncToGenerator(
+                  /*#__PURE__*/
+                  regeneratorRuntime.mark(function _callee4(instance) {
                     var template;
                     return regeneratorRuntime.wrap(function _callee4$(_context4) {
                       while (1) {
@@ -514,7 +545,9 @@ var Metadata = /*#__PURE__*/function (_File) {
   }, {
     key: "getMetadata",
     value: function () {
-      var _getMetadata = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(file, successCallback, errorCallback, hasMetadataFeature) {
+      var _getMetadata = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee6(file, successCallback, errorCallback, hasMetadataFeature) {
         var options,
             id,
             permissions,
@@ -522,8 +555,8 @@ var Metadata = /*#__PURE__*/function (_File) {
             cache,
             key,
             customPropertiesTemplate,
-            _yield$Promise$all,
-            _yield$Promise$all2,
+            _ref2,
+            _ref3,
             instances,
             globalTemplates,
             enterpriseTemplates,
@@ -580,11 +613,11 @@ var Metadata = /*#__PURE__*/function (_File) {
                 return Promise.all([this.getInstances(id), this.getTemplates(id, METADATA_SCOPE_GLOBAL), hasMetadataFeature ? this.getTemplates(id, METADATA_SCOPE_ENTERPRISE) : Promise.resolve([])]);
 
               case 19:
-                _yield$Promise$all = _context6.sent;
-                _yield$Promise$all2 = _slicedToArray(_yield$Promise$all, 3);
-                instances = _yield$Promise$all2[0];
-                globalTemplates = _yield$Promise$all2[1];
-                enterpriseTemplates = _yield$Promise$all2[2];
+                _ref2 = _context6.sent;
+                _ref3 = _slicedToArray(_ref2, 3);
+                instances = _ref3[0];
+                globalTemplates = _ref3[1];
+                enterpriseTemplates = _ref3[2];
                 _context6.next = 26;
                 return this.getEditors(id, instances, customPropertiesTemplate, enterpriseTemplates, globalTemplates, !!permissions.can_upload);
 
@@ -632,7 +665,9 @@ var Metadata = /*#__PURE__*/function (_File) {
   }, {
     key: "getSkills",
     value: function () {
-      var _getSkills = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(file, successCallback, errorCallback) {
+      var _getSkills = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee7(file, successCallback, errorCallback) {
         var forceFetch,
             id,
             cache,
@@ -739,7 +774,9 @@ var Metadata = /*#__PURE__*/function (_File) {
   }, {
     key: "updateSkills",
     value: function () {
-      var _updateSkills = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8(file, operations, successCallback, errorCallback) {
+      var _updateSkills = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee8(file, operations, successCallback, errorCallback) {
         var id, permissions, metadata, cards;
         return regeneratorRuntime.wrap(function _callee8$(_context8) {
           while (1) {
@@ -823,7 +860,9 @@ var Metadata = /*#__PURE__*/function (_File) {
   }, {
     key: "updateMetadata",
     value: function () {
-      var _updateMetadata = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9(file, template, operations, successCallback, errorCallback) {
+      var _updateMetadata = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee9(file, template, operations, successCallback, errorCallback) {
         var id, permissions, canEdit, metadata, cache, key, cachedMetadata, editor;
         return regeneratorRuntime.wrap(function _callee9$(_context9) {
           while (1) {
@@ -871,10 +910,14 @@ var Metadata = /*#__PURE__*/function (_File) {
                   key = this.getMetadataCacheKey(id);
                   cachedMetadata = cache.get(key);
                   editor = this.createEditor(metadata.data, template, canEdit);
-                  cachedMetadata.editors.splice(cachedMetadata.editors.findIndex(function (_ref2) {
-                    var instance = _ref2.instance;
-                    return instance.id === editor.instance.id;
-                  }), 1, editor);
+
+                  if (cachedMetadata && cachedMetadata.editors) {
+                    cachedMetadata.editors.splice(cachedMetadata.editors.findIndex(function (_ref4) {
+                      var instance = _ref4.instance;
+                      return instance.id === editor.instance.id;
+                    }), 1, editor);
+                  }
+
                   this.successHandler(editor);
                 }
 
@@ -913,7 +956,9 @@ var Metadata = /*#__PURE__*/function (_File) {
   }, {
     key: "createMetadata",
     value: function () {
-      var _createMetadata = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee10(file, template, successCallback, errorCallback) {
+      var _createMetadata = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee10(file, template, successCallback, errorCallback) {
         var id, permissions, is_externally_owned, canEdit, isProperties, metadata, cache, key, cachedMetadata, editor;
         return regeneratorRuntime.wrap(function _callee10$(_context10) {
           while (1) {
@@ -1011,7 +1056,9 @@ var Metadata = /*#__PURE__*/function (_File) {
   }, {
     key: "deleteMetadata",
     value: function () {
-      var _deleteMetadata = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee11(file, template, successCallback, errorCallback) {
+      var _deleteMetadata = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee11(file, template, successCallback, errorCallback) {
         var scope, templateKey, id, permissions, cache, key, metadata;
         return regeneratorRuntime.wrap(function _callee11$(_context11) {
           while (1) {

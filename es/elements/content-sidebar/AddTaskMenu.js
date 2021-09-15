@@ -11,43 +11,44 @@ import { TASK_TYPE_APPROVAL, TASK_TYPE_GENERAL } from '../../constants';
 import './AddTaskMenu.scss';
 
 var AddTaskMenu = function AddTaskMenu(props) {
-  return /*#__PURE__*/React.createElement(DropdownMenu, {
+  return React.createElement(DropdownMenu, {
     constrainToScrollParent: true,
     isRightAligned: true
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     isDisabled: props.isDisabled,
-    type: "button"
-  }, /*#__PURE__*/React.createElement(MenuToggle, null, /*#__PURE__*/React.createElement(FormattedMessage, messages.tasksAddTask))), /*#__PURE__*/React.createElement(Menu, {
+    type: "button",
+    setRef: props.setAddTaskButtonRef
+  }, React.createElement(MenuToggle, null, React.createElement(FormattedMessage, messages.tasksAddTask))), React.createElement(Menu, {
     className: "bcs-AddTaskMenu"
-  }, /*#__PURE__*/React.createElement(MenuItem, {
+  }, React.createElement(MenuItem, {
     className: "bcs-AddTaskMenu-menuItem",
     onClick: function onClick() {
       return props.onMenuItemClick(TASK_TYPE_GENERAL);
     }
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "bcs-AddTaskMenu-icon"
-  }, /*#__PURE__*/React.createElement(IconTaskGeneral, {
+  }, React.createElement(IconTaskGeneral, {
     width: 30,
     height: 30
-  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", null, React.createElement("div", {
     className: "bcs-AddTaskMenu-title"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.taskAddTaskGeneral)), /*#__PURE__*/React.createElement("div", {
+  }, React.createElement(FormattedMessage, messages.taskAddTaskGeneral)), React.createElement("div", {
     className: "bcs-AddTaskMenu-description"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.taskAddTaskGeneralDescription)))), /*#__PURE__*/React.createElement(MenuItem, {
+  }, React.createElement(FormattedMessage, messages.taskAddTaskGeneralDescription)))), React.createElement(MenuItem, {
     className: "bcs-AddTaskMenu-menuItem",
     onClick: function onClick() {
       return props.onMenuItemClick(TASK_TYPE_APPROVAL);
     }
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "bcs-AddTaskMenu-icon"
-  }, /*#__PURE__*/React.createElement(IconTaskApproval, {
+  }, React.createElement(IconTaskApproval, {
     width: 30,
     height: 30
-  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", null, React.createElement("div", {
     className: "bcs-AddTaskMenu-title"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.taskAddTaskApproval)), /*#__PURE__*/React.createElement("div", {
+  }, React.createElement(FormattedMessage, messages.taskAddTaskApproval)), React.createElement("div", {
     className: "bcs-AddTaskMenu-description"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.taskAddTaskApprovalDescription))))));
+  }, React.createElement(FormattedMessage, messages.taskAddTaskApprovalDescription))))));
 };
 
 export default AddTaskMenu;

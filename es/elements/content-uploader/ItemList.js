@@ -10,6 +10,7 @@ import nameCellRenderer from './nameCellRenderer';
 import progressCellRenderer from './progressCellRenderer';
 import actionCellRenderer from './actionCellRenderer';
 import removeCellRenderer from './removeCellRenderer';
+import 'react-virtualized/styles.css';
 import './ItemList.scss';
 
 var ItemList = function ItemList(_ref) {
@@ -19,14 +20,14 @@ var ItemList = function ItemList(_ref) {
       onClick = _ref.onClick,
       _ref$onRemoveClick = _ref.onRemoveClick,
       onRemoveClick = _ref$onRemoveClick === void 0 ? noop : _ref$onRemoveClick;
-  return /*#__PURE__*/React.createElement(AutoSizer, null, function (_ref2) {
+  return React.createElement(AutoSizer, null, function (_ref2) {
     var width = _ref2.width,
         height = _ref2.height;
     var nameCell = nameCellRenderer(isResumableUploadsEnabled);
     var progressCell = progressCellRenderer();
     var actionCell = actionCellRenderer(isResumableUploadsEnabled, onClick);
     var removeCell = removeCellRenderer(onRemoveClick);
-    return /*#__PURE__*/React.createElement(Table, {
+    return React.createElement(Table, {
       className: "bcu-item-list",
       disableHeader: true,
       headerHeight: 0,
@@ -39,13 +40,13 @@ var ItemList = function ItemList(_ref) {
       },
       rowHeight: 50,
       width: width
-    }, /*#__PURE__*/React.createElement(Column, {
+    }, React.createElement(Column, {
       cellRenderer: nameCell,
       dataKey: "name",
       flexGrow: 1,
       flexShrink: 1,
       width: 300
-    }), /*#__PURE__*/React.createElement(Column, {
+    }), React.createElement(Column, {
       cellRenderer: progressCell,
       dataKey: "progress",
       flexGrow: 1,
@@ -54,13 +55,13 @@ var ItemList = function ItemList(_ref) {
         textAlign: 'right'
       },
       width: 300
-    }), /*#__PURE__*/React.createElement(Column, {
+    }), React.createElement(Column, {
       className: isResumableUploadsEnabled ? '' : 'bcu-item-list-action-column',
       cellRenderer: actionCell,
       dataKey: "status",
       flexShrink: 0,
       width: 25
-    }), isResumableUploadsEnabled && /*#__PURE__*/React.createElement(Column, {
+    }), isResumableUploadsEnabled && React.createElement(Column, {
       className: "bcu-item-list-action-column",
       cellRenderer: removeCell,
       dataKey: "remove",

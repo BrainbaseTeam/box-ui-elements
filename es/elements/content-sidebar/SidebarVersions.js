@@ -19,9 +19,10 @@ var SidebarVersions = function SidebarVersions(_ref) {
     return null;
   }
 
-  return /*#__PURE__*/React.createElement(VersionHistoryLink, {
+  return React.createElement(VersionHistoryLink, {
     className: "bcs-SidebarVersions",
     "data-resin-target": DETAILS_TARGETS.VERSION_HISTORY,
+    "data-testid": DETAILS_TARGETS.VERSION_HISTORY,
     onClick: onVersionHistoryClick,
     versionCount: versionNumber
   });

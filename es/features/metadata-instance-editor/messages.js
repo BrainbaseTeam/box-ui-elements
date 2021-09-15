@@ -52,33 +52,9 @@ var messages = defineMessages({
     "id": "boxui.metadataInstanceEditor.invalidValue",
     "defaultMessage": "Invalid Input!"
   },
-  invalidMetadataFieldType: {
-    "id": "boxui.metadataInstanceEditor.invalidMetadataFieldType",
-    "defaultMessage": "Invalid metadata field type!"
-  },
   metadataEditTooltip: {
     "id": "boxui.metadataInstanceEditor.editTooltip",
     "defaultMessage": "Edit Metadata"
-  },
-  metadataFieldNoValue: {
-    "id": "boxui.metadataInstanceEditor.fieldNoValue",
-    "defaultMessage": "No Value"
-  },
-  metadataFieldSelectValue: {
-    "id": "boxui.metadataInstanceEditor.fieldSelectValue",
-    "defaultMessage": "Select Value"
-  },
-  metadataFieldMultiSelectValue: {
-    "id": "boxui.metadataInstanceEditor.fieldMultiSelectValue",
-    "defaultMessage": "Select Values"
-  },
-  metadataFieldSetValue: {
-    "id": "boxui.metadataInstanceEditor.fieldSetValue",
-    "defaultMessage": "Set Value"
-  },
-  metadataFieldSetDate: {
-    "id": "boxui.metadataInstanceEditor.fieldSetDate",
-    "defaultMessage": "Set Date"
   },
   metadataRemoveTemplate: {
     "id": "boxui.metadataInstanceEditor.removeTemplate",

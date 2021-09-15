@@ -8,19 +8,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -40,17 +36,17 @@ import NewItemsIndicator from './NewItemsIndicator';
 import defaultNavLinkRenderer from './defaultNavLinkRenderer';
 import './styles/LeftSidebar.scss';
 
-var LeftSidebar = /*#__PURE__*/function (_React$Component) {
+var LeftSidebar =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(LeftSidebar, _React$Component);
-
-  var _super = _createSuper(LeftSidebar);
 
   function LeftSidebar(props) {
     var _this;
 
     _classCallCheck(this, LeftSidebar);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(LeftSidebar).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "onListScroll", function () {
       _this.changeIsScrollingState();
@@ -119,15 +115,15 @@ var LeftSidebar = /*#__PURE__*/function (_React$Component) {
       var wrapperClass = scaleIcon ? 'scaled-icon' : '';
 
       if (iconElement) {
-        return /*#__PURE__*/React.createElement(LeftSidebarIconWrapper, {
+        return React.createElement(LeftSidebarIconWrapper, {
           className: wrapperClass
         }, iconElement);
       }
 
       if (IconComponent) {
-        return /*#__PURE__*/React.createElement(LeftSidebarIconWrapper, {
+        return React.createElement(LeftSidebarIconWrapper, {
           className: wrapperClass
-        }, /*#__PURE__*/React.createElement(IconComponent, {
+        }, React.createElement(IconComponent, {
           color: selected && customTheme.secondaryColor ? customTheme.secondaryColor : bdlBoxBlue,
           selected: selected
         }));
@@ -140,7 +136,7 @@ var LeftSidebar = /*#__PURE__*/function (_React$Component) {
     value: function getNewItemBadge(newItemBadge) {
       var customTheme = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var secondaryColor = customTheme.secondaryColor;
-      return newItemBadge ? /*#__PURE__*/React.createElement(NewItemsIndicator, {
+      return newItemBadge ? React.createElement(NewItemsIndicator, {
         customColor: secondaryColor
       }) : null;
     }
@@ -159,10 +155,10 @@ var LeftSidebar = /*#__PURE__*/function (_React$Component) {
           menuItems = headerLinkProps.menuItems,
           placeholder = headerLinkProps.placeholder,
           showDropZoneOnHover = headerLinkProps.showDropZoneOnHover;
-      var heading = onToggleCollapse ? /*#__PURE__*/React.createElement(NavListCollapseHeader, {
+      var heading = onToggleCollapse ? React.createElement(NavListCollapseHeader, {
         onToggleCollapse: onToggleCollapse
       }, this.getNavLink(headerLinkProps, leftSidebarProps)) : this.getNavLink(headerLinkProps, leftSidebarProps);
-      var placeholderEl = menuItems && menuItems.length || showLoadingIndicator ? null : /*#__PURE__*/React.createElement("div", {
+      var placeholderEl = menuItems && menuItems.length || showLoadingIndicator ? null : React.createElement("div", {
         className: "placeholder"
       }, placeholder);
       var classes = classNames('left-sidebar-list', className, {
@@ -177,7 +173,7 @@ var LeftSidebar = /*#__PURE__*/function (_React$Component) {
           _this2.elScrollableList = elScrollableList;
         }
       } : {};
-      var builtNavList = /*#__PURE__*/React.createElement(NavList, {
+      var builtNavList = React.createElement(NavList, {
         className: classes,
         collapsed: collapsed,
         heading: heading,
@@ -187,7 +183,7 @@ var LeftSidebar = /*#__PURE__*/function (_React$Component) {
       }, menuItems && menuItems.map(function (props) {
         return _this2.getNavLink(props, leftSidebarProps);
       }) || null);
-      return canReceiveDrop ? /*#__PURE__*/React.createElement(LeftSidebarDropWrapper, {
+      return canReceiveDrop ? React.createElement(LeftSidebarDropWrapper, {
         isDragging: leftSidebarProps.isDragging,
         dropTargetRef: dropTargetRef,
         showDropZoneOnHover: showDropZoneOnHover
@@ -239,12 +235,12 @@ var LeftSidebar = /*#__PURE__*/function (_React$Component) {
       };
       var builtLink = navLinkRenderer ? navLinkRenderer(linkProps) : defaultNavLinkRenderer(linkProps); // Check for menu items on links so we don't double-highlight groups
 
-      return canReceiveDrop && !props.menuItems ? /*#__PURE__*/React.createElement(LeftSidebarDropWrapper, {
+      return canReceiveDrop && !props.menuItems ? React.createElement(LeftSidebarDropWrapper, {
         isDragging: leftSidebarProps.isDragging,
         dropTargetRef: dropTargetRef,
         key: "link-".concat(id),
         showDropZoneOnHover: showDropZoneOnHover
-      }, builtLink) : /*#__PURE__*/React.createElement(React.Fragment, {
+      }, builtLink) : React.createElement(React.Fragment, {
         key: "link-".concat(id)
       }, builtLink);
     }
@@ -274,7 +270,7 @@ var LeftSidebar = /*#__PURE__*/function (_React$Component) {
           if (props.onToggleCollapse) {
             var collapsed = props.collapsed,
                 showLoadingIndicator = props.showLoadingIndicator;
-            return /*#__PURE__*/React.createElement(LoadingIndicatorWrapper, {
+            return React.createElement(LoadingIndicatorWrapper, {
               className: "favorites-loading-wrapper",
               crawlerPosition: "top",
               isLoading: showLoadingIndicator && !collapsed,
@@ -287,13 +283,13 @@ var LeftSidebar = /*#__PURE__*/function (_React$Component) {
 
         return _this3.getNavLink(props, leftSidebarProps);
       });
-      return /*#__PURE__*/React.createElement(NavSidebar, _extends({
+      return React.createElement(NavSidebar, _extends({
         className: "left-sidebar ".concat(className)
-      }, navSidebarProps), leftSidebarProps.isInstantLoggedIn ? /*#__PURE__*/React.createElement(InstantLogin, instantLoginProps) : null, /*#__PURE__*/React.createElement("div", {
+      }, navSidebarProps), leftSidebarProps.isInstantLoggedIn ? React.createElement(InstantLogin, instantLoginProps) : null, React.createElement("div", {
         className: "left-sidebar-container"
-      }, preparedMenu), /*#__PURE__*/React.createElement(CopyrightFooter, {
+      }, preparedMenu), React.createElement(CopyrightFooter, {
         linkProps: leftSidebarProps.copyrightFooterProps
-      }), leftSidebarProps.indicatorText ? /*#__PURE__*/React.createElement(FooterIndicator, {
+      }), leftSidebarProps.indicatorText ? React.createElement(FooterIndicator, {
         indicatorText: leftSidebarProps.indicatorText
       }) : null);
     }

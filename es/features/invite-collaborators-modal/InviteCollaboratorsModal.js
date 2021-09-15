@@ -6,17 +6,13 @@ function _objectWithoutProperties(source, excluded) { if (source == null) return
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24,19 +20,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -44,7 +36,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import omit from 'lodash/omit';
 import throttle from 'lodash/throttle';
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { UpgradeBadge } from '../../components/badge';
 import Button from '../../components/button';
 import InlineNotice from '../../components/inline-notice';
@@ -75,17 +67,17 @@ var isSubstring = function isSubstring(value, searchString) {
   return value && value.toLowerCase().indexOf(searchString.toLowerCase()) !== -1;
 };
 
-var InviteCollaboratorsModal = /*#__PURE__*/function (_Component) {
+var InviteCollaboratorsModal =
+/*#__PURE__*/
+function (_Component) {
   _inherits(InviteCollaboratorsModal, _Component);
-
-  var _super = _createSuper(InviteCollaboratorsModal);
 
   function InviteCollaboratorsModal(props) {
     var _this;
 
     _classCallCheck(this, InviteCollaboratorsModal);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(InviteCollaboratorsModal).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "getSelectorOptions", function () {
       var contacts = _this.props.contacts;
@@ -114,6 +106,7 @@ var InviteCollaboratorsModal = /*#__PURE__*/function (_Component) {
               type = _ref4.type;
           return {
             // map to standardized DatalistItem format
+            // TODO: refactor this so inline conversions aren't required at every usage
             email: email,
             id: id,
             text: name,
@@ -281,20 +274,20 @@ var InviteCollaboratorsModal = /*#__PURE__*/function (_Component) {
   _createClass(InviteCollaboratorsModal, [{
     key: "renderFileCollabComponents",
     value: function renderFileCollabComponents() {
-      return /*#__PURE__*/React.createElement("div", {
+      return React.createElement("div", {
         className: "invite-file-editors"
-      }, /*#__PURE__*/React.createElement(FormattedMessage, messages.inviteFileEditorsLabel));
+      }, React.createElement(FormattedMessage, messages.inviteFileEditorsLabel));
     }
   }, {
     key: "renderPermissionsSection",
     value: function renderPermissionsSection() {
       var inviteePermissions = this.props.inviteePermissions;
-      return /*#__PURE__*/React.createElement("div", {
+      return React.createElement("div", {
         className: "invite-permissions-container"
-      }, /*#__PURE__*/React.createElement(Select, {
+      }, React.createElement(Select, {
         className: "select-container-medium",
         "data-resin-target": "selectpermission",
-        label: /*#__PURE__*/React.createElement(FormattedMessage, messages.inviteePermissionsFieldLabel),
+        label: React.createElement(FormattedMessage, messages.inviteePermissionsFieldLabel),
         name: "invite-permission",
         onChange: this.handlePermissionChange
       }, inviteePermissions.map(function (_ref9) {
@@ -302,13 +295,13 @@ var InviteCollaboratorsModal = /*#__PURE__*/function (_Component) {
             _ref9$disabled = _ref9.disabled,
             disabled = _ref9$disabled === void 0 ? false : _ref9$disabled,
             text = _ref9.text;
-        return /*#__PURE__*/React.createElement("option", {
+        return React.createElement("option", {
           key: value,
           "data-resin-option": value,
           disabled: disabled,
           value: value
         }, text);
-      })), /*#__PURE__*/React.createElement(PermissionFlyout, null));
+      })), React.createElement(PermissionFlyout, null));
     }
   }, {
     key: "renderFolderCollabComponents",
@@ -317,15 +310,15 @@ var InviteCollaboratorsModal = /*#__PURE__*/function (_Component) {
           defaultPersonalMessage = _this$props2.defaultPersonalMessage,
           inviteePermissions = _this$props2.inviteePermissions,
           showUpgradeOptions = _this$props2.showUpgradeOptions;
-      return /*#__PURE__*/React.createElement("div", null, inviteePermissions && this.renderPermissionsSection(), showUpgradeOptions && /*#__PURE__*/React.createElement(Link, {
+      return React.createElement("div", null, inviteePermissions && this.renderPermissionsSection(), showUpgradeOptions && React.createElement(Link, {
         className: "upgrade-link",
         href: "/upgrade"
-      }, /*#__PURE__*/React.createElement(UpgradeBadge, null), /*#__PURE__*/React.createElement(FormattedMessage, messages.upgradeGetMoreAccessControls)), defaultPersonalMessage && /*#__PURE__*/React.createElement(TextArea, {
+      }, React.createElement(UpgradeBadge, null), React.createElement(FormattedMessage, messages.upgradeGetMoreAccessControls)), defaultPersonalMessage && React.createElement(TextArea, {
         cols: "30",
         "data-resin-feature": "personalmessage",
         "data-resin-target": "message",
         defaultValue: defaultPersonalMessage,
-        label: /*#__PURE__*/React.createElement(FormattedMessage, messages.personalMessageLabel),
+        label: React.createElement(FormattedMessage, messages.personalMessageLabel),
         name: "collab-message",
         onChange: this.handleMessageChange,
         rows: "4"
@@ -350,27 +343,27 @@ var InviteCollaboratorsModal = /*#__PURE__*/function (_Component) {
           selectedOptions = _this$state3.selectedOptions;
       var modalProps = omit(rest, ['contacts', 'defaultPersonalMessage', 'inviteePermissions', 'itemTypedID', 'onRequestClose', 'onUserInput', 'sendInvites', 'showUpgradeOptions']);
       var selectorOptions = this.getSelectorOptions();
-      var title = /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.inviteCollaboratorsModalTitle, {
+      var title = React.createElement(FormattedMessage, _extends({}, messages.inviteCollaboratorsModalTitle, {
         values: {
           itemName: itemName
         }
       }));
-      var groupLabel = /*#__PURE__*/React.createElement(FormattedMessage, messages.groupLabel);
-      return /*#__PURE__*/React.createElement(Modal, _extends({
+      var groupLabel = React.createElement(FormattedMessage, messages.groupLabel);
+      return React.createElement(Modal, _extends({
         className: "invite-collaborators-modal",
         closeButtonProps: _defineProperty({}, RESIN_TAG_TARGET, 'close'),
         "data-resin-component": "modal",
         "data-resin-feature": "invitecollaborators",
         onRequestClose: this.closeModal,
         title: title
-      }, modalProps), submissionError && /*#__PURE__*/React.createElement(InlineNotice, {
+      }, modalProps), submissionError && React.createElement(InlineNotice, {
         type: "error"
-      }, submissionError), collaborationRestrictionWarning && /*#__PURE__*/React.createElement(InlineNotice, {
+      }, submissionError), collaborationRestrictionWarning && React.createElement(InlineNotice, {
         type: "warning"
-      }, collaborationRestrictionWarning), /*#__PURE__*/React.createElement(PillSelectorDropdown, {
+      }, collaborationRestrictionWarning), React.createElement(PillSelectorDropdown, {
         allowCustomPills: true,
         error: pillSelectorError,
-        label: /*#__PURE__*/React.createElement(FormattedMessage, messages.inviteFieldLabel),
+        label: React.createElement(FormattedMessage, messages.inviteFieldLabel),
         onInput: this.handlePillSelectorInput,
         onRemove: this.handlePillRemove,
         onSelect: this.handlePillSelect,
@@ -384,21 +377,21 @@ var InviteCollaboratorsModal = /*#__PURE__*/function (_Component) {
         var email = _ref11.email,
             text = _ref11.text,
             value = _ref11.value;
-        return /*#__PURE__*/React.createElement(ContactDatalistItem, {
+        return React.createElement(ContactDatalistItem, {
           key: value,
           name: text,
           subtitle: email || groupLabel
         });
-      })), itemType === 'file' ? this.renderFileCollabComponents() : this.renderFolderCollabComponents(), isEligibleForReferAFriendProgram && /*#__PURE__*/React.createElement(ReferAFriendAd, null), /*#__PURE__*/React.createElement(ModalActions, null, /*#__PURE__*/React.createElement(Button, {
+      })), itemType === 'file' ? this.renderFileCollabComponents() : this.renderFolderCollabComponents(), isEligibleForReferAFriendProgram && React.createElement(ReferAFriendAd, null), React.createElement(ModalActions, null, React.createElement(Button, {
         "data-resin-target": "cancel",
         isDisabled: submitting,
         onClick: this.closeModal,
         type: "button"
-      }, /*#__PURE__*/React.createElement(FormattedMessage, messages.inviteCollaboratorsModalCancelButton)), /*#__PURE__*/React.createElement(PrimaryButton, _extends({}, inviteButtonProps, {
+      }, React.createElement(FormattedMessage, messages.inviteCollaboratorsModalCancelButton)), React.createElement(PrimaryButton, _extends({}, inviteButtonProps, {
         isDisabled: submitting,
         isLoading: submitting,
         onClick: this.sendInvites
-      }), /*#__PURE__*/React.createElement(FormattedMessage, messages.inviteCollaboratorsModalSendInvitesButton))));
+      }), React.createElement(FormattedMessage, messages.inviteCollaboratorsModalSendInvitesButton))));
     }
   }]);
 
@@ -423,7 +416,7 @@ _defineProperty(InviteCollaboratorsModal, "propTypes", {
    * Only applicable to non-file item types.
    * */
   defaultPersonalMessage: PropTypes.node,
-  intl: intlShape.isRequired,
+  intl: PropTypes.any,
 
   /** Props for the invite button */
   inviteButtonProps: PropTypes.object,

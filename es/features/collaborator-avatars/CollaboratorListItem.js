@@ -25,27 +25,27 @@ var CollaboratorListItem = function CollaboratorListItem(props) {
       profileURL = _props$collaborator.profileURL,
       translatedRole = _props$collaborator.translatedRole,
       userID = _props$collaborator.userID;
-  var userOrGroupNameContent = type !== COLLAB_GROUP_TYPE ? /*#__PURE__*/React.createElement("div", {
+  var userOrGroupNameContent = type !== COLLAB_GROUP_TYPE ? React.createElement("div", {
     className: classnames('name', type)
-  }, /*#__PURE__*/React.createElement(Link, _extends({
+  }, React.createElement(Link, _extends({
     href: profileURL || "/profile/".concat(userID),
     rel: "noopener",
     target: "_blank",
     title: name
-  }, usernameProps), name)) : /*#__PURE__*/React.createElement("div", {
+  }, usernameProps), name)) : React.createElement("div", {
     className: classnames('name', type)
   }, name);
-  var emailContent = type !== COLLAB_GROUP_TYPE && email ? /*#__PURE__*/React.createElement("div", {
+  var emailContent = type !== COLLAB_GROUP_TYPE && email ? React.createElement("div", {
     className: "email"
-  }, /*#__PURE__*/React.createElement(Link, _extends({
+  }, React.createElement(Link, _extends({
     href: "mailto:".concat(email),
     title: email
   }, emailProps), email)) : null;
-  return /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("div", {
+  return React.createElement("li", null, React.createElement("div", {
     className: "collaborator-list-item"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "user"
-  }, /*#__PURE__*/React.createElement(CollaboratorAvatarItem, {
+  }, React.createElement(CollaboratorAvatarItem, {
     allowBadging: true,
     avatarUrl: imageURL,
     email: email,
@@ -54,11 +54,11 @@ var CollaboratorListItem = function CollaboratorListItem(props) {
     id: index,
     isExternalCollab: isExternalCollab,
     name: name
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "info"
-  }, userOrGroupNameContent, emailContent)), /*#__PURE__*/React.createElement("div", {
+  }, userOrGroupNameContent, emailContent)), React.createElement("div", {
     className: "role"
-  }, type === COLLAB_PENDING_TYPE ? /*#__PURE__*/React.createElement(FormattedMessage, messages.pendingCollabText) : translatedRole)));
+  }, type === COLLAB_PENDING_TYPE ? React.createElement(FormattedMessage, messages.pendingCollabText) : translatedRole)));
 };
 
 export default CollaboratorListItem;

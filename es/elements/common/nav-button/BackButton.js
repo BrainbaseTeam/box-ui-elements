@@ -23,20 +23,20 @@ var BackButton = function BackButton(_ref) {
       to = _ref.to,
       rest = _objectWithoutProperties(_ref, ["className", "to"]);
 
-  return /*#__PURE__*/React.createElement(Route, null, function (_ref2) {
+  return React.createElement(Route, null, function (_ref2) {
     var history = _ref2.history;
-    return /*#__PURE__*/React.createElement(PlainButton, _extends({
+    return React.createElement(PlainButton, _extends({
       className: classNames('bdl-BackButton', className),
       onClick: function onClick() {
         return to ? history.push(to) : history.goBack();
       },
       type: "button"
-    }, rest), /*#__PURE__*/React.createElement(IconNavigateLeft, {
+    }, rest), React.createElement(IconNavigateLeft, {
       height: 24,
       width: 24
-    }), /*#__PURE__*/React.createElement("span", {
+    }), React.createElement("span", {
       className: "accessibility-hidden"
-    }, /*#__PURE__*/React.createElement(FormattedMessage, messages.back)));
+    }, React.createElement(FormattedMessage, messages.back)));
   });
 };
 

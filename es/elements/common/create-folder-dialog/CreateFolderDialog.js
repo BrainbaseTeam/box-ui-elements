@@ -79,7 +79,7 @@ var CreateFolderDialog = function CreateFolderDialog(_ref) {
       break;
   }
 
-  return /*#__PURE__*/React.createElement(Modal, {
+  return React.createElement(Modal, {
     appElement: appElement,
     className: CLASS_MODAL_CONTENT,
     contentLabel: intl.formatMessage(messages.createDialogLabel),
@@ -90,26 +90,28 @@ var CreateFolderDialog = function CreateFolderDialog(_ref) {
       return parentElement;
     },
     portalClassName: CLASS_MODAL
-  }, /*#__PURE__*/React.createElement("label", null, error ? /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("label", null, error ? React.createElement("div", {
     className: "be-modal-error"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, error)) : null, /*#__PURE__*/React.createElement(FormattedMessage, _extends({
+  }, React.createElement(FormattedMessage, error)) : null, React.createElement(FormattedMessage, _extends({
     tagName: "div"
-  }, messages.createDialogText)), /*#__PURE__*/React.createElement("input", {
+  }, messages.createDialogText)), React.createElement("input", {
     ref: ref,
     onKeyDown: onKeyDown,
     required: true,
     type: "text"
-  })), /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", {
     className: "be-modal-btns"
-  }, /*#__PURE__*/React.createElement(PrimaryButton, {
+  }, React.createElement(PrimaryButton, {
+    "data-testid": "be-btn-create-folder",
     isLoading: isLoading,
     onClick: create,
     type: "button"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.create)), /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(FormattedMessage, messages.create)), React.createElement(Button, {
+    "data-testid": "be-btn-create-folder-cancel",
     isDisabled: isLoading,
     onClick: onCancel,
     type: "button"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.cancel))));
+  }, React.createElement(FormattedMessage, messages.cancel))));
 };
 
 export default injectIntl(CreateFolderDialog);

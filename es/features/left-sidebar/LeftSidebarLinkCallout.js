@@ -6,39 +6,37 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 import * as React from 'react';
+import classNames from 'classnames';
 import TetherComponent from 'react-tether';
 import PlainButton from '../../components/plain-button';
 import IconClose from '../../icons/general/IconClose';
+import TETHER_POSITIONS from '../../common/tether-positions';
 import './styles/LeftSidebarLinkCallout.scss';
 
-var LeftSidebarLinkCallout = /*#__PURE__*/function (_React$Component) {
+var LeftSidebarLinkCallout =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(LeftSidebarLinkCallout, _React$Component);
-
-  var _super = _createSuper(LeftSidebarLinkCallout);
 
   function LeftSidebarLinkCallout(props) {
     var _this;
 
     _classCallCheck(this, LeftSidebarLinkCallout);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(LeftSidebarLinkCallout).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "hideCallout", function () {
       var onClose = _this.props.callout.onClose;
@@ -52,6 +50,20 @@ var LeftSidebarLinkCallout = /*#__PURE__*/function (_React$Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "isControlled", function () {
+      var isShownProp = _this.props.isShown;
+      return typeof isShownProp !== 'undefined';
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "isShown", function () {
+      var isShownProp = _this.props.isShown;
+
+      var isControlled = _this.isControlled();
+
+      var showTooltip = isControlled ? isShownProp : _this.state.isShown;
+      return showTooltip;
+    });
+
     _this.state = {
       isShown: true
     };
@@ -62,19 +74,25 @@ var LeftSidebarLinkCallout = /*#__PURE__*/function (_React$Component) {
     key: "render",
     value: function render() {
       var _this$props = this.props,
+          _this$props$attachmen = _this$props.attachmentPosition,
+          attachmentPosition = _this$props$attachmen === void 0 ? TETHER_POSITIONS.MIDDLE_LEFT : _this$props$attachmen,
           children = _this$props.children,
-          content = _this$props.callout.content;
-      var isShown = this.state.isShown;
-      return /*#__PURE__*/React.createElement(TetherComponent, {
-        attachment: "middle left",
+          content = _this$props.callout.content,
+          navLinkClassName = _this$props.navLinkClassName,
+          _this$props$targetAtt = _this$props.targetAttachmentPosition,
+          targetAttachmentPosition = _this$props$targetAtt === void 0 ? TETHER_POSITIONS.MIDDLE_RIGHT : _this$props$targetAtt;
+      var showTooltip = this.isShown();
+      return React.createElement(TetherComponent, {
+        attachment: attachmentPosition,
         classPrefix: "nav-link-callout",
-        targetAttachment: "middle right"
-      }, React.Children.only(children), isShown && /*#__PURE__*/React.createElement("div", {
-        className: "nav-link-callout"
-      }, /*#__PURE__*/React.createElement(PlainButton, {
+        enabled: showTooltip,
+        targetAttachment: targetAttachmentPosition
+      }, React.Children.only(children), showTooltip && React.createElement("div", {
+        className: classNames('nav-link-callout', navLinkClassName)
+      }, React.createElement(PlainButton, {
         className: "nav-link-callout-close-button",
         onClick: this.hideCallout
-      }, /*#__PURE__*/React.createElement(IconClose, {
+      }, React.createElement(IconClose, {
         color: "#fff",
         height: 16,
         width: 16

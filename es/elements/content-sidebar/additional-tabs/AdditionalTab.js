@@ -10,19 +10,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -35,20 +31,22 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { FormattedMessage } from 'react-intl';
 import { bdlGray50 } from '../../../styles/variables';
-import Tooltip from '../../common/Tooltip';
 import PlainButton from '../../../components/plain-button/PlainButton';
 import IconEllipsis from '../../../icons/general/IconEllipsis';
+import AdditionalTabTooltip from './AdditionalTabTooltip';
 import AdditionalTabPlaceholder from './AdditionalTabPlaceholder';
 import messages from './messages';
 import './AdditionalTab.scss';
 var BLOCKED_BY_SHEILD = 'BLOCKED_BY_SHIELD_ACCESS_POLICY';
 
-var AdditionalTab = /*#__PURE__*/function (_React$PureComponent) {
+var AdditionalTab =
+/*#__PURE__*/
+function (_React$PureComponent) {
   _inherits(AdditionalTab, _React$PureComponent);
 
-  var _super = _createSuper(AdditionalTab);
-
   function AdditionalTab() {
+    var _getPrototypeOf2;
+
     var _this;
 
     _classCallCheck(this, AdditionalTab);
@@ -57,7 +55,7 @@ var AdditionalTab = /*#__PURE__*/function (_React$PureComponent) {
       args[_key] = arguments[_key];
     }
 
-    _this = _super.call.apply(_super, [this].concat(args));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(AdditionalTab)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_this), "state", {
       isErrored: false
@@ -88,7 +86,7 @@ var AdditionalTab = /*#__PURE__*/function (_React$PureComponent) {
 
       switch (status) {
         case BLOCKED_BY_SHEILD:
-          reason = /*#__PURE__*/React.createElement(FormattedMessage, messages.blockedByShieldAccessPolicy);
+          reason = React.createElement(FormattedMessage, messages.blockedByShieldAccessPolicy);
           break;
 
         default: // noop
@@ -109,11 +107,11 @@ var AdditionalTab = /*#__PURE__*/function (_React$PureComponent) {
       var TabIcon;
 
       if (isErrored) {
-        TabIcon = /*#__PURE__*/React.createElement(AdditionalTabPlaceholder, {
+        TabIcon = React.createElement(AdditionalTabPlaceholder, {
           isLoading: false
         });
       } else if (id && id > 0) {
-        TabIcon = /*#__PURE__*/React.createElement("img", {
+        TabIcon = React.createElement("img", {
           className: "bdl-AdditionalTab-icon",
           src: iconUrl,
           onError: this.onImageError,
@@ -121,7 +119,7 @@ var AdditionalTab = /*#__PURE__*/function (_React$PureComponent) {
           alt: title
         });
       } else {
-        TabIcon = /*#__PURE__*/React.createElement(IconEllipsis, {
+        TabIcon = React.createElement(IconEllipsis, {
           color: bdlGray50
         });
       }
@@ -136,9 +134,10 @@ var AdditionalTab = /*#__PURE__*/function (_React$PureComponent) {
           id = _this$props2.id,
           isLoading = _this$props2.isLoading,
           iconUrl = _this$props2.iconUrl,
+          ftuxTooltipData = _this$props2.ftuxTooltipData,
           onImageLoad = _this$props2.onImageLoad,
           title = _this$props2.title,
-          rest = _objectWithoutProperties(_this$props2, ["callback", "id", "isLoading", "iconUrl", "onImageLoad", "title"]);
+          rest = _objectWithoutProperties(_this$props2, ["callback", "id", "isLoading", "iconUrl", "ftuxTooltipData", "onImageLoad", "title"]);
 
       var isDisabled = this.isDisabled();
       var className = classNames('bdl-AdditionalTab', {
@@ -146,11 +145,13 @@ var AdditionalTab = /*#__PURE__*/function (_React$PureComponent) {
         'bdl-is-disabled': isDisabled
       });
       var tooltipText = isDisabled ? this.getDisabledReason() : title;
-      return /*#__PURE__*/React.createElement(Tooltip, {
-        position: "middle-left",
-        text: tooltipText
-      }, /*#__PURE__*/React.createElement(PlainButton, {
+      return React.createElement(AdditionalTabTooltip, {
+        defaultTooltipText: tooltipText,
+        ftuxTooltipData: ftuxTooltipData,
+        isFtuxVisible: !isLoading
+      }, React.createElement(PlainButton, {
         className: className,
+        "data-testid": "additionaltab",
         type: "button",
         isDisabled: isDisabled,
         onClick: function onClick() {

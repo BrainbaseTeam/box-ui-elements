@@ -1,4 +1,7 @@
 @import '../../styles/variables';
+@import '../../styles/mixins/buttons';
+@import '../../styles/mixins/overlay';
+@import '../../components/pill-selector-dropdown/mixins';
 
 // Menus are rendered at the root of the DOM, so this style is not nested
 .usm-menu-description {
@@ -51,13 +54,12 @@
 
 .unified-share-modal {
     /** title and classifiction label */
-    .bdl-UnifiedShareModalTitle {
-        display: flex;
-        flex-flow: row wrap;
+    .bdl-UnifiedShareModalTitle-classification {
+        display: inline;
+    }
 
-        .bdl-UnifiedShareModalTitle-classification {
-            margin-left: 6px;
-        }
+    .bdl-UnifiedShareModalTitle {
+        margin-right: 6px;
     }
 
     /** overrides for USM sub-components */
@@ -78,6 +80,12 @@
     /*** Invite collaborators section ***/
     .invite-collaborator-container {
         position: relative;
+
+        .text-area-container {
+            textarea {
+                width: 100%;
+            }
+        }
     }
 
     .invitee-menu-wrap {
@@ -91,26 +99,37 @@
         margin-bottom: 20px;
     }
 
-    .pill-selector-wrapper .pill-selector-input-wrapper, // need both selectors for specificity
+    .bdl-PillSelectorDropdown .bdl-PillSelector, // need both selectors for specificity
     textarea {
         /* override for DOM element in `TextArea` which provides no id/class for targeting */
         width: 100%;
     }
 
-    .pill-selector-wrapper {
+    .bdl-PillSelectorDropdown {
         margin-bottom: 10px;
     }
 
-    .pill-selector-wrapper.scrollable {
+    .bdl-PillSelectorDropdown.scrollable {
+        // In the USM, the wrapper acts as a container
         .overlay-wrapper {
+            @include bdl-Overlay-container;
+
             position: absolute;
             height: 280px;
+            padding: 0;
             overflow-y: scroll;
-            border: 1px solid $bdl-gray-30;
         }
 
         .overlay {
+            margin-top: 0;
             border: none;
+            box-shadow: none;
+        }
+    }
+
+    .bdl-RoundPill {
+        &.is-waived {
+            @include bdl-RoundPill($border-color: $bdl-watermelon-red-50, $selected-border-color: $bdl-watermelon-red-50);
         }
     }
 
@@ -124,25 +143,26 @@
             color: $bdl-gray-50;
         }
 
-        .pill-selector-input-wrapper {
+        .bdl-PillSelector {
             min-height: 68px;
         }
     }
 
-    .pill-selector-input-wrapper {
+    .bdl-PillSelectorDropdown .bdl-PillSelector {
         margin-top: 10px;
         border: 1px solid $bdl-gray-20;
 
-        .pill-selector-input::placeholder {
+        .bdl-PillSelector-input::placeholder {
             color: $bdl-gray-50;
         }
 
+        &.bdl-is-disabled,
         &.is-disabled {
             color: $bdl-gray-30;
             background-color: $bdl-gray-02;
             box-shadow: none;
 
-            .pill-selector-input::placeholder {
+            .bdl-PillSelector-input::placeholder {
                 color: $bdl-gray-50;
             }
 
@@ -203,7 +223,10 @@
             flex: 1;
 
             input {
+                width: 100%;
                 margin-top: 0;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
             }
         }
 
@@ -257,15 +280,35 @@
     .shared-link-expiration-badge {
         padding: 0 5px;
 
-        .icon-clock {
+        .bdl-IconClock {
             display: inline-block;
             margin-bottom: -3px;
         }
     }
 
     .manage-all-btn {
+        @include bdl-Button-margins(-5px 0 10px 0);
+
         float: right;
-        margin: -5px 0 10px 0;
         color: $bdl-box-blue;
     }
+}
+
+.bdl-UnifiedShareForm-container {
+    width: 400px;
+}
+
+.bdl-UnifiedShareForm {
+    @extend .unified-share-modal;
+
+    max-width: $bdl-grid-unit * 115;
+    height: $bdl-grid-unit * 125;
+    margin: 0 auto;
+    padding: 2em;
+}
+
+.bdl-SharedLinkSection-separator {
+    margin: ($bdl-grid-unit * 5) 0;
+    border: none;
+    border-top: 1px solid $bdl-gray-20;
 }

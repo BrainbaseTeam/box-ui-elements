@@ -24,16 +24,16 @@ var ItemGrid = function ItemGrid(_ref) {
    */
   var slotRenderer = function slotRenderer(slotIndex) {
     var item = getProp(currentCollection, "items[".concat(slotIndex, "]"));
-    return item ? /*#__PURE__*/React.createElement(ItemGridCell, _extends({
+    return item ? React.createElement(ItemGridCell, _extends({
       item: item,
       rootId: rootId
     }, rest)) : null;
   };
 
-  return /*#__PURE__*/React.createElement(AutoSizer, null, function (_ref2) {
+  return React.createElement(AutoSizer, null, function (_ref2) {
     var height = _ref2.height,
         width = _ref2.width;
-    return /*#__PURE__*/React.createElement(GridView, {
+    return React.createElement(GridView, {
       columnCount: gridColumnCount,
       currentCollection: currentCollection,
       height: height,

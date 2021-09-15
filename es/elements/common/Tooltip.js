@@ -22,7 +22,7 @@ var Tooltip = function Tooltip(_ref) {
     return children;
   }
 
-  return /*#__PURE__*/React.createElement(TooltipCore, _extends({
+  return React.createElement(TooltipCore, _extends({
     text: text
   }, rest), children);
 };

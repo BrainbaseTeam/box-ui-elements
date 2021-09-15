@@ -13,13 +13,13 @@ var IconCollections = function IconCollections(_ref) {
       title = _ref.title,
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 16 : _ref$width;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: classNames('bdl-IconCollections', className),
     height: height,
     title: title,
     viewBox: "0 0 16 16",
     width: width
-  }, /*#__PURE__*/React.createElement("path", {
+  }, React.createElement("path", {
     className: "fill-color",
     fill: color,
     fillRule: "evenodd",

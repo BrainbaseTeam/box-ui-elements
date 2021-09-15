@@ -13,14 +13,14 @@ import IntegrationPortal from './IntegrationPortal';
 var IntegrationPortalContainer = function IntegrationPortalContainer(_ref) {
   var hasError = _ref.hasError,
       integrationWindow = _ref.integrationWindow;
-  return /*#__PURE__*/React.createElement(IntegrationPortal, {
+  return React.createElement(IntegrationPortal, {
     integrationWindow: integrationWindow
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "be bcow bcow-portal-container"
-  }, hasError ? /*#__PURE__*/React.createElement(ErrorMask, {
-    errorHeader: /*#__PURE__*/React.createElement(FormattedMessage, messages.executeIntegrationOpenWithErrorHeader),
-    errorSubHeader: /*#__PURE__*/React.createElement(FormattedMessage, messages.executeIntegrationOpenWithErrorSubHeader)
-  }) : /*#__PURE__*/React.createElement(LoadingIndicator, {
+  }, hasError ? React.createElement(ErrorMask, {
+    errorHeader: React.createElement(FormattedMessage, messages.executeIntegrationOpenWithErrorHeader),
+    errorSubHeader: React.createElement(FormattedMessage, messages.executeIntegrationOpenWithErrorSubHeader)
+  }) : React.createElement(LoadingIndicator, {
     className: "bcow-portal-loading-indicator",
     size: "large"
   })));

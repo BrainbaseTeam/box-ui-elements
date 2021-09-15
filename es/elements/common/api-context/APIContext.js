@@ -5,5 +5,5 @@
  */
 import React from 'react';
 import API from '../../../api';
-export default /*#__PURE__*/React.createContext();
+export default React.createContext();
 //# sourceMappingURL=APIContext.js.map

@@ -1,33 +1,33 @@
 import * as React from 'react';
-import IconIWorkKeynoteDesktop from './IconIWorkKeynoteDesktop';
-import IconIWorkPagesDesktop from './IconIWorkPagesDesktop';
-import IconIWorkNumbersDesktop from './IconIWorkNumbersDesktop';
+import KeynoteForMac32 from '../../icon/logo/KeynoteForMac32';
+import NumbersForMac32 from '../../icon/logo/NumbersForMac32';
+import PagesForMac32 from '../../icon/logo/PagesForMac32';
 
 var IWorkDesktopIcon = function IWorkDesktopIcon(_ref) {
   var className = _ref.className,
       _ref$dimension = _ref.dimension,
-      dimension = _ref$dimension === void 0 ? 30 : _ref$dimension,
+      dimension = _ref$dimension === void 0 ? 32 : _ref$dimension,
       extension = _ref.extension,
       title = _ref.title;
   var Component = null;
 
   switch (extension) {
     case 'pages':
-      Component = IconIWorkPagesDesktop;
+      Component = PagesForMac32;
       break;
 
     case 'numbers':
-      Component = IconIWorkNumbersDesktop;
+      Component = NumbersForMac32;
       break;
 
     case 'key':
-      Component = IconIWorkKeynoteDesktop;
+      Component = KeynoteForMac32;
       break;
     // no default
   }
 
   if (Component !== null) {
-    return /*#__PURE__*/React.createElement(Component, {
+    return React.createElement(Component, {
       className: className,
       height: dimension,
       title: title,

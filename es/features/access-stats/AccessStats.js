@@ -34,9 +34,9 @@ var AccessStats = function AccessStats(_ref) {
       viewMoreButtonProps = _ref$viewMoreButtonPr === void 0 ? {} : _ref$viewMoreButtonPr,
       _ref$viewStatButtonPr = _ref.viewStatButtonProps,
       viewStatButtonProps = _ref$viewStatButtonPr === void 0 ? {} : _ref$viewStatButtonPr;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "access-stats"
-  }, errorMessage ? /*#__PURE__*/React.createElement("p", null, errorMessage) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(AccessStatsItemsList, {
+  }, errorMessage ? React.createElement("p", null, errorMessage) : React.createElement(React.Fragment, null, React.createElement(AccessStatsItemsList, {
     commentCount: commentCount,
     commentStatButtonProps: commentStatButtonProps,
     downloadCount: downloadCount,
@@ -49,10 +49,10 @@ var AccessStats = function AccessStats(_ref) {
     previewCount: previewCount,
     previewStatButtonProps: previewStatButtonProps,
     viewStatButtonProps: viewStatButtonProps
-  }), openAccessStatsModal && /*#__PURE__*/React.createElement(PlainButton, _extends({
+  }), openAccessStatsModal && React.createElement(PlainButton, _extends({
     className: "lnk access-stats-view-details",
     onClick: openAccessStatsModal
-  }, viewMoreButtonProps), /*#__PURE__*/React.createElement(FormattedMessage, messages.accessStatsViewDetails))));
+  }, viewMoreButtonProps), React.createElement(FormattedMessage, messages.accessStatsViewDetails))));
 };
 
 export default AccessStats;

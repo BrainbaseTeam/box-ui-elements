@@ -59,7 +59,7 @@ var SidebarNavTablist = function SidebarNavTablist(_ref) {
     }
   };
 
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     "aria-orientation": "vertical",
     className: "bcs-SidebarNav-main",
     role: "tablist",
@@ -70,7 +70,7 @@ var SidebarNavTablist = function SidebarNavTablist(_ref) {
       return null;
     }
 
-    return /*#__PURE__*/React.cloneElement(tab, _objectSpread({
+    return React.cloneElement(tab, _objectSpread({
       elementId: elementId,
       isOpen: isOpen,
       onNavigate: onNavigate,

@@ -1,1 +1,1 @@
-{"version":3,"sources":["../../../src/components/header/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,UAAxB","sourcesContent":["// @flow\nexport { default } from './Header';\n"],"file":"index.js"}
+{"version":3,"sources":["../../../src/components/header/index.tsx"],"names":["default"],"mappings":"AAAA,SAASA,OAAT,QAAwB,UAAxB","sourcesContent":["export { default } from './Header';\n"],"file":"index.js"}

@@ -99,6 +99,18 @@ var messages = defineMessages({
   newFolderModalCreate: {
     "id": "boxui.newFolderModal.create",
     "defaultMessage": "Create"
+  },
+  selectAll: {
+    "id": "boxui.contentExplorer.selectAll",
+    "defaultMessage": "Select All"
+  },
+  results: {
+    "id": "boxui.contentExplorer.results",
+    "defaultMessage": "{itemsCount} results"
+  },
+  result: {
+    "id": "boxui.contentExplorer.result",
+    "defaultMessage": "{itemsCount} result"
   }
 });
 export default messages;

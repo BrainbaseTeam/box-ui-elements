@@ -17,29 +17,29 @@ var EmptyState = function EmptyState(_ref) {
   var view = _ref.view,
       isLoading = _ref.isLoading;
   var type;
-  var message = isLoading && (view === VIEW_FOLDER || view === VIEW_METADATA) ? /*#__PURE__*/React.createElement(FormattedMessage, messages.loadingState) : /*#__PURE__*/React.createElement(FormattedMessage, messages["".concat(view, "State")]);
+  var message = isLoading && (view === VIEW_FOLDER || view === VIEW_METADATA) ? React.createElement(FormattedMessage, messages.loadingState) : React.createElement(FormattedMessage, messages["".concat(view, "State")]);
 
   switch (view) {
     case VIEW_ERROR:
-      type = /*#__PURE__*/React.createElement(ErrorEmptyState, null);
+      type = React.createElement(ErrorEmptyState, null);
       break;
 
     case VIEW_SELECTED:
-      type = /*#__PURE__*/React.createElement(SelectedItemsEmptyState, null);
+      type = React.createElement(SelectedItemsEmptyState, null);
       break;
 
     case VIEW_SEARCH:
-      type = /*#__PURE__*/React.createElement(SearchEmptyState, null);
+      type = React.createElement(SearchEmptyState, null);
       break;
 
     default:
-      type = /*#__PURE__*/React.createElement(FolderEmptyState, null);
+      type = React.createElement(FolderEmptyState, null);
       break;
   }
 
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "be-empty"
-  }, type, /*#__PURE__*/React.createElement("div", null, message));
+  }, type, React.createElement("div", null, message));
 };
 
 export default EmptyState;

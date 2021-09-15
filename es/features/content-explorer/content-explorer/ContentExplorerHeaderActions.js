@@ -6,25 +6,21 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { injectIntl, intlShape } from 'react-intl';
+import { injectIntl } from 'react-intl';
 import ContentExplorerSearch from './ContentExplorerSearch';
 import ContentExplorerNewFolderButton from './ContentExplorerNewFolderButton';
 import ContentExplorerBreadcrumbs from './ContentExplorerBreadcrumbs';
@@ -36,17 +32,17 @@ var isSearchResultsFolder = function isSearchResultsFolder(folder) {
   return folder && folder.id === SEARCH_RESULTS_FOLDER_ID;
 };
 
-var ContentExplorerHeaderActions = /*#__PURE__*/function (_Component) {
+var ContentExplorerHeaderActions =
+/*#__PURE__*/
+function (_Component) {
   _inherits(ContentExplorerHeaderActions, _Component);
-
-  var _super = _createSuper(ContentExplorerHeaderActions);
 
   function ContentExplorerHeaderActions(props) {
     var _this;
 
     _classCallCheck(this, ContentExplorerHeaderActions);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ContentExplorerHeaderActions).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "handleBreadcrumbClick", function (folderPathIndex, event) {
       var _this$props = _this.props,
@@ -182,22 +178,22 @@ var ContentExplorerHeaderActions = /*#__PURE__*/function (_Component) {
           searchInputProps = _this$props4.searchInputProps;
       var searchInput = this.state.searchInput;
       var isInSearchMode = this.isInSearchMode();
-      return /*#__PURE__*/React.createElement("div", {
+      return React.createElement("div", {
         className: "content-explorer-header-actions"
-      }, /*#__PURE__*/React.createElement("div", {
+      }, React.createElement("div", {
         className: "content-explorer-search-new-folder-container"
-      }, CustomInput ? /*#__PURE__*/React.createElement(CustomInput, null) : /*#__PURE__*/React.createElement(ContentExplorerSearch, {
+      }, CustomInput ? React.createElement(CustomInput, null) : React.createElement(ContentExplorerSearch, {
         inputValue: searchInput,
         onClearButtonClick: this.handleClearSearchButtonClick,
         onInput: this.handleSearchInput,
         onSubmit: this.handleSubmitSearch,
         searchInputProps: searchInputProps
-      }), showCreateNewFolderButton && /*#__PURE__*/React.createElement(ContentExplorerNewFolderButton, {
+      }), showCreateNewFolderButton && React.createElement(ContentExplorerNewFolderButton, {
         contentExplorerMode: contentExplorerMode,
         onClick: onCreateNewFolderButtonClick,
         isDisabled: !isCreateNewFolderAllowed || isInSearchMode,
         isCreateNewFolderAllowed: isCreateNewFolderAllowed
-      }), children), /*#__PURE__*/React.createElement(ContentExplorerBreadcrumbs, {
+      }), children), React.createElement(ContentExplorerBreadcrumbs, {
         foldersPath: foldersPath,
         isUpButtonDisabled: foldersPath.length <= 1 && !isInSearchMode,
         onUpButtonClick: this.handleBreadcrumbsUpButtonClick,
@@ -214,7 +210,7 @@ _defineProperty(ContentExplorerHeaderActions, "propTypes", {
   contentExplorerMode: ContentExplorerModePropType.isRequired,
   customInput: PropTypes.func,
   foldersPath: FoldersPathPropType.isRequired,
-  intl: intlShape.isRequired,
+  intl: PropTypes.any,
   onFoldersPathUpdated: PropTypes.func.isRequired,
   onEnterFolder: PropTypes.func.isRequired,
   onCreateNewFolderButtonClick: PropTypes.func,

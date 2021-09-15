@@ -4,18 +4,22 @@
  */
 
 import * as React from 'react';
-import { injectIntl, FormattedMessage } from 'react-intl';
-import IconInfoInverted from '../../../../icons/general/IconInfoInverted';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import type { InjectIntlProvidedProps } from 'react-intl';
+import ActivityCard from '../ActivityCard';
+import IconInfo from '../../../../icons/general/IconInfo';
 import messages from '../../../common/messages';
 import PlainButton from '../../../../components/plain-button';
 import selectors from '../../../common/selectors/version';
 import { ACTIVITY_TARGETS } from '../../../common/interactionTargets';
 import {
+    FILE_REQUEST_NAME,
     VERSION_UPLOAD_ACTION,
     VERSION_DELETE_ACTION,
     VERSION_PROMOTE_ACTION,
     VERSION_RESTORE_ACTION,
 } from '../../../../constants';
+import type { User } from '../../../../common/types/core';
 import './Version.scss';
 
 type Props = {
@@ -34,12 +38,14 @@ const ACTION_MAP = {
 };
 
 const Version = (props: Props): React.Node => {
+    // $FlowFixMe
     const action = selectors.getVersionAction(props);
     const { id, intl, onInfo, version_number, version_promoted } = props;
-    const { name } = selectors.getVersionUser(props);
-
+    // $FlowFixMe
+    const user = selectors.getVersionUser(props);
+    const name = user.name === FILE_REQUEST_NAME ? intl.formatMessage(messages.fileRequestDisplayName) : user.name;
     return (
-        <div className="bcs-Version">
+        <ActivityCard className="bcs-Version">
             <span className="bcs-Version-message">
                 <FormattedMessage
                     {...ACTION_MAP[action]}
@@ -61,11 +67,11 @@ const Version = (props: Props): React.Node => {
                         }}
                         type="button"
                     >
-                        <IconInfoInverted height={16} width={16} />
+                        <IconInfo height={16} width={16} />
                     </PlainButton>
                 </span>
             ) : null}
-        </div>
+        </ActivityCard>
     );
 };
 

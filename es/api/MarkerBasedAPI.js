@@ -16,19 +16,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 /**
  * 
@@ -38,15 +34,15 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 import { getTypedFileId } from '../utils/file';
 import Base from './Base';
 
-var MarkerBasedApi = /*#__PURE__*/function (_Base) {
+var MarkerBasedApi =
+/*#__PURE__*/
+function (_Base) {
   _inherits(MarkerBasedApi, _Base);
-
-  var _super = _createSuper(MarkerBasedApi);
 
   function MarkerBasedApi() {
     _classCallCheck(this, MarkerBasedApi);
 
-    return _super.apply(this, arguments);
+    return _possibleConstructorReturn(this, _getPrototypeOf(MarkerBasedApi).apply(this, arguments));
   }
 
   _createClass(MarkerBasedApi, [{
@@ -79,11 +75,13 @@ var MarkerBasedApi = /*#__PURE__*/function (_Base) {
   }, {
     key: "markerGetRequest",
     value: function () {
-      var _markerGetRequest = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(id, marker, limit, shouldFetchAll) {
+      var _markerGetRequest = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee(id, marker, limit, shouldFetchAll) {
         var requestData,
             url,
             queryParams,
-            _yield$this$xhr$get,
+            _ref,
             data,
             entries,
             nextMarker,
@@ -105,7 +103,7 @@ var MarkerBasedApi = /*#__PURE__*/function (_Base) {
               case 3:
                 _context.prev = 3;
                 url = this.getUrl(id);
-                queryParams = _objectSpread(_objectSpread({}, requestData), {}, {
+                queryParams = _objectSpread({}, requestData, {
                   marker: marker,
                   limit: limit
                 });
@@ -117,10 +115,10 @@ var MarkerBasedApi = /*#__PURE__*/function (_Base) {
                 });
 
               case 8:
-                _yield$this$xhr$get = _context.sent;
-                data = _yield$this$xhr$get.data;
+                _ref = _context.sent;
+                data = _ref.data;
                 entries = this.data ? this.data.entries : [];
-                this.data = _objectSpread(_objectSpread({}, data), {}, {
+                this.data = _objectSpread({}, data, {
                   entries: entries.concat(data.entries)
                 });
                 nextMarker = data.next_marker;
@@ -159,27 +157,29 @@ var MarkerBasedApi = /*#__PURE__*/function (_Base) {
     }()
     /**
      * Marker based API get
-     *
-     * @param {string} id the file id
-     * @param {Function} successCallback the success callback
-     * @param {Function} errorCallback the error callback
-     * @param {string} marker the marker from the start to start fetching at
-     * @param {number} limit the number of items to fetch
-     * @param {Object} params the request query params
-     * @param {boolean} shouldFetchAll true if should get all the pages before calling the sucessCallback
+     * @param {Object} options
+     * @param {string} options.id the file id
+     * @param {Function} options.successCallback the success callback
+     * @param {Function} options.errorCallback the error callback
+     * @param {string} [options.marker] the marker from the start to start fetching at
+     * @param {number} [options.limit] the number of items to fetch
+     * @param {Object} options.requestData the request query params
+     * @param {boolean} [options.shouldFetchAll] true if should get all the pages before calling the sucessCallback
      */
 
   }, {
     key: "markerGet",
     value: function () {
-      var _markerGet = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(_ref) {
-        var id, successCallback, errorCallback, _ref$marker, marker, _ref$limit, limit, requestData, _ref$shouldFetchAll, shouldFetchAll;
+      var _markerGet = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee2(_ref2) {
+        var id, successCallback, errorCallback, _ref2$marker, marker, _ref2$limit, limit, requestData, _ref2$shouldFetchAll, shouldFetchAll;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                id = _ref.id, successCallback = _ref.successCallback, errorCallback = _ref.errorCallback, _ref$marker = _ref.marker, marker = _ref$marker === void 0 ? '' : _ref$marker, _ref$limit = _ref.limit, limit = _ref$limit === void 0 ? 1000 : _ref$limit, requestData = _ref.requestData, _ref$shouldFetchAll = _ref.shouldFetchAll, shouldFetchAll = _ref$shouldFetchAll === void 0 ? true : _ref$shouldFetchAll;
+                id = _ref2.id, successCallback = _ref2.successCallback, errorCallback = _ref2.errorCallback, _ref2$marker = _ref2.marker, marker = _ref2$marker === void 0 ? '' : _ref2$marker, _ref2$limit = _ref2.limit, limit = _ref2$limit === void 0 ? 1000 : _ref2$limit, requestData = _ref2.requestData, _ref2$shouldFetchAll = _ref2.shouldFetchAll, shouldFetchAll = _ref2$shouldFetchAll === void 0 ? true : _ref2$shouldFetchAll;
                 this.successCallback = successCallback;
                 this.errorCallback = errorCallback;
                 return _context2.abrupt("return", this.markerGetRequest(id, marker, limit, shouldFetchAll, requestData));

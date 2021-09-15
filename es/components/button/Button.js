@@ -12,19 +12,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -33,13 +29,22 @@ import classNames from 'classnames';
 import omit from 'lodash/omit';
 import LoadingIndicator from '../loading-indicator';
 import RadarAnimation from '../radar';
+export var ButtonType;
 
-var Button = /*#__PURE__*/function (_React$Component) {
+(function (ButtonType) {
+  ButtonType["BUTTON"] = "button";
+  ButtonType["RESET"] = "reset";
+  ButtonType["SUBMIT"] = "submit";
+})(ButtonType || (ButtonType = {}));
+
+var Button =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(Button, _React$Component);
 
-  var _super = _createSuper(Button);
-
   function Button() {
+    var _getPrototypeOf2;
+
     var _this;
 
     _classCallCheck(this, Button);
@@ -48,7 +53,9 @@ var Button = /*#__PURE__*/function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    _this = _super.call.apply(_super, [this].concat(args));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Button)).call.apply(_getPrototypeOf2, [this].concat(args)));
+
+    _defineProperty(_assertThisInitialized(_this), "btnElement", null);
 
     _defineProperty(_assertThisInitialized(_this), "handleClick", function (event) {
       var _this$props = _this.props,
@@ -76,17 +83,13 @@ var Button = /*#__PURE__*/function (_React$Component) {
 
       var _this$props2 = this.props,
           children = _this$props2.children,
-          _this$props2$classNam = _this$props2.className,
-          className = _this$props2$classNam === void 0 ? '' : _this$props2$classNam,
+          className = _this$props2.className,
           isDisabled = _this$props2.isDisabled,
-          _this$props2$isLoadin = _this$props2.isLoading,
-          isLoading = _this$props2$isLoadin === void 0 ? false : _this$props2$isLoadin,
+          isLoading = _this$props2.isLoading,
           isSelected = _this$props2.isSelected,
           setRef = _this$props2.setRef,
-          _this$props2$type = _this$props2.type,
-          type = _this$props2$type === void 0 ? 'submit' : _this$props2$type,
-          _this$props2$showRada = _this$props2.showRadar,
-          showRadar = _this$props2$showRada === void 0 ? false : _this$props2$showRada,
+          type = _this$props2.type,
+          showRadar = _this$props2.showRadar,
           rest = _objectWithoutProperties(_this$props2, ["children", "className", "isDisabled", "isLoading", "isSelected", "setRef", "type", "showRadar"]);
 
       var buttonProps = omit(rest, ['onClick']);
@@ -100,9 +103,7 @@ var Button = /*#__PURE__*/function (_React$Component) {
         'is-loading': isLoading,
         'is-selected': isSelected
       }, className);
-      var button =
-      /*#__PURE__*/
-      // eslint-disable-next-line react/button-has-type
+      var button = // eslint-disable-next-line react/button-has-type
       React.createElement("button", _extends({
         ref: function ref(element) {
           _this2.btnElement = element;
@@ -114,14 +115,14 @@ var Button = /*#__PURE__*/function (_React$Component) {
         className: styleClassName,
         onClick: this.handleClick,
         type: type
-      }, buttonProps), /*#__PURE__*/React.createElement("span", {
+      }, buttonProps), React.createElement("span", {
         className: "btn-content"
-      }, children), isLoading && /*#__PURE__*/React.createElement(LoadingIndicator, {
+      }, children), isLoading && React.createElement(LoadingIndicator, {
         className: "btn-loading-indicator"
       }));
 
       if (showRadar) {
-        button = /*#__PURE__*/React.createElement(RadarAnimation, null, button);
+        button = React.createElement(RadarAnimation, null, button);
       }
 
       return button;
@@ -130,6 +131,13 @@ var Button = /*#__PURE__*/function (_React$Component) {
 
   return Button;
 }(React.Component);
+
+_defineProperty(Button, "defaultProps", {
+  className: '',
+  isLoading: false,
+  showRadar: false,
+  type: ButtonType.SUBMIT
+});
 
 export default Button;
 //# sourceMappingURL=Button.js.map

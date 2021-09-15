@@ -1,5 +1,4 @@
 @import '../common/variables';
-@import '~react-virtualized/styles.css';
 
 .bce-item-grid {
     flex: 1;
@@ -81,7 +80,7 @@
         border-top-color: $grey-blue;
     }
 
-    .checkbox-container {
+    .checkbox-container-box-ui-elements {
         margin: 0 0 0 1px;
 
         span,

@@ -16,15 +16,15 @@ var Name = function Name(_ref) {
       showDetails = _ref$showDetails === void 0 ? true : _ref$showDetails,
       rootId = _ref.rootId,
       view = _ref.view;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "be-item-name"
-  }, /*#__PURE__*/React.createElement(ItemName, {
+  }, React.createElement(ItemName, {
     canPreview: canPreview,
     isTouch: isTouch,
     item: item,
     onClick: onItemClick,
     onFocus: onItemSelect
-  }), view === VIEW_SEARCH || showDetails ? /*#__PURE__*/React.createElement(ItemDetails, {
+  }), view === VIEW_SEARCH || showDetails ? React.createElement(ItemDetails, {
     item: item,
     onItemClick: onItemClick,
     rootId: rootId,

@@ -29,7 +29,9 @@ var DEFAULT_UPLOAD_TIMEOUT_MS = 120000;
 var MAX_NUM_RETRIES = 3;
 var RETRYABLE_HTTP_METHODS = [HTTP_GET, HTTP_OPTIONS, HTTP_HEAD].map(lowerCase);
 
-var Xhr = /*#__PURE__*/function () {
+var Xhr =
+/*#__PURE__*/
+function () {
   /**
    * [constructor]
    *
@@ -201,7 +203,9 @@ var Xhr = /*#__PURE__*/function () {
   }, {
     key: "getHeaders",
     value: function () {
-      var _getHeaders = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(id) {
+      var _getHeaders = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee(id) {
         var args,
             headers,
             itemId,

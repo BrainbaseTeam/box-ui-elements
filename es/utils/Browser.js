@@ -11,7 +11,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  */
 var isDashSupported;
 
-var Browser = /*#__PURE__*/function () {
+var Browser =
+/*#__PURE__*/
+function () {
   function Browser() {
     _classCallCheck(this, Browser);
   }
@@ -29,7 +31,10 @@ var Browser = /*#__PURE__*/function () {
       return global.navigator.userAgent;
     }
     /**
-     * Returns whether browser is mobile.
+     * Returns whether browser is mobile, including tablets.
+     *
+     * We rely on user agent (UA) to avoid matching desktops with touchscreens.
+     * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Browser_detection_using_the_user_agent#mobile_tablet_or_desktop
      *
      * @return {boolean} Whether browser is mobile
      */
@@ -37,8 +42,8 @@ var Browser = /*#__PURE__*/function () {
   }, {
     key: "isMobile",
     value: function isMobile() {
-      // Relying on the user agent to avoid desktop browsers on machines with touch screens.
-      return /iphone|ipad|ipod|android|blackberry|bb10|mini|windows\sce|palm/i.test(Browser.getUserAgent());
+      var userAgent = Browser.getUserAgent();
+      return /iphone|ipad|ipod|android|blackberry|bb10|mini|windows\sce|palm/i.test(userAgent) || /Mobi/i.test(userAgent);
     }
     /**
      * Returns whether browser is IE.
@@ -52,12 +57,49 @@ var Browser = /*#__PURE__*/function () {
       return /Trident/i.test(Browser.getUserAgent());
     }
     /**
+     * Returns whether browser is Safari.
+     *
+     * @return {boolean} Whether browser is Safari
+     */
+
+  }, {
+    key: "isSafari",
+    value: function isSafari() {
+      var userAgent = Browser.getUserAgent();
+      return /AppleWebKit/i.test(userAgent) && !/Chrome\//i.test(userAgent);
+    }
+    /**
+     * Returns whether browser is Mobile Safari.
+     *
+     * @see https://developer.chrome.com/docs/multidevice/user-agent/
+     * @return {boolean} Whether browser is Mobile Safari
+     */
+
+  }, {
+    key: "isMobileSafari",
+    value: function isMobileSafari() {
+      return Browser.isMobile() && Browser.isSafari() && !Browser.isMobileChromeOniOS();
+    }
+    /**
+     * Returns whether browser is Mobile Chrome on iOS.
+     *
+     * @see https://developer.chrome.com/docs/multidevice/user-agent/
+     * @return {boolean} Whether browser is Mobile Chrome on iOS
+     */
+
+  }, {
+    key: "isMobileChromeOniOS",
+    value: function isMobileChromeOniOS() {
+      var userAgent = Browser.getUserAgent();
+      return Browser.isMobile() && /AppleWebKit/i.test(userAgent) && /CriOS\//i.test(userAgent);
+    }
+    /**
      * Checks the browser for Dash support using H264 high.
      * Dash requires MediaSource extensions to exist and be applicable
      * to the H264 container (since we use H264 and not webm)
      *
      * @public
-     * @param { boolean} recheck - recheck support
+     * @param {boolean} recheck - recheck support
      * @return {boolean} true if dash is usable
      */
 
@@ -72,6 +114,38 @@ var Browser = /*#__PURE__*/function () {
       }
 
       return isDashSupported;
+    }
+    /**
+     * Checks whether the browser has support for the Clipboard API. This new API supercedes
+     * the `execCommand`-based API and uses Promises for detecting whether it works or not.
+     *
+     * This check determines if the browser can support writing to the clipboard.
+     * @see https://www.w3.org/TR/clipboard-apis/#async-clipboard-api
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/Clipboard
+     *
+     * @return {boolean} whether writing to the clipboard is possible
+     */
+
+  }, {
+    key: "canWriteToClipboard",
+    value: function canWriteToClipboard() {
+      return !!(global.navigator.clipboard && global.navigator.clipboard.writeText);
+    }
+    /**
+     * Checks whether the browser has support for the Clipboard API. This new API supercedes
+     * the `execCommand`-based API and uses Promises for detecting whether it works or not.
+     *
+     * This check determines if the browser can support reading from the clipboard.
+     * @see https://www.w3.org/TR/clipboard-apis/#async-clipboard-api
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/Clipboard
+     *
+     * @return {boolean} whether reading from the clipboard is possible
+     */
+
+  }, {
+    key: "canReadFromClipboard",
+    value: function canReadFromClipboard() {
+      return !!(global.navigator.clipboard && global.navigator.clipboard.readText);
     }
   }]);
 

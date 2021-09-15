@@ -21,6 +21,10 @@ var messages = defineMessages({
     "id": "be.api.commentDeleteErrorMessage",
     "defaultMessage": "There was an error deleting this comment."
   },
+  commentUpdateErrorMessage: {
+    "id": "be.api.commentUpdateErrorMessage",
+    "defaultMessage": "This comment could not be modified."
+  },
   taskActionErrorTitle: {
     "id": "be.api.taskActionErrorTitle",
     "defaultMessage": "Error"
@@ -44,6 +48,10 @@ var messages = defineMessages({
   taskCreateErrorMessage: {
     "id": "be.api.taskCreateErrorMessage",
     "defaultMessage": "An error occurred while creating this task. Please try again."
+  },
+  taskGroupExceedsLimitWarningMessage: {
+    "id": "be.api.taskGroupExceedsWarningTitle",
+    "defaultMessage": "One or more groups can not receive this task as a group size cannot exceed the limit of {max} assignees per group."
   }
 });
 export default messages;

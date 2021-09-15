@@ -28,6 +28,8 @@ var PreviewDialog = function PreviewDialog(_ref) {
       apiHost = _ref.apiHost,
       appHost = _ref.appHost,
       staticHost = _ref.staticHost,
+      staticPath = _ref.staticPath,
+      previewLibraryVersion = _ref.previewLibraryVersion,
       sharedLink = _ref.sharedLink,
       sharedLinkPassword = _ref.sharedLinkPassword,
       contentPreviewProps = _ref.contentPreviewProps,
@@ -48,7 +50,7 @@ var PreviewDialog = function PreviewDialog(_ref) {
     var type = _ref2.type;
     return type === TYPE_FILE;
   });
-  return /*#__PURE__*/React.createElement(Modal, {
+  return React.createElement(Modal, {
     isOpen: isOpen,
     parentSelector: function parentSelector() {
       return parentElement;
@@ -59,11 +61,13 @@ var PreviewDialog = function PreviewDialog(_ref) {
     contentLabel: intl.formatMessage(messages.preview),
     onRequestClose: onCancel,
     appElement: appElement
-  }, /*#__PURE__*/React.createElement(ContentPreview, _extends({}, contentPreviewProps, {
+  }, React.createElement(ContentPreview, _extends({}, contentPreviewProps, {
     fileId: item.id,
     apiHost: apiHost,
     appHost: appHost,
     staticHost: staticHost,
+    staticPath: staticPath,
+    previewLibraryVersion: previewLibraryVersion,
     cache: cache,
     token: token,
     hasHeader: true,

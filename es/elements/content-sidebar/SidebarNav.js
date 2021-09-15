@@ -4,18 +4,20 @@
  * @author Box
  */
 import * as React from 'react';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl } from 'react-intl';
+import AdditionalTabs from './additional-tabs';
+import IconChatRound from '../../icons/general/IconChatRound';
+import IconDocInfo from '../../icons/general/IconDocInfo';
 import IconMagicWand from '../../icons/general/IconMagicWand';
 import IconMetadataThick from '../../icons/general/IconMetadataThick';
-import IconDocInfo from '../../icons/general/IconDocInfo';
-import IconChatRound from '../../icons/general/IconChatRound';
+import SidebarNavButton from './SidebarNavButton';
+import SidebarNavSign from './SidebarNavSign';
+import SidebarNavTablist from './SidebarNavTablist';
+import SidebarToggle from './SidebarToggle';
 import messages from '../common/messages';
 import { SIDEBAR_NAV_TARGETS } from '../common/interactionTargets';
-import SidebarNavButton from './SidebarNavButton';
-import SidebarToggle from './SidebarToggle';
-import AdditionalTabs from './additional-tabs';
-import SidebarNavTablist from './SidebarNavTablist';
 import { SIDEBAR_VIEW_SKILLS, SIDEBAR_VIEW_ACTIVITY, SIDEBAR_VIEW_DETAILS, SIDEBAR_VIEW_METADATA } from '../../constants';
+import { useFeatureConfig } from '../common/feature-checking';
 import './SidebarNav.scss';
 
 var SidebarNav = function SidebarNav(_ref) {
@@ -30,39 +32,61 @@ var SidebarNav = function SidebarNav(_ref) {
       intl = _ref.intl,
       isOpen = _ref.isOpen,
       onNavigate = _ref.onNavigate;
-  return /*#__PURE__*/React.createElement("div", {
+
+  var _useFeatureConfig = useFeatureConfig('boxSign'),
+      hasBoxSign = _useFeatureConfig.enabled,
+      onBoxSignClick = _useFeatureConfig.onClick,
+      boxSignStatus = _useFeatureConfig.status,
+      boxSignTargetingApi = _useFeatureConfig.targetingApi;
+
+  return React.createElement("div", {
     className: "bcs-SidebarNav",
     "aria-label": intl.formatMessage(messages.sidebarNavLabel)
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "bcs-SidebarNav-tabs"
-  }, /*#__PURE__*/React.createElement(SidebarNavTablist, {
+  }, React.createElement(SidebarNavTablist, {
     elementId: elementId,
     isOpen: isOpen,
     onNavigate: onNavigate
-  }, hasActivity && /*#__PURE__*/React.createElement(SidebarNavButton, {
+  }, hasActivity && React.createElement(SidebarNavButton, {
     "data-resin-target": SIDEBAR_NAV_TARGETS.ACTIVITY,
+    "data-testid": "sidebaractivity",
     sidebarView: SIDEBAR_VIEW_ACTIVITY,
-    tooltip: /*#__PURE__*/React.createElement(FormattedMessage, messages.sidebarActivityTitle)
-  }, /*#__PURE__*/React.createElement(IconChatRound, null)), hasDetails && /*#__PURE__*/React.createElement(SidebarNavButton, {
+    tooltip: intl.formatMessage(messages.sidebarActivityTitle)
+  }, React.createElement(IconChatRound, null)), hasDetails && React.createElement(SidebarNavButton, {
     "data-resin-target": SIDEBAR_NAV_TARGETS.DETAILS,
+    "data-testid": "sidebardetails",
     sidebarView: SIDEBAR_VIEW_DETAILS,
-    tooltip: /*#__PURE__*/React.createElement(FormattedMessage, messages.sidebarDetailsTitle)
-  }, /*#__PURE__*/React.createElement(IconDocInfo, null)), hasSkills && /*#__PURE__*/React.createElement(SidebarNavButton, {
+    tooltip: intl.formatMessage(messages.sidebarDetailsTitle)
+  }, React.createElement(IconDocInfo, null)), hasSkills && React.createElement(SidebarNavButton, {
     "data-resin-target": SIDEBAR_NAV_TARGETS.SKILLS,
+    "data-testid": "sidebarskills",
     sidebarView: SIDEBAR_VIEW_SKILLS,
-    tooltip: /*#__PURE__*/React.createElement(FormattedMessage, messages.sidebarSkillsTitle)
-  }, /*#__PURE__*/React.createElement(IconMagicWand, null)), hasMetadata && /*#__PURE__*/React.createElement(SidebarNavButton, {
+    tooltip: intl.formatMessage(messages.sidebarSkillsTitle)
+  }, React.createElement(IconMagicWand, null)), hasMetadata && React.createElement(SidebarNavButton, {
     "data-resin-target": SIDEBAR_NAV_TARGETS.METADATA,
+    "data-testid": "sidebarmetadata",
     sidebarView: SIDEBAR_VIEW_METADATA,
-    tooltip: /*#__PURE__*/React.createElement(FormattedMessage, messages.sidebarMetadataTitle)
-  }, /*#__PURE__*/React.createElement(IconMetadataThick, null))), hasAdditionalTabs && /*#__PURE__*/React.createElement("div", {
+    tooltip: intl.formatMessage(messages.sidebarMetadataTitle)
+  }, React.createElement(IconMetadataThick, null))), hasBoxSign && onBoxSignClick && React.createElement("div", {
+    className: "bcs-SidebarNav-secondary"
+  }, React.createElement(SidebarNavSign, {
+    "data-resin-target": SIDEBAR_NAV_TARGETS.SIGN,
+    onClick: function onClick() {
+      return onBoxSignClick({
+        fileId: fileId
+      });
+    },
+    status: boxSignStatus,
+    targetingApi: boxSignTargetingApi
+  })), hasAdditionalTabs && React.createElement("div", {
     className: "bcs-SidebarNav-overflow"
-  }, /*#__PURE__*/React.createElement(AdditionalTabs, {
+  }, React.createElement(AdditionalTabs, {
     key: fileId,
     tabs: additionalTabs
-  }))), /*#__PURE__*/React.createElement("div", {
+  }))), React.createElement("div", {
     className: "bcs-SidebarNav-footer"
-  }, /*#__PURE__*/React.createElement(SidebarToggle, {
+  }, React.createElement(SidebarToggle, {
     isOpen: isOpen
   })));
 };

@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import Field from './fields/Field';
+import MetadataField from '../metadata-instance-fields/MetadataField';
 import messages from './messages';
 import { isHidden } from './metadataUtil';
+import MetadataInstanceEditorContext from './MetadataInstanceEditorContext';
 import './TemplatedInstance.scss';
 
 var TemplatedInstance = function TemplatedInstance(_ref) {
@@ -21,9 +22,14 @@ var TemplatedInstance = function TemplatedInstance(_ref) {
   });
   var showNoFieldsMessage = !hasFields;
   var showHiddenFieldsMessage = hasFields && !hasVisibleFields;
-  return /*#__PURE__*/React.createElement(React.Fragment, null, hasVisibleFields && fields.map(function (field) {
-    return /*#__PURE__*/React.createElement(Field, {
+
+  var _React$useContext = React.useContext(MetadataInstanceEditorContext),
+      blurExceptionClassNames = _React$useContext.blurExceptionClassNames;
+
+  return React.createElement(React.Fragment, null, hasVisibleFields && fields.map(function (field) {
+    return React.createElement(MetadataField, {
       key: field.id,
+      blurExceptionClassNames: blurExceptionClassNames,
       canEdit: canEdit,
       dataKey: field.key,
       dataValue: data[field.key],
@@ -45,11 +51,11 @@ var TemplatedInstance = function TemplatedInstance(_ref) {
       options: field.options,
       type: field.type
     });
-  }), showHiddenFieldsMessage && /*#__PURE__*/React.createElement("div", {
+  }), showHiddenFieldsMessage && React.createElement("div", {
     className: "attributes-hidden-message"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.allAttributesAreHidden)), showNoFieldsMessage && /*#__PURE__*/React.createElement("div", {
+  }, React.createElement(FormattedMessage, messages.allAttributesAreHidden)), showNoFieldsMessage && React.createElement("div", {
     className: "no-attributes-message"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.noAttributesForTemplate)));
+  }, React.createElement(FormattedMessage, messages.noAttributesForTemplate)));
 };
 
 export default TemplatedInstance;

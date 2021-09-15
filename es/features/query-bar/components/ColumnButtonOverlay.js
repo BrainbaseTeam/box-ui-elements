@@ -10,19 +10,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -37,17 +33,17 @@ import PrimaryButton from '../../../components/primary-button/PrimaryButton';
 import reorder from '../../../components/draggable-list/draggable-list-utils/reorder';
 import messages from '../messages';
 
-var ColumnButtonOverlay = /*#__PURE__*/function (_React$Component) {
+var ColumnButtonOverlay =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(ColumnButtonOverlay, _React$Component);
-
-  var _super = _createSuper(ColumnButtonOverlay);
 
   function ColumnButtonOverlay(props) {
     var _this;
 
     _classCallCheck(this, ColumnButtonOverlay);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ColumnButtonOverlay).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "onDragEnd", function (sourceIndex, destinationIndex) {
       var pendingColumns = _this.state.pendingColumns;
@@ -62,7 +58,7 @@ var ColumnButtonOverlay = /*#__PURE__*/function (_React$Component) {
       var pendingColumns = _this.state.pendingColumns;
       var pendingColumnsCopy = cloneDeep(pendingColumns);
 
-      var newColumn = _objectSpread(_objectSpread({}, column), {}, {
+      var newColumn = _objectSpread({}, column, {
         isShown: !column.isShown
       });
 
@@ -111,21 +107,21 @@ var ColumnButtonOverlay = /*#__PURE__*/function (_React$Component) {
       var _this$state = this.state,
           listId = _this$state.listId,
           pendingColumns = _this$state.pendingColumns;
-      return /*#__PURE__*/React.createElement("div", {
+      return React.createElement("div", {
         className: "column-button-dropdown"
-      }, /*#__PURE__*/React.createElement("div", {
+      }, React.createElement("div", {
         className: "column-button-dropdown-header"
-      }, /*#__PURE__*/React.createElement(DraggableList, {
+      }, React.createElement(DraggableList, {
         className: "draggable-list-example",
         listId: listId,
         onDragEnd: this.onDragEnd
       }, pendingColumns.map(function (item, index) {
-        return /*#__PURE__*/React.createElement(PortaledDraggableListItem, {
+        return React.createElement(PortaledDraggableListItem, {
           id: item.id,
           index: index,
           isDraggableViaHandle: true,
           key: index
-        }, /*#__PURE__*/React.createElement(Checkbox, {
+        }, React.createElement(Checkbox, {
           isChecked: item.isShown,
           label: item.displayName,
           name: item.displayName,
@@ -133,12 +129,12 @@ var ColumnButtonOverlay = /*#__PURE__*/function (_React$Component) {
             return _this2.updatePendingColumns(item);
           }
         }));
-      }))), /*#__PURE__*/React.createElement("div", {
+      }))), React.createElement("div", {
         className: "column-button-dropdown-footer"
-      }, /*#__PURE__*/React.createElement(PrimaryButton, {
+      }, React.createElement(PrimaryButton, {
         type: "button",
         onClick: this.applyFilters
-      }, /*#__PURE__*/React.createElement(FormattedMessage, messages.applyFiltersButtonText))));
+      }, React.createElement(FormattedMessage, messages.applyFiltersButtonText))));
     }
   }]);
 

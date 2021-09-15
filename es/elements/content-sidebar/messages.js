@@ -5,6 +5,22 @@
  */
 import { defineMessages } from 'react-intl';
 var messages = defineMessages({
+  boxSignFtuxBody: {
+    "id": "be.contentSidebar.boxSignFtuxBody",
+    "defaultMessage": "Sign documents or send signature requests, right from where your content lives"
+  },
+  boxSignFtuxTitle: {
+    "id": "be.contentSidebar.boxSignFtuxTitle",
+    "defaultMessage": "Box Sign - Secure, seamless e-signatures in Box"
+  },
+  boxSignRequest: {
+    "id": "be.contentSidebar.boxSignRequest",
+    "defaultMessage": "Request Signature"
+  },
+  boxSignSignature: {
+    "id": "be.contentSidebar.boxSignSignature",
+    "defaultMessage": "Sign"
+  },
   tasksAddTask: {
     "id": "be.contentSidebar.addTask",
     "defaultMessage": "Add Task"

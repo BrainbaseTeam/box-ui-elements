@@ -13,13 +13,9 @@ var LabelPrimitive = function LabelPrimitive(_ref) {
       labelContent = _ref.labelContent,
       rest = _objectWithoutProperties(_ref, ["children", "className", "labelContent"]);
 
-  return (
-    /*#__PURE__*/
-    // eslint-disable-next-line jsx-a11y/label-has-for
-    React.createElement("label", null, /*#__PURE__*/React.createElement("span", _extends({
-      className: classNames('label', className)
-    }, rest), labelContent), children)
-  );
+  return React.createElement("label", null, React.createElement("span", _extends({
+    className: classNames('label bdl-Label', className)
+  }, rest), labelContent), children);
 };
 
 export default LabelPrimitive;

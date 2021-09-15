@@ -21,16 +21,20 @@ var ContentExplorerModal = function ContentExplorerModal(_ref) {
       _ref$isOpen = _ref.isOpen,
       isOpen = _ref$isOpen === void 0 ? false : _ref$isOpen,
       onRequestClose = _ref.onRequestClose,
-      rest = _objectWithoutProperties(_ref, ["className", "customInput", "title", "description", "isOpen", "onRequestClose"]);
+      onSelectedClick = _ref.onSelectedClick,
+      onSelectItem = _ref.onSelectItem,
+      rest = _objectWithoutProperties(_ref, ["className", "customInput", "title", "description", "isOpen", "onRequestClose", "onSelectedClick", "onSelectItem"]);
 
-  return /*#__PURE__*/React.createElement(Modal, {
+  return React.createElement(Modal, {
     title: title,
     className: classNames('content-explorer-modal', className),
     isOpen: isOpen,
     onRequestClose: onRequestClose
-  }, description, /*#__PURE__*/React.createElement(ContentExplorer, _extends({
+  }, description, React.createElement(ContentExplorer, _extends({
     customInput: customInput,
     onCancelButtonClick: onRequestClose,
+    onSelectedClick: onSelectedClick,
+    onSelectItem: onSelectItem,
     listWidth: 560,
     listHeight: 285
   }, rest)));

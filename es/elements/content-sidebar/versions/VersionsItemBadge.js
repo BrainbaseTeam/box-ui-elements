@@ -16,10 +16,10 @@ var VersionsItemBadge = function VersionsItemBadge(_ref) {
   var intlValues = {
     versionNumber: versionNumber
   };
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     "aria-label": intl.formatMessage(messages.versionNumberLabel, intlValues),
     className: "bcs-VersionsItemBadge"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.versionNumberBadge, {
+  }, React.createElement(FormattedMessage, _extends({}, messages.versionNumberBadge, {
     values: intlValues
   })));
 };

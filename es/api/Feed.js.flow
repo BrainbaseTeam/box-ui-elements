@@ -11,15 +11,18 @@ import commonMessages from '../elements/common/messages';
 import messages from './messages';
 import { sortFeedItems } from '../utils/sorter';
 import Base from './Base';
+import AnnotationsAPI from './Annotations';
 import CommentsAPI from './Comments';
 import VersionsAPI from './Versions';
 import TasksNewAPI from './tasks/TasksNew';
+import GroupsAPI from './Groups';
 import TaskCollaboratorsAPI from './tasks/TaskCollaborators';
 import TaskLinksAPI from './tasks/TaskLinks';
 import AppActivityAPI from './AppActivity';
 import {
     ERROR_CODE_CREATE_TASK,
     ERROR_CODE_UPDATE_TASK,
+    ERROR_CODE_GROUP_EXCEEDS_LIMIT,
     HTTP_STATUS_CODE_CONFLICT,
     IS_ERROR_DISPLAYED,
     TASK_NEW_APPROVED,
@@ -27,6 +30,7 @@ import {
     TASK_NEW_REJECTED,
     TASK_NEW_NOT_STARTED,
     TYPED_ID_FEED_PREFIX,
+    TASK_MAX_GROUP_ASSIGNEES,
 } from '../constants';
 import type {
     TaskCompletionRule,
@@ -38,18 +42,47 @@ import type {
     TaskPayload,
     TaskUpdatePayload,
 } from '../common/types/tasks';
+import type { ElementsXhrError, ErrorResponseData, APIOptions } from '../common/types/api';
+import type {
+    SelectorItems,
+    SelectorItem,
+    UserMini,
+    GroupMini,
+    BoxItem,
+    BoxItemPermission,
+    BoxItemVersion,
+    FileVersions,
+    User,
+} from '../common/types/core';
+import type {
+    Annotation,
+    AnnotationPermission,
+    Annotations,
+    AppActivityItems,
+    Comment,
+    Comments,
+    FeedItem,
+    FeedItems,
+    Task,
+    Tasks,
+} from '../common/types/feed';
 
 const TASK_NEW_INITIAL_STATUS = TASK_NEW_NOT_STARTED;
 const TASK = 'task';
 
 type FeedItemsCache = {
-    hasError: boolean,
+    errors: ErrorResponseData[],
     items: FeedItems,
 };
 
 type ErrorCallback = (e: ElementsXhrError, code: string, contextInfo?: Object) => void;
 
 class Feed extends Base {
+    /**
+     * @property {AnnotationsAPI}
+     */
+    annotationsAPI: AnnotationsAPI;
+
     /**
      * @property {VersionsAPI}
      */
@@ -86,15 +119,132 @@ class Feed extends Base {
     file: BoxItem;
 
     /**
-     * @property {boolean}
+     * @property {ElementsXhrError}
      */
-    hasError: boolean;
+    errors: ElementsXhrError[];
 
-    constructor(options: Options) {
+    constructor(options: APIOptions) {
         super(options);
         this.taskCollaboratorsAPI = [];
         this.taskLinksAPI = [];
+        this.errors = [];
     }
+
+    /**
+     * Creates pending card on create_start action, then updates card on next call
+     * @param {BoxItem} file - The file to which the annotation is assigned
+     * @param {Object} currentUser - the user who performed the action
+     * @param {Annotation} annotation - the current annotation to be created
+     * @param {string} id - unique id for the incoming annotation
+     * @param {boolean} isPending - indicates the current creation process of the annotation
+     */
+    addAnnotation(file: BoxItem, currentUser: User, annotation: Annotation, id: string, isPending: boolean): void {
+        if (!file.id) {
+            throw getBadItemError();
+        }
+
+        this.file = file;
+
+        // Add the pending interstitial card
+        if (isPending) {
+            const newAnnotation = {
+                ...annotation,
+                created_by: currentUser,
+                id,
+                type: 'annotation',
+            };
+
+            this.addPendingItem(this.file.id, currentUser, newAnnotation);
+
+            return;
+        }
+        // Create action has completed, so update the existing pending item
+        this.updateFeedItem({ ...annotation, isPending: false }, id);
+    }
+
+    updateAnnotation = (
+        file: BoxItem,
+        annotationId: string,
+        text: string,
+        permissions: AnnotationPermission,
+        successCallback: (annotation: Annotation) => void,
+        errorCallback: ErrorCallback,
+    ): void => {
+        if (!file.id) {
+            throw getBadItemError();
+        }
+
+        this.annotationsAPI = new AnnotationsAPI(this.options);
+
+        this.file = file;
+        this.errorCallback = errorCallback;
+
+        this.updateFeedItem({ message: text, isPending: true }, annotationId);
+
+        this.annotationsAPI.updateAnnotation(
+            this.file.id,
+            annotationId,
+            permissions,
+            text,
+            (annotation: Annotation) => {
+                this.updateFeedItem(
+                    {
+                        ...annotation,
+                        isPending: false,
+                    },
+                    annotationId,
+                );
+                if (!this.isDestroyed()) {
+                    successCallback(annotation);
+                }
+            },
+            (e: ErrorResponseData, code: string) => {
+                this.updateCommentErrorCallback(e, code, annotationId);
+            },
+        );
+    };
+
+    /**
+     * Error callback for updating a comment
+     *
+     * @param {ElementsXhrError} e - the error returned by the API
+     * @param {string} code - the error code
+     * @param {string} id - the id of either an annotation or comment
+     * @return {void}
+     */
+    updateCommentErrorCallback = (e: ElementsXhrError, code: string, id: string) => {
+        this.updateFeedItem(this.createFeedError(messages.commentUpdateErrorMessage), id);
+        this.feedErrorCallback(true, e, code);
+    };
+
+    deleteAnnotation = (
+        file: BoxItem,
+        annotationId: string,
+        permissions: AnnotationPermission,
+        successCallBack: Function,
+        errorCallback: Function,
+    ): void => {
+        this.annotationsAPI = new AnnotationsAPI(this.options);
+
+        if (!file.id) {
+            throw getBadItemError();
+        }
+
+        this.file = file;
+        this.errorCallback = errorCallback;
+
+        this.updateFeedItem({ isPending: true }, annotationId);
+        this.annotationsAPI.deleteAnnotation(
+            this.file.id,
+            annotationId,
+            permissions,
+            this.deleteFeedItem.bind(this, annotationId, successCallBack),
+            (error: ElementsXhrError, code: string) => {
+                // Reusing comment error handler since annotations are treated as comments to user
+                this.deleteCommentErrorCallback(error, code, annotationId);
+            },
+        );
+    };
 
     /**
      * Creates a key for the cache
@@ -127,7 +277,7 @@ class Feed extends Base {
         const cache = this.getCache();
         const cacheKey = this.getCacheKey(id);
         cache.set(cacheKey, {
-            hasError: !!this.hasError,
+            errors: this.errors,
             items,
         });
     }
@@ -147,16 +297,19 @@ class Feed extends Base {
         file: BoxItem,
         shouldRefreshCache: boolean,
         successCallback: Function,
-        errorCallback: (feedItems: FeedItems) => void,
+        errorCallback: (feedItems: FeedItems, errors: ElementsXhrError[]) => void,
         onError: ErrorCallback,
-        { shouldShowAppActivity = false }: { shouldShowAppActivity?: boolean } = {},
+        {
+            shouldShowAnnotations = false,
+            shouldShowAppActivity = false,
+        }: { shouldShowAnnotations?: boolean, shouldShowAppActivity?: boolean } = {},
     ): void {
         const { id, permissions = {} } = file;
         const cachedItems = this.getCachedItems(id);
         if (cachedItems) {
-            const { hasError, items } = cachedItems;
-            if (hasError) {
-                errorCallback(items);
+            const { errors, items } = cachedItems;
+            if (errors.length) {
+                errorCallback(items, errors);
             } else {
                 successCallback(items);
             }
@@ -167,28 +320,47 @@ class Feed extends Base {
         }
 
         this.file = file;
-        this.hasError = false;
+        this.errors = [];
         this.errorCallback = onError;
+        const annotationsPromise = shouldShowAnnotations ? this.fetchAnnotations(permissions) : Promise.resolve();
         const versionsPromise = this.fetchVersions();
         const currentVersionPromise = this.fetchCurrentVersion();
         const commentsPromise = this.fetchComments(permissions);
         const tasksPromise = this.fetchTasksNew();
         const appActivityPromise = shouldShowAppActivity ? this.fetchAppActivity(permissions) : Promise.resolve();
 
-        Promise.all([versionsPromise, currentVersionPromise, commentsPromise, tasksPromise, appActivityPromise]).then(
-            ([versions: ?FileVersions, currentVersion: ?BoxItemVersion, ...feedItems]) => {
-                const versionsWithCurrent = this.versionsAPI.addCurrentVersion(currentVersion, versions, this.file);
-                const sortedFeedItems = sortFeedItems(versionsWithCurrent, ...feedItems);
-                if (!this.isDestroyed()) {
-                    this.setCachedItems(id, sortedFeedItems);
-                    if (this.hasError) {
-                        errorCallback(sortedFeedItems);
-                    } else {
-                        successCallback(sortedFeedItems);
-                    }
+        Promise.all([
+            versionsPromise,
+            currentVersionPromise,
+            commentsPromise,
+            tasksPromise,
+            appActivityPromise,
+            annotationsPromise,
+        ]).then(([versions: ?FileVersions, currentVersion: ?BoxItemVersion, ...feedItems]) => {
+            const versionsWithCurrent = this.versionsAPI.addCurrentVersion(currentVersion, versions, this.file);
+            const sortedFeedItems = sortFeedItems(versionsWithCurrent, ...feedItems);
+            if (!this.isDestroyed()) {
+                this.setCachedItems(id, sortedFeedItems);
+                if (this.errors.length) {
+                    errorCallback(sortedFeedItems, this.errors);
+                } else {
+                    successCallback(sortedFeedItems);
                 }
-            },
-        );
+            }
+        });
+    }
+
+    fetchAnnotations(permissions: BoxItemPermission): Promise<?Annotations> {
+        this.annotationsAPI = new AnnotationsAPI(this.options);
+        return new Promise(resolve => {
+            this.annotationsAPI.getAnnotations(
+                this.file.id,
+                undefined,
+                permissions,
+                resolve,
+                this.fetchFeedItemErrorCallback.bind(this, resolve),
+            );
+        });
     }
 
     /**
@@ -380,30 +552,47 @@ class Feed extends Base {
             throw getBadItemError();
         }
 
-        let updatedWithoutError = true;
-        let removeAssigneeError;
-
         this.file = file;
         this.errorCallback = errorCallback;
         this.tasksNewAPI = new TasksNewAPI(this.options);
         this.updateFeedItem({ isPending: true }, task.id);
 
         try {
-            await Promise.all(task.addedAssignees.map(assignee => this.createTaskCollaborator(file, task, assignee)));
+            // create request for the size of each group by ID
+            // TODO: use async/await for both creating and editing tasks
+            const groupInfoPromises: Array<Promise<any>> = task.addedAssignees
+                .filter(
+                    (assignee: SelectorItem<UserMini | GroupMini>) => assignee.item && assignee.item.type === 'group',
+                )
+                .map(assignee => assignee.id)
+                .map(groupId => {
+                    return new GroupsAPI(this.options).getGroupCount({
+                        file,
+                        group: { id: groupId },
+                    });
+                });
+
+            const groupCounts: Array<{ total_count: number }> = await Promise.all(groupInfoPromises);
+            const hasAnyGroupCountExceeded: boolean = groupCounts.some(
+                groupInfo => groupInfo.total_count > TASK_MAX_GROUP_ASSIGNEES,
+            );
+            const warning = {
+                code: ERROR_CODE_GROUP_EXCEEDS_LIMIT,
+                type: 'warning',
+            };
+
+            if (hasAnyGroupCountExceeded) {
+                this.feedErrorCallback(false, warning, ERROR_CODE_GROUP_EXCEEDS_LIMIT);
+                return;
+            }
+
             await new Promise((resolve, reject) => {
-                this.tasksNewAPI.updateTask({
+                this.tasksNewAPI.updateTaskWithDeps({
                     file,
                     task,
                     successCallback: resolve,
                     errorCallback: reject,
                 });
-            });
-
-            await Promise.all(
-                task.removedAssignees.map(assignee => this.deleteTaskCollaborator(file, task, assignee)),
-            ).catch((e: ElementsXhrError) => {
-                updatedWithoutError = false;
-                removeAssigneeError = e;
             });
 
             await new Promise((resolve, reject) => {
@@ -419,10 +608,6 @@ class Feed extends Base {
                             task.id,
                         );
 
-                        if (!updatedWithoutError) {
-                            this.feedErrorCallback(false, removeAssigneeError, ERROR_CODE_UPDATE_TASK);
-                        }
-
                         resolve();
                     },
                     errorCallback: (e: ElementsXhrError) => {
@@ -434,7 +619,7 @@ class Feed extends Base {
             });
 
             // everything succeeded, so call the passed in success callback
-            if (!this.isDestroyed() && updatedWithoutError) {
+            if (!this.isDestroyed()) {
                 successCallback();
             }
         } catch (e) {
@@ -509,7 +694,7 @@ class Feed extends Base {
         file: BoxItem,
         currentUser: User,
         message: string,
-        assignees: SelectorItems,
+        assignees: SelectorItems<>,
         taskType: TaskType,
         dueAt: ?string,
         completionRule: TaskCompletionRule,
@@ -545,7 +730,7 @@ class Feed extends Base {
             description: message,
             type: TASK,
             assigned_to: {
-                entries: assignees.map((assignee: SelectorItem) => ({
+                entries: assignees.map((assignee: SelectorItem<UserMini | GroupMini>) => ({
                     id: uniqueId(),
                     target: { ...assignee, avatar_url: '', type: 'user' },
                     status: TASK_NEW_INITIAL_STATUS,
@@ -594,73 +779,100 @@ class Feed extends Base {
             completion_rule: completionRule,
         };
 
-        this.tasksNewAPI = new TasksNewAPI(this.options);
-        this.tasksNewAPI.createTask({
-            file,
-            task: taskPayload,
-            successCallback: (taskData: Task) => {
-                this.addPendingItem(this.file.id, currentUser, pendingTask);
-                this.createTaskNewSuccessCallback(file, uuid, taskData, assignees, successCallback, errorCallback);
-            },
-            errorCallback: (e: ElementsXhrError, code: string) => {
-                this.feedErrorCallback(false, e, code);
-            },
-        });
+        // create request for the size of each group by ID
+        const groupInfoPromises: Array<Promise<any>> = assignees
+            .filter((assignee: SelectorItem<UserMini | GroupMini>) => (assignee.item && assignee.item.type) === 'group')
+            .map(assignee => assignee.id)
+            .map(groupId => {
+                return new GroupsAPI(this.options).getGroupCount({
+                    file,
+                    group: { id: groupId },
+                });
+            });
+
+        // Fetch each group size in parallel --> return an array of group sizes
+        Promise.all(groupInfoPromises)
+            .then((groupCounts: Array<{ total_count: number }>) => {
+                const hasAnyGroupCountExceeded: boolean = groupCounts.some(
+                    groupInfo => groupInfo.total_count > TASK_MAX_GROUP_ASSIGNEES,
+                );
+                const warning = {
+                    code: ERROR_CODE_GROUP_EXCEEDS_LIMIT,
+                    type: 'warning',
+                };
+                if (hasAnyGroupCountExceeded) {
+                    this.feedErrorCallback(false, warning, ERROR_CODE_GROUP_EXCEEDS_LIMIT);
+                    return;
+                }
+
+                this.tasksNewAPI = new TasksNewAPI(this.options);
+                this.tasksNewAPI.createTaskWithDeps({
+                    file,
+                    task: taskPayload,
+                    assignees,
+                    successCallback: (taskWithDepsData: any) => {
+                        this.addPendingItem(this.file.id, currentUser, pendingTask);
+                        this.updateFeedItem(
+                            {
+                                ...taskWithDepsData,
+                                task_links: {
+                                    entries: taskWithDepsData.task_links,
+                                    next_marker: null,
+                                    limit: 1,
+                                },
+                                assigned_to: {
+                                    entries: taskWithDepsData.assigned_to,
+                                    next_marker: null,
+                                    limit: taskWithDepsData.assigned_to.length,
+                                },
+                                isPending: false,
+                            },
+                            uuid,
+                        );
+                        successCallback(taskWithDepsData);
+                    },
+                    errorCallback: (e: ElementsXhrError, code: string) => {
+                        this.feedErrorCallback(false, e, code);
+                    },
+                });
+            })
+            .catch(error => {
+                this.feedErrorCallback(false, error, ERROR_CODE_CREATE_TASK);
+            });
     };
 
     /**
-     * Callback for successful creation of a Task. Creates a task assignment
+     * Creates a task group via the API.
      *
      * @param {BoxItem} file - The file to which the task is assigned
-     * @param {string} id - ID of the feed item to update with the new task data
-     * @param {Task} task - API returned task
-     * @param {Array} assignees - List of assignees
-     * @param {Function} successCallback - the function which will be called on success
-     * @param {Function} errorCallback - the function which will be called on error     *
-     * @return {void}
+     * @param {Task|TaskUpdatePayload} task - The newly created or existing task from the API
+     * @param {SelectorItem} assignee - The user assigned to this task
+     * @param {Function} errorCallback - Task create error callback
+     * @return {Promise<TaskAssignment>}
      */
-    async createTaskNewSuccessCallback(
+    createTaskCollaboratorsforGroup(
         file: BoxItem,
-        id: string,
-        task: Task,
-        assignees: SelectorItems,
-        successCallback: Function,
-        errorCallback: ErrorCallback,
-    ) {
-        if (!file) {
+        task: Task | TaskUpdatePayload,
+        assignee: SelectorItem<UserMini | GroupMini>,
+    ): Promise<Array<TaskCollabAssignee>> {
+        if (!file.id) {
             throw getBadItemError();
         }
-        this.errorCallback = errorCallback;
 
-        try {
-            const taskLink = await this.createTaskLink(file, task);
-            const taskAssignments: Array<TaskCollabAssignee> = await Promise.all(
-                assignees.map((assignee: SelectorItem) => {
-                    return this.createTaskCollaborator(file, task, assignee);
-                }),
-            );
-
-            this.updateFeedItem(
-                {
-                    ...task,
-                    task_links: {
-                        entries: [taskLink],
-                        next_marker: null,
-                        limit: 1,
-                    },
-                    assigned_to: {
-                        entries: taskAssignments,
-                        next_marker: null,
-                        limit: taskAssignments.length,
-                    },
-                    isPending: false,
+        this.file = file;
+        return new Promise((resolve, reject) => {
+            const taskCollaboratorsAPI = new TaskCollaboratorsAPI(this.options);
+            this.taskCollaboratorsAPI.push(taskCollaboratorsAPI);
+            taskCollaboratorsAPI.createTaskCollaboratorsforGroup({
+                file,
+                task,
+                group: assignee,
+                successCallback: resolve,
+                errorCallback: (e: ElementsXhrError) => {
+                    reject(e);
                 },
-                id,
-            );
-            successCallback(task);
-        } catch (err) {
-            this.feedErrorCallback(false, err, ERROR_CODE_CREATE_TASK);
-        }
+            });
+        });
     }
 
     /**
@@ -675,7 +887,7 @@ class Feed extends Base {
     createTaskCollaborator(
         file: BoxItem,
         task: Task | TaskUpdatePayload,
-        assignee: SelectorItem,
+        assignee: SelectorItem<UserMini | GroupMini>,
     ): Promise<TaskCollabAssignee> {
         if (!file.id) {
             throw getBadItemError();
@@ -823,7 +1035,7 @@ class Feed extends Base {
      */
     feedErrorCallback = (hasError: boolean = false, e: ElementsXhrError, code: string): void => {
         if (hasError) {
-            this.hasError = true;
+            this.errors.push({ ...e, code });
         }
 
         if (!this.isDestroyed() && this.errorCallback) {
@@ -1069,7 +1281,7 @@ class Feed extends Base {
                 }
             },
             errorCallback: (e: ErrorResponseData, code: string) => {
-                this.feedErrorCallback(true, e, code);
+                this.updateCommentErrorCallback(e, code, commentId);
             },
         });
     };
@@ -1163,6 +1375,11 @@ class Feed extends Base {
      */
     destroy() {
         super.destroy();
+
+        if (this.annotationsAPI) {
+            this.annotationsAPI.destroy();
+            delete this.annotationsAPI;
+        }
 
         if (this.commentsAPI) {
             this.commentsAPI.destroy();

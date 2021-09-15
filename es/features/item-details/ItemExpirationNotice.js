@@ -29,7 +29,7 @@ var ItemExpirationNotice = function ItemExpirationNotice(_ref) {
     // no default
   }
 
-  return /*#__PURE__*/React.createElement(InlineNotice, null, /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages[messageID], {
+  return React.createElement(InlineNotice, null, React.createElement(FormattedMessage, _extends({}, messages[messageID], {
     values: {
       expiration: expiration
     }

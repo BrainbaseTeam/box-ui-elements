@@ -18,27 +18,27 @@ var IconName = function IconName(_ref) {
       isFolder = _ref$isFolder === void 0 ? false : _ref$isFolder,
       isResumableUploadsEnabled = _ref.isResumableUploadsEnabled,
       status = _ref.status;
-  var icon = isFolder ? /*#__PURE__*/React.createElement(IconFolderPersonal, null) : /*#__PURE__*/React.createElement(FileIcon, {
+  var icon = isFolder ? React.createElement(IconFolderPersonal, null) : React.createElement(FileIcon, {
     extension: extension
   });
 
   if (isResumableUploadsEnabled && status === STATUS_ERROR) {
-    icon = /*#__PURE__*/React.createElement(Badgeable, {
+    icon = React.createElement(Badgeable, {
       className: "bcu-icon-badge",
-      bottomRight: /*#__PURE__*/React.createElement(IconAlertDefault, {
+      bottomRight: React.createElement(IconAlertDefault, {
         height: 18,
         width: 18
       })
     }, icon);
   }
 
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "bcu-item-icon-name"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "bcu-item-icon"
-  }, icon), /*#__PURE__*/React.createElement("div", {
+  }, icon), React.createElement("div", {
     className: "bcu-item-name"
-  }, /*#__PURE__*/React.createElement(ItemName, {
+  }, React.createElement(ItemName, {
     name: name
   })));
 };

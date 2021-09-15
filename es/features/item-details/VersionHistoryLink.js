@@ -16,20 +16,20 @@ var VersionHistoryLink = function VersionHistoryLink(_ref) {
       onClick = _ref.onClick,
       rest = _objectWithoutProperties(_ref, ["className", "versionCount", "onClick"]);
 
-  var formattedMessageComponent = /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.savedVersions, {
+  var formattedMessageComponent = React.createElement(FormattedMessage, _extends({}, messages.savedVersions, {
     values: {
       versionCount: versionCount
     }
   })); // Only render it as a link if there is an onClick
 
   if (onClick) {
-    return /*#__PURE__*/React.createElement(PlainButton, _extends({
+    return React.createElement(PlainButton, _extends({
       className: classNames('lnk', className),
       onClick: onClick
     }, rest), formattedMessageComponent);
   }
 
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: className
   }, formattedMessageComponent);
 };

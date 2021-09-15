@@ -54,9 +54,9 @@ var ValueField = function ValueField(_ref) {
     case STRING:
     case NUMBER:
     case FLOAT:
-      return /*#__PURE__*/React.createElement("div", {
+      return React.createElement("div", {
         className: "filter-dropdown-text-field-container"
-      }, /*#__PURE__*/React.createElement(TextInput, {
+      }, React.createElement(TextInput, {
         error: error,
         errorPosition: "middle-left",
         hideLabel: true,
@@ -68,9 +68,9 @@ var ValueField = function ValueField(_ref) {
       }));
 
     case DATE:
-      return /*#__PURE__*/React.createElement("div", {
+      return React.createElement("div", {
         className: "filter-dropdown-date-field-container"
-      }, /*#__PURE__*/React.createElement(DatePicker, {
+      }, React.createElement(DatePicker, {
         displayFormat: {
           day: 'numeric',
           month: 'long',
@@ -87,18 +87,18 @@ var ValueField = function ValueField(_ref) {
       }));
 
     case ENUM:
-      return /*#__PURE__*/React.createElement(SingleSelectField, {
+      return React.createElement(SingleSelectField, {
         fieldType: VALUE,
         onChange: function onChange(e) {
           return _onChange([e.value]);
         },
         options: valueOptions,
-        placeholder: /*#__PURE__*/React.createElement(FormattedMessage, messages.selectValuePlaceholderText),
+        placeholder: React.createElement(FormattedMessage, messages.selectValuePlaceholderText),
         selectedValue: getStringValue(selectedValues)
       });
 
     case MULTI_SELECT:
-      return /*#__PURE__*/React.createElement(MultiSelectField, {
+      return React.createElement(MultiSelectField, {
         fieldType: VALUE,
         onChange: function onChange(e) {
           return _onChange(e.map(function (option) {
@@ -106,7 +106,7 @@ var ValueField = function ValueField(_ref) {
           }));
         },
         options: valueOptions,
-        placeholder: /*#__PURE__*/React.createElement(FormattedMessage, messages.selectValuePlaceholderText),
+        placeholder: React.createElement(FormattedMessage, messages.selectValuePlaceholderText),
         selectedValues: selectedValues
       });
 

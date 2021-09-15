@@ -25,7 +25,7 @@ var ItemSubDetails = function ItemSubDetails(_ref) {
   var isRecents = view === VIEW_RECENTS;
   var date = isRecents ? interacted_at || modified_at : modified_at;
   var size = item.size;
-  var DateValue = /*#__PURE__*/React.createElement(Datefield, {
+  var DateValue = React.createElement(Datefield, {
     date: date,
     omitCommas: true
   });
@@ -37,14 +37,14 @@ var ItemSubDetails = function ItemSubDetails(_ref) {
     message = messages.modifiedDate;
   }
 
-  return /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("span", {
+  return React.createElement("span", null, React.createElement("span", {
     className: "bdl-ItemSubDetails-modifiedBy"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, message, {
+  }, React.createElement(FormattedMessage, _extends({}, message, {
     values: {
       date: DateValue,
       name: modifiedBy
     }
-  }))), /*#__PURE__*/React.createElement("span", {
+  }))), React.createElement("span", {
     className: "bdl-ItemSubDetails-size"
   }, getSize(size)));
 };

@@ -8,7 +8,7 @@ import messages from './messages';
 
 var SharedLinkExpirationNotice = function SharedLinkExpirationNotice(_ref) {
   var expiration = _ref.expiration;
-  return /*#__PURE__*/React.createElement(InlineNotice, null, /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.sharedLinkExpiration, {
+  return React.createElement(InlineNotice, null, React.createElement(FormattedMessage, _extends({}, messages.sharedLinkExpiration, {
     values: {
       expiration: expiration
     }

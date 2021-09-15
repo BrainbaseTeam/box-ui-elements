@@ -44,20 +44,22 @@ var SelectField = function SelectField(_ref) {
   var error = isTouched ? getProp(errors, name) : null;
 
   if (multiple) {
-    return /*#__PURE__*/React.createElement(MultiSelectPrimitive, _extends({}, field, rest, {
+    return React.createElement(MultiSelectPrimitive, _extends({}, field, rest, {
       error: error,
       onChange: function onChange(options) {
         return onSelect(name, _onChange, options);
       },
+      options: rest.options,
       selectedValues: value || []
     }));
   }
 
-  return /*#__PURE__*/React.createElement(SingleSelectPrimitive, _extends({}, field, rest, {
+  return React.createElement(SingleSelectPrimitive, _extends({}, field, rest, {
     error: error,
     onChange: function onChange(options) {
       return onSelect(name, _onChange, options);
     },
+    options: rest.options,
     selectedValue: value || null
   }));
 };

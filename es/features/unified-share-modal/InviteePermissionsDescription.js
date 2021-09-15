@@ -12,9 +12,9 @@ var InviteePermissionDescription = function InviteePermissionDescription(_ref) {
       itemType = _ref.itemType;
   var permissionDescriptions = (_permissionDescriptio = {}, _defineProperty(_permissionDescriptio, EDITOR, itemType === 'folder' ? messages.editorLevelDescription : messages.editorLevelFileDescription), _defineProperty(_permissionDescriptio, CO_OWNER, messages.coownerLevelDescription), _defineProperty(_permissionDescriptio, VIEWER_UPLOADER, messages.viewerUploaderLevelDescription), _defineProperty(_permissionDescriptio, PREVIEWER_UPLOADER, messages.previewerUploaderLevelDescription), _defineProperty(_permissionDescriptio, VIEWER, messages.viewerLevelDescription), _defineProperty(_permissionDescriptio, PREVIEWER, messages.previewerLevelDescription), _defineProperty(_permissionDescriptio, UPLOADER, messages.uploaderLevelDescription), _permissionDescriptio);
   var description = permissionDescriptions[inviteePermissionLevel];
-  return /*#__PURE__*/React.createElement("small", {
+  return React.createElement("small", {
     className: "usm-menu-description"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, description));
+  }, React.createElement(FormattedMessage, description));
 };
 
 export default InviteePermissionDescription;

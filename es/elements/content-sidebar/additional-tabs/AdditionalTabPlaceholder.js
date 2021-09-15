@@ -12,9 +12,10 @@ var AdditionalTabPlaceholder = function AdditionalTabPlaceholder(_ref) {
   var classes = classNames('bdl-AdditionalTabPlaceholder-icon', {
     'bdl-AdditionalTabPlaceholder-icon--loading': isLoading
   });
-  return /*#__PURE__*/React.createElement("div", {
-    className: "bdl-AdditionalTabPlaceholder"
-  }, /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
+    className: "bdl-AdditionalTabPlaceholder",
+    "data-testid": "additionaltabplaceholder"
+  }, React.createElement("div", {
     className: classes
   }));
 };

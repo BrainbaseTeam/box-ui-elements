@@ -9,11 +9,11 @@ var CopyrightLink = function CopyrightLink(props) {
       linkProps = _props$linkProps === void 0 ? {} : _props$linkProps,
       _props$date = props.date,
       date = _props$date === void 0 ? new Date() : _props$date;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "copyright-footer"
-  }, /*#__PURE__*/React.createElement("small", {
+  }, React.createElement("small", {
     className: "copyright"
-  }, /*#__PURE__*/React.createElement(LinkBase, _extends({
+  }, React.createElement(LinkBase, _extends({
     href: "/about-us"
   }, linkProps), "\xA9 ", date.getFullYear(), " Box Inc.")));
 };

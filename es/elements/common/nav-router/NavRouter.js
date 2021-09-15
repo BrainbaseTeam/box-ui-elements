@@ -2,13 +2,8 @@ function _objectWithoutProperties(source, excluded) { if (source == null) return
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
-/**
- * 
- * @file Common Router Navigation Component
- * @author Box
- */
 import * as React from 'react';
-import { MemoryRouter, Router } from 'react-router-dom';
+import { MemoryRouter, Router } from 'react-router';
 
 var NavRouter = function NavRouter(_ref) {
   var children = _ref.children,
@@ -16,12 +11,12 @@ var NavRouter = function NavRouter(_ref) {
       rest = _objectWithoutProperties(_ref, ["children", "history"]);
 
   if (history) {
-    return /*#__PURE__*/React.createElement(Router, {
+    return React.createElement(Router, {
       history: history
     }, children);
   }
 
-  return /*#__PURE__*/React.createElement(MemoryRouter, rest, children);
+  return React.createElement(MemoryRouter, rest, children);
 };
 
 export default NavRouter;

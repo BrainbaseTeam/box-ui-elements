@@ -56,22 +56,22 @@ var getCardTitle = function getCardTitle(_ref2) {
 
   switch (code) {
     case 'skills_faces':
-      return /*#__PURE__*/React.createElement(FormattedMessage, messages.faceSkill);
+      return React.createElement(FormattedMessage, messages.faceSkill);
 
     case 'skills_transcript':
-      return /*#__PURE__*/React.createElement(FormattedMessage, messages.transcriptSkill);
+      return React.createElement(FormattedMessage, messages.transcriptSkill);
 
     case 'skills_topics':
-      return /*#__PURE__*/React.createElement(FormattedMessage, messages.topicsSkill);
+      return React.createElement(FormattedMessage, messages.topicsSkill);
 
     case 'skills_status':
-      return /*#__PURE__*/React.createElement(FormattedMessage, messages.statusSkill);
+      return React.createElement(FormattedMessage, messages.statusSkill);
 
     case 'skills_error':
-      return /*#__PURE__*/React.createElement(FormattedMessage, messages.error);
+      return React.createElement(FormattedMessage, messages.error);
 
     default:
-      return message || /*#__PURE__*/React.createElement(FormattedMessage, defaultMessage);
+      return message || React.createElement(FormattedMessage, defaultMessage);
   }
 };
 
@@ -99,12 +99,12 @@ var SidebarSkills = function SidebarSkills(_ref3) {
     var interactionTarget = getCardInteractionTarget(card);
     var title = getCardTitle(card);
     var hasEntries = Array.isArray(card.entries) ? card.entries.length > 0 : isValid;
-    return isValid ? /*#__PURE__*/React.createElement(SidebarSection, {
+    return isValid ? React.createElement(SidebarSection, {
       key: cardId,
       interactionTarget: interactionTarget,
       isOpen: hasEntries,
       title: title
-    }, /*#__PURE__*/React.createElement(SidebarSkillsCard, {
+    }, React.createElement(SidebarSkillsCard, {
       card: card,
       cards: cards,
       getViewer: getViewer,

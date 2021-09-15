@@ -9,6 +9,7 @@ import classNames from 'classnames';
 import { FormattedMessage } from 'react-intl';
 import Badge from './Badge';
 import messages from './messages';
+import { BadgeType } from './types';
 
 var BetaBadge = function BetaBadge(_ref) {
   var _ref$className = _ref.className,
@@ -16,10 +17,10 @@ var BetaBadge = function BetaBadge(_ref) {
       rest = _objectWithoutProperties(_ref, ["className"]);
 
   var classes = classNames('beta-badge', className);
-  return /*#__PURE__*/React.createElement(Badge, _extends({
+  return React.createElement(Badge, _extends({
     className: classes,
-    type: "warning"
-  }, rest), /*#__PURE__*/React.createElement(FormattedMessage, messages.beta));
+    type: BadgeType.WARNING
+  }, rest), React.createElement(FormattedMessage, messages.beta));
 };
 
 export default BetaBadge;

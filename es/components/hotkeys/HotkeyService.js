@@ -9,7 +9,9 @@ import Mousetrap from 'mousetrap';
 import uniqueId from 'lodash/uniqueId';
 import HotkeyManager from './HotkeyManager'; // An instance of this class represents one hotkey "layer"
 
-var HotkeyService = /*#__PURE__*/function () {
+var HotkeyService =
+/*#__PURE__*/
+function () {
   function HotkeyService() {
     var _this = this;
 

@@ -4,17 +4,13 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -22,26 +18,22 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import PillSelectorDropdown from '../../components/pill-selector-dropdown';
 import ContactDatalistItem from '../../components/contact-datalist-item';
 import TextArea from '../../components/text-area';
@@ -53,17 +45,17 @@ import commonMessages from '../../common/messages';
 import messages from './messages';
 import './EmailSharedLink.scss';
 
-var EmailSharedLink = /*#__PURE__*/function (_Component) {
+var EmailSharedLink =
+/*#__PURE__*/
+function (_Component) {
   _inherits(EmailSharedLink, _Component);
-
-  var _super = _createSuper(EmailSharedLink);
 
   function EmailSharedLink(props) {
     var _this;
 
     _classCallCheck(this, EmailSharedLink);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(EmailSharedLink).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "getSelectorOptions", function () {
       var contacts = _this.props.contacts;
@@ -87,11 +79,13 @@ var EmailSharedLink = /*#__PURE__*/function (_Component) {
               type = _ref3.type;
           return {
             // map to standardized DatalistItem format
+            // TODO: refactor this so inline conversions aren't required at every usage
             email: email,
             id: id,
             text: name,
             type: type,
-            value: email
+            value: email || id // if email doesn't exist, contact is a group, use id
+
           };
         });
       } // return empty selector options if input value is empty
@@ -209,15 +203,15 @@ var EmailSharedLink = /*#__PURE__*/function (_Component) {
           onRequestClose = _this$props2.onRequestClose,
           submitting = _this$props2.submitting;
       var selectorOptions = this.getSelectorOptions();
-      return /*#__PURE__*/React.createElement("form", {
+      return React.createElement("form", {
         onSubmit: this.sendEmail,
         className: classNames('email-shared-link', {
           'is-expanded': isExpanded
         })
-      }, /*#__PURE__*/React.createElement(PillSelectorDropdown, {
+      }, React.createElement(PillSelectorDropdown, {
         allowCustomPills: true,
         error: pillSelectorError,
-        label: /*#__PURE__*/React.createElement(FormattedMessage, messages.emailSharedLink),
+        label: React.createElement(FormattedMessage, messages.emailSharedLink),
         inputProps: _objectSpread({
           onFocus: onExpand
         }, emailMessageProps),
@@ -234,26 +228,26 @@ var EmailSharedLink = /*#__PURE__*/function (_Component) {
         var email = _ref5.email,
             text = _ref5.text,
             value = _ref5.value;
-        return /*#__PURE__*/React.createElement(ContactDatalistItem, {
+        return React.createElement(ContactDatalistItem, {
           key: value,
           name: text,
           subtitle: email
         });
-      })), /*#__PURE__*/React.createElement(TextArea, {
+      })), React.createElement(TextArea, {
         isRequired: true,
-        label: /*#__PURE__*/React.createElement(FormattedMessage, messages.messageTitle),
+        label: React.createElement(FormattedMessage, messages.messageTitle),
         onChange: this.handleMessageChange,
         rows: 3,
         value: emailMessage
-      }), isExpanded && /*#__PURE__*/React.createElement(ModalActions, null, /*#__PURE__*/React.createElement(Button, {
+      }), isExpanded && React.createElement(ModalActions, null, React.createElement(Button, {
         isDisabled: submitting,
         onClick: onRequestClose,
         type: "button"
-      }, /*#__PURE__*/React.createElement(FormattedMessage, commonMessages.cancel)), /*#__PURE__*/React.createElement(PrimaryButton, {
+      }, React.createElement(FormattedMessage, commonMessages.cancel)), React.createElement(PrimaryButton, {
         isDisabled: submitting,
         isLoading: submitting,
         type: "submit"
-      }, /*#__PURE__*/React.createElement(FormattedMessage, commonMessages.send))));
+      }, React.createElement(FormattedMessage, commonMessages.send))));
     }
   }]);
 
@@ -269,7 +263,7 @@ _defineProperty(EmailSharedLink, "propTypes", {
   })).isRequired,
   defaultEmailMessage: PropTypes.string,
   emailMessageProps: PropTypes.object,
-  intl: intlShape.isRequired,
+  intl: PropTypes.any,
   getContacts: PropTypes.func.isRequired,
   isExpanded: PropTypes.bool,
   onExpand: PropTypes.func.isRequired,

@@ -1,22 +1,18 @@
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -34,19 +30,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -63,11 +55,12 @@ import noop from 'lodash/noop';
 import uniqueid from 'lodash/uniqueId';
 import cloneDeep from 'lodash/cloneDeep';
 import { getTypedFileId, getTypedFolderId } from '../../utils/file';
+import Browser from '../../utils/Browser';
 import makeResponsive from '../common/makeResponsive';
 import Internationalize from '../common/Internationalize';
 import FolderUpload from '../../api/uploads/FolderUpload';
 import API from '../../api';
-import { getDataTransferItemId, getFileId, getFileFromDataTransferItem, getFile, getFileAPIOptions, getDataTransferItemAPIOptions, isDataTransferItemAFolder, isMultiputSupported } from '../../utils/uploads';
+import { getDataTransferItemId, getFileId, getFileFromDataTransferItem, getPackageFileFromDataTransferItem, getFile, getFileAPIOptions, getDataTransferItemAPIOptions, isDataTransferItemAFolder, isDataTransferItemAPackage, isMultiputSupported } from '../../utils/uploads';
 import DroppableContent from './DroppableContent';
 import UploadsManager from './UploadsManager';
 import Footer from './Footer';
@@ -82,10 +75,10 @@ var HIDE_UPLOAD_MANAGER_DELAY_MS_DEFAULT = 8000;
 var EXPAND_UPLOADS_MANAGER_ITEMS_NUM_THRESHOLD = 5;
 var UPLOAD_CONCURRENCY = 6;
 
-var ContentUploader = /*#__PURE__*/function (_Component) {
+var ContentUploader =
+/*#__PURE__*/
+function (_Component) {
   _inherits(ContentUploader, _Component);
-
-  var _super = _createSuper(ContentUploader);
 
   /**
    * [constructor]
@@ -97,7 +90,7 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
 
     _classCallCheck(this, ContentUploader);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ContentUploader).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "isAutoExpanded", false);
 
@@ -164,7 +157,7 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
 
       _this.setState(function (state) {
         return {
-          itemIds: _objectSpread(_objectSpread({}, state.itemIds), newItemIds)
+          itemIds: _objectSpread({}, state.itemIds, {}, newItemIds)
         };
       }, function () {
         onBeforeUpload(newFiles);
@@ -178,6 +171,16 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "addDroppedItemsToUploadQueue", function (droppedItems, itemUpdateCallback) {
+      if (droppedItems.items) {
+        _this.addDataTransferItemsToUploadQueue(droppedItems.items, itemUpdateCallback);
+      } else {
+        Array.from(droppedItems.files).forEach(function (file) {
+          _this.addFilesToUploadQueue([file], itemUpdateCallback);
+        });
+      }
+    });
+
     _defineProperty(_assertThisInitialized(_this), "addDataTransferItemsToUploadQueue", function (dataTransferItems, itemUpdateCallback) {
       var isFolderUploadEnabled = _this.props.isFolderUploadEnabled;
 
@@ -187,10 +190,13 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
 
       var folderItems = [];
       var fileItems = [];
+      var packageItems = [];
       Array.from(dataTransferItems).forEach(function (item) {
         var isDirectory = isDataTransferItemAFolder(item);
 
-        if (isDirectory && isFolderUploadEnabled) {
+        if (Browser.isSafari() && isDataTransferItemAPackage(item)) {
+          packageItems.push(item);
+        } else if (isDirectory && isFolderUploadEnabled) {
           folderItems.push(item);
         } else if (!isDirectory) {
           fileItems.push(item);
@@ -199,12 +205,18 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
 
       _this.addFileDataTransferItemsToUploadQueue(fileItems, itemUpdateCallback);
 
+      _this.addPackageDataTransferItemsToUploadQueue(packageItems, itemUpdateCallback);
+
       _this.addFolderDataTransferItemsToUploadQueue(folderItems, itemUpdateCallback);
     });
 
     _defineProperty(_assertThisInitialized(_this), "addFileDataTransferItemsToUploadQueue", function (dataTransferItems, itemUpdateCallback) {
-      dataTransferItems.forEach( /*#__PURE__*/function () {
-        var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(item) {
+      dataTransferItems.forEach(
+      /*#__PURE__*/
+      function () {
+        var _ref = _asyncToGenerator(
+        /*#__PURE__*/
+        regeneratorRuntime.mark(function _callee(item) {
           var file;
           return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
@@ -240,8 +252,24 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
       }());
     });
 
-    _defineProperty(_assertThisInitialized(_this), "addFolderDataTransferItemsToUploadQueue", /*#__PURE__*/function () {
-      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(dataTransferItems, itemUpdateCallback) {
+    _defineProperty(_assertThisInitialized(_this), "addPackageDataTransferItemsToUploadQueue", function (dataTransferItems, itemUpdateCallback) {
+      dataTransferItems.forEach(function (item) {
+        var file = getPackageFileFromDataTransferItem(item);
+
+        if (!file) {
+          return;
+        }
+
+        _this.addFilesToUploadQueue([file], itemUpdateCallback);
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "addFolderDataTransferItemsToUploadQueue",
+    /*#__PURE__*/
+    function () {
+      var _ref2 = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee3(dataTransferItems, itemUpdateCallback) {
         var rootFolderId, itemIds, newItems, fileAPIOptions, _fileAPIOptions$folde, folderId;
 
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
@@ -272,11 +300,14 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
                 return _context3.abrupt("return");
 
               case 8:
-                // $FlowFixMe
                 fileAPIOptions = getDataTransferItemAPIOptions(newItems[0]);
                 _fileAPIOptions$folde = fileAPIOptions.folderId, folderId = _fileAPIOptions$folde === void 0 ? rootFolderId : _fileAPIOptions$folde;
-                newItems.forEach( /*#__PURE__*/function () {
-                  var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(item) {
+                newItems.forEach(
+                /*#__PURE__*/
+                function () {
+                  var _ref3 = _asyncToGenerator(
+                  /*#__PURE__*/
+                  regeneratorRuntime.mark(function _callee2(item) {
                     var folderUpload;
                     return regeneratorRuntime.wrap(function _callee2$(_context2) {
                       while (1) {
@@ -576,6 +607,8 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
 
       item.progress = Math.min(Math.round(event.loaded / event.total * 100), 100);
       item.status = item.progress === 100 ? STATUS_STAGED : STATUS_IN_PROGRESS;
+      var onProgress = _this.props.onProgress;
+      onProgress(item);
       var items = _this.state.items;
       items[items.indexOf(item)] = item;
 
@@ -585,10 +618,13 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
     _defineProperty(_assertThisInitialized(_this), "onClick", function (item) {
       var _this$props7 = _this.props,
           chunked = _this$props7.chunked,
-          isResumableUploadsEnabled = _this$props7.isResumableUploadsEnabled;
+          isResumableUploadsEnabled = _this$props7.isResumableUploadsEnabled,
+          onClickCancel = _this$props7.onClickCancel,
+          onClickResume = _this$props7.onClickResume,
+          onClickRetry = _this$props7.onClickRetry;
       var status = item.status,
           file = item.file;
-      var isChunkedUpload = chunked && file.size > CHUNKED_UPLOAD_MIN_SIZE_BYTES && isMultiputSupported();
+      var isChunkedUpload = chunked && !item.isFolder && file.size > CHUNKED_UPLOAD_MIN_SIZE_BYTES && isMultiputSupported();
       var isResumable = isResumableUploadsEnabled && isChunkedUpload && item.api.sessionId;
 
       switch (status) {
@@ -598,15 +634,22 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
         case STATUS_PENDING:
           _this.removeFileFromUploadQueue(item);
 
+          onClickCancel(item);
           break;
 
         case STATUS_ERROR:
           if (isResumable) {
+            item.bytesUploadedOnLastResume = item.api.totalUploadedBytes;
+
             _this.resumeFile(item);
+
+            onClickResume(item);
           } else {
             _this.resetFile(item);
 
             _this.uploadFile(item);
+
+            onClickRetry(item);
           }
 
           break;
@@ -757,7 +800,8 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
 
       if (!useUploadsManager || !hasUploads) {
         return;
-      }
+      } // TODO: this gets called unnecessarily (upon each render regardless of the queue not changing)
+
 
       this.addFilesWithOptionsToUploadQueueAndStartUpload(files, dataTransferItems);
     }
@@ -776,7 +820,7 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
       var fileId = getProp(uploadAPIOptions, 'fileId');
       var itemFolderId = getTypedFolderId(folderId);
       var itemFileId = fileId ? getTypedFileId(fileId) : null;
-      return new API(_objectSpread(_objectSpread({}, this.getBaseAPIOptions()), {}, {
+      return new API(_objectSpread({}, this.getBaseAPIOptions(), {
         id: itemFileId || itemFolderId
       }, uploadAPIOptions));
     }
@@ -803,8 +847,7 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
         return;
       }
 
-      var rootFolderId = this.props.rootFolderId; // $FlowFixMe
-
+      var rootFolderId = this.props.rootFolderId;
       var fileAPIOptions = getFileAPIOptions(files[0]);
       var _fileAPIOptions$folde2 = fileAPIOptions.folderId,
           folderId = _fileAPIOptions$folde2 === void 0 ? rootFolderId : _fileAPIOptions$folde2;
@@ -835,7 +878,8 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
     value: function getUploadAPI(file, uploadAPIOptions) {
       var _this$props11 = this.props,
           chunked = _this$props11.chunked,
-          isResumableUploadsEnabled = _this$props11.isResumableUploadsEnabled;
+          isResumableUploadsEnabled = _this$props11.isResumableUploadsEnabled,
+          isUploadFallbackLogicEnabled = _this$props11.isUploadFallbackLogicEnabled;
       var size = file.size;
       var factory = this.createAPIFactory(uploadAPIOptions);
 
@@ -847,6 +891,10 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
             chunkedUploadAPI.isResumableUploadsEnabled = true;
           }
 
+          if (isUploadFallbackLogicEnabled) {
+            chunkedUploadAPI.isUploadFallbackLogicEnabled = true;
+          }
+
           return chunkedUploadAPI;
         }
         /* eslint-disable no-console */
@@ -856,7 +904,13 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
         /* eslint-enable no-console */
       }
 
-      return factory.getPlainUploadAPI();
+      var plainUploadAPI = factory.getPlainUploadAPI();
+
+      if (isUploadFallbackLogicEnabled) {
+        plainUploadAPI.isUploadFallbackLogicEnabled = true;
+      }
+
+      return plainUploadAPI;
     }
     /**
      * Removes an item from the upload queue. Cancels upload if in progress.
@@ -926,7 +980,8 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
 
       var _this$props13 = this.props,
           overwrite = _this$props13.overwrite,
-          rootFolderId = _this$props13.rootFolderId;
+          rootFolderId = _this$props13.rootFolderId,
+          onResume = _this$props13.onResume;
       var api = item.api,
           file = item.file,
           options = item.options;
@@ -958,6 +1013,7 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
       item.status = STATUS_IN_PROGRESS;
       delete item.error;
       items[items.indexOf(item)] = item;
+      onResume(item);
       api.resume(resumeOptions);
       this.updateViewAndCollection(items);
     }
@@ -1011,7 +1067,8 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
     value: function updateViewAndCollection(items, callback) {
       var _this$props14 = this.props,
           onComplete = _this$props14.onComplete,
-          useUploadsManager = _this$props14.useUploadsManager;
+          useUploadsManager = _this$props14.useUploadsManager,
+          isResumableUploadsEnabled = _this$props14.isResumableUploadsEnabled;
       var someUploadIsInProgress = items.some(function (uploadItem) {
         return uploadItem.status !== STATUS_COMPLETE;
       });
@@ -1024,6 +1081,10 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
       var noFileIsPendingOrInProgress = items.every(function (uploadItem) {
         return uploadItem.status !== STATUS_PENDING && uploadItem.status !== STATUS_IN_PROGRESS;
       });
+      var areAllItemsFinished = items.every(function (uploadItem) {
+        return uploadItem.status === STATUS_COMPLETE || uploadItem.status === STATUS_ERROR;
+      });
+      var uploadItemsStatus = isResumableUploadsEnabled ? areAllItemsFinished : noFileIsPendingOrInProgress;
       var view = '';
 
       if (items && items.length === 0 || allItemsArePending) {
@@ -1044,7 +1105,7 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
         }
       }
 
-      if (noFileIsPendingOrInProgress && useUploadsManager) {
+      if (uploadItemsStatus && useUploadsManager) {
         if (this.isAutoExpanded) {
           this.resetUploadManagerExpandState();
         } // Else manually expanded so don't close
@@ -1115,14 +1176,14 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
         'be-app-element': !useUploadsManager,
         be: !useUploadsManager
       });
-      return /*#__PURE__*/React.createElement(Internationalize, {
+      return React.createElement(Internationalize, {
         language: language,
         messages: messages
-      }, useUploadsManager ? /*#__PURE__*/React.createElement("div", {
+      }, useUploadsManager ? React.createElement("div", {
         ref: measureRef,
         className: styleClassName,
         id: this.id
-      }, /*#__PURE__*/React.createElement(UploadsManager, {
+      }, React.createElement(UploadsManager, {
         isDragging: isDraggingItemsToUploadsManager,
         isExpanded: isUploadsManagerExpanded,
         isResumableUploadsEnabled: isResumableUploadsEnabled,
@@ -1133,12 +1194,12 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
         onUploadsManagerActionClick: this.clickAllWithStatus,
         toggleUploadsManager: this.toggleUploadsManager,
         view: view
-      })) : /*#__PURE__*/React.createElement("div", {
+      })) : React.createElement("div", {
         ref: measureRef,
         className: styleClassName,
         id: this.id
-      }, /*#__PURE__*/React.createElement(DroppableContent, {
-        addDataTransferItemsToUploadQueue: this.addDataTransferItemsToUploadQueue,
+      }, React.createElement(DroppableContent, {
+        addDataTransferItemsToUploadQueue: this.addDroppedItemsToUploadQueue,
         addFiles: this.addFilesToUploadQueue,
         allowedTypes: ['Files'],
         isFolderUploadEnabled: isFolderUploadEnabled,
@@ -1146,7 +1207,7 @@ var ContentUploader = /*#__PURE__*/function (_Component) {
         items: items,
         onClick: this.onClick,
         view: view
-      }), /*#__PURE__*/React.createElement(Footer, {
+      }), React.createElement(Footer, {
         errorCode: errorCode,
         fileLimit: fileLimit,
         hasFiles: hasFiles,
@@ -1171,10 +1232,15 @@ _defineProperty(ContentUploader, "defaultProps", {
   fileLimit: FILE_LIMIT_DEFAULT,
   uploadHost: DEFAULT_HOSTNAME_UPLOAD,
   onBeforeUpload: noop,
+  onClickCancel: noop,
+  onClickResume: noop,
+  onClickRetry: noop,
   onClose: noop,
   onComplete: noop,
   onError: noop,
+  onResume: noop,
   onUpload: noop,
+  onProgress: noop,
   overwrite: true,
   useUploadsManager: false,
   files: [],
@@ -1182,6 +1248,7 @@ _defineProperty(ContentUploader, "defaultProps", {
   onCancel: noop,
   isFolderUploadEnabled: false,
   isResumableUploadsEnabled: false,
+  isUploadFallbackLogicEnabled: false,
   dataTransferItems: [],
   isDraggingItemsToUploadsManager: false
 });

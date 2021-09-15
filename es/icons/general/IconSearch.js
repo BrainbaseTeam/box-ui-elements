@@ -12,13 +12,13 @@ var IconSearch = function IconSearch(_ref) {
       title = _ref.title,
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 14 : _ref$width;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: "icon-search ".concat(className),
     height: height,
     title: title,
     viewBox: "0 0 14 14",
     width: width
-  }, /*#__PURE__*/React.createElement("path", {
+  }, React.createElement("path", {
     className: "fill-color",
     d: "M13.7,12.1L11.6,10l-1.1-0.2c0.9-1,1.4-2.4,1.4-3.9c0-3.3-2.7-6-6-6C2.7,0,0,2.7,0,6s2.7,6,6,6 c1.5,0,2.9-0.6,4-1.5l0.2,1l2.1,2.1c0.4,0.4,1,0.4,1.4,0l0,0C14.1,13.1,14.1,12.5,13.7,12.1z M6,10.4c-2.5,0-4.5-2-4.5-4.5 s2-4.5,4.5-4.5s4.5,2,4.5,4.5S8.4,10.4,6,10.4z",
     fill: color,

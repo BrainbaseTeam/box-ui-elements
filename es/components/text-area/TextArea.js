@@ -14,43 +14,50 @@ import './TextArea.scss';
 var TextArea = function TextArea(_ref) {
   var _ref$className = _ref.className,
       className = _ref$className === void 0 ? '' : _ref$className,
+      description = _ref.description,
       error = _ref.error,
+      errorTooltipPosition = _ref.errorTooltipPosition,
       hideLabel = _ref.hideLabel,
       hideOptionalLabel = _ref.hideOptionalLabel,
       isRequired = _ref.isRequired,
       isResizable = _ref.isResizable,
       label = _ref.label,
       textareaRef = _ref.textareaRef,
-      rest = _objectWithoutProperties(_ref, ["className", "error", "hideLabel", "hideOptionalLabel", "isRequired", "isResizable", "label", "textareaRef"]);
+      rest = _objectWithoutProperties(_ref, ["className", "description", "error", "errorTooltipPosition", "hideLabel", "hideOptionalLabel", "isRequired", "isResizable", "label", "textareaRef"]);
 
   var hasError = !!error;
   var classes = classNames(className, 'text-area-container', {
     'show-error': hasError
   });
   var errorMessageID = React.useRef(uniqueId('errorMessage')).current;
+  var descriptionID = React.useRef(uniqueId('description')).current;
   var ariaAttrs = {
     'aria-invalid': hasError,
     'aria-required': isRequired,
-    'aria-errormessage': errorMessageID
+    'aria-errormessage': errorMessageID,
+    'aria-describedby': description ? descriptionID : undefined
   };
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: classes
-  }, /*#__PURE__*/React.createElement(Label, {
+  }, React.createElement(Label, {
     hideLabel: hideLabel,
     showOptionalText: !hideOptionalLabel && !isRequired,
     text: label
-  }, /*#__PURE__*/React.createElement(Tooltip, {
+  }, !!description && React.createElement("div", {
+    id: descriptionID,
+    className: "text-area-description"
+  }, description), React.createElement(Tooltip, {
     isShown: hasError,
-    position: "bottom-left",
+    position: errorTooltipPosition || 'bottom-left',
     text: error || '',
     theme: "error"
-  }, /*#__PURE__*/React.createElement("textarea", _extends({
+  }, React.createElement("textarea", _extends({
     ref: textareaRef,
     required: isRequired,
     style: {
       resize: isResizable ? '' : 'none'
     }
-  }, ariaAttrs, rest))), /*#__PURE__*/React.createElement("span", {
+  }, ariaAttrs, rest))), React.createElement("span", {
     id: errorMessageID,
     className: "accessibility-hidden",
     role: "alert"

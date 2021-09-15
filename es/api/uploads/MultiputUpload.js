@@ -14,19 +14,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -42,12 +38,13 @@ import { retryNumOfTimes } from '../../utils/function';
 import { digest } from '../../utils/webcrypto';
 import hexToBase64 from '../../utils/base64';
 import createWorker from '../../utils/uploadsSHA1Worker';
+import Browser from '../../utils/Browser';
 import { DEFAULT_RETRY_DELAY_MS, ERROR_CODE_UPLOAD_STORAGE_LIMIT_EXCEEDED, HTTP_STATUS_CODE_FORBIDDEN, MS_IN_S } from '../../constants';
 import MultiputPart, { PART_STATE_UPLOADED, PART_STATE_UPLOADING, PART_STATE_DIGEST_READY, PART_STATE_NOT_STARTED } from './MultiputPart';
-import BaseMultiput from './BaseMultiput'; // Constants used for specifying log event types.
+import BaseMultiput from './BaseMultiput';
+// Constants used for specifying log event types.
 // This type is a catch-all for create session errors that aren't 5xx's (for which we'll do
 // retries) and aren't specific 4xx's we know how to specifically handle (e.g. out of storage).
-
 var LOG_EVENT_TYPE_CREATE_SESSION_MISC_ERROR = 'create_session_misc_error';
 var LOG_EVENT_TYPE_CREATE_SESSION_RETRIES_EXCEEDED = 'create_session_retries_exceeded';
 var LOG_EVENT_TYPE_FILE_CHANGED_DURING_UPLOAD = 'file_changed_during_upload';
@@ -57,10 +54,10 @@ var LOG_EVENT_TYPE_WEB_WORKER_ERROR = 'web_worker_error';
 var LOG_EVENT_TYPE_FILE_READER_RECEIVED_NOT_FOUND_ERROR = 'file_reader_received_not_found_error';
 var LOG_EVENT_TYPE_PART_DIGEST_RETRIES_EXCEEDED = 'part_digest_retries_exceeded';
 
-var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
+var MultiputUpload =
+/*#__PURE__*/
+function (_BaseMultiput) {
   _inherits(MultiputUpload, _BaseMultiput);
-
-  var _super = _createSuper(MultiputUpload);
 
   /**
    * [constructor]
@@ -73,14 +70,14 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
 
     _classCallCheck(this, MultiputUpload);
 
-    _this = _super.call(this, options, {
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(MultiputUpload).call(this, options, {
       createSession: null,
       uploadPart: null,
       listParts: null,
       commit: null,
       abort: null,
       logEvent: null
-    }, config);
+    }, config));
 
     _defineProperty(_assertThisInitialized(_this), "getBaseUploadUrlFromPreflightResponse", function (_ref) {
       var data = _ref.data;
@@ -95,8 +92,12 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
       return _this.getBaseUploadUrl();
     });
 
-    _defineProperty(_assertThisInitialized(_this), "preflightSuccessHandler", /*#__PURE__*/function () {
-      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(preflightResponse) {
+    _defineProperty(_assertThisInitialized(_this), "preflightSuccessHandler",
+    /*#__PURE__*/
+    function () {
+      var _ref2 = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee(preflightResponse) {
         var uploadUrl, createSessionUrl, postData, response, errorData;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -223,7 +224,11 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
       _this.sessionErrorHandler(error, LOG_EVENT_TYPE_CREATE_SESSION_RETRIES_EXCEEDED, JSON.stringify(error));
     });
 
-    _defineProperty(_assertThisInitialized(_this), "getSessionInfo", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+    _defineProperty(_assertThisInitialized(_this), "getSessionInfo",
+    /*#__PURE__*/
+    _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee2() {
       var uploadUrl, sessionUrl, response;
       return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
@@ -269,7 +274,27 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "partUploadErrorHandler", function (error, eventInfo) {
-      _this.sessionErrorHandler(error, LOG_EVENT_TYPE_PART_UPLOAD_RETRIES_EXCEEDED, eventInfo);
+      _this.sessionErrorHandler(error, LOG_EVENT_TYPE_PART_UPLOAD_RETRIES_EXCEEDED, eventInfo); // Pause the rest of the parts.
+      // can't cancel parts because cancel destroys the part and parts are only created in createSession call
+
+
+      if (_this.isResumableUploadsEnabled) {
+        // Reset uploading process for parts that were in progress when the upload failed
+        var nextUploadIndex = _this.firstUnuploadedPartIndex;
+
+        while (_this.numPartsUploading > 0) {
+          var part = _this.parts[nextUploadIndex];
+
+          if (part && part.state === PART_STATE_UPLOADING) {
+            part.reset();
+            part.pause();
+            _this.numPartsUploading -= 1;
+            _this.numPartsDigestReady += 1;
+          }
+
+          nextUploadIndex += 1;
+        }
+      }
     });
 
     _defineProperty(_assertThisInitialized(_this), "updateProgress", function (prevUploadedBytes, newUploadedBytes) {
@@ -415,6 +440,10 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
         data.attributes.content_modified_at = fileLastModified;
       }
 
+      if (_this.fileDescription) {
+        data.attributes.description = _this.fileDescription;
+      }
+
       var clientEventInfo = {
         avg_part_read_time: Math.round(stats.totalPartReadTime / _this.parts.length),
         avg_part_digest_time: Math.round(stats.totalPartDigestTime / _this.parts.length),
@@ -513,6 +542,7 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
     _this.commitRetryCount = 0;
     _this.clientId = null;
     _this.isResumableUploadsEnabled = false;
+    _this.numResumeRetries = 0;
     return _this;
   }
   /**
@@ -541,6 +571,7 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
       this.createSessionNumRetriesPerformed = 0;
       this.partSize = 0;
       this.commitRetryCount = 0;
+      this.numResumeRetries = 0;
     }
     /**
      * Set information about file being uploaded
@@ -567,6 +598,7 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
           successCallback = _ref4.successCallback,
           _ref4$overwrite = _ref4.overwrite,
           overwrite = _ref4$overwrite === void 0 ? true : _ref4$overwrite,
+          conflictCallback = _ref4.conflictCallback,
           fileId = _ref4.fileId;
       this.file = file;
       this.fileName = this.file.name;
@@ -575,6 +607,7 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
       this.progressCallback = progressCallback || noop;
       this.successCallback = successCallback || noop;
       this.overwrite = overwrite;
+      this.conflictCallback = conflictCallback;
       this.fileId = fileId;
     }
     /**
@@ -595,12 +628,14 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
     key: "upload",
     value: function upload(_ref5) {
       var file = _ref5.file,
+          fileDescription = _ref5.fileDescription,
           folderId = _ref5.folderId,
           errorCallback = _ref5.errorCallback,
           progressCallback = _ref5.progressCallback,
           successCallback = _ref5.successCallback,
           _ref5$overwrite = _ref5.overwrite,
           overwrite = _ref5$overwrite === void 0 ? true : _ref5$overwrite,
+          conflictCallback = _ref5.conflictCallback,
           fileId = _ref5.fileId;
       this.file = file;
       this.fileName = this.file.name; // These values are used as part of our (best effort) attempt to abort uploads if we detect
@@ -614,8 +649,10 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
       this.successCallback = successCallback || noop;
       this.sha1Worker = createWorker();
       this.sha1Worker.addEventListener('message', this.onWorkerMessage);
+      this.conflictCallback = conflictCallback;
       this.overwrite = overwrite;
       this.fileId = fileId;
+      this.fileDescription = fileDescription;
       this.makePreflightRequest();
     }
     /**
@@ -662,7 +699,7 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
           session_endpoints = data.session_endpoints;
       this.sessionId = id;
       this.partSize = part_size;
-      this.sessionEndpoints = _objectSpread(_objectSpread({}, this.sessionEndpoints), {}, {
+      this.sessionEndpoints = _objectSpread({}, this.sessionEndpoints, {
         uploadPart: session_endpoints.upload_part,
         listParts: session_endpoints.list_parts,
         commit: session_endpoints.commit,
@@ -684,6 +721,7 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
      * @param {Function} [options.errorCallback]
      * @param {Function} [options.progressCallback]
      * @param {Function} [options.successCallback]
+     * @param {Function} [options.conflictCallback]
      * @return {void}
      */
 
@@ -698,6 +736,7 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
           successCallback = _ref6.successCallback,
           _ref6$overwrite = _ref6.overwrite,
           overwrite = _ref6$overwrite === void 0 ? true : _ref6$overwrite,
+          conflictCallback = _ref6.conflictCallback,
           fileId = _ref6.fileId;
       this.setFileInfo({
         file: file,
@@ -705,6 +744,7 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
         errorCallback: errorCallback,
         progressCallback: progressCallback,
         successCallback: successCallback,
+        conflictCallback: conflictCallback,
         overwrite: overwrite,
         fileId: fileId
       });
@@ -740,31 +780,13 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
           session_endpoints = data.session_endpoints; // Set session information gotten from API response
 
       this.partSize = part_size;
-      this.sessionEndpoints = _objectSpread(_objectSpread({}, this.sessionEndpoints), {}, {
+      this.sessionEndpoints = _objectSpread({}, this.sessionEndpoints, {
         uploadPart: session_endpoints.upload_part,
         listParts: session_endpoints.list_parts,
         commit: session_endpoints.commit,
         abort: session_endpoints.abort,
         logEvent: session_endpoints.log_event
-      }); // Reset uploading process for parts that were in progress when the upload failed
-
-      var nextUploadIndex = this.firstUnuploadedPartIndex;
-
-      while (this.numPartsUploading > 0) {
-        var part = this.parts[nextUploadIndex];
-
-        if (part && part.state === PART_STATE_UPLOADING) {
-          part.state = PART_STATE_DIGEST_READY;
-          part.numUploadRetriesPerformed = 0;
-          part.timing = {};
-          part.uploadedBytes = 0;
-          this.numPartsUploading -= 1;
-          this.numPartsDigestReady += 1;
-        }
-
-        nextUploadIndex += 1;
-      }
-
+      });
       this.processNextParts();
     }
     /**
@@ -802,11 +824,8 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
 
         this.retryTimeout = setTimeout(this.getSessionInfo, retryAfterMs);
         this.numResumeRetries += 1;
-      } else if (errorData && errorData.status >= 500) {
-        this.retryTimeout = setTimeout(this.getSessionInfo, Math.pow(2, this.numResumeRetries) * MS_IN_S);
-        this.numResumeRetries += 1;
-      } else {
-        // Restart upload process for errors resulting from invalid session
+      } else if (errorData && errorData.status >= 400 && errorData.status < 500) {
+        // Restart upload process for errors resulting from invalid/expired session or no permission
         this.parts.forEach(function (part) {
           part.cancel();
         });
@@ -826,6 +845,11 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
           fileId: this.fileId
         };
         this.upload(uploadOptions);
+      } else {
+        // Handle internet disconnects (error.request && !error.response) and (!error.request)
+        // Also handle any 500 error messages
+        this.retryTimeout = setTimeout(this.getSessionInfo, Math.pow(2, this.numResumeRetries) * MS_IN_S);
+        this.numResumeRetries += 1;
       }
     }
     /**
@@ -842,7 +866,9 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
   }, {
     key: "sessionErrorHandler",
     value: function () {
-      var _sessionErrorHandler = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(error, logEventType, logMessage) {
+      var _sessionErrorHandler = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee3(error, logEventType, logMessage) {
         var _this2 = this;
 
         var errorData;
@@ -979,8 +1005,10 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
   }, {
     key: "computeDigestForPart",
     value: function () {
-      var _computeDigestForPart = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(part) {
-        var blob, reader, startTimestamp, _yield$this$readFile, buffer, readCompleteTimestamp, sha256ArrayBuffer, sha256, digestCompleteTimestamp;
+      var _computeDigestForPart = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee4(part) {
+        var blob, reader, startTimestamp, _ref7, buffer, readCompleteTimestamp, sha256ArrayBuffer, sha256, digestCompleteTimestamp;
 
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
@@ -994,9 +1022,9 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
                 return this.readFile(reader, blob);
 
               case 6:
-                _yield$this$readFile = _context4.sent;
-                buffer = _yield$this$readFile.buffer;
-                readCompleteTimestamp = _yield$this$readFile.readCompleteTimestamp;
+                _ref7 = _context4.sent;
+                buffer = _ref7.buffer;
+                readCompleteTimestamp = _ref7.readCompleteTimestamp;
                 _context4.next = 11;
                 return digest('SHA-256', buffer);
 
@@ -1101,7 +1129,13 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
           // can get called on retries
           this.numPartsDigestReady -= 1;
           this.numPartsUploading += 1;
-          part.upload();
+
+          if (part.isPaused) {
+            part.unpause();
+          } else {
+            part.upload();
+          }
+
           break;
         }
       }
@@ -1198,13 +1232,22 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
       var currentFileLastModified = getFileLastModifiedAsISONoMSIfPossible(this.file);
 
       if (currentFileSize !== this.initialFileSize || currentFileLastModified !== this.initialFileLastModified) {
-        this.sessionErrorHandler(null, LOG_EVENT_TYPE_FILE_CHANGED_DURING_UPLOAD, JSON.stringify({
+        var changeJSON = JSON.stringify({
           oldSize: this.initialFileSize,
           newSize: currentFileSize,
           oldLastModified: this.initialFileLastModified,
           newLastModified: currentFileLastModified
-        }));
-        return true;
+        }); // Leave IE with old behavior and kill upload
+
+        if (Browser.isIE()) {
+          this.sessionErrorHandler(null, LOG_EVENT_TYPE_FILE_CHANGED_DURING_UPLOAD, changeJSON);
+          return true;
+        } // for evergreen browsers where the file change check does not work, log and continue with upload
+        // https://w3c.github.io/FileAPI/#file-section
+
+
+        this.consoleLog("file properties changed during upload: ".concat(changeJSON));
+        return false;
       }
 
       return false;
@@ -1244,7 +1287,9 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
   }, {
     key: "resolveConflict",
     value: function () {
-      var _resolveConflict = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(data) {
+      var _resolveConflict = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee5(data) {
         var extension;
         return regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
@@ -1259,11 +1304,20 @@ var MultiputUpload = /*#__PURE__*/function (_BaseMultiput) {
                 return _context5.abrupt("return");
 
               case 3:
+                if (!this.conflictCallback) {
+                  _context5.next = 6;
+                  break;
+                }
+
+                this.fileName = this.conflictCallback(this.fileName);
+                return _context5.abrupt("return");
+
+              case 6:
                 extension = this.fileName.substr(this.fileName.lastIndexOf('.')) || ''; // foo.txt => foo-1513385827917.txt
 
                 this.fileName = "".concat(this.fileName.substr(0, this.fileName.lastIndexOf('.')), "-").concat(Date.now()).concat(extension);
 
-              case 5:
+              case 8:
               case "end":
                 return _context5.stop();
             }

@@ -20,19 +20,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -51,9 +47,12 @@ import omit from 'lodash/omit';
 import getProp from 'lodash/get';
 import flow from 'lodash/flow';
 import noop from 'lodash/noop';
+import setProp from 'lodash/set';
 import Measure from 'react-measure';
+import { withRouter } from 'react-router-dom';
 import { decode } from '../../utils/keys';
 import makeResponsive from '../common/makeResponsive';
+import { withNavRouter } from '../common/nav-router';
 import Internationalize from '../common/Internationalize';
 import AsyncLoad from '../common/async-load';
 import TokenService from '../../utils/TokenService';
@@ -68,12 +67,16 @@ import { EVENT_JS_READY } from '../common/logger/constants';
 import ReloadNotification from './ReloadNotification';
 import API from '../../api';
 import PreviewHeader from './preview-header';
+import PreviewMask from './PreviewMask';
 import PreviewNavigation from './PreviewNavigation';
-import PreviewLoading from './PreviewLoading';
+import { withAnnotations, WithAnnotationsProps, withAnnotatorContext, WithAnnotatorContextProps } from '../common/annotator-context';
 import { DEFAULT_HOSTNAME_API, DEFAULT_HOSTNAME_APP, DEFAULT_HOSTNAME_STATIC, DEFAULT_PREVIEW_VERSION, DEFAULT_LOCALE, DEFAULT_PATH_STATIC_PREVIEW, CLIENT_NAME_CONTENT_PREVIEW, ORIGIN_PREVIEW, ORIGIN_CONTENT_PREVIEW, ERROR_CODE_UNKNOWN } from '../../constants';
 import '../common/fonts.scss';
 import '../common/base.scss';
 import './ContentPreview.scss';
+var startAtTypes = {
+  page: 'pages'
+};
 var InvalidIdError = new Error('Invalid id for Preview!');
 var PREVIEW_LOAD_METRIC_EVENT = 'load';
 var MARK_NAME_JS_READY = "".concat(ORIGIN_CONTENT_PREVIEW, "_").concat(EVENT_JS_READY);
@@ -86,10 +89,10 @@ var LoadableSidebar = AsyncLoad({
   }
 });
 
-var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
+var ContentPreview =
+/*#__PURE__*/
+function (_React$PureComponent) {
   _inherits(ContentPreview, _React$PureComponent);
-
-  var _super = _createSuper(ContentPreview);
 
   // Defines a generic type for ContentSidebar, since an import would interfere with code splitting
 
@@ -103,12 +106,14 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
 
     _classCallCheck(this, ContentPreview);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ContentPreview).call(this, props));
 
-    _defineProperty(_assertThisInitialized(_this), "contentSidebar", /*#__PURE__*/React.createRef());
+    _defineProperty(_assertThisInitialized(_this), "contentSidebar", React.createRef());
 
     _defineProperty(_assertThisInitialized(_this), "initialState", {
+      canPrint: false,
       error: undefined,
+      isLoading: true,
       isReloadNotificationVisible: false,
       isThumbnailSidebarOpen: false
     });
@@ -122,10 +127,11 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
       var onError = _this.props.onError; // In case of error, there should be no thumbnail sidebar to account for
 
       _this.setState({
+        isLoading: false,
         isThumbnailSidebarOpen: false
       });
 
-      onError(error, code, _objectSpread(_objectSpread({}, rest), {}, {
+      onError(error, code, _objectSpread({}, rest, {
         error: error
       }), ORIGIN_PREVIEW);
     });
@@ -147,7 +153,7 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
           return;
         }
 
-        metrics = _objectSpread(_objectSpread({}, previewMetrics), {}, {
+        metrics = _objectSpread({}, previewMetrics, {
           file_info_time: totalFetchFileTime,
           value: totalTime
         });
@@ -170,8 +176,8 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
       if (previewTimeMetrics) {
         var totalPreviewMetrics = _this.addFetchFileTimeToPreviewMetrics(previewTimeMetrics);
 
-        loadData = _objectSpread(_objectSpread({}, loadData), {}, {
-          metrics: _objectSpread(_objectSpread({}, loadData.metrics), {}, {
+        loadData = _objectSpread({}, loadData, {
+          metrics: _objectSpread({}, loadData.metrics, {
             time: totalPreviewMetrics
           })
         });
@@ -179,41 +185,53 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
 
       onLoad(loadData);
 
+      _this.setState({
+        isLoading: false
+      });
+
       _this.focusPreview();
 
-      if (_this.preview && filesToPrefetch.length > 1) {
+      if (_this.preview && filesToPrefetch.length) {
         _this.prefetch(filesToPrefetch);
       }
+
+      _this.handleCanPrint();
     });
 
-    _defineProperty(_assertThisInitialized(_this), "loadPreview", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var _this$props2, enableThumbnailsSidebar, fileOptions, tokenOrTokenFunction, rest, _this$state, file, selectedVersion, fileId, fileOpts, token, previewOptions, Preview;
+    _defineProperty(_assertThisInitialized(_this), "loadPreview",
+    /*#__PURE__*/
+    _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee() {
+      var _this$props2, _this$props2$annotato, activeAnnotationId, enableThumbnailsSidebar, fileOptions, onAnnotatorEvent, onAnnotator, previewExperiences, showAnnotationsControls, tokenOrTokenFunction, rest, _this$state, file, selectedVersion, startAt, fileId, fileOpts, token, previewOptions, Preview;
 
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _this$props2 = _this.props, enableThumbnailsSidebar = _this$props2.enableThumbnailsSidebar, fileOptions = _this$props2.fileOptions, tokenOrTokenFunction = _this$props2.token, rest = _objectWithoutProperties(_this$props2, ["enableThumbnailsSidebar", "fileOptions", "token"]);
-              _this$state = _this.state, file = _this$state.file, selectedVersion = _this$state.selectedVersion;
+              _this$props2 = _this.props, _this$props2$annotato = _this$props2.annotatorState;
+              _this$props2$annotato = _this$props2$annotato === void 0 ? {} : _this$props2$annotato;
+              activeAnnotationId = _this$props2$annotato.activeAnnotationId, enableThumbnailsSidebar = _this$props2.enableThumbnailsSidebar, fileOptions = _this$props2.fileOptions, onAnnotatorEvent = _this$props2.onAnnotatorEvent, onAnnotator = _this$props2.onAnnotator, previewExperiences = _this$props2.previewExperiences, showAnnotationsControls = _this$props2.showAnnotationsControls, tokenOrTokenFunction = _this$props2.token, rest = _objectWithoutProperties(_this$props2, ["annotatorState", "enableThumbnailsSidebar", "fileOptions", "onAnnotatorEvent", "onAnnotator", "previewExperiences", "showAnnotationsControls", "token"]);
+              _this$state = _this.state, file = _this$state.file, selectedVersion = _this$state.selectedVersion, startAt = _this$state.startAt;
 
               if (!(!_this.isPreviewLibraryLoaded() || !file || !tokenOrTokenFunction)) {
-                _context.next = 4;
+                _context.next = 6;
                 break;
               }
 
               return _context.abrupt("return");
 
-            case 4:
+            case 6:
               fileId = _this.getFileId(file);
 
               if (!(fileId !== _this.state.currentFileId)) {
-                _context.next = 7;
+                _context.next = 9;
                 break;
               }
 
               return _context.abrupt("return");
 
-            case 7:
+            case 9:
               fileOpts = _objectSpread({}, fileOptions);
 
               token = function token(typedId) {
@@ -221,8 +239,16 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
               };
 
               if (selectedVersion) {
-                fileOpts[fileId] = fileOpts[fileId] || {};
-                fileOpts[fileId].fileVersionId = selectedVersion.id;
+                setProp(fileOpts, [fileId, 'fileVersionId'], selectedVersion.id);
+                setProp(fileOpts, [fileId, 'currentFileVersionId'], getProp(file, 'file_version.id'));
+              }
+
+              if (activeAnnotationId) {
+                setProp(fileOpts, [fileId, 'annotations', 'activeId'], activeAnnotationId);
+              }
+
+              if (startAt) {
+                setProp(fileOpts, [fileId, 'startAt'], startAt);
               }
 
               previewOptions = {
@@ -231,8 +257,12 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
                 fileOptions: fileOpts,
                 header: 'none',
                 headerElement: "#".concat(_this.id, " .bcpr-PreviewHeader"),
+                experiences: previewExperiences,
                 showAnnotations: _this.canViewAnnotations(),
+                showAnnotationsControls: showAnnotationsControls,
                 showDownload: _this.canDownload(),
+                showLoading: false,
+                showProgress: false,
                 skipServerUpdate: true,
                 useHotkeys: false
               };
@@ -257,11 +287,15 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
                 });
               });
 
+              if (showAnnotationsControls) {
+                _this.preview.addListener('annotator_create', onAnnotator);
+              }
+
               _this.preview.updateFileCache([file]);
 
-              _this.preview.show(file.id, token, _objectSpread(_objectSpread({}, previewOptions), omit(rest, Object.keys(previewOptions))));
+              _this.preview.show(file.id, token, _objectSpread({}, previewOptions, {}, omit(rest, Object.keys(previewOptions))));
 
-            case 20:
+            case 25:
             case "end":
               return _context.stop();
           }
@@ -271,7 +305,7 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
 
     _defineProperty(_assertThisInitialized(_this), "loadFileFromStage", function () {
       if (_this.stagedFile) {
-        _this.setState(_objectSpread(_objectSpread({}, _this.initialState), {}, {
+        _this.setState(_objectSpread({}, _this.initialState, {
           file: _this.stagedFile
         }), function () {
           _this.stagedFile = undefined;
@@ -299,7 +333,7 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
       // In this case preview should reload without prompting the user
 
       if (isWatermarked || !isExistingFile) {
-        _this.setState(_objectSpread(_objectSpread({}, _this.initialState), {}, {
+        _this.setState(_objectSpread({}, _this.initialState, {
           file: file
         })); // $FlowFixMe file version and sha1 should exist at this point
 
@@ -308,7 +342,7 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
         // user a notification to reload the file only if its sha1 changed
         _this.stagedFile = file;
 
-        _this.setState(_objectSpread(_objectSpread({}, _this.initialState), {}, {
+        _this.setState(_objectSpread({}, _this.initialState, {
           isReloadNotificationVisible: true
         }));
       }
@@ -324,7 +358,8 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
 
       _this.setState({
         error: error,
-        file: undefined
+        file: undefined,
+        isLoading: false
       });
 
       onError(fileError, errorCode, {
@@ -475,6 +510,39 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "handleAnnotationSelect", function (_ref3) {
+      var file_version = _ref3.file_version,
+          id = _ref3.id,
+          target = _ref3.target;
+      var _target$location = target.location,
+          location = _target$location === void 0 ? {} : _target$location;
+      var _this$state2 = _this.state,
+          file = _this$state2.file,
+          selectedVersion = _this$state2.selectedVersion;
+      var annotationFileVersionId = getProp(file_version, 'id');
+      var currentFileVersionId = getProp(file, 'file_version.id');
+      var currentPreviewFileVersionId = getProp(selectedVersion, 'id', currentFileVersionId);
+      var unit = startAtTypes[location.type];
+
+      var viewer = _this.getViewer();
+
+      if (unit && annotationFileVersionId && annotationFileVersionId !== currentPreviewFileVersionId) {
+        _this.setState({
+          startAt: {
+            unit: unit,
+            value: location.value
+          }
+        });
+      }
+
+      if (viewer) {
+        viewer.emit('scrolltoannotation', {
+          id: id,
+          target: target
+        });
+      }
+    });
+
     _defineProperty(_assertThisInitialized(_this), "containerRef", function (container) {
       _this.previewContainer = container;
     });
@@ -500,7 +568,7 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
       sharedLinkPassword: sharedLinkPassword,
       token: _token
     });
-    _this.state = _objectSpread(_objectSpread({}, _this.initialState), {}, {
+    _this.state = _objectSpread({}, _this.initialState, {
       currentFileId: _fileId,
       // eslint-disable-next-line react/no-unused-state
       prevFileIdProp: _fileId
@@ -534,15 +602,15 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
   }, {
     key: "destroyPreview",
     value: function destroyPreview() {
+      var shouldReset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var onPreviewDestroy = this.props.onPreviewDestroy;
+
       if (this.preview) {
         this.preview.destroy();
         this.preview.removeAllListeners();
         this.preview = undefined;
+        onPreviewDestroy(shouldReset);
       }
-
-      this.setState({
-        selectedVersion: undefined
-      });
     }
     /**
      * Destroys api instances with caches
@@ -579,18 +647,35 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
      * @return {void}
      */
     value: function componentDidUpdate(prevProps, prevState) {
-      var token = this.props.token;
+      var _this$props3 = this.props,
+          previewExperiences = _this$props3.previewExperiences,
+          token = _this$props3.token;
+      var prevPreviewExperiences = prevProps.previewExperiences,
+          prevToken = prevProps.token;
       var currentFileId = this.state.currentFileId;
       var hasFileIdChanged = prevState.currentFileId !== currentFileId;
-      var hasTokenChanged = prevProps.token !== token;
+      var hasTokenChanged = prevToken !== token;
+      var haveExperiencesChanged = prevPreviewExperiences !== previewExperiences;
 
       if (hasFileIdChanged) {
         this.destroyPreview();
+        this.setState({
+          isLoading: true,
+          selectedVersion: undefined
+        });
         this.fetchFile(currentFileId);
       } else if (this.shouldLoadPreview(prevState)) {
+        this.destroyPreview(false);
+        this.setState({
+          isLoading: true
+        });
         this.loadPreview();
       } else if (hasTokenChanged) {
         this.updatePreviewToken();
+      }
+
+      if (haveExperiencesChanged && this.preview && this.preview.updateExperiences) {
+        this.preview.updateExperiences(previewExperiences);
       }
     }
     /**
@@ -618,9 +703,9 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
   }, {
     key: "shouldLoadPreview",
     value: function shouldLoadPreview(prevState) {
-      var _this$state2 = this.state,
-          file = _this$state2.file,
-          selectedVersion = _this$state2.selectedVersion;
+      var _this$state3 = this.state,
+          file = _this$state3.file,
+          selectedVersion = _this$state3.selectedVersion;
       var prevFile = prevState.file,
           prevSelectedVersion = prevState.selectedVersion;
       var prevSelectedVersionId = getProp(prevSelectedVersion, 'id');
@@ -653,11 +738,11 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
   }, {
     key: "getBasePath",
     value: function getBasePath(asset) {
-      var _this$props3 = this.props,
-          staticHost = _this$props3.staticHost,
-          staticPath = _this$props3.staticPath,
-          language = _this$props3.language,
-          previewLibraryVersion = _this$props3.previewLibraryVersion;
+      var _this$props4 = this.props,
+          staticHost = _this$props4.staticHost,
+          staticPath = _this$props4.staticPath,
+          language = _this$props4.language,
+          previewLibraryVersion = _this$props4.previewLibraryVersion;
       var path = "".concat(staticPath, "/").concat(previewLibraryVersion, "/").concat(language, "/").concat(asset);
       var suffix = staticHost.endsWith('/') ? path : "/".concat(path);
       return "".concat(staticHost).concat(suffix);
@@ -733,9 +818,9 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
   }, {
     key: "focusPreview",
     value: function focusPreview() {
-      var _this$props4 = this.props,
-          autoFocus = _this$props4.autoFocus,
-          getInnerRef = _this$props4.getInnerRef;
+      var _this$props5 = this.props,
+          autoFocus = _this$props5.autoFocus,
+          getInnerRef = _this$props5.getInnerRef;
 
       if (autoFocus && !isInputElement(document.activeElement)) {
         focus(getInnerRef());
@@ -791,7 +876,9 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
   }, {
     key: "prefetch",
     value: function () {
-      var _prefetch = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(files) {
+      var _prefetch = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee2(files) {
         var _this2 = this;
 
         var token, typedIds;
@@ -940,6 +1027,14 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
       var hasViewSelfPermissions = getProp(file, 'permissions.can_view_annotations_self', false);
       return !!showAnnotations && (this.canAnnotate() || hasViewAllPermissions || hasViewSelfPermissions);
     }
+  }, {
+    key: "handleCanPrint",
+    value: function handleCanPrint() {
+      var preview = this.getPreview();
+      this.setState({
+        canPrint: !!preview && (!preview.canPrint || preview.canPrint())
+      });
+    }
     /**
      * Loads preview in the component using the preview library.
      *
@@ -967,7 +1062,7 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
 
       this.fetchFileStartTime = performance.now();
       this.fetchFileEndTime = null;
-      this.api.getFileAPI().getFile(id, successCallback || this.fetchFileSuccessCallback, errorCallback || this.fetchFileErrorCallback, _objectSpread(_objectSpread({}, fetchOptions), {}, {
+      this.api.getFileAPI().getFile(id, successCallback || this.fetchFileSuccessCallback, errorCallback || this.fetchFileErrorCallback, _objectSpread({}, fetchOptions, {
         fields: PREVIEW_FIELDS_TO_FETCH
       }));
     }
@@ -1012,9 +1107,9 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
   }, {
     key: "navigateToIndex",
     value: function navigateToIndex(index) {
-      var _this$props5 = this.props,
-          collection = _this$props5.collection,
-          onNavigate = _this$props5.onNavigate;
+      var _this$props6 = this.props,
+          collection = _this$props6.collection,
+          onNavigate = _this$props6.onNavigate;
       var length = collection.length;
 
       if (length < 2 || index < 0 || index > length - 1) {
@@ -1062,33 +1157,35 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
   }, {
     key: "render",
     value: function render() {
-      var _this$props6 = this.props,
-          apiHost = _this$props6.apiHost,
-          token = _this$props6.token,
-          language = _this$props6.language,
-          messages = _this$props6.messages,
-          className = _this$props6.className,
-          contentSidebarProps = _this$props6.contentSidebarProps,
-          contentOpenWithProps = _this$props6.contentOpenWithProps,
-          hasHeader = _this$props6.hasHeader,
-          history = _this$props6.history,
-          isLarge = _this$props6.isLarge,
-          isVeryLarge = _this$props6.isVeryLarge,
-          logoUrl = _this$props6.logoUrl,
-          onClose = _this$props6.onClose,
-          measureRef = _this$props6.measureRef,
-          sharedLink = _this$props6.sharedLink,
-          sharedLinkPassword = _this$props6.sharedLinkPassword,
-          requestInterceptor = _this$props6.requestInterceptor,
-          responseInterceptor = _this$props6.responseInterceptor;
-      var _this$state3 = this.state,
-          error = _this$state3.error,
-          file = _this$state3.file,
-          isReloadNotificationVisible = _this$state3.isReloadNotificationVisible,
-          currentFileId = _this$state3.currentFileId,
-          isThumbnailSidebarOpen = _this$state3.isThumbnailSidebarOpen,
-          selectedVersion = _this$state3.selectedVersion;
-      var collection = this.props.collection;
+      var _this$props7 = this.props,
+          apiHost = _this$props7.apiHost,
+          collection = _this$props7.collection,
+          token = _this$props7.token,
+          language = _this$props7.language,
+          messages = _this$props7.messages,
+          className = _this$props7.className,
+          contentSidebarProps = _this$props7.contentSidebarProps,
+          contentOpenWithProps = _this$props7.contentOpenWithProps,
+          hasHeader = _this$props7.hasHeader,
+          history = _this$props7.history,
+          isLarge = _this$props7.isLarge,
+          isVeryLarge = _this$props7.isVeryLarge,
+          logoUrl = _this$props7.logoUrl,
+          onClose = _this$props7.onClose,
+          measureRef = _this$props7.measureRef,
+          sharedLink = _this$props7.sharedLink,
+          sharedLinkPassword = _this$props7.sharedLinkPassword,
+          requestInterceptor = _this$props7.requestInterceptor,
+          responseInterceptor = _this$props7.responseInterceptor;
+      var _this$state4 = this.state,
+          canPrint = _this$state4.canPrint,
+          currentFileId = _this$state4.currentFileId,
+          error = _this$state4.error,
+          file = _this$state4.file,
+          isLoading = _this$state4.isLoading,
+          isReloadNotificationVisible = _this$state4.isReloadNotificationVisible,
+          isThumbnailSidebarOpen = _this$state4.isThumbnailSidebarOpen,
+          selectedVersion = _this$state4.selectedVersion;
       var styleClassName = classNames('be bcpr', {
         'bcpr-thumbnails-open': isThumbnailSidebarOpen
       }, className);
@@ -1098,6 +1195,7 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
       }
 
       var errorCode = getProp(error, 'code');
+      var currentExtension = getProp(file, 'id') === currentFileId ? getProp(file, 'extension') : '';
       var currentVersionId = getProp(file, 'file_version.id');
       var selectedVersionId = getProp(selectedVersion, 'id', currentVersionId);
       var onHeaderClose = currentVersionId === selectedVersionId ? onClose : this.updateVersionToCurrent;
@@ -1105,56 +1203,52 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
 
       /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 
-      return /*#__PURE__*/React.createElement(Internationalize, {
+      return React.createElement(Internationalize, {
         language: language,
         messages: messages
-      }, /*#__PURE__*/React.createElement("div", {
+      }, React.createElement("div", {
         id: this.id,
         className: styleClassName,
         ref: measureRef,
         onKeyDown: this.onKeyDown,
         tabIndex: 0
-      }, hasHeader && /*#__PURE__*/React.createElement(PreviewHeader, {
+      }, hasHeader && React.createElement(PreviewHeader, {
         file: file,
         logoUrl: logoUrl,
         token: token,
         onClose: onHeaderClose,
         onPrint: this.print,
         canDownload: this.canDownload(),
+        canPrint: canPrint,
         onDownload: this.download,
         contentOpenWithProps: contentOpenWithProps,
         canAnnotate: this.canAnnotate(),
         selectedVersion: selectedVersion
-      }), /*#__PURE__*/React.createElement("div", {
+      }), React.createElement("div", {
         className: "bcpr-body"
-      }, /*#__PURE__*/React.createElement("div", {
+      }, React.createElement("div", {
         className: "bcpr-container",
         onMouseMove: this.onMouseMove,
         ref: this.containerRef
-      }, file ? /*#__PURE__*/React.createElement(Measure, {
+      }, file && React.createElement(Measure, {
         bounds: true,
         onResize: this.onResize
-      }, function (_ref3) {
-        var previewRef = _ref3.measureRef;
-        return /*#__PURE__*/React.createElement("div", {
+      }, function (_ref4) {
+        var previewRef = _ref4.measureRef;
+        return React.createElement("div", {
           ref: previewRef,
           className: "bcpr-content"
         });
-      }) : /*#__PURE__*/React.createElement("div", {
-        className: "bcpr-loading-wrapper"
-      }, /*#__PURE__*/React.createElement(PreviewLoading, {
+      }), React.createElement(PreviewMask, {
         errorCode: errorCode,
-        isLoading: !errorCode,
-        loadingIndicatorProps: {
-          size: 'large'
-        }
-      })), /*#__PURE__*/React.createElement(PreviewNavigation, {
+        extension: currentExtension,
+        isLoading: isLoading
+      }), React.createElement(PreviewNavigation, {
         collection: collection,
         currentIndex: this.getFileIndex(),
-        history: history,
         onNavigateLeft: this.navigateLeft,
         onNavigateRight: this.navigateRight
-      })), file && /*#__PURE__*/React.createElement(LoadableSidebar, _extends({}, contentSidebarProps, {
+      })), file && React.createElement(LoadableSidebar, _extends({}, contentSidebarProps, {
         apiHost: apiHost,
         token: token,
         cache: this.api.getCache(),
@@ -1169,8 +1263,9 @@ var ContentPreview = /*#__PURE__*/function (_React$PureComponent) {
         sharedLinkPassword: sharedLinkPassword,
         requestInterceptor: requestInterceptor,
         responseInterceptor: responseInterceptor,
+        onAnnotationSelect: this.handleAnnotationSelect,
         onVersionChange: this.onVersionChange
-      }))), isReloadNotificationVisible && /*#__PURE__*/React.createElement(ReloadNotification, {
+      }))), isReloadNotificationVisible && React.createElement(ReloadNotification, {
         onClose: this.closeReloadNotification,
         onClick: this.loadFileFromStage
       })));
@@ -1209,10 +1304,13 @@ _defineProperty(ContentPreview, "defaultProps", {
   enableThumbnailsSidebar: false,
   hasHeader: false,
   language: DEFAULT_LOCALE,
+  onAnnotator: noop,
+  onAnnotatorEvent: noop,
   onDownload: noop,
   onError: noop,
   onLoad: noop,
   onNavigate: noop,
+  onPreviewDestroy: noop,
   onVersionChange: noop,
   previewLibraryVersion: DEFAULT_PREVIEW_VERSION,
   showAnnotations: false,
@@ -1222,5 +1320,5 @@ _defineProperty(ContentPreview, "defaultProps", {
 });
 
 export { ContentPreview as ContentPreviewComponent };
-export default flow([makeResponsive, withFeatureProvider, withLogger(ORIGIN_CONTENT_PREVIEW), withErrorBoundary(ORIGIN_CONTENT_PREVIEW)])(ContentPreview);
+export default flow([makeResponsive, withAnnotatorContext, withAnnotations, withRouter, withNavRouter, withFeatureProvider, withLogger(ORIGIN_CONTENT_PREVIEW), withErrorBoundary(ORIGIN_CONTENT_PREVIEW)])(ContentPreview);
 //# sourceMappingURL=ContentPreview.js.map

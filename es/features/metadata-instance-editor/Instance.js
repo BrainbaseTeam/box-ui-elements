@@ -12,19 +12,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -50,8 +46,10 @@ import CustomInstance from './CustomInstance';
 import MetadataInstanceConfirmDialog from './MetadataInstanceConfirmDialog';
 import Footer from './Footer';
 import messages from './messages';
-import { FIELD_TYPE_FLOAT, FIELD_TYPE_INTEGER, TEMPLATE_CUSTOM_PROPERTIES, JSON_PATCH_OP_REMOVE, JSON_PATCH_OP_ADD, JSON_PATCH_OP_REPLACE, JSON_PATCH_OP_TEST } from './constants';
-import { isValidValue } from './fields/validateField';
+import { FIELD_TYPE_FLOAT, FIELD_TYPE_INTEGER } from '../metadata-instance-fields/constants';
+import TEMPLATE_CUSTOM_PROPERTIES from './constants';
+import { JSON_PATCH_OP_REMOVE, JSON_PATCH_OP_ADD, JSON_PATCH_OP_REPLACE, JSON_PATCH_OP_TEST } from '../../common/constants';
+import { isValidValue } from '../metadata-instance-fields/validateMetadataField';
 import { isHidden } from './metadataUtil';
 import { RESIN_TAG_TARGET } from '../../common/variables';
 import './Instance.scss';
@@ -81,17 +79,17 @@ var getValue = function getValue(data, key, type) {
   }
 };
 
-var Instance = /*#__PURE__*/function (_React$PureComponent) {
+var Instance =
+/*#__PURE__*/
+function (_React$PureComponent) {
   _inherits(Instance, _React$PureComponent);
-
-  var _super = _createSuper(Instance);
 
   function Instance(props) {
     var _this;
 
     _classCallCheck(this, Instance);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Instance).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "onCancel", function () {
       var _this$props = _this.props,
@@ -187,7 +185,7 @@ var Instance = /*#__PURE__*/function (_React$PureComponent) {
       if (isValid) {
         delete finalErrors[key];
       } else {
-        finalErrors[key] = /*#__PURE__*/React.createElement(FormattedMessage, messages.invalidInput);
+        finalErrors[key] = React.createElement(FormattedMessage, messages.invalidInput);
       }
 
       _this.setState({
@@ -254,7 +252,7 @@ var Instance = /*#__PURE__*/function (_React$PureComponent) {
         message = isFile ? 'fileMetadataRemoveTemplateConfirm' : 'folderMetadataRemoveTemplateConfirm';
       }
 
-      return /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages[message], {
+      return React.createElement(FormattedMessage, _extends({}, messages[message], {
         values: {
           metadataName: template.displayName
         }
@@ -284,7 +282,7 @@ var Instance = /*#__PURE__*/function (_React$PureComponent) {
       }
     });
 
-    _defineProperty(_assertThisInitialized(_this), "collapsibleRef", /*#__PURE__*/React.createRef());
+    _defineProperty(_assertThisInitialized(_this), "collapsibleRef", React.createRef());
 
     _defineProperty(_assertThisInitialized(_this), "toggleIsEditing", function () {
       _this.setState(function (prevState) {
@@ -307,15 +305,15 @@ var Instance = /*#__PURE__*/function (_React$PureComponent) {
       });
 
       if (canEdit && !isDirty && !isBusy) {
-        return /*#__PURE__*/React.createElement(Tooltip, {
+        return React.createElement(Tooltip, {
           position: "top-left",
-          text: /*#__PURE__*/React.createElement(FormattedMessage, messages.metadataEditTooltip)
-        }, /*#__PURE__*/React.createElement(PlainButton, {
+          text: React.createElement(FormattedMessage, messages.metadataEditTooltip)
+        }, React.createElement(PlainButton, {
           className: editClassName,
           "data-resin-target": "metadata-instanceedit",
           onClick: _this.toggleIsEditing,
           type: "button"
-        }, /*#__PURE__*/React.createElement(IconEdit, null)));
+        }, React.createElement(IconEdit, null)));
       }
 
       return null;
@@ -416,15 +414,15 @@ var Instance = /*#__PURE__*/function (_React$PureComponent) {
           template = _this$props6.template;
       var isProperties = template.templateKey === TEMPLATE_CUSTOM_PROPERTIES;
       var type = isCascadingPolicyApplicable && cascadePolicy.id ? 'cascade' : 'default';
-      return /*#__PURE__*/React.createElement("span", {
+      return React.createElement("span", {
         className: "metadata-instance-editor-instance-title"
-      }, /*#__PURE__*/React.createElement(IconMetadataColored, {
+      }, React.createElement(IconMetadataColored, {
         type: type
-      }), /*#__PURE__*/React.createElement("span", {
+      }), React.createElement("span", {
         className: classNames('metadata-instance-editor-instance-title-text', {
           'metadata-instance-editor-instance-has-error': hasError
         })
-      }, isProperties ? /*#__PURE__*/React.createElement(FormattedMessage, messages.customTitle) : template.displayName), hasError && /*#__PURE__*/React.createElement(IconAlertCircle, {
+      }, isProperties ? React.createElement(FormattedMessage, messages.customTitle) : template.displayName), hasError && React.createElement(IconAlertCircle, {
         color: bdlWatermelonRed
       }));
     }
@@ -603,9 +601,9 @@ var Instance = /*#__PURE__*/function (_React$PureComponent) {
 
 
       var animationDuration = (fields.length + 1) * 50;
-      return /*#__PURE__*/React.createElement("div", {
+      return React.createElement("div", {
         ref: this.collapsibleRef
-      }, /*#__PURE__*/React.createElement(Collapsible, {
+      }, React.createElement(Collapsible, {
         animationDuration: animationDuration,
         buttonProps: _defineProperty({}, RESIN_TAG_TARGET, 'metadata-card'),
         hasStickyHeader: true,
@@ -613,19 +611,19 @@ var Instance = /*#__PURE__*/function (_React$PureComponent) {
         isBordered: true,
         isOpen: isOpen,
         title: this.getTitle()
-      }, shouldConfirmRemove && /*#__PURE__*/React.createElement(LoadingIndicatorWrapper, {
+      }, shouldConfirmRemove && React.createElement(LoadingIndicatorWrapper, {
         isLoading: isBusy
-      }, /*#__PURE__*/React.createElement(MetadataInstanceConfirmDialog, {
+      }, React.createElement(MetadataInstanceConfirmDialog, {
         confirmationMessage: this.getConfirmationMessage(),
         onCancel: this.onConfirmCancel,
         onConfirm: this.onRemove
-      })), !shouldConfirmRemove && /*#__PURE__*/React.createElement(LoadingIndicatorWrapper, {
+      })), !shouldConfirmRemove && React.createElement(LoadingIndicatorWrapper, {
         isLoading: isBusy
-      }, /*#__PURE__*/React.createElement(Form, {
+      }, React.createElement(Form, {
         onValidSubmit: isDirty ? this.onSave : noop
-      }, /*#__PURE__*/React.createElement("div", {
+      }, React.createElement("div", {
         className: "metadata-instance-editor-instance"
-      }, isCascadingPolicyApplicable && /*#__PURE__*/React.createElement(CascadePolicy, {
+      }, isCascadingPolicyApplicable && React.createElement(CascadePolicy, {
         canEdit: isEditing && !!cascadePolicy.canEdit,
         isCascadingEnabled: isCascadingEnabled,
         isCascadingOverwritten: isCascadingOverwritten,
@@ -633,19 +631,19 @@ var Instance = /*#__PURE__*/function (_React$PureComponent) {
         onCascadeModeChange: this.onCascadeModeChange,
         onCascadeToggle: this.onCascadeToggle,
         shouldShowCascadeOptions: shouldShowCascadeOptions
-      }), isProperties ? /*#__PURE__*/React.createElement(CustomInstance, {
+      }), isProperties ? React.createElement(CustomInstance, {
         canEdit: isEditing,
         data: data,
         onFieldChange: this.onFieldChange,
         onFieldRemove: this.onFieldRemove
-      }) : /*#__PURE__*/React.createElement(TemplatedInstance, {
+      }) : React.createElement(TemplatedInstance, {
         canEdit: isEditing,
         data: data,
         errors: errors,
         onFieldChange: this.onFieldChange,
         onFieldRemove: this.onFieldRemove,
         template: template
-      })), isEditing && /*#__PURE__*/React.createElement(Footer, {
+      })), isEditing && React.createElement(Footer, {
         onCancel: this.onCancel,
         onRemove: this.onConfirmRemove,
         showSave: isDirty

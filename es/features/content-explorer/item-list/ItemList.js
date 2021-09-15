@@ -9,6 +9,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
+import getProp from 'lodash/get';
 import Column from 'react-virtualized/dist/commonjs/Table/Column';
 import Table from 'react-virtualized/dist/commonjs/Table';
 import defaultTableRowRenderer from 'react-virtualized/dist/commonjs/Table/defaultRowRenderer';
@@ -30,9 +31,9 @@ var itemIconCellRenderer = function itemIconCellRenderer(rendererParams) {
       hasCollaborations = _rendererParams$rowDa.hasCollaborations,
       isExternallyOwned = _rendererParams$rowDa.isExternallyOwned,
       itemIconRenderer = rendererParams.columnData.itemIconRenderer;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: TABLE_CELL_CLASS
-  }, itemIconRenderer ? itemIconRenderer(rendererParams) : /*#__PURE__*/React.createElement(ItemListIcon, {
+  }, itemIconRenderer ? itemIconRenderer(rendererParams) : React.createElement(ItemListIcon, {
     type: type,
     extension: extension,
     hasCollaborations: hasCollaborations,
@@ -56,9 +57,9 @@ var itemNameCellRenderer = function itemNameCellRenderer(rendererParams) {
       onItemNameClick = _rendererParams$colum.onItemNameClick,
       itemNameLinkRenderer = _rendererParams$colum.itemNameLinkRenderer; // loading placeholder may not have name and ItemListName requires name
 
-  return name && /*#__PURE__*/React.createElement("div", {
+  return name && React.createElement("div", {
     className: TABLE_CELL_CLASS
-  }, /*#__PURE__*/React.createElement(ItemListName, {
+  }, React.createElement(ItemListName, {
     type: type,
     name: name,
     label: label,
@@ -71,7 +72,7 @@ var itemNameCellRenderer = function itemNameCellRenderer(rendererParams) {
 };
 
 var renderItemListButton = function renderItemListButton(contentExplorerMode, id, isActionDisabled, isDisabled, name, selectedItems) {
-  return name && /*#__PURE__*/React.createElement(ItemListButton, {
+  return name && React.createElement(ItemListButton, {
     contentExplorerMode: contentExplorerMode,
     id: id,
     isDisabled: isActionDisabled,
@@ -90,7 +91,7 @@ var itemButtonCellRenderer = function itemButtonCellRenderer(rendererParams) {
       isActionDisabled = _rendererParams$rowDa3.isActionDisabled,
       isDisabled = _rendererParams$rowDa3.isDisabled,
       name = _rendererParams$rowDa3.name;
-  return !isDisabled && /*#__PURE__*/React.createElement("div", {
+  return !isDisabled && React.createElement("div", {
     className: TABLE_CELL_CLASS
   }, itemButtonRenderer ? itemButtonRenderer(rendererParams) : renderItemListButton(contentExplorerMode, id, isActionDisabled, isDisabled, name, selectedItems));
 };
@@ -98,9 +99,9 @@ var itemButtonCellRenderer = function itemButtonCellRenderer(rendererParams) {
 var itemLoadingPlaceholderRenderer = function itemLoadingPlaceholderRenderer(rendererParams) {
   var loadingPlaceholderColumnWidths = rendererParams.loadingPlaceholderColumnWidths,
       columnIndex = rendererParams.columnIndex;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: TABLE_CELL_CLASS
-  }, /*#__PURE__*/React.createElement(ItemListLoadingPlaceholder, {
+  }, React.createElement(ItemListLoadingPlaceholder, {
     width: loadingPlaceholderColumnWidths && loadingPlaceholderColumnWidths[columnIndex]
   }));
 };
@@ -152,15 +153,16 @@ var ItemList = function ItemList(_ref) {
         columns = rendererParams.columns;
     var item = items[index];
     var itemRowClassname = classNames(rowClassName, getRowClassNames(index, item));
+    var testId = getProp(rendererParams, 'rowData.id', '');
 
     if (item.isLoading) {
-      return /*#__PURE__*/React.createElement("div", {
+      return React.createElement("div", {
         key: key,
         style: style,
         className: itemRowClassname,
         role: "row"
       }, columns.map(function (column, columnIndex) {
-        return /*#__PURE__*/React.createElement("div", {
+        return React.createElement("div", {
           key: columnIndex,
           className: column.props.className,
           style: column.props.style,
@@ -172,9 +174,12 @@ var ItemList = function ItemList(_ref) {
       }));
     }
 
-    return defaultTableRowRenderer(_objectSpread(_objectSpread({}, rendererParams), {}, {
+    var defaultRow = defaultTableRowRenderer(_objectSpread({}, rendererParams, {
       className: itemRowClassname
     }));
+    return React.cloneElement(defaultRow, {
+      'data-testid': "item-row-".concat(testId)
+    });
   };
 
   var TableComponent = Table;
@@ -191,9 +196,9 @@ var ItemList = function ItemList(_ref) {
     };
   }
 
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: classNames('content-explorer-item-list table', className)
-  }, /*#__PURE__*/React.createElement(TableComponent, _extends({
+  }, React.createElement(TableComponent, _extends({
     gridClassName: "table-body",
     headerClassName: "table-header-item",
     width: width,
@@ -205,7 +210,7 @@ var ItemList = function ItemList(_ref) {
     rowGetter: getRow,
     rowRenderer: renderRow,
     noRowsRenderer: noItemsRenderer
-  }, tableProps), /*#__PURE__*/React.createElement(Column, {
+  }, tableProps), React.createElement(Column, {
     className: "item-list-icon-col",
     cellRenderer: itemIconCellRenderer,
     columnData: {
@@ -213,7 +218,7 @@ var ItemList = function ItemList(_ref) {
     },
     dataKey: "icon",
     width: 32
-  }), /*#__PURE__*/React.createElement(Column, {
+  }), React.createElement(Column, {
     className: "item-list-name-col",
     cellRenderer: itemNameCellRenderer,
     columnData: {
@@ -225,7 +230,7 @@ var ItemList = function ItemList(_ref) {
     width: 0,
     flexGrow: 1,
     flexShrink: 0
-  }), /*#__PURE__*/React.createElement(Column, {
+  }), React.createElement(Column, {
     className: "item-list-button-col",
     cellRenderer: itemButtonCellRenderer,
     columnData: {

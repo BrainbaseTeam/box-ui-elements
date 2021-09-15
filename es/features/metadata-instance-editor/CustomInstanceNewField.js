@@ -8,19 +8,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -34,12 +30,14 @@ import IconInfo from '../../icons/general/IconInfo';
 import messages from './messages';
 import './CustomInstanceNewField.scss';
 
-var CustomInstanceNewField = /*#__PURE__*/function (_React$PureComponent) {
+var CustomInstanceNewField =
+/*#__PURE__*/
+function (_React$PureComponent) {
   _inherits(CustomInstanceNewField, _React$PureComponent);
 
-  var _super = _createSuper(CustomInstanceNewField);
-
   function CustomInstanceNewField() {
+    var _getPrototypeOf2;
+
     var _this;
 
     _classCallCheck(this, CustomInstanceNewField);
@@ -48,7 +46,7 @@ var CustomInstanceNewField = /*#__PURE__*/function (_React$PureComponent) {
       args[_key] = arguments[_key];
     }
 
-    _this = _super.call.apply(_super, [this].concat(args));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(CustomInstanceNewField)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_this), "state", {
       key: '',
@@ -74,17 +72,17 @@ var CustomInstanceNewField = /*#__PURE__*/function (_React$PureComponent) {
 
       if (Object.prototype.hasOwnProperty.call(properties, key)) {
         _this.setState({
-          error: /*#__PURE__*/React.createElement(FormattedMessage, messages.customErrorDuplicateKey)
+          error: React.createElement(FormattedMessage, messages.customErrorDuplicateKey)
         });
       } else if (key.startsWith('$')) {
         _this.setState({
-          error: /*#__PURE__*/React.createElement(FormattedMessage, messages.customErrorInternalKey)
+          error: React.createElement(FormattedMessage, messages.customErrorInternalKey)
         });
       } else if (key) {
         onAdd(key, value);
       } else {
         _this.setState({
-          error: /*#__PURE__*/React.createElement(FormattedMessage, messages.customErrorRequired)
+          error: React.createElement(FormattedMessage, messages.customErrorRequired)
         });
       }
     });
@@ -126,46 +124,46 @@ var CustomInstanceNewField = /*#__PURE__*/function (_React$PureComponent) {
           key = _this$state2.key,
           value = _this$state2.value,
           error = _this$state2.error;
-      return /*#__PURE__*/React.createElement("div", {
+      return React.createElement("div", {
         className: "custom-new-field"
-      }, /*#__PURE__*/React.createElement("div", {
+      }, React.createElement("div", {
         className: "custom-new-field-header"
-      }, /*#__PURE__*/React.createElement(FormattedMessage, _extends({
+      }, React.createElement(FormattedMessage, _extends({
         tagName: "h5"
-      }, messages.customNewField)), /*#__PURE__*/React.createElement(Tooltip, {
-        text: /*#__PURE__*/React.createElement(FormattedMessage, messages.customNewFieldMessage)
-      }, /*#__PURE__*/React.createElement("div", {
+      }, messages.customNewField)), React.createElement(Tooltip, {
+        text: React.createElement(FormattedMessage, messages.customNewFieldMessage)
+      }, React.createElement("div", {
         tabIndex: "-1"
-      }, /*#__PURE__*/React.createElement(IconInfo, {
+      }, React.createElement(IconInfo, {
         color: "#777",
         height: 18,
         width: 18
-      })))), /*#__PURE__*/React.createElement(TextInput, {
+      })))), React.createElement(TextInput, {
         error: error,
         isRequired: true,
-        label: /*#__PURE__*/React.createElement(FormattedMessage, messages.customKey),
+        label: React.createElement(FormattedMessage, messages.customKey),
         onChange: this.onKeyChange,
         placeholder: intl.formatMessage(messages.customKeyPlaceholder),
         type: "text",
         value: key
-      }), /*#__PURE__*/React.createElement(TextInput, {
+      }), React.createElement(TextInput, {
         hideOptionalLabel: true,
-        label: /*#__PURE__*/React.createElement(FormattedMessage, messages.customValue),
+        label: React.createElement(FormattedMessage, messages.customValue),
         onChange: this.onValueChange,
         placeholder: intl.formatMessage(messages.customValuePlaceholder),
         type: "text",
         value: value
-      }), /*#__PURE__*/React.createElement("div", {
+      }), React.createElement("div", {
         className: "custom-new-field-actions"
-      }, isCancellable && /*#__PURE__*/React.createElement(Button, {
+      }, isCancellable && React.createElement(Button, {
         "data-resin-target": "metadata-customfieldcancel",
         onClick: onCancel,
         type: "button"
-      }, /*#__PURE__*/React.createElement(FormattedMessage, commonMessages.cancel)), /*#__PURE__*/React.createElement(Button, {
+      }, React.createElement(FormattedMessage, commonMessages.cancel)), React.createElement(Button, {
         "data-resin-target": "metadata-customfieldadd",
         onClick: this.onAdd,
         type: "button"
-      }, /*#__PURE__*/React.createElement(FormattedMessage, messages.customAdd))));
+      }, React.createElement(FormattedMessage, messages.customAdd))));
     }
   }]);
 

@@ -12,27 +12,25 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 import * as React from 'react';
 import classNames from 'classnames';
 import uniqueId from 'lodash/uniqueId';
+import { List } from 'immutable';
 import Tooltip from '../tooltip';
 import { KEYS } from '../../constants';
+import RoundPill from './RoundPill';
 import Pill from './Pill';
 import SuggestedPillsRow from './SuggestedPillsRow';
 
@@ -41,12 +39,14 @@ function stopDefaultEvent(event) {
   event.stopPropagation();
 }
 
-var PillSelector = /*#__PURE__*/function (_React$Component) {
+var PillSelector =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(PillSelector, _React$Component);
 
-  var _super = _createSuper(PillSelector);
-
   function PillSelector() {
+    var _getPrototypeOf2;
+
     var _this;
 
     _classCallCheck(this, PillSelector);
@@ -55,7 +55,7 @@ var PillSelector = /*#__PURE__*/function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    _this = _super.call.apply(_super, [this].concat(args));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(PillSelector)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_this), "state", {
       isFocused: false,
@@ -207,43 +207,67 @@ var PillSelector = /*#__PURE__*/function (_React$Component) {
           className = _this$props2.className,
           disabled = _this$props2.disabled,
           error = _this$props2.error,
+          getPillClassName = _this$props2.getPillClassName,
+          getPillImageUrl = _this$props2.getPillImageUrl,
           inputProps = _this$props2.inputProps,
           onInput = _this$props2.onInput,
           onRemove = _this$props2.onRemove,
           onSuggestedPillAdd = _this$props2.onSuggestedPillAdd,
           placeholder = _this$props2.placeholder,
           selectedOptions = _this$props2.selectedOptions,
+          showAvatars = _this$props2.showAvatars,
+          showRoundedPills = _this$props2.showRoundedPills,
           suggestedPillsData = _this$props2.suggestedPillsData,
           suggestedPillsFilter = _this$props2.suggestedPillsFilter,
           suggestedPillsTitle = _this$props2.suggestedPillsTitle,
           validator = _this$props2.validator,
-          rest = _objectWithoutProperties(_this$props2, ["allowInvalidPills", "className", "disabled", "error", "inputProps", "onInput", "onRemove", "onSuggestedPillAdd", "placeholder", "selectedOptions", "suggestedPillsData", "suggestedPillsFilter", "suggestedPillsTitle", "validator"]);
+          rest = _objectWithoutProperties(_this$props2, ["allowInvalidPills", "className", "disabled", "error", "getPillClassName", "getPillImageUrl", "inputProps", "onInput", "onRemove", "onSuggestedPillAdd", "placeholder", "selectedOptions", "showAvatars", "showRoundedPills", "suggestedPillsData", "suggestedPillsFilter", "suggestedPillsTitle", "validator"]);
 
       var suggestedPillsEnabled = suggestedPillsData && suggestedPillsData.length > 0;
       var hasError = !!error;
-      var classes = classNames('pill-selector-input-wrapper', {
+      var classes = classNames('bdl-PillSelector', 'pill-selector-input-wrapper', {
         'is-disabled': disabled,
+        'bdl-is-disabled': disabled,
         'is-focused': isFocused,
         'show-error': hasError,
-        'pill-selector-suggestions-enabled': suggestedPillsEnabled
+        'pill-selector-suggestions-enabled': suggestedPillsEnabled,
+        'bdl-PillSelector--suggestionsEnabled': suggestedPillsEnabled
       });
       var ariaAttrs = {
         'aria-invalid': hasError,
-        'aria-errormessage': this.errorMessageID
+        'aria-errormessage': this.errorMessageID,
+        'aria-describedby': this.errorMessageID
       };
-      return /*#__PURE__*/React.createElement(Tooltip, {
+      return React.createElement(Tooltip, {
         isShown: hasError,
         text: error || '',
         position: "middle-right",
         theme: "error"
-      }, /*#__PURE__*/React.createElement("span", {
+      }, React.createElement("span", {
         className: classes,
         onBlur: this.handleBlur,
         onClick: this.handleClick,
         onFocus: this.handleFocus,
         onKeyDown: this.handleKeyDown
-      }, selectedOptions.map(function (option, index) {
-        return /*#__PURE__*/React.createElement(Pill, {
+      }, showRoundedPills ? selectedOptions.map(function (option, index) {
+        return React.createElement(RoundPill, {
+          className: getPillClassName ? getPillClassName(option) : undefined,
+          getPillImageUrl: getPillImageUrl,
+          isValid: allowInvalidPills ? validator(option) : true,
+          isDisabled: disabled,
+          isSelected: index === selectedIndex,
+          key: option.value,
+          onRemove: onRemove.bind(_this2, option, index) // $FlowFixMe option.text is for backwards compatibility
+          ,
+          text: option.displayText || option.text,
+          showAvatar: true,
+          id: option.id,
+          hasWarning: option.hasWarning,
+          isExternal: option.isExternalUser
+        });
+      }) : selectedOptions.map(function (option, index) {
+        // TODO: This and associated types will be removed once all views are updates with round pills.
+        return React.createElement(Pill, {
           isValid: allowInvalidPills ? validator(option) : true,
           isDisabled: disabled,
           isSelected: index === selectedIndex,
@@ -252,28 +276,31 @@ var PillSelector = /*#__PURE__*/function (_React$Component) {
           ,
           text: option.displayText || option.text
         });
-      }), /*#__PURE__*/React.createElement("span", {
+      }), React.createElement("span", {
         "aria-hidden": "true",
         className: "accessibility-hidden",
         onBlur: this.resetSelectedIndex,
         ref: this.hiddenRef,
-        tabIndex: -1
-      }), /*#__PURE__*/React.createElement("textarea", _extends({}, ariaAttrs, rest, inputProps, {
+        tabIndex: -1,
+        "data-testid": "pill-selection-helper"
+      }), React.createElement("textarea", _extends({}, ariaAttrs, rest, inputProps, {
         autoComplete: "off",
-        className: classNames('pill-selector-input', className),
+        className: classNames('bdl-PillSelector-input', 'pill-selector-input', className, {
+          'bdl-PillSelector-input--showAvatars': showAvatars
+        }),
         disabled: disabled,
         onInput: onInput,
         placeholder: this.getNumSelected() === 0 ? placeholder : '',
         ref: function ref(input) {
           _this2.inputEl = input;
         }
-      })), /*#__PURE__*/React.createElement(SuggestedPillsRow, {
+      })), React.createElement(SuggestedPillsRow, {
         onSuggestedPillAdd: onSuggestedPillAdd,
         selectedPillsValues: this.getPillsByKey('value'),
         suggestedPillsFilter: suggestedPillsFilter,
         suggestedPillsData: suggestedPillsData,
         title: suggestedPillsTitle
-      }), /*#__PURE__*/React.createElement("span", {
+      }), React.createElement("span", {
         id: this.errorMessageID,
         className: "accessibility-hidden",
         role: "alert"

@@ -6,9 +6,10 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
  */
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import Browser from '../../utils/Browser';
 import messages from '../common/messages';
 import ItemProgress from './ItemProgress';
-import { ERROR_CODE_UPLOAD_FILE_SIZE_LIMIT_EXCEEDED, ERROR_CODE_ITEM_NAME_IN_USE, ERROR_CODE_ITEM_NAME_INVALID, ERROR_CODE_UPLOAD_PENDING_APP_FOLDER_SIZE_LIMIT, ERROR_CODE_UPLOAD_STORAGE_LIMIT_EXCEEDED, ERROR_CODE_UPLOAD_CHILD_FOLDER_FAILED, STATUS_ERROR, STATUS_IN_PROGRESS, STATUS_STAGED } from '../../constants';
+import { ERROR_CODE_UPLOAD_FILE_SIZE_LIMIT_EXCEEDED, ERROR_CODE_ITEM_NAME_IN_USE, ERROR_CODE_ITEM_NAME_INVALID, ERROR_CODE_UPLOAD_PENDING_APP_FOLDER_SIZE_LIMIT, ERROR_CODE_UPLOAD_STORAGE_LIMIT_EXCEEDED, ERROR_CODE_UPLOAD_CHILD_FOLDER_FAILED, ERROR_CODE_UPLOAD_BAD_DIGEST, ERROR_CODE_UPLOAD_FAILED_PACKAGE, STATUS_IN_PROGRESS, STATUS_STAGED, STATUS_ERROR } from '../../constants';
 
 /**
  * Get error message for a specific error code
@@ -20,29 +21,32 @@ import { ERROR_CODE_UPLOAD_FILE_SIZE_LIMIT_EXCEEDED, ERROR_CODE_ITEM_NAME_IN_USE
 var getErrorMessage = function getErrorMessage(errorCode, itemName) {
   switch (errorCode) {
     case ERROR_CODE_UPLOAD_CHILD_FOLDER_FAILED:
-      return /*#__PURE__*/React.createElement(FormattedMessage, messages.uploadsOneOrMoreChildFoldersFailedToUploadMessage);
+      return React.createElement(FormattedMessage, messages.uploadsOneOrMoreChildFoldersFailedToUploadMessage);
 
     case ERROR_CODE_UPLOAD_FILE_SIZE_LIMIT_EXCEEDED:
-      return /*#__PURE__*/React.createElement(FormattedMessage, messages.uploadsFileSizeLimitExceededErrorMessage);
+      return React.createElement(FormattedMessage, messages.uploadsFileSizeLimitExceededErrorMessage);
 
     case ERROR_CODE_ITEM_NAME_IN_USE:
-      return /*#__PURE__*/React.createElement(FormattedMessage, messages.uploadsItemNameInUseErrorMessage);
+      return React.createElement(FormattedMessage, messages.uploadsItemNameInUseErrorMessage);
 
     case ERROR_CODE_ITEM_NAME_INVALID:
-      return /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.uploadsProvidedFolderNameInvalidMessage, {
+      return React.createElement(FormattedMessage, _extends({}, messages.uploadsProvidedFolderNameInvalidMessage, {
         values: {
           name: itemName
         }
       }));
 
     case ERROR_CODE_UPLOAD_STORAGE_LIMIT_EXCEEDED:
-      return /*#__PURE__*/React.createElement(FormattedMessage, messages.uploadsStorageLimitErrorMessage);
+      return React.createElement(FormattedMessage, messages.uploadsStorageLimitErrorMessage);
 
     case ERROR_CODE_UPLOAD_PENDING_APP_FOLDER_SIZE_LIMIT:
-      return /*#__PURE__*/React.createElement(FormattedMessage, messages.uploadsPendingFolderSizeLimitErrorMessage);
+      return React.createElement(FormattedMessage, messages.uploadsPendingFolderSizeLimitErrorMessage);
+
+    case ERROR_CODE_UPLOAD_FAILED_PACKAGE:
+      return React.createElement(FormattedMessage, messages.uploadsPackageUploadErrorMessage);
 
     default:
-      return /*#__PURE__*/React.createElement(FormattedMessage, messages.uploadsDefaultErrorMessage);
+      return React.createElement(FormattedMessage, messages.uploadsDefaultErrorMessage);
   }
 };
 
@@ -53,7 +57,8 @@ export default (function () {
         _rowData$error = rowData.error,
         error = _rowData$error === void 0 ? {} : _rowData$error,
         name = rowData.name,
-        isFolder = rowData.isFolder;
+        isFolder = rowData.isFolder,
+        file = rowData.file;
     var code = error.code;
 
     if (isFolder && status !== STATUS_ERROR) {
@@ -63,9 +68,13 @@ export default (function () {
     switch (status) {
       case STATUS_IN_PROGRESS:
       case STATUS_STAGED:
-        return /*#__PURE__*/React.createElement(ItemProgress, rowData);
+        return React.createElement(ItemProgress, rowData);
 
       case STATUS_ERROR:
+        if (Browser.isSafari() && code === ERROR_CODE_UPLOAD_BAD_DIGEST && file.name.indexOf('.zip') !== -1) {
+          return getErrorMessage(ERROR_CODE_UPLOAD_FAILED_PACKAGE, file.name);
+        }
+
         return getErrorMessage(code, name);
 
       default:

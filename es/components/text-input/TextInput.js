@@ -21,50 +21,48 @@ var TextInput = function TextInput(_ref) {
       errorPosition = _ref.errorPosition,
       hideLabel = _ref.hideLabel,
       hideOptionalLabel = _ref.hideOptionalLabel,
+      icon = _ref.icon,
       inputRef = _ref.inputRef,
       isLoading = _ref.isLoading,
       isRequired = _ref.isRequired,
       isValid = _ref.isValid,
       label = _ref.label,
       labelTooltip = _ref.labelTooltip,
-      rest = _objectWithoutProperties(_ref, ["className", "description", "error", "errorPosition", "hideLabel", "hideOptionalLabel", "inputRef", "isLoading", "isRequired", "isValid", "label", "labelTooltip"]);
+      rest = _objectWithoutProperties(_ref, ["className", "description", "error", "errorPosition", "hideLabel", "hideOptionalLabel", "icon", "inputRef", "isLoading", "isRequired", "isValid", "label", "labelTooltip"]);
 
   var hasError = !!error;
   var classes = classNames(className, 'text-input-container', {
     'show-error': hasError
   });
-  var errorMessageID = React.useRef(uniqueId('errorMessage')).current;
+  var descriptionID = React.useRef(uniqueId('description')).current;
   var ariaAttrs = {
     'aria-invalid': hasError,
     'aria-required': isRequired,
-    'aria-errormessage': errorMessageID
+    'aria-describedby': description ? descriptionID : undefined
   };
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: classes
-  }, /*#__PURE__*/React.createElement(Label, {
+  }, React.createElement(Label, {
     hideLabel: hideLabel,
     showOptionalText: !hideOptionalLabel && !isRequired,
     text: label,
     tooltip: labelTooltip
-  }, !!description && /*#__PURE__*/React.createElement("i", {
+  }, !!description && React.createElement("div", {
+    id: descriptionID,
     className: "text-input-description"
-  }, description), /*#__PURE__*/React.createElement(Tooltip, {
+  }, description), React.createElement(Tooltip, {
     isShown: hasError,
     position: errorPosition || 'middle-right',
     text: error || '',
     theme: "error"
-  }, /*#__PURE__*/React.createElement("input", _extends({
+  }, React.createElement("input", _extends({
     ref: inputRef,
     required: isRequired
-  }, ariaAttrs, rest))), isLoading && !isValid && /*#__PURE__*/React.createElement(LoadingIndicator, {
+  }, ariaAttrs, rest))), isLoading && !isValid && React.createElement(LoadingIndicator, {
     className: "text-input-loading"
-  }), isValid && !isLoading && /*#__PURE__*/React.createElement(IconVerified, {
+  }), isValid && !isLoading && React.createElement(IconVerified, {
     className: "text-input-verified"
-  }), /*#__PURE__*/React.createElement("span", {
-    id: errorMessageID,
-    className: "accessibility-hidden",
-    role: "alert"
-  }, error)));
+  }), !isLoading && !isValid && icon ? icon : null));
 };
 
 TextInput.displayName = 'TextInput';

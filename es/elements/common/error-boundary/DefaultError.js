@@ -5,11 +5,11 @@ import messages from '../messages';
 import './DefaultError.scss';
 
 var DefaultError = function DefaultError() {
-  return /*#__PURE__*/React.createElement("section", {
+  return React.createElement("section", {
     className: "be-default-error"
-  }, /*#__PURE__*/React.createElement(ErrorMask, {
-    errorHeader: /*#__PURE__*/React.createElement(FormattedMessage, messages.defaultErrorMaskHeaderMessage),
-    errorSubHeader: /*#__PURE__*/React.createElement(FormattedMessage, messages.defaultErrorMaskSubHeaderMessage)
+  }, React.createElement(ErrorMask, {
+    errorHeader: React.createElement(FormattedMessage, messages.defaultErrorMaskHeaderMessage),
+    errorSubHeader: React.createElement(FormattedMessage, messages.defaultErrorMaskSubHeaderMessage)
   }));
 };
 

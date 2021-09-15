@@ -14,13 +14,13 @@ var IconShield = function IconShield(_ref) {
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 32 : _ref$width,
       title = _ref.title;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: classNames('bdl-IconShield', className),
     height: height,
     title: title,
     viewBox: "0 0 32 32",
     width: width
-  }, /*#__PURE__*/React.createElement("path", {
+  }, React.createElement("path", {
     className: "stroke-color",
     fill: white,
     stroke: color,
@@ -28,12 +28,12 @@ var IconShield = function IconShield(_ref) {
     strokeLinejoin: "round",
     strokeWidth: "2",
     d: "M3 3.308S9.5 6.962 16 1c6.5 5.962 13 2.308 13 2.308v20.48L16 31 3 23.788V3.308z"
-  }), /*#__PURE__*/React.createElement("path", {
+  }), React.createElement("path", {
     className: "fill-color",
     fill: color,
     fillOpacity: opacity,
     d: "M16 5C10.5 8.5 6 7 6 7v14.712L16 27V5z"
-  }), /*#__PURE__*/React.createElement("path", {
+  }), React.createElement("path", {
     className: "stroke-color",
     stroke: color,
     strokeLinecap: "round",

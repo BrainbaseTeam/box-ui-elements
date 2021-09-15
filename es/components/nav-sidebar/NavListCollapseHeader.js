@@ -9,13 +9,13 @@ var NavListCollapseHeader = function NavListCollapseHeader(_ref) {
       onToggleCollapse = _ref.onToggleCollapse,
       _ref$containerProps = _ref.containerProps,
       containerProps = _ref$containerProps === void 0 ? {} : _ref$containerProps;
-  return /*#__PURE__*/React.createElement("div", _extends({
+  return React.createElement("div", _extends({
     className: "nav-list-collapse-header"
-  }, containerProps), children, /*#__PURE__*/React.createElement(PlainButton, {
+  }, containerProps), children, React.createElement(PlainButton, {
     className: "nav-list-collapse",
     onClick: onToggleCollapse,
     type: "button"
-  }, /*#__PURE__*/React.createElement(IconCaretDown, {
+  }, React.createElement(IconCaretDown, {
     width: 8
   })));
 };

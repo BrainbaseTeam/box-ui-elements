@@ -12,19 +12,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 /**
  * 
@@ -35,15 +31,15 @@ import omit from 'lodash/omit';
 import TasksBase from './TasksBase';
 import { ERROR_CODE_FETCH_TASK_COLLABORATOR, ERROR_CODE_CREATE_TASK_COLLABORATOR, ERROR_CODE_UPDATE_TASK_COLLABORATOR, ERROR_CODE_DELETE_TASK_COLLABORATOR, API_PAGE_LIMIT } from '../../constants';
 
-var TaskCollaborators = /*#__PURE__*/function (_TasksBase) {
+var TaskCollaborators =
+/*#__PURE__*/
+function (_TasksBase) {
   _inherits(TaskCollaborators, _TasksBase);
-
-  var _super = _createSuper(TaskCollaborators);
 
   function TaskCollaborators() {
     _classCallCheck(this, TaskCollaborators);
 
-    return _super.apply(this, arguments);
+    return _possibleConstructorReturn(this, _getPrototypeOf(TaskCollaborators).apply(this, arguments));
   }
 
   _createClass(TaskCollaborators, [{
@@ -60,6 +56,11 @@ var TaskCollaborators = /*#__PURE__*/function (_TasksBase) {
     key: "getUrlForTaskCollaborator",
     value: function getUrlForTaskCollaborator(id) {
       return "".concat(this.getBaseApiUrl(), "/undoc/task_collaborators/").concat(id);
+    }
+  }, {
+    key: "getUrlForTaskGroupCreate",
+    value: function getUrlForTaskGroupCreate() {
+      return "".concat(this.getBaseApiUrl(), "/undoc/task_collaborators/expand_group");
     }
   }, {
     key: "createTaskCollaborator",
@@ -91,12 +92,41 @@ var TaskCollaborators = /*#__PURE__*/function (_TasksBase) {
       });
     }
   }, {
-    key: "getTaskCollaborators",
-    value: function getTaskCollaborators(_ref2) {
+    key: "createTaskCollaboratorsforGroup",
+    value: function createTaskCollaboratorsforGroup(_ref2) {
       var errorCallback = _ref2.errorCallback,
           file = _ref2.file,
           successCallback = _ref2.successCallback,
-          task = _ref2.task;
+          task = _ref2.task,
+          group = _ref2.group;
+      this.errorCode = ERROR_CODE_CREATE_TASK_COLLABORATOR;
+      var requestData = {
+        data: {
+          task: {
+            type: 'task',
+            id: task.id
+          },
+          target: {
+            type: 'group',
+            id: group.id
+          }
+        }
+      };
+      this.post({
+        id: file.id,
+        url: this.getUrlForTaskGroupCreate(),
+        data: _objectSpread({}, requestData),
+        successCallback: successCallback,
+        errorCallback: errorCallback
+      });
+    }
+  }, {
+    key: "getTaskCollaborators",
+    value: function getTaskCollaborators(_ref3) {
+      var errorCallback = _ref3.errorCallback,
+          file = _ref3.file,
+          successCallback = _ref3.successCallback,
+          task = _ref3.task;
       this.errorCode = ERROR_CODE_FETCH_TASK_COLLABORATOR;
       var url = this.getUrlForTaskCollaborators(task.id);
       this.get({
@@ -108,11 +138,11 @@ var TaskCollaborators = /*#__PURE__*/function (_TasksBase) {
     }
   }, {
     key: "updateTaskCollaborator",
-    value: function updateTaskCollaborator(_ref3) {
-      var errorCallback = _ref3.errorCallback,
-          file = _ref3.file,
-          successCallback = _ref3.successCallback,
-          taskCollaborator = _ref3.taskCollaborator;
+    value: function updateTaskCollaborator(_ref4) {
+      var errorCallback = _ref4.errorCallback,
+          file = _ref4.file,
+          successCallback = _ref4.successCallback,
+          taskCollaborator = _ref4.taskCollaborator;
       this.errorCode = ERROR_CODE_UPDATE_TASK_COLLABORATOR;
       var requestData = {
         data: omit(taskCollaborator, 'id')
@@ -127,11 +157,11 @@ var TaskCollaborators = /*#__PURE__*/function (_TasksBase) {
     }
   }, {
     key: "deleteTaskCollaborator",
-    value: function deleteTaskCollaborator(_ref4) {
-      var errorCallback = _ref4.errorCallback,
-          file = _ref4.file,
-          successCallback = _ref4.successCallback,
-          taskCollaborator = _ref4.taskCollaborator;
+    value: function deleteTaskCollaborator(_ref5) {
+      var errorCallback = _ref5.errorCallback,
+          file = _ref5.file,
+          successCallback = _ref5.successCallback,
+          taskCollaborator = _ref5.taskCollaborator;
       this.errorCode = ERROR_CODE_DELETE_TASK_COLLABORATOR;
       this.delete({
         id: file.id,

@@ -11,13 +11,13 @@ var IconCaretDown = function IconCaretDown(_ref) {
       title = _ref.title,
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 10 : _ref$width;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: "icon-caret-down ".concat(className),
     height: height,
     title: title,
     viewBox: "0 0 10 6",
     width: width
-  }, /*#__PURE__*/React.createElement("path", {
+  }, React.createElement("path", {
     className: "fill-color",
     d: "M0 .5l5 5 5-5H0z",
     fill: color,

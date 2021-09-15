@@ -20,7 +20,7 @@ var ShareAccessSelect = function ShareAccessSelect(_ref) {
       sharedLink = item.shared_link;
 
   if (!allowedSharedAccessLevels) {
-    return /*#__PURE__*/React.createElement("span", null);
+    return React.createElement("span", null);
   }
 
   var _ref2 = sharedLink || {},
@@ -41,22 +41,22 @@ var ShareAccessSelect = function ShareAccessSelect(_ref) {
   var allowed = canSetShareAccess && allowShareAccessChange && (allowOpen || allowCompany || allowCollab);
 
   if (!allowed) {
-    return /*#__PURE__*/React.createElement("span", null);
+    return React.createElement("span", null);
   }
   /* eslint-disable jsx-a11y/no-onchange */
 
 
-  return /*#__PURE__*/React.createElement("select", {
+  return React.createElement("select", {
     className: "be-share-access-select ".concat(className),
     onChange: changeHandler,
     value: access
-  }, allowOpen ? /*#__PURE__*/React.createElement("option", {
+  }, allowOpen ? React.createElement("option", {
     value: ACCESS_OPEN
-  }, intl.formatMessage(messages.shareAccessOpen)) : null, allowCollab ? /*#__PURE__*/React.createElement("option", {
+  }, intl.formatMessage(messages.shareAccessOpen)) : null, allowCollab ? React.createElement("option", {
     value: ACCESS_COLLAB
-  }, intl.formatMessage(messages.shareAccessCollab)) : null, allowCompany ? /*#__PURE__*/React.createElement("option", {
+  }, intl.formatMessage(messages.shareAccessCollab)) : null, allowCompany ? React.createElement("option", {
     value: ACCESS_COMPANY
-  }, intl.formatMessage(messages.shareAccessCompany)) : null, /*#__PURE__*/React.createElement("option", {
+  }, intl.formatMessage(messages.shareAccessCompany)) : null, React.createElement("option", {
     value: ACCESS_NONE
   }, access === ACCESS_NONE ? intl.formatMessage(messages.shareAccessNone) : intl.formatMessage(messages.shareAccessRemove)));
 };

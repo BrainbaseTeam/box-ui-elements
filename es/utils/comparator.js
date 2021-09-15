@@ -4,6 +4,7 @@
  * @author Box
  */
 import { TYPE_FILE, TYPE_FOLDER, SORT_DESC, FIELD_MODIFIED_AT, FIELD_INTERACTED_AT, FIELD_NAME, FIELD_SIZE } from '../constants';
+
 /**
  * Comparator function for sorting files and folders
  *
@@ -11,7 +12,6 @@ import { TYPE_FILE, TYPE_FOLDER, SORT_DESC, FIELD_MODIFIED_AT, FIELD_INTERACTED_
  * @param {string} sortDirection desc or asc
  * @return {Function} comparator function
  */
-
 export default function (sortBy, sortDirection, cache) {
   var invert = sortDirection === SORT_DESC ? 1 : -1;
   return function (a, b) {

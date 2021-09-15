@@ -7,11 +7,11 @@ var DraggableListItem = function DraggableListItem(_ref) {
       id = _ref.id,
       index = _ref.index,
       isDraggableViaHandle = _ref.isDraggableViaHandle;
-  return /*#__PURE__*/React.createElement(Draggable, {
+  return React.createElement(Draggable, {
     draggableId: id,
     index: index
   }, function (draggableProvided) {
-    return /*#__PURE__*/React.createElement(ListItem, {
+    return React.createElement(ListItem, {
       draggableProvided: draggableProvided,
       isDraggableViaHandle: isDraggableViaHandle
     }, children);

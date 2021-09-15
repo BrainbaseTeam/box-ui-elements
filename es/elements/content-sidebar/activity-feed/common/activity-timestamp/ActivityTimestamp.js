@@ -2,25 +2,23 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
+import ActivityDatestamp from '../activity-datestamp';
 import Tooltip from '../../../../../components/tooltip';
-import ReadableTime from '../../../../../components/time/ReadableTime';
 import messages from './messages';
 import './ActivityTimestamp.scss';
 
 var ActivityTimestamp = function ActivityTimestamp(_ref) {
   var date = _ref.date;
-  return /*#__PURE__*/React.createElement(Tooltip, {
-    text: /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.fullDateTime, {
+  return React.createElement(Tooltip, {
+    text: React.createElement(FormattedMessage, _extends({}, messages.fullDateTime, {
       values: {
         time: date
       }
     }))
-  }, /*#__PURE__*/React.createElement("small", {
+  }, React.createElement("small", {
     className: "bcs-ActivityTimestamp"
-  }, /*#__PURE__*/React.createElement(ReadableTime, {
-    relativeThreshold: 0,
-    alwaysShowTime: true,
-    timestamp: date
+  }, React.createElement(ActivityDatestamp, {
+    date: date
   })));
 };
 

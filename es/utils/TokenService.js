@@ -18,7 +18,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 import { TYPED_ID_FOLDER_PREFIX, TYPED_ID_FILE_PREFIX } from '../constants';
 var error = new Error('Bad id or auth token. ID should be typed id like file_123 or folder_123! Token should be a string or function.');
 
-var TokenService = /*#__PURE__*/function () {
+var TokenService =
+/*#__PURE__*/
+function () {
   function TokenService() {
     _classCallCheck(this, TokenService);
   }
@@ -38,7 +40,9 @@ var TokenService = /*#__PURE__*/function () {
      * @return {Promise} that resolves to a token
      */
     value: function () {
-      var _getToken = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(id, tokenOrTokenFunction) {
+      var _getToken = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee(id, tokenOrTokenFunction) {
         var token;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -103,7 +107,9 @@ var TokenService = /*#__PURE__*/function () {
   }, {
     key: "getReadToken",
     value: function () {
-      var _getReadToken = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(id, tokenOrTokenFunction) {
+      var _getReadToken = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee2(id, tokenOrTokenFunction) {
         var token;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
@@ -151,7 +157,9 @@ var TokenService = /*#__PURE__*/function () {
   }, {
     key: "getReadTokens",
     value: function () {
-      var _getReadTokens = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(id, tokenOrTokenFunction) {
+      var _getReadTokens = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee3(id, tokenOrTokenFunction) {
         var ids, promises, tokens, tokenMap;
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
@@ -199,7 +207,9 @@ var TokenService = /*#__PURE__*/function () {
   }, {
     key: "getWriteToken",
     value: function () {
-      var _getWriteToken = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(id, tokenOrTokenFunction) {
+      var _getWriteToken = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee4(id, tokenOrTokenFunction) {
         var token;
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
@@ -252,7 +262,9 @@ var TokenService = /*#__PURE__*/function () {
   }, {
     key: "cacheTokens",
     value: function () {
-      var _cacheTokens = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(ids, tokenOrTokenFunction) {
+      var _cacheTokens = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee5(ids, tokenOrTokenFunction) {
         return regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {

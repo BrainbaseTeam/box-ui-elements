@@ -45,21 +45,21 @@ var AccessStatsItem = function AccessStatsItem(_ref) {
   var statAttributes = statsAttributesTable[type];
   var IconComponent = statAttributes.icon;
   var labelMessage = statAttributes.message;
-  var itemContent = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(IconComponent, {
+  var itemContent = React.createElement(React.Fragment, null, React.createElement(IconComponent, {
     color: ICON_COLOR,
     height: 10,
     width: 14
-  }), /*#__PURE__*/React.createElement("span", {
+  }), React.createElement("span", {
     className: "access-stats-label"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, labelMessage)), /*#__PURE__*/React.createElement(FormattedNumber, {
+  }, React.createElement(FormattedMessage, labelMessage)), React.createElement(FormattedNumber, {
     value: count
   }), hasCountOverflowed && '+');
-  return /*#__PURE__*/React.createElement("li", {
+  return React.createElement("li", {
     className: "access-stats-item"
-  }, openAccessStatsModal ? /*#__PURE__*/React.createElement(PlainButton, _extends({
+  }, openAccessStatsModal ? React.createElement(PlainButton, _extends({
     className: ITEM_CONTENT_CLASS_NAME,
     onClick: openAccessStatsModal
-  }, statButtonProps), itemContent) : /*#__PURE__*/React.createElement("span", {
+  }, statButtonProps), itemContent) : React.createElement("span", {
     className: ITEM_CONTENT_CLASS_NAME
   }, itemContent));
 };

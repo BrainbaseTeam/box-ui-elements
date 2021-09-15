@@ -38,36 +38,36 @@ var SharedLink = function SharedLink(props) {
       settingsButtonProps = _props$settingsButton === void 0 ? {} : _props$settingsButton,
       sharedLink = props.sharedLink,
       submitting = props.submitting;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "shared-link"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "shared-link-icons"
-  }, expiration ? /*#__PURE__*/React.createElement(Tooltip, {
+  }, expiration ? React.createElement(Tooltip, {
     position: "middle-left",
-    text: /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.sharedLinkExpirationTooltip, {
+    text: React.createElement(FormattedMessage, _extends({}, messages.sharedLinkExpirationTooltip, {
       values: {
         expiration: convertToMs(expiration)
       }
     }))
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "shared-link-expiration"
-  }, /*#__PURE__*/React.createElement(IconExpirationInverted, {
+  }, React.createElement(IconExpirationInverted, {
     height: 16,
     width: 16
-  }))) : null, onSettingsClick && /*#__PURE__*/React.createElement(PlainButton, _extends({}, settingsButtonProps, {
+  }))) : null, onSettingsClick && React.createElement(PlainButton, _extends({}, settingsButtonProps, {
     "aria-label": intl.formatMessage(messages.settingsButtonLabel),
     className: "shared-link-settings-btn",
     onClick: onSettingsClick,
     type: "button"
-  }), /*#__PURE__*/React.createElement(IconSettingInverted, null))), /*#__PURE__*/React.createElement(TextInputWithCopyButton, {
+  }), React.createElement(IconSettingInverted, null))), React.createElement(TextInputWithCopyButton, {
     buttonProps: copyButtonProps,
     className: "shared-link-container",
     disabled: submitting,
-    label: /*#__PURE__*/React.createElement(FormattedMessage, messages.sharedLinkLabel),
+    label: React.createElement(FormattedMessage, messages.sharedLinkLabel),
     onCopySuccess: onCopySuccess,
     type: "url",
     value: sharedLink
-  }), /*#__PURE__*/React.createElement(SharedLinkAccess, {
+  }), React.createElement(SharedLinkAccess, {
     accessDropdownMenuProps: accessDropdownMenuProps,
     accessLevel: accessLevel,
     accessMenuButtonProps: accessMenuButtonProps,

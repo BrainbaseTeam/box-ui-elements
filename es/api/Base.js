@@ -22,11 +22,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 import noop from 'lodash/noop';
 import Xhr from '../utils/Xhr';
 import Cache from '../utils/Cache';
+import UploadsReachability from './uploads/UploadsReachability';
 import { getTypedFileId } from '../utils/file';
 import { getBadItemError, getBadPermissionsError } from '../utils/error';
 import { DEFAULT_HOSTNAME_API, DEFAULT_HOSTNAME_UPLOAD, HTTP_GET, HTTP_POST, HTTP_PUT, HTTP_DELETE } from '../constants';
 
-var Base = /*#__PURE__*/function () {
+var Base =
+/*#__PURE__*/
+function () {
   /**
    * @property {Cache}
    */
@@ -72,6 +75,10 @@ var Base = /*#__PURE__*/function () {
    */
 
   /**
+   * @property {UploadsReachability}
+   */
+
+  /**
    * [constructor]
    *
    * @param {Object} [options]
@@ -109,7 +116,7 @@ var Base = /*#__PURE__*/function () {
     this.apiHost = options.apiHost || DEFAULT_HOSTNAME_API;
     this.uploadHost = options.uploadHost || DEFAULT_HOSTNAME_UPLOAD; // @TODO: avoid keeping another copy of data in this.options
 
-    this.options = _objectSpread(_objectSpread({}, options), {}, {
+    this.options = _objectSpread({}, options, {
       apiHost: this.apiHost,
       uploadHost: this.uploadHost,
       cache: this.cache
@@ -118,6 +125,7 @@ var Base = /*#__PURE__*/function () {
     this.destroyed = false;
     this.consoleLog = !!options.consoleLog && !!window.console ? window.console.log || noop : noop;
     this.consoleError = !!options.consoleError && !!window.console ? window.console.error || noop : noop;
+    this.uploadsReachability = new UploadsReachability();
   }
   /**
    * [destructor]
@@ -328,10 +336,12 @@ var Base = /*#__PURE__*/function () {
   }, {
     key: "makeRequest",
     value: function () {
-      var _makeRequest = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(method, id, url, successCallback, errorCallback) {
+      var _makeRequest = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee(method, id, url, successCallback, errorCallback) {
         var requestData,
             xhrMethod,
-            _yield$xhrMethod,
+            _ref5,
             _data,
             _args = arguments;
 
@@ -361,8 +371,8 @@ var Base = /*#__PURE__*/function () {
                 }, requestData));
 
               case 9:
-                _yield$xhrMethod = _context.sent;
-                _data = _yield$xhrMethod.data;
+                _ref5 = _context.sent;
+                _data = _ref5.data;
                 this.successHandler(_data);
                 _context.next = 17;
                 break;

@@ -4,29 +4,29 @@ import Logo from '../../components/logo';
 import IconCloud from '../../icons/general/IconCloud';
 
 var InsetFilter = function InsetFilter() {
-  return /*#__PURE__*/React.createElement("filter", {
+  return React.createElement("filter", {
     id: "inset-shadow"
-  }, /*#__PURE__*/React.createElement("feOffset", {
+  }, React.createElement("feOffset", {
     dx: "0",
     dy: "1.5"
-  }), /*#__PURE__*/React.createElement("feGaussianBlur", {
+  }), React.createElement("feGaussianBlur", {
     result: "offset-blur",
     stdDeviation: "0.5"
-  }), /*#__PURE__*/React.createElement("feComposite", {
+  }), React.createElement("feComposite", {
     in: "SourceGraphic",
     in2: "offset-blur",
     operator: "out",
     result: "inverse"
-  }), /*#__PURE__*/React.createElement("feFlood", {
+  }), React.createElement("feFlood", {
     floodColor: "black",
     floodOpacity: "1",
     result: "color"
-  }), /*#__PURE__*/React.createElement("feComposite", {
+  }), React.createElement("feComposite", {
     in: "color",
     in2: "inverse",
     operator: "in",
     result: "shadow"
-  }), /*#__PURE__*/React.createElement("feComposite", {
+  }), React.createElement("feComposite", {
     in: "shadow",
     in2: "SourceGraphic",
     operator: "over"
@@ -40,20 +40,20 @@ var DropCloud = function DropCloud(_ref) {
       position = _ref.position;
   var x = position.x,
       y = position.y;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "drop-cloud ".concat(className),
     style: {
       top: "".concat(y, "px"),
       left: "".concat(x, "px")
     }
-  }, /*#__PURE__*/React.createElement(IconCloud, {
+  }, React.createElement(IconCloud, {
     filter: {
       id: 'inset-shadow',
-      definition: /*#__PURE__*/React.createElement(InsetFilter, null)
+      definition: React.createElement(InsetFilter, null)
     },
     height: cloudSize,
     width: cloudSize
-  }), /*#__PURE__*/React.createElement(Logo, null));
+  }), React.createElement(Logo, null));
 };
 
 DropCloud.displayName = 'DropCloud';

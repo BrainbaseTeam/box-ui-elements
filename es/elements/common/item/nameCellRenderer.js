@@ -11,7 +11,7 @@ export default (function (rootId, view, onItemClick, onItemSelect) {
   var isTouch = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : false;
   return function (_ref) {
     var rowData = _ref.rowData;
-    return /*#__PURE__*/React.createElement(Name, {
+    return React.createElement(Name, {
       canPreview: canPreview,
       isTouch: isTouch,
       item: rowData,

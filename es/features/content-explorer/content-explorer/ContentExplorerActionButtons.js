@@ -41,6 +41,7 @@ var ContentExplorerActionButtons = function ContentExplorerActionButtons(_ref) {
       onChooseClick = _ref.onChooseClick,
       onCopyClick = _ref.onCopyClick,
       onMoveClick = _ref.onMoveClick,
+      onSelectedClick = _ref.onSelectedClick,
       selectedItems = _ref.selectedItems;
 
   var handleChooseClick = function handleChooseClick() {
@@ -78,43 +79,48 @@ var ContentExplorerActionButtons = function ContentExplorerActionButtons(_ref) {
 
   var renderStatus = function renderStatus() {
     var chosenItems = getChosenItemsFromSelectedItems(selectedItems);
-    return contentExplorerMode === ContentExplorerModes.MULTI_SELECT && /*#__PURE__*/React.createElement("span", {
-      className: "status-message"
-    }, /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.numSelected, {
+    var statusMessage = React.createElement(FormattedMessage, _extends({}, messages.numSelected, {
       values: {
         numSelected: chosenItems.length
       }
-    })));
+    }));
+    var statusElement = onSelectedClick ? React.createElement(Button, {
+      className: "status-message",
+      onClick: onSelectedClick
+    }, statusMessage) : React.createElement("span", {
+      className: "status-message"
+    }, statusMessage);
+    return contentExplorerMode === ContentExplorerModes.MULTI_SELECT && statusElement;
   };
 
-  return /*#__PURE__*/React.createElement("div", _extends({
+  return React.createElement("div", _extends({
     className: "content-explorer-action-buttons-container"
-  }, actionButtonsProps), renderStatus(), /*#__PURE__*/React.createElement(Button, _extends({
+  }, actionButtonsProps), renderStatus(), React.createElement(Button, _extends({
     className: "content-explorer-cancel-button",
     type: "button",
     isDisabled: isChooseButtonLoading || isMoveButtonLoading || isCopyButtonLoading,
     onClick: onCancelClick
-  }, cancelButtonProps), /*#__PURE__*/React.createElement(FormattedMessage, messages.cancel)), (contentExplorerMode === ContentExplorerModes.SELECT_FILE || contentExplorerMode === ContentExplorerModes.SELECT_FOLDER || contentExplorerMode === ContentExplorerModes.MULTI_SELECT) && /*#__PURE__*/React.createElement(PrimaryButton, _extends({
+  }, cancelButtonProps), React.createElement(FormattedMessage, messages.cancel)), (contentExplorerMode === ContentExplorerModes.SELECT_FILE || contentExplorerMode === ContentExplorerModes.SELECT_FOLDER || contentExplorerMode === ContentExplorerModes.MULTI_SELECT) && React.createElement(PrimaryButton, _extends({
     type: "button",
     className: "content-explorer-choose-button",
     isDisabled: areButtonsDisabled || isChooseButtonLoading,
     isLoading: isChooseButtonLoading,
     onClick: handleChooseClick
-  }, chooseButtonProps), chooseButtonText || /*#__PURE__*/React.createElement(FormattedMessage, messages.choose)), contentExplorerMode === ContentExplorerModes.MOVE_COPY && /*#__PURE__*/React.createElement(PrimaryButton, {
+  }, chooseButtonProps), chooseButtonText || React.createElement(FormattedMessage, messages.choose)), contentExplorerMode === ContentExplorerModes.MOVE_COPY && React.createElement(PrimaryButton, {
     key: "move-btn",
     type: "button",
     className: "content-explorer-move-button",
     onClick: handleMoveClick,
     isDisabled: areButtonsDisabled || isMoveButtonLoading || isCopyButtonLoading,
     isLoading: isMoveButtonLoading
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.move)), contentExplorerMode === ContentExplorerModes.MOVE_COPY && /*#__PURE__*/React.createElement(PrimaryButton, {
+  }, React.createElement(FormattedMessage, messages.move)), contentExplorerMode === ContentExplorerModes.MOVE_COPY && React.createElement(PrimaryButton, {
     key: "copy-btn",
     type: "button",
     className: "content-explorer-copy-button",
     onClick: handleCopyClick,
     isDisabled: areButtonsDisabled || isMoveButtonLoading || isCopyButtonLoading,
     isLoading: isCopyButtonLoading
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.copy)));
+  }, React.createElement(FormattedMessage, messages.copy)));
 };
 
 ContentExplorerActionButtons.propTypes = {
@@ -132,6 +138,7 @@ ContentExplorerActionButtons.propTypes = {
   onChooseClick: PropTypes.func,
   onCopyClick: PropTypes.func,
   onMoveClick: PropTypes.func,
+  onSelectedClick: PropTypes.func,
   selectedItems: ItemsMapPropType.isRequired
 };
 export default ContentExplorerActionButtons;

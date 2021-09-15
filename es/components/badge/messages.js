@@ -4,6 +4,10 @@ var messages = defineMessages({
     "id": "boxui.badges.beta",
     "defaultMessage": "BETA"
   },
+  trial: {
+    "id": "boxui.badges.trial",
+    "defaultMessage": "TRIAL"
+  },
   upgrade: {
     "id": "boxui.badges.upgrade",
     "defaultMessage": "UPGRADE"

@@ -36,7 +36,7 @@ var Timeslice = function Timeslice(_ref) {
     width = MIN_WIDTH;
   }
 
-  return /*#__PURE__*/React.createElement(PlainButton, {
+  return React.createElement(PlainButton, {
     className: "be-timeline-time",
     "data-resin-target": interactionTarget,
     onClick: function onClick() {

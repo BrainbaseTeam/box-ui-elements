@@ -12,22 +12,17 @@ import MediaMenu from './MediaMenu';
 import './Media.scss';
 
 var Media = function Media(_ref) {
-  var Wrapper = _ref.as,
+  var _ref$as = _ref.as,
+      Wrapper = _ref$as === void 0 ? 'div' : _ref$as,
       children = _ref.children,
       className = _ref.className,
       rest = _objectWithoutProperties(_ref, ["as", "children", "className"]);
 
-  return /*#__PURE__*/React.createElement(Wrapper, _extends({
+  return React.createElement(Wrapper, _extends({
     className: classnames('bdl-Media', className)
   }, rest), children);
-}; // Use this instead of default value because of param destructuring bug in Flow
-// that affects union types
-// https://github.com/facebook/flow/issues/5461
-
-
-Media.defaultProps = {
-  as: 'div'
 };
+
 Media.Body = MediaBody;
 Media.Menu = MediaMenu;
 Media.Figure = MediaFigure;

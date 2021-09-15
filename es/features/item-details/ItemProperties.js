@@ -41,46 +41,46 @@ var ItemProperties = function ItemProperties(_ref) {
       uploader = _ref.uploader,
       url = _ref.url;
   var descriptionId = uniqueid('description_');
-  return /*#__PURE__*/React.createElement("dl", {
+  return React.createElement("dl", {
     className: "item-properties"
-  }, description || onDescriptionChange ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FormattedMessage, messages.description, function (text) {
-    return /*#__PURE__*/React.createElement("dt", {
+  }, description || onDescriptionChange ? React.createElement(React.Fragment, null, React.createElement(FormattedMessage, messages.description, function (text) {
+    return React.createElement("dt", {
       id: descriptionId
     }, text);
-  }), /*#__PURE__*/React.createElement("dd", null, onDescriptionChange ? /*#__PURE__*/React.createElement(EditableDescription, {
+  }), React.createElement("dd", null, onDescriptionChange ? React.createElement(EditableDescription, {
     onDescriptionChange: onDescriptionChange,
-    textAreaProps: _objectSpread(_objectSpread({}, descriptionTextareaProps), {}, {
+    textAreaProps: _objectSpread({}, descriptionTextareaProps, {
       'aria-labelledby': descriptionId
     }),
     value: description
-  }) : /*#__PURE__*/React.createElement(ReadonlyDescription, {
+  }) : React.createElement(ReadonlyDescription, {
     value: description
-  }))) : null, !!url && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FormattedMessage, _extends({
+  }))) : null, !!url && React.createElement(React.Fragment, null, React.createElement(FormattedMessage, _extends({
     tagName: "dt"
-  }, messages.url)), /*#__PURE__*/React.createElement("dd", null, onValidURLChange ? /*#__PURE__*/React.createElement(EditableURL, {
+  }, messages.url)), React.createElement("dd", null, onValidURLChange ? React.createElement(EditableURL, {
     onValidURLChange: onValidURLChange,
     value: url
-  }) : url)), owner ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FormattedMessage, _extends({
+  }) : url)), owner ? React.createElement(React.Fragment, null, React.createElement(FormattedMessage, _extends({
     tagName: "dt"
-  }, messages.owner)), /*#__PURE__*/React.createElement("dd", null, owner)) : null, enterpriseOwner ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FormattedMessage, _extends({
+  }, messages.owner)), React.createElement("dd", null, owner)) : null, enterpriseOwner ? React.createElement(React.Fragment, null, React.createElement(FormattedMessage, _extends({
     tagName: "dt"
-  }, messages.enterpriseOwner)), /*#__PURE__*/React.createElement("dd", null, enterpriseOwner)) : null, uploader ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FormattedMessage, _extends({
+  }, messages.enterpriseOwner)), React.createElement("dd", null, enterpriseOwner)) : null, uploader ? React.createElement(React.Fragment, null, React.createElement(FormattedMessage, _extends({
     tagName: "dt"
-  }, messages.uploader)), /*#__PURE__*/React.createElement("dd", null, uploader)) : null, createdAt ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FormattedMessage, _extends({
+  }, messages.uploader)), React.createElement("dd", null, uploader)) : null, createdAt ? React.createElement(React.Fragment, null, React.createElement(FormattedMessage, _extends({
     tagName: "dt"
-  }, messages.created)), /*#__PURE__*/React.createElement("dd", null, /*#__PURE__*/React.createElement(FormattedDate, _extends({
+  }, messages.created)), React.createElement("dd", null, React.createElement(FormattedDate, _extends({
     value: new Date(createdAt)
-  }, datetimeOptions)))) : null, modifiedAt ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FormattedMessage, _extends({
+  }, datetimeOptions)))) : null, modifiedAt ? React.createElement(React.Fragment, null, React.createElement(FormattedMessage, _extends({
     tagName: "dt"
-  }, messages.modified)), /*#__PURE__*/React.createElement("dd", null, /*#__PURE__*/React.createElement(FormattedDate, _extends({
+  }, messages.modified)), React.createElement("dd", null, React.createElement(FormattedDate, _extends({
     value: new Date(modifiedAt)
-  }, datetimeOptions)))) : null, size ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FormattedMessage, _extends({
+  }, datetimeOptions)))) : null, size ? React.createElement(React.Fragment, null, React.createElement(FormattedMessage, _extends({
     tagName: "dt"
-  }, messages.size)), /*#__PURE__*/React.createElement("dd", null, size)) : null, trashedAt ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FormattedMessage, _extends({
+  }, messages.size)), React.createElement("dd", null, size)) : null, trashedAt ? React.createElement(React.Fragment, null, React.createElement(FormattedMessage, _extends({
     tagName: "dt"
-  }, messages.deleted)), /*#__PURE__*/React.createElement("dd", null, /*#__PURE__*/React.createElement(FormattedDate, _extends({
+  }, messages.deleted)), React.createElement("dd", null, React.createElement(FormattedDate, _extends({
     value: new Date(trashedAt)
-  }, datetimeOptions)))) : null, /*#__PURE__*/React.createElement(RetentionPolicy, retentionPolicyProps));
+  }, datetimeOptions)))) : null, React.createElement(RetentionPolicy, retentionPolicyProps));
 };
 
 ItemProperties.propTypes = {

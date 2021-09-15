@@ -4,7 +4,7 @@ import * as React from 'react';
 import InlineNotice from '../inline-notice';
 
 var InlineError = function InlineError(props) {
-  return /*#__PURE__*/React.createElement(InlineNotice, _extends({}, props, {
+  return React.createElement(InlineNotice, _extends({}, props, {
     type: "error"
   }));
 };

@@ -10,23 +10,23 @@ var Footer = function Footer(_ref) {
   var onCancel = _ref.onCancel,
       onRemove = _ref.onRemove,
       showSave = _ref.showSave;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "metadata-instance-editor-footer"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "metadata-instance-editor-footer-delete"
-  }, /*#__PURE__*/React.createElement(PlainButton, {
+  }, React.createElement(PlainButton, {
     "data-resin-target": "metadata-instanceremove",
     onClick: onRemove,
     type: "button"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.metadataRemoveTemplate))), /*#__PURE__*/React.createElement("div", {
+  }, React.createElement(FormattedMessage, messages.metadataRemoveTemplate))), React.createElement("div", {
     className: "metadata-instance-editor-footer-save-cancel"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     "data-resin-target": "metadata-instancecancel",
     onClick: onCancel,
     type: "button"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.metadataCancel)), showSave && /*#__PURE__*/React.createElement(PrimaryButton, {
+  }, React.createElement(FormattedMessage, messages.metadataCancel)), showSave && React.createElement(PrimaryButton, {
     "data-resin-target": "metadata-instancesave"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.metadataSave))));
+  }, React.createElement(FormattedMessage, messages.metadataSave))));
 };
 
 export default Footer;

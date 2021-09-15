@@ -89,7 +89,7 @@ var RenameDialog = function RenameDialog(_ref) {
       break;
   }
 
-  return /*#__PURE__*/React.createElement(Modal, {
+  return React.createElement(Modal, {
     appElement: appElement,
     className: CLASS_MODAL_CONTENT,
     contentLabel: intl.formatMessage(messages.renameDialogLabel),
@@ -100,35 +100,35 @@ var RenameDialog = function RenameDialog(_ref) {
       return parentElement;
     },
     portalClassName: "".concat(CLASS_MODAL, " be-modal-rename")
-  }, /*#__PURE__*/React.createElement("label", null, error ? /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("label", null, error ? React.createElement("div", {
     className: "be-modal-error"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, error, {
+  }, React.createElement(FormattedMessage, _extends({}, error, {
     values: {
       name: nameWithoutExt
     }
-  }))) : null, /*#__PURE__*/React.createElement(FormattedMessage, _extends({
+  }))) : null, React.createElement(FormattedMessage, _extends({
     tagName: "div"
   }, messages.renameDialogText, {
     values: {
       name: nameWithoutExt
     }
-  })), /*#__PURE__*/React.createElement("input", {
+  })), React.createElement("input", {
     ref: ref,
     defaultValue: nameWithoutExt,
     onKeyDown: onKeyDown,
     required: true,
     type: "text"
-  })), /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", {
     className: "be-modal-btns"
-  }, /*#__PURE__*/React.createElement(PrimaryButton, {
+  }, React.createElement(PrimaryButton, {
     isLoading: isLoading,
     onClick: rename,
     type: "button"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.rename)), /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(FormattedMessage, messages.rename)), React.createElement(Button, {
     isDisabled: isLoading,
     onClick: onCancel,
     type: "button"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.cancel))));
+  }, React.createElement(FormattedMessage, messages.cancel))));
 };
 
 export default injectIntl(RenameDialog);

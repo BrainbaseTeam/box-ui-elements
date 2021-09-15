@@ -9,11 +9,14 @@ import CheckboxPrimitive from './Checkbox';
 
 var CheckboxField = function CheckboxField(_ref) {
   var field = _ref.field,
-      form = _ref.form,
-      rest = _objectWithoutProperties(_ref, ["field", "form"]);
+      rest = _objectWithoutProperties(_ref, ["field"]);
+
+  if (!field) {
+    return React.createElement(CheckboxPrimitive, rest);
+  }
 
   var value = field.value;
-  return /*#__PURE__*/React.createElement(CheckboxPrimitive, _extends({}, field, rest, {
+  return React.createElement(CheckboxPrimitive, _extends({}, field, rest, {
     isChecked: !!value
   }));
 };

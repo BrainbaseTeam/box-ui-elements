@@ -11,21 +11,21 @@ var IconRejected = function IconRejected(_ref) {
       title = _ref.title,
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 18 : _ref$width;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: "icon-rejected ".concat(className),
     height: height,
     title: title,
     viewBox: "0 0 18 18",
     width: width
-  }, /*#__PURE__*/React.createElement("g", {
+  }, React.createElement("g", {
     fill: "none",
     fillRule: "evenodd"
-  }, /*#__PURE__*/React.createElement("circle", {
+  }, React.createElement("circle", {
     cx: 9,
     cy: 9,
     fill: color,
     r: 9
-  }), /*#__PURE__*/React.createElement("path", {
+  }), React.createElement("path", {
     d: "M9 7.586l2.828-2.829 1.415 1.415L10.414 9l2.829 2.828-1.415 1.415L9 10.414l-2.828 2.829-1.415-1.415L7.586 9 4.757 6.172l1.415-1.415z",
     fill: "#FFF",
     fillRule: "nonzero"

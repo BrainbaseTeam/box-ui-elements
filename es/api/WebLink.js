@@ -10,19 +10,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 /**
  * 
@@ -33,15 +29,15 @@ import Item from './Item';
 import { CACHE_PREFIX_WEBLINK, ERROR_CODE_FETCH_WEBLINK } from '../constants';
 import { findMissingProperties } from '../utils/fields';
 
-var WebLink = /*#__PURE__*/function (_Item) {
+var WebLink =
+/*#__PURE__*/
+function (_Item) {
   _inherits(WebLink, _Item);
-
-  var _super = _createSuper(WebLink);
 
   function WebLink() {
     _classCallCheck(this, WebLink);
 
-    return _super.apply(this, arguments);
+    return _possibleConstructorReturn(this, _getPrototypeOf(WebLink).apply(this, arguments));
   }
 
   _createClass(WebLink, [{
@@ -82,14 +78,16 @@ var WebLink = /*#__PURE__*/function (_Item) {
   }, {
     key: "getWeblink",
     value: function () {
-      var _getWeblink = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(id, successCallback, errorCallback) {
+      var _getWeblink = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee(id, successCallback, errorCallback) {
         var _ref,
             fields,
             cache,
             key,
             missingFields,
             xhrOptions,
-            _yield$this$xhr$get,
+            _ref2,
             data,
             _args = arguments;
 
@@ -144,8 +142,8 @@ var WebLink = /*#__PURE__*/function (_Item) {
                 return this.xhr.get(xhrOptions);
 
               case 18:
-                _yield$this$xhr$get = _context.sent;
-                data = _yield$this$xhr$get.data;
+                _ref2 = _context.sent;
+                data = _ref2.data;
 
                 if (!this.isDestroyed()) {
                   _context.next = 22;

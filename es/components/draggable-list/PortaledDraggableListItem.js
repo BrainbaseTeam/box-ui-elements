@@ -10,17 +10,17 @@ var PortaledDraggableListItem = function PortaledDraggableListItem(_ref) {
       id = _ref.id,
       index = _ref.index,
       isDraggableViaHandle = _ref.isDraggableViaHandle;
-  return /*#__PURE__*/React.createElement(Draggable, {
+  return React.createElement(Draggable, {
     draggableId: id,
     index: index
   }, function (draggableProvided, draggableSnapshot) {
-    var listItem = /*#__PURE__*/React.createElement(ListItem, {
+    var listItem = React.createElement(ListItem, {
       draggableProvided: draggableProvided,
       isDraggableViaHandle: isDraggableViaHandle
     }, children);
 
     if (draggableSnapshot.isDragging) {
-      return /*#__PURE__*/React.createElement(Portal, {
+      return React.createElement(Portal, {
         className: className
       }, listItem);
     }

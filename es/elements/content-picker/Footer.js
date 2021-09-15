@@ -17,7 +17,9 @@ import Tooltip from '../common/Tooltip';
 import './Footer.scss';
 
 var Footer = function Footer(_ref) {
-  var selectedCount = _ref.selectedCount,
+  var currentCollection = _ref.currentCollection,
+      selectedCount = _ref.selectedCount,
+      selectedItems = _ref.selectedItems,
       onSelectedClick = _ref.onSelectedClick,
       hasHitSelectionLimit = _ref.hasHitSelectionLimit,
       isSingleSelect = _ref.isSingleSelect,
@@ -25,43 +27,52 @@ var Footer = function Footer(_ref) {
       onChoose = _ref.onChoose,
       chooseButtonLabel = _ref.chooseButtonLabel,
       cancelButtonLabel = _ref.cancelButtonLabel,
-      children = _ref.children;
-  return /*#__PURE__*/React.createElement("footer", {
+      children = _ref.children,
+      renderCustomActionButtons = _ref.renderCustomActionButtons,
+      showSelectedButton = _ref.showSelectedButton;
+  return React.createElement("footer", {
     className: "bcp-footer"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "bcp-footer-left"
-  }, !isSingleSelect && /*#__PURE__*/React.createElement(Button, {
+  }, showSelectedButton && !isSingleSelect && React.createElement(Button, {
     className: "bcp-selected",
     onClick: onSelectedClick,
     type: "button"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, _extends({
+  }, React.createElement(FormattedMessage, _extends({
     className: "bcp-selected-count"
   }, messages.selected, {
     values: {
       count: selectedCount
     }
-  })), hasHitSelectionLimit && /*#__PURE__*/React.createElement("span", {
+  })), hasHitSelectionLimit && React.createElement("span", {
     className: "bcp-selected-max"
-  }, "(", /*#__PURE__*/React.createElement(FormattedMessage, messages.max), ")"))), /*#__PURE__*/React.createElement("div", {
+  }, "(", React.createElement(FormattedMessage, messages.max), ")"))), React.createElement("div", {
     className: "bcp-footer-right"
-  }, children, /*#__PURE__*/React.createElement(ButtonGroup, {
+  }, children, renderCustomActionButtons ? renderCustomActionButtons({
+    currentFolderId: currentCollection.id,
+    currentFolderName: currentCollection.name,
+    onCancel: onCancel,
+    onChoose: onChoose,
+    selectedCount: selectedCount,
+    selectedItems: selectedItems
+  }) : React.createElement(ButtonGroup, {
     className: "bcp-footer-actions"
-  }, /*#__PURE__*/React.createElement(Tooltip, {
-    text: cancelButtonLabel || /*#__PURE__*/React.createElement(FormattedMessage, messages.cancel)
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Tooltip, {
+    text: cancelButtonLabel || React.createElement(FormattedMessage, messages.cancel)
+  }, React.createElement(Button, {
     onClick: onCancel,
     type: "button"
-  }, /*#__PURE__*/React.createElement(IconClose, {
+  }, React.createElement(IconClose, {
     height: 16,
     width: 16
-  }))), /*#__PURE__*/React.createElement(Tooltip, {
+  }))), React.createElement(Tooltip, {
     isDisabled: !selectedCount,
-    text: chooseButtonLabel || /*#__PURE__*/React.createElement(FormattedMessage, messages.choose)
-  }, /*#__PURE__*/React.createElement(PrimaryButton, {
+    text: chooseButtonLabel || React.createElement(FormattedMessage, messages.choose)
+  }, React.createElement(PrimaryButton, {
     isDisabled: !selectedCount,
     onClick: onChoose,
     type: "button"
-  }, /*#__PURE__*/React.createElement(IconCheck, {
+  }, React.createElement(IconCheck, {
     color: "#fff",
     height: 16,
     width: 16

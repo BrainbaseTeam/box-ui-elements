@@ -7,13 +7,16 @@
 import * as React from 'react';
 import debounce from 'lodash/debounce';
 import flow from 'lodash/flow';
+import getProp from 'lodash/get';
 import noop from 'lodash/noop';
 import { FormattedMessage } from 'react-intl';
+import { type ContextRouter } from 'react-router-dom';
 import ActivityFeed from './activity-feed';
 import AddTaskButton from './AddTaskButton';
 import API from '../../api';
 import messages from '../common/messages';
 import SidebarContent from './SidebarContent';
+import { WithAnnotatorContextProps, withAnnotatorContext } from '../common/annotator-context';
 import { EVENT_JS_READY } from '../common/logger/constants';
 import { getBadUserError, getBadItemError } from '../../utils/error';
 import { mark } from '../../utils/performance';
@@ -21,14 +24,28 @@ import { withAPIContext } from '../common/api-context';
 import { withErrorBoundary } from '../common/error-boundary';
 import { withFeatureConsumer, isFeatureEnabled } from '../common/feature-checking';
 import { withLogger } from '../common/logger';
+import { withRouterAndRef } from '../common/routing';
 import {
     DEFAULT_COLLAB_DEBOUNCE,
+    ERROR_CODE_FETCH_ACTIVITY,
     ORIGIN_ACTIVITY_SIDEBAR,
     SIDEBAR_VIEW_ACTIVITY,
     TASK_COMPLETION_RULE_ALL,
 } from '../../constants';
-import type { TaskCompletionRule, TaskType, TaskNew, TaskUpdatePayload } from '../../common/types/tasks';
-import type { FocusableFeedItemType } from '../../common/types/feed';
+import type {
+    TaskCompletionRule,
+    TaskType,
+    TaskNew,
+    TaskUpdatePayload,
+    TaskCollabStatus,
+} from '../../common/types/tasks';
+import type { Annotation, AnnotationPermission, FocusableFeedItemType, FeedItems } from '../../common/types/feed';
+import type { ElementsErrorCallback, ErrorContextProps, ElementsXhrError } from '../../common/types/api';
+import type { WithLoggerProps } from '../../common/types/logging';
+import type { SelectorItems, User, UserMini, GroupMini, BoxItem, BoxItemPermission } from '../../common/types/core';
+import type { GetProfileUrlCallback } from '../common/flowTypes';
+import type { Translations, Collaborators, Errors } from './flowTypes';
+import type { FeatureConfig } from '../common/feature-checking';
 import './ActivitySidebar.scss';
 
 type ExternalProps = {
@@ -43,16 +60,22 @@ type ExternalProps = {
     onTaskCreate: Function,
     onTaskDelete: (id: string) => any,
     onTaskUpdate: () => any,
-} & ErrorContextProps;
+    onTaskView: (id: string, isCreator: boolean) => any,
+} & ErrorContextProps &
+    WithAnnotatorContextProps;
 
 type PropsWithoutContext = {
     elementId: string,
     file: BoxItem,
+    hasSidebarInitialized?: boolean,
     isDisabled: boolean,
+    onAnnotationSelect: Function,
+    onVersionChange: Function,
     onVersionHistoryClick?: Function,
     translations?: Translations,
 } & ExternalProps &
-    WithLoggerProps;
+    WithLoggerProps &
+    ContextRouter;
 
 type Props = {
     api: API,
@@ -61,11 +84,12 @@ type Props = {
 
 type State = {
     activityFeedError?: Errors,
-    approverSelectorContacts: SelectorItems,
+    approverSelectorContacts: SelectorItems<UserMini | GroupMini>,
+    contactsLoaded?: boolean,
     currentUser?: User,
     currentUserError?: Errors,
     feedItems?: FeedItems,
-    mentionSelectorContacts?: SelectorItems,
+    mentionSelectorContacts?: SelectorItems<UserMini>,
 };
 
 export const activityFeedInlineError: Errors = {
@@ -81,7 +105,12 @@ mark(MARK_NAME_JS_READY);
 
 class ActivitySidebar extends React.PureComponent<Props, State> {
     static defaultProps = {
+        annotatorState: {},
+        emitAnnotatorActiveChangeEvent: noop,
+        getAnnotationsMatchPath: noop,
+        getAnnotationsPath: noop,
         isDisabled: false,
+        onAnnotationSelect: noop,
         onCommentCreate: noop,
         onCommentDelete: noop,
         onCommentUpdate: noop,
@@ -89,12 +118,15 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
         onTaskCreate: noop,
         onTaskDelete: noop,
         onTaskUpdate: noop,
+        onVersionChange: noop,
+        onVersionHistoryClick: noop,
     };
 
     constructor(props: Props) {
         super(props);
         // eslint-disable-next-line react/prop-types
         const { logger } = this.props;
+
         logger.onReadyMetric({
             endMarkName: MARK_NAME_JS_READY,
         });
@@ -107,11 +139,48 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
         this.fetchCurrentUser(currentUser);
     }
 
+    handleAnnotationDelete = ({ id, permissions }: { id: string, permissions: AnnotationPermission }) => {
+        const { api, file } = this.props;
+
+        api.getFeedAPI(false).deleteAnnotation(
+            file,
+            id,
+            permissions,
+            this.deleteAnnotationSuccess.bind(this, id),
+            this.feedErrorCallback,
+        );
+
+        this.fetchFeedItems();
+    };
+
+    handleAnnotationEdit = (id: string, text: string, permissions: AnnotationPermission) => {
+        const { api, file } = this.props;
+
+        api.getFeedAPI(false).updateAnnotation(
+            file,
+            id,
+            text,
+            permissions,
+            this.feedSuccessCallback,
+            this.feedErrorCallback,
+        );
+
+        this.fetchFeedItems();
+    };
+
+    deleteAnnotationSuccess(id: string) {
+        const { emitRemoveEvent } = this.props;
+
+        this.feedSuccessCallback();
+        emitRemoveEvent(id);
+    }
+
     /**
      * Fetches a Users info
      *
      * @private
      * @param {User} [user] - Box User. If missing, gets user that the current token was generated for.
+     * @param {boolean} shouldDestroy
      * @return {void}
      */
     fetchCurrentUser(user?: User, shouldDestroy?: boolean = false): void {
@@ -153,7 +222,7 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
 
     createTask = (
         message: string,
-        assignees: SelectorItems,
+        assignees: SelectorItems<>,
         taskType: TaskType,
         dueAt: ?string,
         completionRule: TaskCompletionRule,
@@ -235,15 +304,21 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
         this.fetchFeedItems();
     };
 
-    updateTaskAssignment = (taskId: string, taskAssignmentId: string, status: TaskAssignmentStatus): void => {
-        const { file, api } = this.props;
+    updateTaskAssignment = (taskId: string, taskAssignmentId: string, status: TaskCollabStatus): void => {
+        const { file, api, onTaskAssignmentUpdate } = this.props;
+        const { currentUser = {} } = this.state;
+
+        const successCallback = () => {
+            this.feedSuccessCallback();
+            onTaskAssignmentUpdate(taskId, taskAssignmentId, status, currentUser.id);
+        };
 
         api.getFeedAPI(false).updateTaskCollaborator(
             file,
             taskId,
             taskAssignmentId,
             status,
-            this.feedSuccessCallback,
+            successCallback,
             this.feedErrorCallback,
         );
 
@@ -360,13 +435,15 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
     fetchFeedItems(shouldRefreshCache: boolean = false, shouldDestroy: boolean = false) {
         const { file, api, features } = this.props;
         const shouldShowAppActivity = isFeatureEnabled(features, 'activityFeed.appActivity.enabled');
+        const shouldShowAnnotations = isFeatureEnabled(features, 'activityFeed.annotations.enabled');
+
         api.getFeedAPI(shouldDestroy).feedItems(
             file,
             shouldRefreshCache,
             this.fetchFeedItemsSuccessCallback,
             this.fetchFeedItemsErrorCallback,
             this.errorCallback,
-            { shouldShowAppActivity },
+            { shouldShowAnnotations, shouldShowAppActivity },
         );
     }
 
@@ -388,11 +465,20 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
      * @param {Error} e - API error
      * @return {void}
      */
-    fetchFeedItemsErrorCallback = (feedItems: FeedItems): void => {
+    fetchFeedItemsErrorCallback = (feedItems: FeedItems, errors: ElementsXhrError[]): void => {
+        const { onError } = this.props;
+
         this.setState({
             feedItems,
             activityFeedError: activityFeedInlineError,
         });
+
+        if (Array.isArray(errors) && errors.length) {
+            onError(new Error('Fetch feed items error'), ERROR_CODE_FETCH_ACTIVITY, {
+                showNotification: true,
+                errors: errors.map(({ code }) => code),
+            });
+        }
     };
 
     /**
@@ -431,7 +517,7 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
      * @param {BoxItemCollection} collaborators - Collaborators response data
      * @return {void}
      */
-    getApproverContactsSuccessCallback = (collaborators: Collaborators): void => {
+    getApproverContactsSuccessCallback = (collaborators: { entries: SelectorItems<> }): void => {
         const { entries } = collaborators;
         this.setState({ approverSelectorContacts: entries });
     };
@@ -443,9 +529,14 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
      * @param {BoxItemCollection} collaborators - Collaborators response data
      * @return {void}
      */
-    getMentionContactsSuccessCallback = (collaborators: Collaborators): void => {
+    getMentionContactsSuccessCallback = (collaborators: { entries: SelectorItems<> }): void => {
         const { entries } = collaborators;
-        this.setState({ mentionSelectorContacts: entries });
+        this.setState({ contactsLoaded: false }, () =>
+            this.setState({
+                contactsLoaded: true,
+                mentionSelectorContacts: entries,
+            }),
+        );
     };
 
     /**
@@ -456,7 +547,10 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
      * @return {void}
      */
     getApproverWithQuery = debounce(
-        this.getCollaborators.bind(this, this.getApproverContactsSuccessCallback, this.errorCallback),
+        (searchStr: string) =>
+            this.getCollaborators(this.getApproverContactsSuccessCallback, this.errorCallback, searchStr, {
+                includeGroups: true,
+            }),
         DEFAULT_COLLAB_DEBOUNCE,
     );
 
@@ -468,7 +562,8 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
      * @return {void}
      */
     getMentionWithQuery = debounce(
-        this.getCollaborators.bind(this, this.getMentionContactsSuccessCallback, this.errorCallback),
+        (searchStr: string) =>
+            this.getCollaborators(this.getMentionContactsSuccessCallback, this.errorCallback, searchStr),
         DEFAULT_COLLAB_DEBOUNCE,
     );
 
@@ -478,9 +573,16 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
      * @param {Function} successCallback - the success callback
      * @param {Function} errorCallback - the error callback
      * @param {string} searchStr - the search string
+     * @param {Object} [options]
+     * @param {boolean} [options.includeGroups] - return groups as well as users
      * @return {void}
      */
-    getCollaborators(successCallback: Function, errorCallback: ElementsErrorCallback, searchStr: string): void {
+    getCollaborators(
+        successCallback: Collaborators => void,
+        errorCallback: ElementsErrorCallback,
+        searchStr: string,
+        { includeGroups = false }: { includeGroups: boolean } = {},
+    ): void {
         // Do not fetch without filter
         const { file, api } = this.props;
         if (!searchStr || searchStr.trim() === '') {
@@ -489,6 +591,8 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
 
         api.getFileCollaboratorsAPI(true).getFileCollaborators(file.id, successCallback, errorCallback, {
             filter_term: searchStr,
+            include_groups: includeGroups,
+            include_uploader_collabs: false,
         });
     }
 
@@ -528,14 +632,39 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
         return api.getUsersAPI(false).getAvatarUrlWithAccessToken(userId, file.id);
     };
 
+    handleAnnotationSelect = (annotation: Annotation): void => {
+        const { file_version, id: nextActiveAnnotationId } = annotation;
+        const {
+            emitAnnotatorActiveChangeEvent,
+            file,
+            getAnnotationsMatchPath,
+            getAnnotationsPath,
+            history,
+            location,
+            onAnnotationSelect,
+        } = this.props;
+        const annotationFileVersionId = getProp(file_version, 'id');
+        const currentFileVersionId = getProp(file, 'file_version.id');
+        const match = getAnnotationsMatchPath(location);
+        const selectedFileVersionId = getProp(match, 'params.fileVersionId', currentFileVersionId);
+
+        emitAnnotatorActiveChangeEvent(nextActiveAnnotationId);
+
+        if (annotationFileVersionId && annotationFileVersionId !== selectedFileVersionId) {
+            history.push(getAnnotationsPath(annotationFileVersionId, nextActiveAnnotationId));
+        }
+
+        onAnnotationSelect(annotation);
+    };
+
     onTaskModalClose = () => {
         this.setState({
             approverSelectorContacts: [],
         });
     };
 
-    refresh(): void {
-        this.fetchFeedItems(true);
+    refresh(shouldRefreshCache: boolean = true): void {
+        this.fetchFeedItems(shouldRefreshCache);
     }
 
     renderAddTaskButton = () => {
@@ -566,11 +695,13 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
             getUserProfileUrl,
             activeFeedEntryId,
             activeFeedEntryType,
+            onTaskView,
         } = this.props;
         const {
             currentUser,
             approverSelectorContacts,
             mentionSelectorContacts,
+            contactsLoaded,
             feedItems,
             activityFeedError,
             currentUserError,
@@ -585,30 +716,35 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
                 title={<FormattedMessage {...messages.sidebarActivityTitle} />}
             >
                 <ActivityFeed
-                    file={file}
+                    activeFeedEntryId={activeFeedEntryId}
+                    activeFeedEntryType={activeFeedEntryType}
                     activityFeedError={activityFeedError}
                     approverSelectorContacts={approverSelectorContacts}
-                    mentionSelectorContacts={mentionSelectorContacts}
                     currentUser={currentUser}
+                    currentUserError={currentUserError}
+                    feedItems={feedItems}
+                    file={file}
+                    getApproverWithQuery={this.getApproverWithQuery}
+                    getAvatarUrl={this.getAvatarUrl}
+                    getMentionWithQuery={this.getMentionWithQuery}
+                    getUserProfileUrl={getUserProfileUrl}
                     isDisabled={isDisabled}
+                    mentionSelectorContacts={mentionSelectorContacts}
+                    contactsLoaded={contactsLoaded}
+                    onAnnotationDelete={this.handleAnnotationDelete}
+                    onAnnotationEdit={this.handleAnnotationEdit}
+                    onAnnotationSelect={this.handleAnnotationSelect}
                     onAppActivityDelete={this.deleteAppActivity}
                     onCommentCreate={this.createComment}
                     onCommentDelete={this.deleteComment}
                     onCommentUpdate={this.updateComment}
+                    onTaskAssignmentUpdate={this.updateTaskAssignment}
                     onTaskCreate={this.createTask}
                     onTaskDelete={this.deleteTask}
-                    onTaskUpdate={this.updateTask}
                     onTaskModalClose={this.onTaskModalClose}
-                    onTaskAssignmentUpdate={this.updateTaskAssignment}
-                    getApproverWithQuery={this.getApproverWithQuery}
-                    getMentionWithQuery={this.getMentionWithQuery}
+                    onTaskUpdate={this.updateTask}
+                    onTaskView={onTaskView}
                     onVersionHistoryClick={onVersionHistoryClick}
-                    getAvatarUrl={this.getAvatarUrl}
-                    getUserProfileUrl={getUserProfileUrl}
-                    feedItems={feedItems}
-                    currentUserError={currentUserError}
-                    activeFeedEntryId={activeFeedEntryId}
-                    activeFeedEntryType={activeFeedEntryType}
                 />
             </SidebarContent>
         );
@@ -622,4 +758,6 @@ export default flow([
     withErrorBoundary(ORIGIN_ACTIVITY_SIDEBAR),
     withAPIContext,
     withFeatureConsumer,
+    withAnnotatorContext,
+    withRouterAndRef,
 ])(ActivitySidebar);

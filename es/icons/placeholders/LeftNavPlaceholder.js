@@ -6,19 +6,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -27,12 +23,14 @@ import uniqueId from 'lodash/uniqueId';
 import AccessibleSVG from '../accessible-svg';
 var ICON_CLASS = 'left-nav-ghost-state';
 
-var LeftNavPlaceholder = /*#__PURE__*/function (_React$PureComponent) {
+var LeftNavPlaceholder =
+/*#__PURE__*/
+function (_React$PureComponent) {
   _inherits(LeftNavPlaceholder, _React$PureComponent);
 
-  var _super = _createSuper(LeftNavPlaceholder);
-
   function LeftNavPlaceholder() {
+    var _getPrototypeOf2;
+
     var _this;
 
     _classCallCheck(this, LeftNavPlaceholder);
@@ -41,7 +39,7 @@ var LeftNavPlaceholder = /*#__PURE__*/function (_React$PureComponent) {
       args[_key] = arguments[_key];
     }
 
-    _this = _super.call.apply(_super, [this].concat(args));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(LeftNavPlaceholder)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_this), "idPrefix", "".concat(uniqueId(ICON_CLASS), "-"));
 
@@ -56,13 +54,13 @@ var LeftNavPlaceholder = /*#__PURE__*/function (_React$PureComponent) {
           height = _this$props.height,
           title = _this$props.title,
           width = _this$props.width;
-      return /*#__PURE__*/React.createElement(AccessibleSVG, {
+      return React.createElement(AccessibleSVG, {
         className: "".concat(ICON_CLASS, " ").concat(className),
         height: height,
         title: title,
         viewBox: "0 0 150 300",
         width: width
-      }, /*#__PURE__*/React.createElement("path", {
+      }, React.createElement("path", {
         d: "M1.282 260h97.436c.446 0 .608.046.77.134a.909.909 0 0 1 .378.378c.088.163.134.324.134.77v11.436c0 .446-.046.607-.134.77a.909.909 0 0 1-.378.378c-.163.088-.324.134-.77.134H1.282c-.446 0-.608-.046-.77-.134a.909.909 0 0 1-.378-.378c-.088-.163-.134-.324-.134-.77v-11.436c0-.446.046-.607.134-.77a.909.909 0 0 1 .378-.378c.163-.088.324-.134.77-.134zm0-260h77.436c.446 0 .608.046.77.134a.909.909 0 0 1 .378.378c.088.163.134.324.134.77v11.436c0 .446-.046.607-.134.77a.909.909 0 0 1-.378.378c-.163.088-.324.134-.77.134H1.282c-.446 0-.608-.046-.77-.134a.909.909 0 0 1-.378-.378c-.088-.163-.134-.324-.134-.77V1.282C0 .836.046.674.134.512A.909.909 0 0 1 .512.134C.675.046.836 0 1.282 0zm0 30h117.436c.446 0 .608.046.77.134a.909.909 0 0 1 .378.378c.088.163.134.324.134.77v11.436c0 .446-.046.607-.134.77a.909.909 0 0 1-.378.378c-.163.088-.324.134-.77.134H1.282c-.446 0-.608-.046-.77-.134a.909.909 0 0 1-.378-.378c-.088-.163-.134-.324-.134-.77V31.282c0-.446.046-.607.134-.77a.909.909 0 0 1 .378-.378c.163-.088.324-.134.77-.134zm0 30h67.436c.446 0 .608.046.77.134a.909.909 0 0 1 .378.378c.088.163.134.324.134.77v11.436c0 .446-.046.607-.134.77a.909.909 0 0 1-.378.378c-.163.088-.324.134-.77.134H1.282c-.446 0-.608-.046-.77-.134a.909.909 0 0 1-.378-.378c-.088-.163-.134-.324-.134-.77V61.282c0-.446.046-.607.134-.77a.909.909 0 0 1 .378-.378c.163-.088.324-.134.77-.134zm0 30h97.436c.446 0 .608.046.77.134a.909.909 0 0 1 .378.378c.088.163.134.324.134.77v11.436c0 .446-.046.608-.134.77a.909.909 0 0 1-.378.378c-.163.088-.324.134-.77.134H1.282c-.446 0-.608-.046-.77-.134a.909.909 0 0 1-.378-.378c-.088-.163-.134-.324-.134-.77V91.282c0-.446.046-.608.134-.77a.909.909 0 0 1 .378-.378c.163-.088.324-.134.77-.134zm0 40h77.436c.446 0 .608.046.77.134a.909.909 0 0 1 .378.378c.088.163.134.324.134.77v11.436c0 .446-.046.608-.134.77a.909.909 0 0 1-.378.378c-.163.088-.324.134-.77.134H1.282c-.446 0-.608-.046-.77-.134a.909.909 0 0 1-.378-.378c-.088-.163-.134-.324-.134-.77v-11.436c0-.446.046-.608.134-.77a.909.909 0 0 1 .378-.378c.163-.088.324-.134.77-.134zm0 30h117.436c.446 0 .608.046.77.134a.909.909 0 0 1 .378.378c.088.163.134.324.134.77v11.436c0 .446-.046.608-.134.77a.909.909 0 0 1-.378.378c-.163.088-.324.134-.77.134H1.282c-.446 0-.608-.046-.77-.134a.909.909 0 0 1-.378-.378c-.088-.163-.134-.324-.134-.77v-11.436c0-.446.046-.608.134-.77a.909.909 0 0 1 .378-.378c.163-.088.324-.134.77-.134zm0 30h67.436c.446 0 .608.046.77.134a.909.909 0 0 1 .378.378c.088.163.134.324.134.77v11.436c0 .446-.046.608-.134.77a.909.909 0 0 1-.378.378c-.163.088-.324.134-.77.134H1.282c-.446 0-.608-.046-.77-.134a.909.909 0 0 1-.378-.378c-.088-.163-.134-.324-.134-.77v-11.436c0-.446.046-.608.134-.77a.909.909 0 0 1 .378-.378c.163-.088.324-.134.77-.134zm0 30h97.436c.446 0 .608.046.77.134a.909.909 0 0 1 .378.378c.088.163.134.324.134.77v11.436c0 .446-.046.608-.134.77a.909.909 0 0 1-.378.378c-.163.088-.324.134-.77.134H1.282c-.446 0-.608-.046-.77-.134a.909.909 0 0 1-.378-.378c-.088-.163-.134-.324-.134-.77v-11.436c0-.446.046-.608.134-.77a.909.909 0 0 1 .378-.378c.163-.088.324-.134.77-.134z",
         fill: "#DDE6ED",
         fillRule: "evenodd",

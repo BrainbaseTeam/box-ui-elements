@@ -20,7 +20,7 @@ var TextInputField = function TextInputField(_ref) {
       touched = form.touched;
   var isTouched = getProp(touched, name);
   var error = isTouched ? getProp(errors, name) : null;
-  return /*#__PURE__*/React.createElement(TextInputPrimitive, _extends({}, field, rest, {
+  return React.createElement(TextInputPrimitive, _extends({}, field, rest, {
     inputRef: innerRef,
     error: error,
     hideOptionalLabel: isRequired

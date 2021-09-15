@@ -9,7 +9,7 @@ import ItemAction from './ItemAction';
 export default (function (isResumableUploadsEnabled, _onClick) {
   return function (_ref) {
     var rowData = _ref.rowData;
-    return /*#__PURE__*/React.createElement(ItemAction, _extends({}, rowData, {
+    return React.createElement(ItemAction, _extends({}, rowData, {
       isResumableUploadsEnabled: isResumableUploadsEnabled,
       onClick: function onClick() {
         return _onClick(rowData);

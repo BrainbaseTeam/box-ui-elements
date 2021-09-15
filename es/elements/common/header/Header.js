@@ -12,7 +12,9 @@ import './Header.scss';
 
 // eslint-disable-next-line react/prop-types
 var Header = function Header(_ref) {
-  var view = _ref.view,
+  var _ref$isHeaderLogoVisi = _ref.isHeaderLogoVisible,
+      isHeaderLogoVisible = _ref$isHeaderLogoVisi === void 0 ? true : _ref$isHeaderLogoVisi,
+      view = _ref.view,
       isSmall = _ref.isSmall,
       searchQuery = _ref.searchQuery,
       onSearch = _ref.onSearch,
@@ -26,14 +28,15 @@ var Header = function Header(_ref) {
 
   var isFolder = view === VIEW_FOLDER;
   var isSearch = view === VIEW_SEARCH;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "be-header"
-  }, /*#__PURE__*/React.createElement(Logo, {
+  }, isHeaderLogoVisible && React.createElement(Logo, {
     isSmall: isSmall,
     url: logoUrl
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "be-search"
-  }, /*#__PURE__*/React.createElement("input", {
+  }, React.createElement("input", {
+    "aria-label": "search",
     disabled: !isFolder && !isSearch,
     onChange: search,
     placeholder: intl.formatMessage(messages.searchPlaceholder),

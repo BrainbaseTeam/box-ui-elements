@@ -12,7 +12,7 @@ var LOADING_TABS = [AdditionalTabPlaceholder, AdditionalTabPlaceholder, Addition
 
 var AdditionalTabsLoading = function AdditionalTabsLoading() {
   return LOADING_TABS.map(function (LoadingComponent, idx) {
-    return /*#__PURE__*/React.createElement(LoadingComponent, {
+    return React.createElement(LoadingComponent, {
       isLoading: true,
       key: idx
     });

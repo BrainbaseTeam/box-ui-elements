@@ -11,21 +11,21 @@ var IconAccepted = function IconAccepted(_ref) {
       title = _ref.title,
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 16 : _ref$width;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: "icon-accepted ".concat(className),
     height: height,
     title: title,
     viewBox: "0 0 16 16",
     width: width
-  }, /*#__PURE__*/React.createElement("g", {
+  }, React.createElement("g", {
     fill: "none",
     fillRule: "evenodd"
-  }, /*#__PURE__*/React.createElement("circle", {
+  }, React.createElement("circle", {
     cx: 8,
     cy: 8,
     fill: color,
     r: 8
-  }), /*#__PURE__*/React.createElement("path", {
+  }), React.createElement("path", {
     d: "M7.051 9.253L4.965 7.172 3.75 8.423l3.301 3.327 5.699-5.751-1.235-1.249-4.464 4.503z",
     fill: "#FFF"
   })));

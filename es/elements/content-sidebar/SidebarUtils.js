@@ -25,7 +25,9 @@ import { hasSkills as hasSkillsData } from './skills/skillUtils';
 import { mark } from '../../utils/performance';
 import { SIDEBAR_VIEW_SKILLS, SIDEBAR_VIEW_ACTIVITY, SIDEBAR_VIEW_METADATA, SIDEBAR_VIEW_DETAILS, SIDEBAR_VIEW_VERSIONS } from '../../constants';
 
-var SidebarUtils = /*#__PURE__*/function () {
+var SidebarUtils =
+/*#__PURE__*/
+function () {
   function SidebarUtils() {
     _classCallCheck(this, SidebarUtils);
   }
@@ -163,16 +165,16 @@ var SidebarUtils = /*#__PURE__*/function () {
     value: function getTitleForView(view) {
       switch (view) {
         case SIDEBAR_VIEW_SKILLS:
-          return /*#__PURE__*/React.createElement(FormattedMessage, messages.sidebarSkillsTitle);
+          return React.createElement(FormattedMessage, messages.sidebarSkillsTitle);
 
         case SIDEBAR_VIEW_DETAILS:
-          return /*#__PURE__*/React.createElement(FormattedMessage, messages.sidebarDetailsTitle);
+          return React.createElement(FormattedMessage, messages.sidebarDetailsTitle);
 
         case SIDEBAR_VIEW_METADATA:
-          return /*#__PURE__*/React.createElement(FormattedMessage, messages.sidebarMetadataTitle);
+          return React.createElement(FormattedMessage, messages.sidebarMetadataTitle);
 
         case SIDEBAR_VIEW_ACTIVITY:
-          return /*#__PURE__*/React.createElement(FormattedMessage, messages.sidebarActivityTitle);
+          return React.createElement(FormattedMessage, messages.sidebarActivityTitle);
 
         default:
           return null;
@@ -246,7 +248,7 @@ var SidebarUtils = /*#__PURE__*/function () {
       var props = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
       return AsyncLoad(_objectSpread({
         errorComponent: SidebarLoadingError,
-        fallback: /*#__PURE__*/React.createElement(SidebarLoading, {
+        fallback: React.createElement(SidebarLoading, {
           title: this.getTitleForView(view)
         }),
         loader: function loader() {

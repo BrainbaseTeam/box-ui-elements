@@ -5,6 +5,7 @@ export type Icon = {
     className?: string,
     color?: string,
     height?: number,
+    thumbnailUrl?: string,
     /** A string describing the icon if it's not purely decorative for accessibility */
     title?: string | Element<any>,
     width?: number,

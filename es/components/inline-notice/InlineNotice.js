@@ -16,9 +16,9 @@ var InlineNotice = function InlineNotice(_ref) {
       type = _ref$type === void 0 ? 'warning' : _ref$type,
       rest = _objectWithoutProperties(_ref, ["children", "className", "title", "type"]);
 
-  return /*#__PURE__*/React.createElement("div", _extends({
+  return React.createElement("div", _extends({
     className: classNames(className, 'inline-alert', 'inline-alert-visible', "inline-alert-".concat(type))
-  }, rest), title ? /*#__PURE__*/React.createElement("strong", null, title) : null, /*#__PURE__*/React.createElement("div", null, children));
+  }, rest), title ? React.createElement("strong", null, title) : null, React.createElement("div", null, children));
 };
 
 export default InlineNotice;

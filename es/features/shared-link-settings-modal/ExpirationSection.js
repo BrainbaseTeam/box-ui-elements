@@ -26,26 +26,26 @@ var ExpirationSection = function ExpirationSection(_ref) {
       onCheckboxChange = _ref.onCheckboxChange,
       onExpirationDateChange = _ref.onExpirationDateChange;
   var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
-  var datepicker = /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(DatePicker, {
+  var datepicker = React.createElement("div", null, React.createElement(DatePicker, {
     displayFormat: displayFormat,
     error: error,
     hideLabel: true,
     inputProps: expirationInputProps,
     isDisabled: !canChangeExpiration,
     isRequired: true,
-    label: /*#__PURE__*/React.createElement(FormattedMessage, messages.expirationLabel),
+    label: React.createElement(FormattedMessage, messages.expirationLabel),
     minDate: tomorrow,
     name: "expiration",
     onChange: onExpirationDateChange,
     value: expirationDate
   }));
-  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement(Fieldset, {
-    className: "expiration-section",
-    title: /*#__PURE__*/React.createElement(FormattedMessage, messages.expirationTitle)
-  }, /*#__PURE__*/React.createElement(Checkbox, _extends({
+  return React.createElement("div", null, React.createElement("hr", null), React.createElement(Fieldset, {
+    className: "be expiration-section",
+    title: React.createElement(FormattedMessage, messages.expirationTitle)
+  }, React.createElement(Checkbox, _extends({
     isChecked: isExpirationEnabled,
     isDisabled: !canChangeExpiration,
-    label: /*#__PURE__*/React.createElement(FormattedMessage, messages.expirationLabel),
+    label: React.createElement(FormattedMessage, messages.expirationLabel),
     name: "isExpirationEnabled",
     onChange: onCheckboxChange,
     subsection: isExpirationEnabled ? datepicker : undefined

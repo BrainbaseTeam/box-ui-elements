@@ -25,7 +25,7 @@ var Footer = function Footer(_ref) {
 
   switch (errorCode) {
     case ERROR_CODE_UPLOAD_FILE_LIMIT:
-      message = /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.uploadErrorTooManyFiles, {
+      message = React.createElement(FormattedMessage, _extends({}, messages.uploadErrorTooManyFiles, {
         values: {
           fileLimit: fileLimit
         }
@@ -36,28 +36,28 @@ var Footer = function Footer(_ref) {
 
   }
 
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "bcu-footer"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "bcu-footer-left"
-  }, onClose ? /*#__PURE__*/React.createElement(Button, {
+  }, onClose ? React.createElement(Button, {
     isDisabled: hasFiles,
     onClick: onClose,
     type: "button"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.close)) : null), message && /*#__PURE__*/React.createElement("div", {
+  }, React.createElement(FormattedMessage, messages.close)) : null), message && React.createElement("div", {
     className: "bcu-footer-message"
-  }, message), /*#__PURE__*/React.createElement("div", {
+  }, message), React.createElement("div", {
     className: "bcu-footer-right"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     isDisabled: !hasFiles || isDone,
     onClick: onCancel,
     type: "button"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.cancel)), /*#__PURE__*/React.createElement(PrimaryButton, {
+  }, React.createElement(FormattedMessage, messages.cancel)), React.createElement(PrimaryButton, {
     isDisabled: !hasFiles,
     isLoading: isLoading,
     onClick: onUpload,
     type: "button"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.upload))));
+  }, React.createElement(FormattedMessage, messages.upload))));
 };
 
 export default Footer;

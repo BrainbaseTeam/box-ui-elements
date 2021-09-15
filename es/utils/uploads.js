@@ -8,6 +8,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
  * @author Box
  */
 import getProp from 'lodash/get';
+import Browser from './Browser';
 var DEFAULT_API_OPTIONS = {};
 /**
  * Returns true if file contains API options
@@ -205,6 +206,19 @@ function isDataTransferItemAFolder(itemData) {
   return entry.isDirectory;
 }
 /**
+ * Check if a dataTransfer item is a macOS "package file"
+ * @see https://en.wikipedia.org/wiki/Package_(macOS)
+ *
+ * @returns {boolean}
+ */
+
+
+function isDataTransferItemAPackage(itemData) {
+  var item = getDataTransferItem(itemData);
+  var isDirectory = isDataTransferItemAFolder(item);
+  return isDirectory && item.type === 'application/zip' && item.kind === 'file';
+}
+/**
  * Get file from FileSystemFileEntry
  *
  * @param {FileSystemFileEntry} entry
@@ -231,19 +245,19 @@ function getFileFromDataTransferItem(_x) {
   return _getFileFromDataTransferItem.apply(this, arguments);
 }
 /**
- * Generates file id based on file properties
+ * Get file from DataTransferItem or UploadDataTransferItemWithAPIOptions
+ * Uses `entry`'s `getAsFile` method for retrieving package information as a single file.
+ * @see https://en.wikipedia.org/wiki/Package_(macOS)
  *
- * When folderId or uploadInitTimestamp is missing from file options, file name is returned as file id.
- * Otherwise, fileName_folderId_uploadInitTimestamp is used as file id.
- *
- * @param {UploadFileWithAPIOptions | UploadFile} file
- * @param {string} rootFolderId
- * @returns {string}
+ * @param {UploadDataTransferItemWithAPIOptions | DataTransferItem} itemData
+ * @returns {?UploadFile | ?UploadFileWithAPIOptions | null}
  */
 
 
 function _getFileFromDataTransferItem() {
-  _getFileFromDataTransferItem = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(itemData) {
+  _getFileFromDataTransferItem = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee(itemData) {
     var item, entry, file;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -289,6 +303,37 @@ function _getFileFromDataTransferItem() {
   return _getFileFromDataTransferItem.apply(this, arguments);
 }
 
+function getPackageFileFromDataTransferItem(itemData) {
+  var item = getDataTransferItem(itemData);
+  var entry = getEntryFromDataTransferItem(item);
+
+  if (!entry) {
+    return null;
+  }
+
+  var itemFile = item.getAsFile();
+
+  if (doesDataTransferItemContainAPIOptions(itemData)) {
+    return {
+      file: itemFile,
+      options: getDataTransferItemAPIOptions(itemData)
+    };
+  }
+
+  return itemFile;
+}
+/**
+ * Generates file id based on file properties
+ *
+ * When folderId or uploadInitTimestamp is missing from file options, file name is returned as file id.
+ * Otherwise, fileName_folderId_uploadInitTimestamp is used as file id.
+ *
+ * @param {UploadFileWithAPIOptions | UploadFile} file
+ * @param {string} rootFolderId
+ * @returns {string}
+ */
+
+
 function getFileId(file, rootFolderId) {
   if (!doesFileContainAPIOptions(file)) {
     return file.name;
@@ -302,6 +347,9 @@ function getFileId(file, rootFolderId) {
 }
 /**
  * Generates item id based on item properties
+ *
+ * When item options including folderId or uploadInitTimestamp are missing, item name is returned as item id.
+ * Otherwise, item properties are used as item id.
  * E.g., folder1_0_123124124
  *
  * @param {DataTransferItem | UploadDataTransferItemWithAPIOptions} itemData
@@ -316,6 +364,10 @@ function getDataTransferItemId(itemData, rootFolderId) {
   var _getEntryFromDataTran = getEntryFromDataTransferItem(item),
       name = _getEntryFromDataTran.name;
 
+  if (!doesDataTransferItemContainAPIOptions(itemData)) {
+    return name;
+  }
+
   var _getDataTransferItemA = getDataTransferItemAPIOptions(itemData),
       _getDataTransferItemA2 = _getDataTransferItemA.folderId,
       folderId = _getDataTransferItemA2 === void 0 ? rootFolderId : _getDataTransferItemA2,
@@ -325,14 +377,20 @@ function getDataTransferItemId(itemData, rootFolderId) {
   return "".concat(name, "_").concat(folderId, "_").concat(uploadInitTimestamp);
 }
 /**
- * Multiput uploads require the use of crypto, which is only supported in secure contexts
+ * Multiput uploads require the use of crypto, which is only supported in secure contexts.
+ * Multiput uploads is not supported on mobile iOS Safari.
  */
 
 
 function isMultiputSupported() {
   var cryptoObj = window.crypto || window.msCrypto;
+
+  if (Browser.isMobileSafari()) {
+    return false;
+  }
+
   return window.location.protocol === 'https:' && cryptoObj && cryptoObj.subtle;
 }
 
-export { DEFAULT_API_OPTIONS, doesDataTransferItemContainAPIOptions, doesFileContainAPIOptions, getBoundedExpBackoffRetryDelay, getDataTransferItem, getDataTransferItemAPIOptions, getDataTransferItemId, getEntryFromDataTransferItem, getFile, getFileAPIOptions, getFileFromDataTransferItem, getFileFromEntry, getFileId, getFileLastModifiedAsISONoMSIfPossible, isDataTransferItemAFolder, isMultiputSupported, toISOStringNoMS, tryParseJson };
+export { DEFAULT_API_OPTIONS, doesDataTransferItemContainAPIOptions, doesFileContainAPIOptions, getBoundedExpBackoffRetryDelay, getDataTransferItem, getDataTransferItemAPIOptions, getDataTransferItemId, getEntryFromDataTransferItem, getFile, getFileAPIOptions, getFileFromDataTransferItem, getPackageFileFromDataTransferItem, getFileFromEntry, getFileId, getFileLastModifiedAsISONoMSIfPossible, isDataTransferItemAFolder, isDataTransferItemAPackage, isMultiputSupported, toISOStringNoMS, tryParseJson };
 //# sourceMappingURL=uploads.js.map

@@ -14,26 +14,24 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 import * as React from 'react';
 import classNames from 'classnames';
 import omit from 'lodash/omit';
+import debounce from 'lodash/debounce';
 import './SubmenuItem.scss';
+import Arrow16 from '../../icon/fill/Arrow16';
 var SUBMENU_LEFT_ALIGNED_CLASS = 'is-left-aligned';
 var SUBMENU_BOTTOM_ALIGNED_CLASS = 'is-bottom-aligned';
 
@@ -43,12 +41,14 @@ var SUBMENU_BOTTOM_ALIGNED_CLASS = 'is-bottom-aligned';
  * @NOTE: Nested submenus are NOT currently supported, switching
  * focus with arrow keys in the subsubmenu is not working properly.
  */
-var SubmenuItem = /*#__PURE__*/function (_React$Component) {
+var SubmenuItem =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(SubmenuItem, _React$Component);
 
-  var _super = _createSuper(SubmenuItem);
-
   function SubmenuItem() {
+    var _getPrototypeOf2;
+
     var _this;
 
     _classCallCheck(this, SubmenuItem);
@@ -57,7 +57,7 @@ var SubmenuItem = /*#__PURE__*/function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    _this = _super.call.apply(_super, [this].concat(args));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(SubmenuItem)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_this), "state", {
       isSubmenuOpen: false,
@@ -75,8 +75,7 @@ var SubmenuItem = /*#__PURE__*/function (_React$Component) {
           rightBoundaryElement = _this$props.rightBoundaryElement,
           bottomBoundaryElement = _this$props.bottomBoundaryElement;
 
-      var submenuElBounding = _this.submenuEl.getBoundingClientRect(); // $FlowFixMe checked this.submenuEl is set above
-
+      var submenuElBounding = _this.submenuEl.getBoundingClientRect();
 
       var submenuTriggerElBounding = _this.submenuTriggerEl.getBoundingClientRect();
 
@@ -109,8 +108,7 @@ var SubmenuItem = /*#__PURE__*/function (_React$Component) {
 
     _defineProperty(_assertThisInitialized(_this), "handleKeyDown", function (event) {
       switch (event.key) {
-        case ' ': // Spacebar
-
+        case ' ':
         case 'Enter':
         case 'ArrowRight':
           event.stopPropagation();
@@ -125,11 +123,11 @@ var SubmenuItem = /*#__PURE__*/function (_React$Component) {
       }
     });
 
-    _defineProperty(_assertThisInitialized(_this), "closeSubmenu", function () {
+    _defineProperty(_assertThisInitialized(_this), "closeSubmenu", debounce(function () {
       _this.setState({
         isSubmenuOpen: false
       });
-    });
+    }, 50));
 
     _defineProperty(_assertThisInitialized(_this), "closeSubmenuAndFocusTrigger", function (isKeyboardEvent) {
       _this.closeSubmenu();
@@ -140,6 +138,14 @@ var SubmenuItem = /*#__PURE__*/function (_React$Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "openSubmenu", function () {
+      _this.closeSubmenu.cancel();
+
+      var onOpen = _this.props.onOpen;
+
+      if (onOpen) {
+        onOpen();
+      }
+
       _this.setState({
         isSubmenuOpen: true,
         submenuFocusIndex: null
@@ -147,6 +153,12 @@ var SubmenuItem = /*#__PURE__*/function (_React$Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "openSubmenuAndFocus", function () {
+      var onOpen = _this.props.onOpen;
+
+      if (onOpen) {
+        onOpen();
+      }
+
       _this.setState({
         isSubmenuOpen: true,
         submenuFocusIndex: 0
@@ -178,7 +190,13 @@ var SubmenuItem = /*#__PURE__*/function (_React$Component) {
         throw new Error('SubmenuItem must have exactly two children, a trigger component and a <Menu>');
       }
 
-      var menuItemProps = _objectSpread(_objectSpread({}, omit(rest, ['bottomBoundaryElement', 'onClick', 'rightBoundaryElement', 'role', 'tabIndex'])), {}, {
+      var chevron = React.createElement(Arrow16, {
+        className: "menu-item-arrow",
+        width: 12,
+        height: 12
+      });
+
+      var menuItemProps = _objectSpread({}, omit(rest, ['bottomBoundaryElement', 'onClick', 'onOpen', 'rightBoundaryElement', 'role', 'tabIndex']), {
         'aria-disabled': isDisabled ? 'true' : undefined,
         'aria-expanded': isSubmenuOpen ? 'true' : 'false',
         'aria-haspopup': 'true',
@@ -205,7 +223,7 @@ var SubmenuItem = /*#__PURE__*/function (_React$Component) {
           _this2.submenuEl = ref;
         }
       };
-      return /*#__PURE__*/React.createElement("li", menuItemProps, submenuTriggerContent, /*#__PURE__*/React.cloneElement(submenu, submenuProps));
+      return React.createElement("li", menuItemProps, submenuTriggerContent, chevron, React.cloneElement(submenu, submenuProps));
     }
   }]);
 

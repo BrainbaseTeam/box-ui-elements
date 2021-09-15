@@ -19,9 +19,9 @@ var ItemListName = function ItemListName(_ref) {
   var linkProps = {
     className: "lnk ".concat(ITEM_LIST_NAME_CLASS),
     onClick: onClick,
-    children: [/*#__PURE__*/React.createElement("span", {
+    children: [React.createElement("span", {
       key: "name"
-    }, name), /*#__PURE__*/React.createElement(IconChevron, {
+    }, name), React.createElement(IconChevron, {
       key: "icon",
       color: isSelected ? '#447991' : '#333',
       direction: "right",
@@ -31,14 +31,14 @@ var ItemListName = function ItemListName(_ref) {
   };
 
   var renderLink = function renderLink() {
-    return linkRenderer ? linkRenderer(linkProps) : /*#__PURE__*/React.createElement(PlainButton, linkProps);
+    return linkRenderer ? linkRenderer(linkProps) : React.createElement(PlainButton, linkProps);
   };
 
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "item-list-name-container"
-  }, isFolder ? renderLink() : /*#__PURE__*/React.createElement("span", {
+  }, isFolder ? renderLink() : React.createElement("span", {
     className: ITEM_LIST_NAME_CLASS
-  }, name), !!label && /*#__PURE__*/React.createElement("span", {
+  }, name), !!label && React.createElement("span", {
     className: "item-list-name-label"
   }, label));
 };

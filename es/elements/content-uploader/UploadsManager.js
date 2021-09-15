@@ -6,8 +6,8 @@ import React from 'react';
 import classNames from 'classnames';
 import ItemList from './ItemList';
 import OverallUploadsProgressBar from './OverallUploadsProgressBar';
-import './UploadsManager.scss';
 import { STATUS_ERROR } from '../../constants';
+import './UploadsManager.scss';
 
 var UploadsManager = function UploadsManager(_ref) {
   var items = _ref.items,
@@ -53,14 +53,14 @@ var UploadsManager = function UploadsManager(_ref) {
   var percent = totalUploaded / totalSize * 100;
   var isResumeVisible = isResumableUploadsEnabled && numFailedUploads > 0;
   var hasMultipleFailedUploads = numFailedUploads > 1;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     "data-resin-component": "uploadsmanager",
     "data-resin-feature": "uploads",
     className: classNames('be bcu-uploads-manager-container', {
       'bcu-is-expanded': isExpanded,
       'bcu-is-visible': isVisible
     })
-  }, /*#__PURE__*/React.createElement(OverallUploadsProgressBar, {
+  }, React.createElement(OverallUploadsProgressBar, {
     isDragging: isDragging,
     isExpanded: isExpanded,
     isResumeVisible: isResumeVisible,
@@ -71,9 +71,9 @@ var UploadsManager = function UploadsManager(_ref) {
     onUploadsManagerActionClick: onUploadsManagerActionClick,
     percent: percent,
     view: view
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "bcu-uploads-manager-item-list"
-  }, /*#__PURE__*/React.createElement(ItemList, {
+  }, React.createElement(ItemList, {
     isResumableUploadsEnabled: isResumableUploadsEnabled,
     items: items,
     onClick: onItemActionClick,

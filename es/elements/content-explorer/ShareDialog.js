@@ -44,7 +44,7 @@ var ShareDialog = function ShareDialog(_ref) {
   /* eslint-disable jsx-a11y/label-has-for */
 
 
-  return /*#__PURE__*/React.createElement(Modal, {
+  return React.createElement(Modal, {
     appElement: appElement,
     className: CLASS_MODAL_CONTENT,
     contentLabel: intl.formatMessage(messages.shareDialogLabel),
@@ -55,34 +55,36 @@ var ShareDialog = function ShareDialog(_ref) {
       return parentElement;
     },
     portalClassName: "".concat(CLASS_MODAL, " be-modal-share")
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "be-modal-content"
-  }, /*#__PURE__*/React.createElement("label", null, /*#__PURE__*/React.createElement(FormattedMessage, _extends({
+  }, React.createElement("label", null, React.createElement(FormattedMessage, _extends({
     tagName: "div"
-  }, messages.shareDialogText)), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("input", {
+  }, messages.shareDialogText))), React.createElement("div", {
+    className: "be-modal-input-group"
+  }, React.createElement("input", {
     ref: function ref(input) {
       textInput = input;
     },
     onChange: noop,
     type: "text",
     value: url
-  }), /*#__PURE__*/React.createElement(PrimaryButton, {
+  }), React.createElement(PrimaryButton, {
     autoFocus: true,
     className: "be-modal-button-copy",
     onClick: copy,
     type: "button"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.copy))))), /*#__PURE__*/React.createElement("div", {
+  }, React.createElement(FormattedMessage, messages.copy)))), React.createElement("div", {
     className: "be-modal-btns"
-  }, /*#__PURE__*/React.createElement(ShareAccessSelect, {
+  }, React.createElement(ShareAccessSelect, {
     canSetShareAccess: canSetShareAccess,
     className: "bce-shared-access-select",
     item: item,
     onChange: onShareAccessChange
-  }), /*#__PURE__*/React.createElement(Button, {
+  }), React.createElement(Button, {
     isLoading: isLoading,
     onClick: onCancel,
     type: "button"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.close))));
+  }, React.createElement(FormattedMessage, messages.close))));
 };
 
 export default injectIntl(ShareDialog);

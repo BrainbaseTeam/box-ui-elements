@@ -15,27 +15,27 @@ var AccessStatsItemsList = function AccessStatsItemsList(_ref) {
       previewCount = _ref.previewCount,
       previewStatButtonProps = _ref.previewStatButtonProps,
       viewStatButtonProps = _ref.viewStatButtonProps;
-  return /*#__PURE__*/React.createElement("ul", {
+  return React.createElement("ul", {
     className: "access-stats-list"
-  }, /*#__PURE__*/React.createElement(AccessStatsItem, {
+  }, React.createElement(AccessStatsItem, {
     count: previewCount,
     hasCountOverflowed: hasCountOverflowed,
     openAccessStatsModal: openAccessStatsModal,
     statButtonProps: isBoxNote ? viewStatButtonProps : previewStatButtonProps,
     type: isBoxNote ? 'view' : 'preview'
-  }), /*#__PURE__*/React.createElement(AccessStatsItem, {
+  }), React.createElement(AccessStatsItem, {
     count: editCount,
     hasCountOverflowed: hasCountOverflowed,
     openAccessStatsModal: openAccessStatsModal,
     statButtonProps: editStatButtonProps,
     type: "edit"
-  }), /*#__PURE__*/React.createElement(AccessStatsItem, {
+  }), React.createElement(AccessStatsItem, {
     count: commentCount,
     hasCountOverflowed: hasCountOverflowed,
     openAccessStatsModal: openAccessStatsModal,
     statButtonProps: commentStatButtonProps,
     type: "comment"
-  }), !isBoxNote && /*#__PURE__*/React.createElement(AccessStatsItem, {
+  }), !isBoxNote && React.createElement(AccessStatsItem, {
     count: downloadCount,
     hasCountOverflowed: hasCountOverflowed,
     openAccessStatsModal: openAccessStatsModal,

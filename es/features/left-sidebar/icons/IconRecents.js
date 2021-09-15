@@ -13,14 +13,14 @@ var IconRecents = function IconRecents(_ref) {
       width = _ref$width === void 0 ? 14 : _ref$width,
       _ref$selected = _ref.selected,
       selected = _ref$selected === void 0 ? false : _ref$selected;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: classNames(iconName, className, {
       'is-selected': selected
     }),
     title: title,
     viewBox: "0 0 14 14",
     width: width
-  }, /*#__PURE__*/React.createElement("path", {
+  }, React.createElement("path", {
     className: "fill-color",
     color: color,
     d: "M7 7V2.5c0-.3-.2-.5-.5-.5s-.5.2-.5.5v5c0 .3.2.5.5.5h3c.3 0 .5-.2.5-.5S9.8 7 9.5 7H7zm0 7c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7z",

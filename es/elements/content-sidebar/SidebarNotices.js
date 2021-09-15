@@ -25,15 +25,17 @@ var SidebarNotices = function SidebarNotices(_ref) {
     return null;
   }
 
-  return /*#__PURE__*/React.createElement(React.Fragment, null, !!itemExpiration && /*#__PURE__*/React.createElement(ItemExpirationNotice, {
-    expiration: /*#__PURE__*/React.createElement(DateField, {
+  return React.createElement(React.Fragment, null, !!itemExpiration && React.createElement(ItemExpirationNotice, {
+    expiration: React.createElement(DateField // $FlowFixMe
+    , {
       date: addTime(new Date(itemExpiration), ONE_MINUTE_IN_MS),
       dateFormat: NOTICE_DATE_FORMAT,
       relative: false
     }),
     itemType: "file"
-  }), !!sharedLinkExpiration && /*#__PURE__*/React.createElement(SharedLinkExpirationNotice, {
-    expiration: /*#__PURE__*/React.createElement(DateField, {
+  }), !!sharedLinkExpiration && React.createElement(SharedLinkExpirationNotice, {
+    expiration: React.createElement(DateField // $FlowFixMe
+    , {
       date: addTime(new Date(sharedLinkExpiration), ONE_MINUTE_IN_MS),
       dateFormat: NOTICE_DATE_FORMAT,
       relative: false

@@ -10,19 +10,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -33,10 +29,11 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
-import { EditorState, Modifier } from 'draft-js';
+import { EditorState } from 'draft-js';
 import DatalistItem from '../../datalist-item';
 import DraftJSEditor from '../../draft-js-editor';
 import SelectorDropdown from '../../selector-dropdown';
+import { addMention as _addMention, defaultMentionTriggers, getActiveMentionForEditorState as _getActiveMentionForEditorState } from './utils';
 import messages from './messages';
 import './MentionSelector.scss';
 
@@ -45,33 +42,34 @@ var DefaultSelectorRow = function DefaultSelectorRow(_ref) {
       item = _ref$item === void 0 ? {} : _ref$item,
       rest = _objectWithoutProperties(_ref, ["item"]);
 
-  return /*#__PURE__*/React.createElement(DatalistItem, rest, item.name, " ", /*#__PURE__*/React.createElement("span", {
+  return React.createElement(DatalistItem, rest, item.name, " ", React.createElement("span", {
     className: "dropdown-secondary-text"
   }, item.email));
 };
 
 var DefaultStartMentionMessage = function DefaultStartMentionMessage() {
-  return /*#__PURE__*/React.createElement(FormattedMessage, messages.startMention);
+  return React.createElement(FormattedMessage, messages.startMention);
 };
 
 var MentionStartState = function MentionStartState(_ref2) {
   var message = _ref2.message;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
+    role: "alert",
     className: "mention-start-state"
   }, message);
 };
 
-var DraftJSMentionSelector = /*#__PURE__*/function (_React$Component) {
+var DraftJSMentionSelector =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(DraftJSMentionSelector, _React$Component);
-
-  var _super = _createSuper(DraftJSMentionSelector);
 
   function DraftJSMentionSelector(props) {
     var _this;
 
     _classCallCheck(this, DraftJSMentionSelector);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(DraftJSMentionSelector).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "handleMention", function () {
       var onMention = _this.props.onMention;
@@ -167,7 +165,7 @@ var DraftJSMentionSelector = /*#__PURE__*/function (_React$Component) {
       var currentContacts = this.props.contacts;
       var activeMention = this.state.activeMention;
 
-      if (activeMention !== null && !currentContacts.length && prevContacts !== currentContacts) {
+      if (activeMention !== null && !currentContacts.length && prevContacts.length !== currentContacts.length) {
         // if empty set of contacts get passed in, set active mention to null
         this.setState({
           activeMention: null
@@ -185,36 +183,7 @@ var DraftJSMentionSelector = /*#__PURE__*/function (_React$Component) {
     key: "getActiveMentionForEditorState",
     value: function getActiveMentionForEditorState(editorState) {
       var mentionPattern = this.state.mentionPattern;
-      var contentState = editorState.getCurrentContent();
-      var selectionState = editorState.getSelection();
-      var startKey = selectionState.getStartKey();
-      var activeBlock = contentState.getBlockForKey(startKey);
-      var cursorPosition = selectionState.getStartOffset();
-      var result = null; // Break the active block into entity ranges.
-
-      activeBlock.findEntityRanges(function (character) {
-        return character.getEntity() === null;
-      }, function (start, end) {
-        // Find the active range (is the cursor inside this range?)
-        if (start <= cursorPosition && cursorPosition <= end) {
-          // Determine if the active range contains a mention.
-          var activeRangeText = activeBlock.getText().substr(start, cursorPosition - start);
-          var mentionMatch = activeRangeText.match(mentionPattern);
-
-          if (mentionMatch) {
-            result = {
-              blockID: startKey,
-              mentionString: mentionMatch[2],
-              mentionTrigger: mentionMatch[1],
-              start: start + mentionMatch.index,
-              end: cursorPosition
-            };
-          }
-        }
-
-        return null;
-      });
-      return result;
+      return _getActiveMentionForEditorState(editorState, mentionPattern);
     }
     /**
      * Called on each keypress when a mention is being composed
@@ -234,31 +203,8 @@ var DraftJSMentionSelector = /*#__PURE__*/function (_React$Component) {
       var activeMention = this.state.activeMention;
       var editorState = this.props.editorState;
 
-      var _ref3 = activeMention || {},
-          start = _ref3.start,
-          end = _ref3.end;
+      var editorStateWithLink = _addMention(editorState, activeMention, mention);
 
-      var id = mention.id,
-          name = mention.name;
-      var contentState = editorState.getCurrentContent();
-      var selectionState = editorState.getSelection();
-      var preInsertionSelectionState = selectionState.merge({
-        anchorOffset: start,
-        focusOffset: end
-      });
-      var textToInsert = "@".concat(name);
-      var contentStateWithEntity = contentState.createEntity('MENTION', 'IMMUTABLE', {
-        id: id
-      });
-      var entityKey = contentStateWithEntity.getLastCreatedEntityKey();
-      var contentStateWithLink = Modifier.replaceText(contentState, preInsertionSelectionState, textToInsert, null, entityKey);
-      var spaceOffset = preInsertionSelectionState.getStartOffset() + textToInsert.length;
-      var selectionStateForAddingSpace = preInsertionSelectionState.merge({
-        anchorOffset: spaceOffset,
-        focusOffset: spaceOffset
-      });
-      var contentStateWithLinkAndExtraSpace = Modifier.insertText(contentStateWithLink, selectionStateForAddingSpace, ' ');
-      var editorStateWithLink = EditorState.push(editorState, contentStateWithLinkAndExtraSpace, 'change-block-type');
       this.setState({
         activeMention: null
       }, function () {
@@ -275,12 +221,14 @@ var DraftJSMentionSelector = /*#__PURE__*/function (_React$Component) {
       var _this$props = this.props,
           className = _this$props.className,
           contacts = _this$props.contacts,
+          contactsLoaded = _this$props.contactsLoaded,
           editorState = _this$props.editorState,
           error = _this$props.error,
           hideLabel = _this$props.hideLabel,
           isDisabled = _this$props.isDisabled,
           isRequired = _this$props.isRequired,
           label = _this$props.label,
+          description = _this$props.description,
           onReturn = _this$props.onReturn,
           placeholder = _this$props.placeholder,
           selectorRow = _this$props.selectorRow,
@@ -291,11 +239,16 @@ var DraftJSMentionSelector = /*#__PURE__*/function (_React$Component) {
           isFocused = _this$state.isFocused;
       var classes = classNames('mention-selector-wrapper', className);
       var showMentionStartState = !!(onMention && activeMention && !activeMention.mentionString && isFocused);
-      return /*#__PURE__*/React.createElement("div", {
+      var usersFoundMessage = this.shouldDisplayMentionLookup() ? _objectSpread({}, messages.usersFound, {
+        values: {
+          usersCount: contacts.length
+        }
+      }) : messages.noUsersFound;
+      return React.createElement("div", {
         className: classes
-      }, /*#__PURE__*/React.createElement(SelectorDropdown, {
+      }, React.createElement(SelectorDropdown, {
         onSelect: this.handleContactSelected,
-        selector: /*#__PURE__*/React.createElement(DraftJSEditor, {
+        selector: React.createElement(DraftJSEditor, {
           editorState: editorState,
           error: error,
           hideLabel: hideLabel,
@@ -303,6 +256,7 @@ var DraftJSMentionSelector = /*#__PURE__*/function (_React$Component) {
           isFocused: isFocused,
           isRequired: isRequired,
           label: label,
+          description: description,
           onBlur: this.handleBlur,
           onFocus: this.handleFocus,
           onChange: this.handleChange,
@@ -310,12 +264,16 @@ var DraftJSMentionSelector = /*#__PURE__*/function (_React$Component) {
           placeholder: placeholder
         })
       }, this.shouldDisplayMentionLookup() ? contacts.map(function (contact) {
-        return /*#__PURE__*/React.cloneElement(selectorRow, _objectSpread(_objectSpread(_objectSpread({}, selectorRow.props), contact), {}, {
+        return React.cloneElement(selectorRow, _objectSpread({}, selectorRow.props, {}, contact, {
           key: contact.id
         }));
-      }) : []), showMentionStartState ? /*#__PURE__*/React.createElement(MentionStartState, {
+      }) : []), showMentionStartState ? React.createElement(MentionStartState, {
         message: startMentionMessage
-      }) : null);
+      }) : null, contactsLoaded && React.createElement("span", {
+        className: "accessibility-hidden",
+        "data-testid": "accessibility-alert",
+        role: "alert"
+      }, React.createElement(FormattedMessage, usersFoundMessage)));
     }
   }]);
 
@@ -327,9 +285,9 @@ _defineProperty(DraftJSMentionSelector, "defaultProps", {
   contacts: [],
   isDisabled: false,
   isRequired: false,
-  mentionTriggers: ['@', '＠', '﹫'],
-  selectorRow: /*#__PURE__*/React.createElement(DefaultSelectorRow, null),
-  startMentionMessage: /*#__PURE__*/React.createElement(DefaultStartMentionMessage, null)
+  mentionTriggers: defaultMentionTriggers,
+  selectorRow: React.createElement(DefaultSelectorRow, null),
+  startMentionMessage: React.createElement(DefaultStartMentionMessage, null)
 });
 
 export default DraftJSMentionSelector;

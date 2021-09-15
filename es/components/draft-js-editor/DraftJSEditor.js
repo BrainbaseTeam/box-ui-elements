@@ -8,36 +8,42 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
+import uniqueId from 'lodash/uniqueId';
 import { Editor } from 'draft-js';
 import 'draft-js/dist/Draft.css';
-import Label from '../label';
 import Tooltip from '../tooltip';
+import commonMessages from '../../common/messages';
 import './DraftJSEditor.scss';
 
-var DraftJSEditor = /*#__PURE__*/function (_React$Component) {
+var OptionalFormattedMessage = function OptionalFormattedMessage() {
+  return React.createElement("span", {
+    className: "bdl-Label-optional"
+  }, "(", React.createElement(FormattedMessage, commonMessages.optional), ")");
+};
+
+var DraftJSEditor =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(DraftJSEditor, _React$Component);
 
-  var _super = _createSuper(DraftJSEditor);
-
   function DraftJSEditor() {
+    var _getPrototypeOf2;
+
     var _this;
 
     _classCallCheck(this, DraftJSEditor);
@@ -46,7 +52,7 @@ var DraftJSEditor = /*#__PURE__*/function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    _this = _super.call.apply(_super, [this].concat(args));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(DraftJSEditor)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_this), "handleChange", function (editorState) {
       var onChange = _this.props.onChange;
@@ -74,6 +80,10 @@ var DraftJSEditor = /*#__PURE__*/function (_React$Component) {
       return 'not-handled';
     });
 
+    _defineProperty(_assertThisInitialized(_this), "labelID", uniqueId('label'));
+
+    _defineProperty(_assertThisInitialized(_this), "descriptionID", uniqueId('description'));
+
     return _this;
   }
 
@@ -88,13 +98,14 @@ var DraftJSEditor = /*#__PURE__*/function (_React$Component) {
           isDisabled = _this$props2.isDisabled,
           isRequired = _this$props2.isRequired,
           label = _this$props2.label,
+          description = _this$props2.description,
           onFocus = _this$props2.onFocus,
           placeholder = _this$props2.placeholder;
       var handleBlur = this.handleBlur,
           handleChange = this.handleChange;
       var classes = classNames({
         'draft-js-editor': true,
-        'is-disabled': isDisabled,
+        'is-disabled bdl-is-disabled': isDisabled,
         'show-error': !!error
       });
       var a11yProps = {};
@@ -105,22 +116,29 @@ var DraftJSEditor = /*#__PURE__*/function (_React$Component) {
           ariaAutoComplete: inputProps['aria-autocomplete'],
           ariaExpanded: inputProps['aria-expanded'],
           ariaOwneeID: inputProps['aria-owns'],
-          role: inputProps.role
+          ariaMultiline: true,
+          role: 'textbox'
         };
       }
 
-      return /*#__PURE__*/React.createElement("div", {
+      return React.createElement("div", {
         className: classes
-      }, /*#__PURE__*/React.createElement(Label, {
-        hideLabel: hideLabel,
-        showOptionalText: !isRequired,
-        text: label
-      }, /*#__PURE__*/React.createElement(Tooltip, {
+      }, React.createElement("span", {
+        className: classNames('bdl-Label', {
+          'accessibility-hidden': hideLabel
+        }),
+        id: this.labelID
+      }, label, !isRequired && React.createElement(OptionalFormattedMessage, null)), React.createElement("span", {
+        className: "accessibility-hidden screenreader-description",
+        id: this.descriptionID
+      }, description), React.createElement(Tooltip, {
         isShown: !!error,
         position: "bottom-left",
         text: error ? error.message : '',
         theme: "error"
-      }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Editor, _extends({}, a11yProps, {
+      }, React.createElement("div", null, React.createElement(Editor, _extends({}, a11yProps, {
+        ariaLabelledBy: this.labelID,
+        ariaDescribedBy: this.descriptionID,
         editorState: editorState,
         handleReturn: this.handleReturn,
         onBlur: handleBlur,
@@ -129,7 +147,7 @@ var DraftJSEditor = /*#__PURE__*/function (_React$Component) {
         placeholder: placeholder,
         readOnly: isDisabled,
         stripPastedStyles: true
-      }))))));
+      })))));
     }
   }]);
 

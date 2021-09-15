@@ -41,7 +41,7 @@ var Param = function Param(_ref) {
         return '';
       }
 
-      if ( /*#__PURE__*/React.isValidElement(value)) {
+      if (React.isValidElement(value)) {
         return value;
       }
 

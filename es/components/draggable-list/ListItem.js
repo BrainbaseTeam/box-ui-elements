@@ -7,14 +7,14 @@ var ListItem = function ListItem(_ref) {
   var children = _ref.children,
       draggableProvided = _ref.draggableProvided,
       isDraggableViaHandle = _ref.isDraggableViaHandle;
-  return /*#__PURE__*/React.createElement("div", _extends({
+  return React.createElement("div", _extends({
     ref: draggableProvided.innerRef,
     className: "draggable-list"
-  }, draggableProvided.draggableProps, isDraggableViaHandle ? {} : draggableProvided.dragHandleProps), /*#__PURE__*/React.createElement("div", {
+  }, draggableProvided.draggableProps, isDraggableViaHandle ? {} : draggableProvided.dragHandleProps), React.createElement("div", {
     className: "draggable-list-content"
-  }, children), isDraggableViaHandle && /*#__PURE__*/React.createElement("div", _extends({
+  }, children), isDraggableViaHandle && React.createElement("div", _extends({
     className: "draggable-list-handle"
-  }, draggableProvided.dragHandleProps), /*#__PURE__*/React.createElement(IconDrag, null)));
+  }, draggableProvided.dragHandleProps), React.createElement(IconDrag, null)));
 };
 
 export default ListItem;

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import Button from '../../../components/button';
 import { ContentExplorerModePropType } from '../prop-types';
 import ContentExplorerModes from '../modes';
@@ -15,18 +15,18 @@ var ContentExplorerNewFolderButton = function ContentExplorerNewFolderButton(_re
       _ref$isCreateNewFolde = _ref.isCreateNewFolderAllowed,
       isCreateNewFolderAllowed = _ref$isCreateNewFolde === void 0 ? true : _ref$isCreateNewFolde;
   var doesModeAllowCreateNewFolder = contentExplorerMode === ContentExplorerModes.SELECT_FOLDER || contentExplorerMode === ContentExplorerModes.MOVE_COPY || contentExplorerMode === ContentExplorerModes.MULTI_SELECT;
-  return doesModeAllowCreateNewFolder ? /*#__PURE__*/React.createElement(Button, {
+  return doesModeAllowCreateNewFolder ? React.createElement(Button, {
     className: "content-explorer-new-folder-button",
     type: "button",
     onClick: onClick,
     isDisabled: isDisabled,
     title: !isCreateNewFolderAllowed ? intl.formatMessage(messages.newFolderForbidden) : ''
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.newFolder)) : null;
+  }, React.createElement(FormattedMessage, messages.newFolder)) : null;
 };
 
 ContentExplorerNewFolderButton.propTypes = {
   contentExplorerMode: ContentExplorerModePropType.isRequired,
-  intl: intlShape.isRequired,
+  intl: PropTypes.any,
   onClick: PropTypes.func,
   isDisabled: PropTypes.bool,
   isCreateNewFolderAllowed: PropTypes.bool

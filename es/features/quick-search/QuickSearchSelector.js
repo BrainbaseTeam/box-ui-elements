@@ -4,7 +4,6 @@ function _objectWithoutProperties(source, excluded) { if (source == null) return
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
-import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import LoadingIndicator from '../../components/loading-indicator';
@@ -21,9 +20,9 @@ var QuickSearchSelector = function QuickSearchSelector(_ref) {
       placeholder = _ref.placeholder,
       rest = _objectWithoutProperties(_ref, ["className", "inputProps", "inputRef", "isLoading", "onInput", "placeholder"]);
 
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "quick-search-selector"
-  }, /*#__PURE__*/React.createElement("input", _extends({}, rest, inputProps, {
+  }, React.createElement("input", _extends({}, rest, inputProps, {
     ref: inputRef,
     "aria-label": placeholder,
     autoComplete: "off",
@@ -31,19 +30,11 @@ var QuickSearchSelector = function QuickSearchSelector(_ref) {
     onInput: onInput,
     placeholder: placeholder,
     type: "text"
-  })), isLoading && /*#__PURE__*/React.createElement(LoadingIndicator, {
+  })), isLoading && React.createElement(LoadingIndicator, {
     className: "loading-indicator"
   }));
 };
 
 QuickSearchSelector.displayName = 'QuickSearchSelector';
-QuickSearchSelector.propTypes = {
-  className: PropTypes.string,
-  inputProps: PropTypes.object,
-  inputRef: PropTypes.func,
-  isLoading: PropTypes.bool,
-  onInput: PropTypes.func.isRequired,
-  placeholder: PropTypes.string.isRequired
-};
 export default QuickSearchSelector;
 //# sourceMappingURL=QuickSearchSelector.js.map

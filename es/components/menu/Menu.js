@@ -10,19 +10,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -30,26 +26,33 @@ import * as React from 'react';
 import omit from 'lodash/omit';
 import classNames from 'classnames';
 import './Menu.scss';
+/**
+ * The selectors are used to identify the menu item that is selected. We need to eventually
+ * rewrite this logic as there seem to be strong coupling between the selector and MenuItem
+ * that we want to decouple. The span is here to allow Menu to recognize MenuItem even if it is
+ * wrapped by a span coming from a tooltip.
+ */
+
 var MENU_ITEM_SELECTOR = '.menu-item:not([aria-disabled])';
-var TOP_LEVEL_MENU_ITEM_SELECTOR = "ul:not(.submenu) > ".concat(MENU_ITEM_SELECTOR, ", ul:not(.submenu) > li > ").concat(MENU_ITEM_SELECTOR);
-var SUBMENU_ITEM_SELECTOR = "ul.submenu > ".concat(MENU_ITEM_SELECTOR, ", ul.submenu > li > ").concat(MENU_ITEM_SELECTOR);
+var TOP_LEVEL_MENU_ITEM_SELECTOR = "ul:not(.submenu) > ".concat(MENU_ITEM_SELECTOR, ", ul:not(.submenu) > li > ").concat(MENU_ITEM_SELECTOR, ", ul:not(.submenu) > span > ").concat(MENU_ITEM_SELECTOR);
+var SUBMENU_ITEM_SELECTOR = "ul.submenu > ".concat(MENU_ITEM_SELECTOR, ", ul.submenu > li > ").concat(MENU_ITEM_SELECTOR, ", ul.submenu > span > ").concat(MENU_ITEM_SELECTOR);
 
 function stopPropagationAndPreventDefault(event) {
   event.stopPropagation();
   event.preventDefault();
 }
 
-var Menu = /*#__PURE__*/function (_React$Component) {
+var Menu =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(Menu, _React$Component);
-
-  var _super = _createSuper(Menu);
 
   function Menu(_props) {
     var _this;
 
     _classCallCheck(this, Menu);
 
-    _this = _super.call(this, _props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Menu).call(this, _props));
 
     _defineProperty(_assertThisInitialized(_this), "setInitialFocusIndex", function () {
       var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _this.props;
@@ -77,8 +80,10 @@ var Menu = /*#__PURE__*/function (_React$Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "setMenuItemEls", function () {
-      var isSubmenu = _this.props.isSubmenu;
-      var selector = isSubmenu ? SUBMENU_ITEM_SELECTOR : TOP_LEVEL_MENU_ITEM_SELECTOR; // Keep track of all the valid menu items that were rendered (querySelector since we don't want to pass ref functions to every single child)
+      var _this$props = _this.props,
+          isSubmenu = _this$props.isSubmenu,
+          menuItemSelector = _this$props.menuItemSelector;
+      var selector = menuItemSelector || (isSubmenu ? SUBMENU_ITEM_SELECTOR : TOP_LEVEL_MENU_ITEM_SELECTOR); // Keep track of all the valid menu items that were rendered (querySelector since we don't want to pass ref functions to every single child)
 
       _this.menuItemEls = _this.menuEl ? [].slice.call(_this.menuEl.querySelectorAll(selector)) : [];
     });
@@ -156,9 +161,9 @@ var Menu = /*#__PURE__*/function (_React$Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "handleKeyDown", function (event) {
-      var _this$props = _this.props,
-          isSubmenu = _this$props.isSubmenu,
-          initialFocusIndex = _this$props.initialFocusIndex;
+      var _this$props2 = _this.props,
+          isSubmenu = _this$props2.isSubmenu,
+          initialFocusIndex = _this$props2.initialFocusIndex;
 
       switch (event.key) {
         case 'ArrowDown':
@@ -220,8 +225,7 @@ var Menu = /*#__PURE__*/function (_React$Component) {
 
           break;
 
-        case ' ': // Spacebar
-
+        case ' ':
         case 'Enter':
           stopPropagationAndPreventDefault(event);
 
@@ -255,10 +259,10 @@ var Menu = /*#__PURE__*/function (_React$Component) {
     value: function componentDidUpdate(_ref2) {
       var prevIsHidden = _ref2.isHidden,
           prevChildren = _ref2.children;
-      var _this$props2 = this.props,
-          children = _this$props2.children,
-          isHidden = _this$props2.isHidden,
-          isSubmenu = _this$props2.isSubmenu;
+      var _this$props3 = this.props,
+          children = _this$props3.children,
+          isHidden = _this$props3.isHidden,
+          isSubmenu = _this$props3.isSubmenu;
 
       if (isSubmenu && prevIsHidden && !isHidden) {
         // If updating submenu, use the current props instead of previous props.
@@ -282,15 +286,15 @@ var Menu = /*#__PURE__*/function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      var _this$props3 = this.props,
-          children = _this$props3.children,
-          className = _this$props3.className,
-          isHidden = _this$props3.isHidden,
-          setRef = _this$props3.setRef,
-          shouldOutlineFocus = _this$props3.shouldOutlineFocus,
-          rest = _objectWithoutProperties(_this$props3, ["children", "className", "isHidden", "setRef", "shouldOutlineFocus"]);
+      var _this$props4 = this.props,
+          children = _this$props4.children,
+          className = _this$props4.className,
+          isHidden = _this$props4.isHidden,
+          setRef = _this$props4.setRef,
+          shouldOutlineFocus = _this$props4.shouldOutlineFocus,
+          rest = _objectWithoutProperties(_this$props4, ["children", "className", "isHidden", "setRef", "shouldOutlineFocus"]);
 
-      var menuProps = omit(rest, ['onClose', 'initialFocusIndex', 'isSubmenu']);
+      var menuProps = omit(rest, ['onClose', 'initialFocusIndex', 'isSubmenu', 'menuItemSelector']);
       menuProps.className = classNames('aria-menu', className, {
         'is-hidden': isHidden,
         'should-outline-focus': shouldOutlineFocus
@@ -304,11 +308,14 @@ var Menu = /*#__PURE__*/function (_React$Component) {
         }
       };
 
-      menuProps.role = 'menu';
+      if (menuProps.role === undefined) {
+        menuProps.role = 'menu';
+      }
+
       menuProps.tabIndex = -1;
       menuProps.onClick = this.handleClick;
       menuProps.onKeyDown = this.handleKeyDown;
-      return /*#__PURE__*/React.createElement("ul", menuProps, children);
+      return React.createElement("ul", menuProps, children);
     }
   }]);
 

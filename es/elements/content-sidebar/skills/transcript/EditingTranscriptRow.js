@@ -19,27 +19,27 @@ var EditingTranscriptRow = function EditingTranscriptRow(_ref) {
       onSave = _ref.onSave,
       onCancel = _ref.onCancel,
       onChange = _ref.onChange;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "be-transcript-row be-transcript-editing-row"
-  }, time && /*#__PURE__*/React.createElement("div", {
+  }, time && React.createElement("div", {
     className: "be-transcript-time"
-  }, time), /*#__PURE__*/React.createElement("div", {
+  }, time), React.createElement("div", {
     className: "be-transcript-text"
-  }, /*#__PURE__*/React.createElement(TextareaAutosize, {
+  }, React.createElement(TextareaAutosize, {
     maxRows: 10,
     onChange: onChange,
     value: text
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "be-transcript-buttons"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     "data-resin-target": SKILLS_TARGETS.TRANSCRIPTS.EDIT_CANCEL,
     onClick: onCancel,
     type: "button"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.cancel)), /*#__PURE__*/React.createElement(PrimaryButton, {
+  }, React.createElement(FormattedMessage, messages.cancel)), React.createElement(PrimaryButton, {
     "data-resin-target": SKILLS_TARGETS.TRANSCRIPTS.EDIT_SAVE,
     onClick: onSave,
     type: "button"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.save)))));
+  }, React.createElement(FormattedMessage, messages.save)))));
 };
 
 export default EditingTranscriptRow;

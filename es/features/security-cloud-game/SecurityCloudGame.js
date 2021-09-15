@@ -6,19 +6,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -32,17 +28,17 @@ import DropCloud from './DropCloud';
 import messages from './messages';
 import './SecurityCloudGame.scss';
 
-var SecurityCloudGame = /*#__PURE__*/function (_Component) {
+var SecurityCloudGame =
+/*#__PURE__*/
+function (_Component) {
   _inherits(SecurityCloudGame, _Component);
-
-  var _super = _createSuper(SecurityCloudGame);
 
   function SecurityCloudGame(props) {
     var _this;
 
     _classCallCheck(this, SecurityCloudGame);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(SecurityCloudGame).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "onDragStop", function () {
       var onValidDrop = _this.props.onValidDrop;
@@ -208,7 +204,7 @@ var SecurityCloudGame = /*#__PURE__*/function (_Component) {
       if (dropCloudPosition && !isValidDrop) {
         var cloudSize = this.props.cloudSize; // return the drop region with a DragCloud and DropCloud by default
 
-        return /*#__PURE__*/React.createElement(DropCloud, {
+        return React.createElement(DropCloud, {
           className: this.state.isOverlap ? 'is-over' : '',
           cloudSize: cloudSize,
           position: dropCloudPosition
@@ -230,12 +226,12 @@ var SecurityCloudGame = /*#__PURE__*/function (_Component) {
           dragCloudPosition = _this$state2.dragCloudPosition;
 
       if (dragCloudPosition) {
-        return /*#__PURE__*/React.createElement(Draggable, {
+        return React.createElement(Draggable, {
           bounds: "parent",
           disabled: isValidDrop,
           onDrag: this.onDrag,
           onStop: this.onDragStop
-        }, /*#__PURE__*/React.createElement(DragCloud, {
+        }, React.createElement(DragCloud, {
           cloudSize: this.props.cloudSize,
           position: this.state.dragCloudPosition
         }));
@@ -252,10 +248,10 @@ var SecurityCloudGame = /*#__PURE__*/function (_Component) {
     key: "renderMessage",
     value: function renderMessage() {
       if (this.state.isValidDrop) {
-        return /*#__PURE__*/React.createElement(FormattedMessage, messages.success);
+        return React.createElement(FormattedMessage, messages.success);
       }
 
-      return /*#__PURE__*/React.createElement(FormattedMessage, messages.instructions);
+      return React.createElement(FormattedMessage, messages.instructions);
     }
     /**
      * Renders the cloud game
@@ -268,16 +264,16 @@ var SecurityCloudGame = /*#__PURE__*/function (_Component) {
       var _this$props2 = this.props,
           height = _this$props2.height,
           width = _this$props2.width;
-      return /*#__PURE__*/React.createElement("div", {
+      return React.createElement("div", {
         className: "box-ui-security-cloud-game",
         style: {
           height: "".concat(height, "px"),
           width: "".concat(width, "px")
         }
-      }, /*#__PURE__*/React.createElement("div", {
+      }, React.createElement("div", {
         ref: this.setGameBoardHeight,
         className: "box-ui-security-cloud-game-message"
-      }, this.renderMessage()), /*#__PURE__*/React.createElement("div", {
+      }, this.renderMessage()), React.createElement("div", {
         className: "box-ui-security-cloud-game-board"
       }, this.renderDropCloud(), this.renderDragCloud()));
     }

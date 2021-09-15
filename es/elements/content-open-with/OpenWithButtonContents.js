@@ -9,9 +9,9 @@ import messages from '../common/messages';
 
 var OpenWithButtonContents = function OpenWithButtonContents(_ref) {
   var children = _ref.children;
-  return /*#__PURE__*/React.createElement(React.Fragment, null, children, /*#__PURE__*/React.createElement("span", {
+  return React.createElement(React.Fragment, null, children, React.createElement("span", {
     className: "bcow-btn-header-text"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.open)));
+  }, React.createElement(FormattedMessage, messages.open)));
 };
 
 export default OpenWithButtonContents;

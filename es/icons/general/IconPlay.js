@@ -11,17 +11,17 @@ var IconPlay = function IconPlay(_ref) {
       title = _ref.title,
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? 24 : _ref$width;
-  return /*#__PURE__*/React.createElement(AccessibleSVG, {
+  return React.createElement(AccessibleSVG, {
     className: "icon-play ".concat(className),
     height: height,
     title: title,
     viewBox: "0 0 24 24",
     width: width
-  }, /*#__PURE__*/React.createElement("path", {
+  }, React.createElement("path", {
     className: "fill-color",
     d: "M8 5v14l11-7z",
     fill: color
-  }), /*#__PURE__*/React.createElement("path", {
+  }), React.createElement("path", {
     d: "M0 0h24v24H0z",
     fill: "none"
   }));

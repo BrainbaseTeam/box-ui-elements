@@ -29,15 +29,16 @@ function AssigneeList(props) {
         target = _ref.target,
         status = _ref.status,
         completedAt = _ref.completed_at;
-    return /*#__PURE__*/React.createElement("li", {
+    return React.createElement("li", {
       key: id,
-      className: "bcs-AssigneeList-listItem"
-    }, /*#__PURE__*/React.createElement(AvatarGroupAvatar, {
+      className: "bcs-AssigneeList-listItem",
+      "data-testid": "assignee-list-item"
+    }, React.createElement(AvatarGroupAvatar, {
       status: status,
       className: "bcs-AssigneeList-listItemAvatar",
       user: target,
       getAvatarUrl: getAvatarUrl
-    }), /*#__PURE__*/React.createElement(AssigneeDetails, {
+    }), React.createElement(AssigneeDetails, {
       user: target,
       status: status,
       completedAt: completedAt
@@ -47,27 +48,30 @@ function AssigneeList(props) {
   var maxAdditionalAssignees = TASKS_PAGE_SIZE - initialAssigneeCount;
   var hasMoreAssigneesThanPageSize = hiddenAssigneeCount > maxAdditionalAssignees || next_marker;
   var additionalAssigneeMessage = hasMoreAssigneesThanPageSize ? messages.taskShowMoreAssigneesOverflow : messages.taskShowMoreAssignees;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "bcs-AssigneeList"
-  }, /*#__PURE__*/React.createElement("ul", {
-    className: "bcs-AssigneeList-list"
-  }, visibleUsers), !isOpen && hiddenAssigneeCount > 0 && /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("ul", {
+    className: "bcs-AssigneeList-list",
+    "data-testid": "task-assignee-list"
+  }, visibleUsers), !isOpen && hiddenAssigneeCount > 0 && React.createElement("div", {
     className: "bcs-AssigneeList-toggleBtn"
-  }, /*#__PURE__*/React.createElement(PlainButton, {
+  }, React.createElement(PlainButton, {
     "data-resin-target": "showmorebtn",
+    "data-testid": "show-more-assignees",
     onClick: onExpand,
     className: "lnk"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, additionalAssigneeMessage, {
+  }, React.createElement(FormattedMessage, _extends({}, additionalAssigneeMessage, {
     values: {
       additionalAssigneeCount: hasMoreAssigneesThanPageSize ? maxAdditionalAssignees : hiddenAssigneeCount
     }
-  })))), isOpen && /*#__PURE__*/React.createElement("div", {
+  })))), isOpen && React.createElement("div", {
     className: "bcs-AssigneeList-toggleBtn"
-  }, /*#__PURE__*/React.createElement(PlainButton, {
+  }, React.createElement(PlainButton, {
     "data-resin-target": "showlessbtn",
+    "data-testid": "show-less-assignees",
     onClick: onCollapse,
     className: "lnk"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.taskShowLessAssignees))));
+  }, React.createElement(FormattedMessage, messages.taskShowLessAssignees))));
 }
 
 export default AssigneeList;

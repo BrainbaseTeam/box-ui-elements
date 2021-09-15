@@ -1,1 +1,1 @@
-{"version":3,"sources":["../../../src/components/context-menu/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,eAAxB","sourcesContent":["// @flow\nexport { default } from './ContextMenu';\n"],"file":"index.js"}
+{"version":3,"sources":["../../../src/components/context-menu/index.ts"],"names":["default"],"mappings":"AAAA,SAASA,OAAT,QAAwB,eAAxB","sourcesContent":["export { default } from './ContextMenu';\n"],"file":"index.js"}

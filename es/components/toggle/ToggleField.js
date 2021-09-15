@@ -13,7 +13,7 @@ var ToggleField = function ToggleField(_ref) {
       rest = _objectWithoutProperties(_ref, ["field", "form"]);
 
   var value = field.value;
-  return /*#__PURE__*/React.createElement(TogglePrimitive, _extends({}, field, rest, {
+  return React.createElement(TogglePrimitive, _extends({}, field, rest, {
     isOn: !!value
   }));
 };

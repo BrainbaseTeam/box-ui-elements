@@ -9,6 +9,10 @@ var messages = defineMessages({
     "id": "be.contentSidebar.activityFeed.commentForm.commentCancel",
     "defaultMessage": "Cancel"
   },
+  commentLabel: {
+    "id": "be.contentSidebar.activityFeed.commentForm.commentLabel",
+    "defaultMessage": "Write a comment"
+  },
   commentPost: {
     "id": "be.contentSidebar.activityFeed.commentForm.commentPost",
     "defaultMessage": "Post"
@@ -44,6 +48,10 @@ var messages = defineMessages({
   atMentionTip: {
     "id": "be.contentSidebar.activityFeed.commentForm.atMentionTip",
     "defaultMessage": "@mention users to notify them."
+  },
+  atMentionTipDescription: {
+    "id": "be.contentSidebar.activityFeed.commentForm.atMentionTipDescription",
+    "defaultMessage": "Use the @ symbol to mention users and use the up and down arrow keys to scroll through autocomplete suggestions."
   }
 });
 export default messages;

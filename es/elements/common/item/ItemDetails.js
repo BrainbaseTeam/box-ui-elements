@@ -14,13 +14,13 @@ var ItemDetails = function ItemDetails(_ref) {
       rootId = _ref.rootId,
       item = _ref.item,
       onItemClick = _ref.onItemClick;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "be-item-details"
-  }, view === VIEW_SELECTED || view === VIEW_SEARCH ? /*#__PURE__*/React.createElement(InlineBreadcrumbs, {
+  }, view === VIEW_SELECTED || view === VIEW_SEARCH ? React.createElement(InlineBreadcrumbs, {
     item: item,
     onItemClick: onItemClick,
     rootId: rootId
-  }) : /*#__PURE__*/React.createElement(ItemSubDetails, {
+  }) : React.createElement(ItemSubDetails, {
     item: item,
     view: view
   }));

@@ -29,17 +29,26 @@ import TasksNewAPI from './tasks/TasksNew';
 import TaskCollaboratorsAPI from './tasks/TaskCollaborators';
 import TaskLinksAPI from './tasks/TaskLinks';
 import FileAccessStatsAPI from './FileAccessStats';
+import MarkerBasedGroupsAPI from './MarkerBasedGroups';
+import MarkerBasedUsersAPI from './MarkerBasedUsers';
+import GroupsAPI from './Groups';
 import UsersAPI from './Users';
 import MetadataAPI from './Metadata';
 import FileCollaboratorsAPI from './FileCollaborators';
+import FileCollaborationsAPI from './FileCollaborations';
+import FolderCollaborationsAPI from './FolderCollaborations';
+import CollaborationsAPI from './Collaborations';
 import FeedAPI from './Feed';
 import AppIntegrationsAPI from './AppIntegrations';
+import AnnotationsAPI from './Annotations';
 import OpenWithAPI from './OpenWith';
 import MetadataQueryAPI from './MetadataQuery';
 import BoxEditAPI from './box-edit';
 import { DEFAULT_HOSTNAME_API, DEFAULT_HOSTNAME_UPLOAD, TYPE_FOLDER, TYPE_FILE, TYPE_WEBLINK } from '../constants';
 
-var APIFactory = /*#__PURE__*/function () {
+var APIFactory =
+/*#__PURE__*/
+function () {
   /**
    * @property {*}
    */
@@ -97,6 +106,18 @@ var APIFactory = /*#__PURE__*/function () {
    */
 
   /*
+   * @property {MarkerBasedGroupsAPI}
+   */
+
+  /*
+   * @property {MarkerBasedUsersAPI}
+   */
+
+  /**
+   * @property {GroupsAPI}
+   */
+
+  /*
    * @property {UsersAPI}
    */
 
@@ -106,6 +127,18 @@ var APIFactory = /*#__PURE__*/function () {
 
   /**
    * @property {FileCollaboratorsAPI}
+   */
+
+  /**
+   * @property {FileCollaborationsAPI}
+   */
+
+  /**
+   * @property {FolderCollaborationsAPI}
+   */
+
+  /**
+   * @property {CollaborationsAPI}
    */
 
   /**
@@ -129,6 +162,10 @@ var APIFactory = /*#__PURE__*/function () {
    */
 
   /**
+   * @property {AnnotationsAPI}
+   */
+
+  /**
    * [constructor]
    *
    * @param {Object} options
@@ -143,7 +180,7 @@ var APIFactory = /*#__PURE__*/function () {
   function APIFactory(options) {
     _classCallCheck(this, APIFactory);
 
-    this.options = _objectSpread(_objectSpread({}, options), {}, {
+    this.options = _objectSpread({}, options, {
       apiHost: options.apiHost || DEFAULT_HOSTNAME_API,
       uploadHost: options.uploadHost || DEFAULT_HOSTNAME_UPLOAD,
       cache: options.cache || new Cache(),
@@ -228,6 +265,21 @@ var APIFactory = /*#__PURE__*/function () {
         delete this.commentsAPI;
       }
 
+      if (this.markerBasedGroupsAPI) {
+        this.markerBasedGroupsAPI.destroy();
+        delete this.markerBasedGroupsAPI;
+      }
+
+      if (this.markerBasedUsersAPI) {
+        this.markerBasedUsersAPI.destroy();
+        delete this.markerBasedUsersAPI;
+      }
+
+      if (this.groupsAPI) {
+        this.groupsAPI.destroy();
+        delete this.groupsAPI;
+      }
+
       if (this.usersAPI) {
         this.usersAPI.destroy();
         delete this.usersAPI;
@@ -243,6 +295,21 @@ var APIFactory = /*#__PURE__*/function () {
         delete this.fileCollaboratorsAPI;
       }
 
+      if (this.fileCollaborationsAPI) {
+        this.fileCollaborationsAPI.destroy();
+        delete this.fileCollaborationsAPI;
+      }
+
+      if (this.folderCollaborationsAPI) {
+        this.folderCollaborationsAPI.destroy();
+        delete this.folderCollaborationsAPI;
+      }
+
+      if (this.collaborationsAPI) {
+        this.collaborationsAPI.destroy();
+        delete this.collaborationsAPI;
+      }
+
       if (this.appIntegrationsAPI) {
         this.appIntegrationsAPI.destroy();
         delete this.appIntegrationsAPI;
@@ -256,6 +323,11 @@ var APIFactory = /*#__PURE__*/function () {
       if (this.openWithAPI) {
         this.openWithAPI.destroy();
         delete this.openWithAPI;
+      }
+
+      if (this.annotationsAPI) {
+        this.annotationsAPI.destroy();
+        delete this.annotationsAPI;
       }
 
       if (destroyCache) {
@@ -538,7 +610,114 @@ var APIFactory = /*#__PURE__*/function () {
       return this.fileCollaboratorsAPI;
     }
     /**
-     * API for Users
+     * API for file collaborations
+     *
+     * This is different from the FileCollaboratorsAPI! See ./FileCollaborations for more information.
+     *
+     * @param {boolean} shouldDestroy - true if the factory should destroy before returning the call
+     * @return {FileCollaborationsAPI} FileCollaborationsAPI instance
+     */
+
+  }, {
+    key: "getFileCollaborationsAPI",
+    value: function getFileCollaborationsAPI(shouldDestroy) {
+      if (shouldDestroy) {
+        this.destroy();
+      }
+
+      this.fileCollaborationsAPI = new FileCollaborationsAPI(this.options);
+      return this.fileCollaborationsAPI;
+    }
+    /**
+     * API for folder collaborations
+     *
+     * @param {boolean} shouldDestroy - true if the factory should destroy before returning the call
+     * @return {FolderCollaborationsAPI} FolderCollaborationsAPI instance
+     */
+
+  }, {
+    key: "getFolderCollaborationsAPI",
+    value: function getFolderCollaborationsAPI(shouldDestroy) {
+      if (shouldDestroy) {
+        this.destroy();
+      }
+
+      this.folderCollaborationsAPI = new FolderCollaborationsAPI(this.options);
+      return this.folderCollaborationsAPI;
+    }
+    /**
+     * API for collaborations
+     *
+     * This is different from the other collaboration/collaborator APIs!
+     * See ./Collaborations for more information.
+     *
+     * @param {boolean} shouldDestroy - true if the factory should destroy before returning the call
+     * @return {CollaborationsAPI} CollaborationsAPI instance
+     */
+
+  }, {
+    key: "getCollaborationsAPI",
+    value: function getCollaborationsAPI(shouldDestroy) {
+      if (shouldDestroy) {
+        this.destroy();
+      }
+
+      this.collaborationsAPI = new CollaborationsAPI(this.options);
+      return this.collaborationsAPI;
+    }
+    /**
+     * API for Groups (marker-based paging)
+     *
+     * @param {boolean} shouldDestroy - true if the factory should destroy before returning the call
+     * @return {MarkerBasedGroupsAPI} MarkerBasedGroupsAPI instance
+     */
+
+  }, {
+    key: "getMarkerBasedGroupsAPI",
+    value: function getMarkerBasedGroupsAPI(shouldDestroy) {
+      if (shouldDestroy) {
+        this.destroy();
+      }
+
+      this.markerBasedGroupsAPI = new MarkerBasedGroupsAPI(this.options);
+      return this.markerBasedGroupsAPI;
+    }
+    /**
+     * API for Users (marker-based paging)
+     *
+     * @param {boolean} shouldDestroy - true if the factory should destroy before returning the call
+     * @return {MarkerBasedUsersAPI} MarkerBasedUsersAPI instance
+     */
+
+  }, {
+    key: "getMarkerBasedUsersAPI",
+    value: function getMarkerBasedUsersAPI(shouldDestroy) {
+      if (shouldDestroy) {
+        this.destroy();
+      }
+
+      this.markerBasedUsersAPI = new MarkerBasedUsersAPI(this.options);
+      return this.markerBasedUsersAPI;
+    }
+    /**
+     * API for Groups (offset-based paging)
+     *
+     * @param {boolean} shouldDestroy - true if the factory should destroy before returning the call
+     * @return {GroupsAPI} GroupsAPI instance
+     */
+
+  }, {
+    key: "getGroupsAPI",
+    value: function getGroupsAPI(shouldDestroy) {
+      if (shouldDestroy) {
+        this.destroy();
+      }
+
+      this.groupsAPI = new GroupsAPI(this.options);
+      return this.groupsAPI;
+    }
+    /**
+     * API for Users (offset-based paging)
      *
      * @param {boolean} shouldDestroy - true if the factory should destroy before returning the call
      * @return {UsersAPI} UsersAPI instance
@@ -635,6 +814,22 @@ var APIFactory = /*#__PURE__*/function () {
     value: function getBoxEditAPI() {
       this.boxEditAPI = new BoxEditAPI();
       return this.boxEditAPI;
+    }
+    /**
+     * API for Annotations
+     *
+     * @return {AnnotationsAPI} AnnotationsAPI instance
+     */
+
+  }, {
+    key: "getAnnotationsAPI",
+    value: function getAnnotationsAPI(shouldDestroy) {
+      if (shouldDestroy) {
+        this.destroy();
+      }
+
+      this.annotationsAPI = new AnnotationsAPI(this.options);
+      return this.annotationsAPI;
     }
   }]);
 

@@ -6,17 +6,13 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24,19 +20,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -54,17 +46,17 @@ import { Flyout, Overlay } from '../../../../components/flyout';
 import { AND, OR, COLUMN_OPERATORS } from '../../constants';
 import messages from '../../messages';
 
-var FilterButton = /*#__PURE__*/function (_React$Component) {
+var FilterButton =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(FilterButton, _React$Component);
-
-  var _super = _createSuper(FilterButton);
 
   function FilterButton(props) {
     var _this;
 
     _classCallCheck(this, FilterButton);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(FilterButton).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "onClose", function () {
       _this.setState({
@@ -172,7 +164,7 @@ var FilterButton = /*#__PURE__*/function (_React$Component) {
       var type = column && column.type;
       var operator = COLUMN_OPERATORS[type][0].key;
 
-      var newCondition = _objectSpread(_objectSpread({}, conditionToUpdate), {}, {
+      var newCondition = _objectSpread({}, conditionToUpdate, {
         columnId: columnId,
         operator: operator,
         values: []
@@ -310,7 +302,7 @@ var FilterButton = /*#__PURE__*/function (_React$Component) {
       var areAllValid = this.areAllValid();
       var buttonClasses = classNames('query-bar-button', numberOfConditions !== 0 && areAllValid ? 'is-active' : '');
       var isFilterDisabled = !columns || columns.length === 0;
-      return /*#__PURE__*/React.createElement(Flyout, {
+      return React.createElement(Flyout, {
         className: "query-bar-filter-dropdown-flyout",
         closeOnClick: true,
         closeOnClickOutside: true,
@@ -323,25 +315,25 @@ var FilterButton = /*#__PURE__*/function (_React$Component) {
         ,
         position: "bottom-right",
         shouldDefaultFocus: true
-      }, /*#__PURE__*/React.createElement(Button, {
+      }, React.createElement(Button, {
         className: buttonClasses,
         isDisabled: isFilterDisabled,
         onClick: this.toggleButton,
         type: "button"
-      }, /*#__PURE__*/React.createElement(MenuToggle, null, /*#__PURE__*/React.createElement(IconMetadataFilter, {
+      }, React.createElement(MenuToggle, null, React.createElement(IconMetadataFilter, {
         className: "button-icon"
-      }), /*#__PURE__*/React.createElement("span", {
+      }), React.createElement("span", {
         className: "button-label"
-      }, numberOfConditions === 0 ? /*#__PURE__*/React.createElement(FormattedMessage, messages.filtersButtonText) : /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.multipleFiltersButtonText, {
+      }, numberOfConditions === 0 ? React.createElement(FormattedMessage, messages.filtersButtonText) : React.createElement(FormattedMessage, _extends({}, messages.multipleFiltersButtonText, {
         values: {
           number: numberOfConditions
         }
-      }))))), /*#__PURE__*/React.createElement(Overlay, null, isMenuOpen ? /*#__PURE__*/React.createElement("div", {
+      }))))), React.createElement(Overlay, null, isMenuOpen ? React.createElement("div", {
         className: "filter-button-dropdown"
-      }, /*#__PURE__*/React.createElement("div", {
+      }, React.createElement("div", {
         className: "filter-button-dropdown-header"
-      }, transientConditions.length === 0 ? /*#__PURE__*/React.createElement(FormattedMessage, messages.noFiltersAppliedText) : null, transientConditions.map(function (condition, index) {
-        return /*#__PURE__*/React.createElement(Condition, {
+      }, transientConditions.length === 0 ? React.createElement(FormattedMessage, messages.noFiltersAppliedText) : null, transientConditions.map(function (condition, index) {
+        return React.createElement(Condition, {
           key: "metadata-view-filter-item-".concat(condition.id),
           hasUserSubmitted: hasUserSubmitted,
           columns: columns,
@@ -354,16 +346,16 @@ var FilterButton = /*#__PURE__*/function (_React$Component) {
           onValueChange: _this2.handleValueChange,
           selectedConnector: selectedConnector
         });
-      })), /*#__PURE__*/React.createElement("div", {
+      })), React.createElement("div", {
         className: "filter-button-dropdown-footer"
-      }, /*#__PURE__*/React.createElement(Button, {
+      }, React.createElement(Button, {
         type: "button",
         onClick: this.addFilter
-      }, /*#__PURE__*/React.createElement(FormattedMessage, messages.addFilterButtonText)), /*#__PURE__*/React.createElement(PrimaryButton, {
+      }, React.createElement(FormattedMessage, messages.addFilterButtonText)), React.createElement(PrimaryButton, {
         className: "apply-filters-button",
         onClick: this.applyFilters,
         type: "button"
-      }, /*#__PURE__*/React.createElement(FormattedMessage, messages.applyFiltersButtonText)))) : /*#__PURE__*/React.createElement("div", null)));
+      }, React.createElement(FormattedMessage, messages.applyFiltersButtonText)))) : React.createElement("div", null)));
     }
   }]);
 

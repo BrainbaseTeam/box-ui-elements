@@ -9,9 +9,9 @@ var ProgressBar = function ProgressBar(_ref) {
   var style = {
     width: "".concat(progress, "%")
   };
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "progress-bar-container"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "progress-bar ".concat(className),
     style: style
   }));

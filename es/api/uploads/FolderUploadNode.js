@@ -24,7 +24,9 @@ import { getFileFromEntry } from '../../utils/uploads';
 import FolderAPI from '../Folder';
 import { STATUS_COMPLETE, STATUS_ERROR, ERROR_CODE_UPLOAD_CHILD_FOLDER_FAILED, ERROR_CODE_ITEM_NAME_IN_USE } from '../../constants';
 
-var FolderUploadNode = /*#__PURE__*/function () {
+var FolderUploadNode =
+/*#__PURE__*/
+function () {
   /**
    * [constructor]
    *
@@ -42,8 +44,12 @@ var FolderUploadNode = /*#__PURE__*/function () {
 
     _defineProperty(this, "folders", {});
 
-    _defineProperty(this, "uploadChildFolders", /*#__PURE__*/function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(errorCallback) {
+    _defineProperty(this, "uploadChildFolders",
+    /*#__PURE__*/
+    function () {
+      var _ref = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee(errorCallback) {
         var folders, promises;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -70,8 +76,12 @@ var FolderUploadNode = /*#__PURE__*/function () {
       };
     }());
 
-    _defineProperty(this, "createAndUploadFolder", /*#__PURE__*/function () {
-      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(errorCallback, isRoot) {
+    _defineProperty(this, "createAndUploadFolder",
+    /*#__PURE__*/
+    function () {
+      var _ref2 = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee2(errorCallback, isRoot) {
         var errorEncountered, errorCode, data, folderObject;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
@@ -90,15 +100,14 @@ var FolderUploadNode = /*#__PURE__*/function () {
               case 7:
                 data = _context2.sent;
                 _this.folderId = data.id;
-                _context2.next = 16;
+                _context2.next = 14;
                 break;
 
               case 11:
                 _context2.prev = 11;
                 _context2.t0 = _context2["catch"](4);
-                errorEncountered = true;
-                errorCode = _context2.t0.code; // @TODO: Handle 429
 
+                // @TODO: Handle 429
                 if (_context2.t0.code === ERROR_CODE_ITEM_NAME_IN_USE) {
                   _this.folderId = _context2.t0.context_info.conflicts[0].id;
                 } else if (isRoot) {
@@ -108,20 +117,22 @@ var FolderUploadNode = /*#__PURE__*/function () {
                   // an error message on the root folder being uploaded. Set a generic messages saying that a
                   // child has caused the error. The child folder will be tagged with the error message in
                   // the call to this.addFolderToUploadQueue below
+                  errorEncountered = true;
+                  errorCode = _context2.t0.code;
                   errorCallback({
                     code: ERROR_CODE_UPLOAD_CHILD_FOLDER_FAILED
                   });
                 }
 
-              case 16:
+              case 14:
                 if (!isRoot) {
-                  _context2.next = 18;
+                  _context2.next = 16;
                   break;
                 }
 
                 return _context2.abrupt("return");
 
-              case 18:
+              case 16:
                 folderObject = {
                   extension: '',
                   name: _this.name,
@@ -140,7 +151,7 @@ var FolderUploadNode = /*#__PURE__*/function () {
 
                 _this.addFolderToUploadQueue(folderObject);
 
-              case 21:
+              case 19:
               case "end":
                 return _context2.stop();
             }
@@ -157,7 +168,7 @@ var FolderUploadNode = /*#__PURE__*/function () {
       return _this.files.map(function (file) {
         return {
           file: file,
-          options: _objectSpread(_objectSpread({}, _this.fileAPIOptions), {}, {
+          options: _objectSpread({}, _this.fileAPIOptions, {
             folderId: _this.folderId,
             uploadInitTimestamp: Date.now()
           })
@@ -165,15 +176,23 @@ var FolderUploadNode = /*#__PURE__*/function () {
       });
     });
 
-    _defineProperty(this, "createFolderUploadNodesFromEntries", /*#__PURE__*/function () {
-      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(entries) {
+    _defineProperty(this, "createFolderUploadNodesFromEntries",
+    /*#__PURE__*/
+    function () {
+      var _ref3 = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee4(entries) {
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
                 _context4.next = 2;
-                return Promise.all(entries.map( /*#__PURE__*/function () {
-                  var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(entry) {
+                return Promise.all(entries.map(
+                /*#__PURE__*/
+                function () {
+                  var _ref4 = _asyncToGenerator(
+                  /*#__PURE__*/
+                  regeneratorRuntime.mark(function _callee3(entry) {
                     var isFile, name, file;
                     return regeneratorRuntime.wrap(function _callee3$(_context3) {
                       while (1) {
@@ -197,7 +216,7 @@ var FolderUploadNode = /*#__PURE__*/function () {
                             return _context3.abrupt("return");
 
                           case 7:
-                            _this.folders[name] = new FolderUploadNode(name, _this.addFilesToUploadQueue, _this.addFolderToUploadQueue, _this.fileAPIOptions, _objectSpread(_objectSpread({}, _this.baseAPIOptions), _this.fileAPIOptions), entry);
+                            _this.folders[name] = new FolderUploadNode(name, _this.addFilesToUploadQueue, _this.addFolderToUploadQueue, _this.fileAPIOptions, _objectSpread({}, _this.baseAPIOptions, {}, _this.fileAPIOptions), entry);
 
                           case 8:
                           case "end":
@@ -226,8 +245,12 @@ var FolderUploadNode = /*#__PURE__*/function () {
     }());
 
     _defineProperty(this, "readEntry", function (reader, resolve) {
-      reader.readEntries( /*#__PURE__*/function () {
-        var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(entries) {
+      reader.readEntries(
+      /*#__PURE__*/
+      function () {
+        var _ref5 = _asyncToGenerator(
+        /*#__PURE__*/
+        regeneratorRuntime.mark(function _callee5(entries) {
           return regeneratorRuntime.wrap(function _callee5$(_context5) {
             while (1) {
               switch (_context5.prev = _context5.next) {
@@ -299,7 +322,9 @@ var FolderUploadNode = /*#__PURE__*/function () {
   _createClass(FolderUploadNode, [{
     key: "upload",
     value: function () {
-      var _upload = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(parentFolderId, errorCallback) {
+      var _upload = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee6(parentFolderId, errorCallback) {
         var isRoot,
             _args6 = arguments;
         return regeneratorRuntime.wrap(function _callee6$(_context6) {
@@ -355,7 +380,7 @@ var FolderUploadNode = /*#__PURE__*/function () {
     value: function createFolder() {
       var _this2 = this;
 
-      var folderAPI = new FolderAPI(_objectSpread(_objectSpread({}, this.baseAPIOptions), {}, {
+      var folderAPI = new FolderAPI(_objectSpread({}, this.baseAPIOptions, {
         id: "folder_".concat(this.parentFolderId)
       }));
       return new Promise(function (resolve, reject) {

@@ -20,7 +20,7 @@ var SidebarSkillsCard = function SidebarSkillsCard(_ref) {
 
   switch (card.skill_card_type) {
     case SKILLS_KEYWORD:
-      return /*#__PURE__*/React.createElement(Keywords, {
+      return React.createElement(Keywords, {
         card: card,
         getViewer: getViewer,
         hasError: hasError,
@@ -34,7 +34,7 @@ var SidebarSkillsCard = function SidebarSkillsCard(_ref) {
 
     case SKILLS_TIMELINE:
     case SKILLS_FACE:
-      return /*#__PURE__*/React.createElement(Faces, {
+      return React.createElement(Faces, {
         card: card,
         getViewer: getViewer,
         hasError: hasError,
@@ -43,7 +43,7 @@ var SidebarSkillsCard = function SidebarSkillsCard(_ref) {
       });
 
     case SKILLS_TRANSCRIPT:
-      return /*#__PURE__*/React.createElement(Transcript, {
+      return React.createElement(Transcript, {
         card: card,
         getViewer: getViewer,
         hasError: hasError,
@@ -52,7 +52,7 @@ var SidebarSkillsCard = function SidebarSkillsCard(_ref) {
       });
 
     case SKILLS_STATUS:
-      return /*#__PURE__*/React.createElement(Status, {
+      return React.createElement(Status, {
         card: card
       });
 

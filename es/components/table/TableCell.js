@@ -15,7 +15,7 @@ var TableCell = function TableCell(_ref) {
       isFixedWidth = _ref$isFixedWidth === void 0 ? false : _ref$isFixedWidth,
       rest = _objectWithoutProperties(_ref, ["children", "className", "isFixedWidth"]);
 
-  return /*#__PURE__*/React.createElement("td", _extends({
+  return React.createElement("td", _extends({
     className: classNames('table-cell', className, {
       'is-fixed-width': isFixedWidth
     })

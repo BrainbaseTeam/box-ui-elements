@@ -8,19 +8,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -37,15 +33,15 @@ import messages from './messages';
 import './CollaboratorList.scss';
 var MAX_COLLABORATOR_LIST_SIZE = 90;
 
-var CollaboratorList = /*#__PURE__*/function (_React$Component) {
+var CollaboratorList =
+/*#__PURE__*/
+function (_React$Component) {
   _inherits(CollaboratorList, _React$Component);
-
-  var _super = _createSuper(CollaboratorList);
 
   function CollaboratorList() {
     _classCallCheck(this, CollaboratorList);
 
-    return _super.apply(this, arguments);
+    return _possibleConstructorReturn(this, _getPrototypeOf(CollaboratorList).apply(this, arguments));
   }
 
   _createClass(CollaboratorList, [{
@@ -55,7 +51,7 @@ var CollaboratorList = /*#__PURE__*/function (_React$Component) {
       var type = item.type,
           id = item.id;
       var collaboratorsPageLink = "/".concat(type, "/").concat(id, "/collaborators/");
-      return /*#__PURE__*/React.createElement(Link, _extends({
+      return React.createElement(Link, _extends({
         href: collaboratorsPageLink,
         rel: "noopener",
         target: "_blank"
@@ -74,21 +70,21 @@ var CollaboratorList = /*#__PURE__*/function (_React$Component) {
           manageLinkProps = trackingProps.manageLinkProps,
           viewAdditionalProps = trackingProps.viewAdditionalProps,
           doneButtonProps = trackingProps.doneButtonProps;
-      var manageAllBtn = /*#__PURE__*/React.createElement(PlainButton, {
+      var manageAllBtn = React.createElement(PlainButton, {
         className: "manage-all-btn",
         type: "button"
-      }, /*#__PURE__*/React.createElement(FormattedMessage, messages.manageAllLinkText));
+      }, React.createElement(FormattedMessage, messages.manageAllLinkText));
       var maxListSizeToRender = Math.min(maxCollaboratorListSize, MAX_COLLABORATOR_LIST_SIZE);
-      return /*#__PURE__*/React.createElement("div", {
+      return React.createElement("div", {
         className: "usm-collaborator-list"
-      }, /*#__PURE__*/React.createElement("div", {
+      }, React.createElement("div", {
         className: "manage-all-btn-container"
-      }, this.createCollaboratorPageLink(manageAllBtn, manageLinkProps)), /*#__PURE__*/React.createElement("ul", {
-        className: "collaborator-list"
+      }, this.createCollaboratorPageLink(manageAllBtn, manageLinkProps)), React.createElement("ul", {
+        className: "be collaborator-list"
       }, collaborators.slice(0, maxListSizeToRender).map(function (collaborator, index) {
         var collabID = collaborator.collabID,
             type = collaborator.type;
-        return /*#__PURE__*/React.createElement(CollaboratorListItem, {
+        return React.createElement(CollaboratorListItem, {
           key: "".concat(collabID, "-").concat(type),
           collaborator: collaborator,
           index: index,
@@ -97,15 +93,15 @@ var CollaboratorList = /*#__PURE__*/function (_React$Component) {
             emailProps: emailProps
           }
         });
-      }), collaborators.length > maxListSizeToRender && /*#__PURE__*/React.createElement("li", {
+      }), collaborators.length > maxListSizeToRender && React.createElement("li", {
         className: "collaborator-list-item more"
-      }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(CollaborationBadge, {
+      }, React.createElement("div", null, React.createElement(CollaborationBadge, {
         height: 32,
         width: 32
-      })), /*#__PURE__*/React.createElement("div", null, this.createCollaboratorPageLink( /*#__PURE__*/React.createElement(FormattedMessage, messages.viewAdditionalPeopleText), viewAdditionalProps)))), /*#__PURE__*/React.createElement(ModalActions, null, /*#__PURE__*/React.createElement(Button, _extends({
+      })), React.createElement("div", null, this.createCollaboratorPageLink(React.createElement(FormattedMessage, messages.viewAdditionalPeopleText), viewAdditionalProps)))), React.createElement(ModalActions, null, React.createElement(Button, _extends({
         className: "btn-done",
         onClick: onDoneClick
-      }, doneButtonProps), /*#__PURE__*/React.createElement(FormattedMessage, commonMessages.done))));
+      }, doneButtonProps), React.createElement(FormattedMessage, commonMessages.done))));
     }
   }]);
 

@@ -12,19 +12,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -43,17 +39,17 @@ function makeSelectable(BaseTable) {
   var _class, _temp;
 
   var originalDisplayName = BaseTable.displayName || BaseTable.name || 'Table';
-  return _temp = _class = /*#__PURE__*/function (_Component) {
+  return _temp = _class =
+  /*#__PURE__*/
+  function (_Component) {
     _inherits(SelectableTable, _Component);
-
-    var _super = _createSuper(SelectableTable);
 
     function SelectableTable(props) {
       var _this;
 
       _classCallCheck(this, SelectableTable);
 
-      _this = _super.call(this, props);
+      _this = _possibleConstructorReturn(this, _getPrototypeOf(SelectableTable).call(this, props));
 
       _defineProperty(_assertThisInitialized(_this), "state", {
         focusedIndex: undefined
@@ -86,7 +82,7 @@ function makeSelectable(BaseTable) {
         if (!_this.hotkeys) {
           _this.hotkeys = [new HotkeyRecord({
             key: 'down',
-            description: /*#__PURE__*/React.createElement(FormattedMessage, messages.downDescription),
+            description: React.createElement(FormattedMessage, messages.downDescription),
             handler: function handler(event) {
               var data = _this.props.data;
               var focusedIndex = _this.state.focusedIndex;
@@ -100,7 +96,7 @@ function makeSelectable(BaseTable) {
             type: hotkeyType
           }), new HotkeyRecord({
             key: 'up',
-            description: /*#__PURE__*/React.createElement(FormattedMessage, messages.upDescription),
+            description: React.createElement(FormattedMessage, messages.upDescription),
             handler: function handler(event) {
               var _this$state$focusedIn = _this.state.focusedIndex,
                   focusedIndex = _this$state$focusedIn === void 0 ? 0 : _this$state$focusedIn;
@@ -114,7 +110,7 @@ function makeSelectable(BaseTable) {
             type: hotkeyType
           }), new HotkeyRecord({
             key: 'shift+x',
-            description: /*#__PURE__*/React.createElement(FormattedMessage, messages.shiftXDescription),
+            description: React.createElement(FormattedMessage, messages.shiftXDescription),
             handler: function handler() {
               var focusedIndex = _this.state.focusedIndex;
 
@@ -127,7 +123,7 @@ function makeSelectable(BaseTable) {
             type: hotkeyType
           }), new HotkeyRecord({
             key: ['meta+a', 'ctrl+a'],
-            description: /*#__PURE__*/React.createElement(FormattedMessage, messages.selectAllDescription),
+            description: React.createElement(FormattedMessage, messages.selectAllDescription),
             handler: function handler(event) {
               var data = _this.props.data;
               event.preventDefault();
@@ -137,7 +133,7 @@ function makeSelectable(BaseTable) {
             type: hotkeyType
           }), new HotkeyRecord({
             key: 'shift+down',
-            description: /*#__PURE__*/React.createElement(FormattedMessage, messages.shiftDownDescription),
+            description: React.createElement(FormattedMessage, messages.shiftDownDescription),
             handler: function handler() {
               var data = _this.props.data;
               var focusedIndex = _this.state.focusedIndex;
@@ -153,7 +149,7 @@ function makeSelectable(BaseTable) {
             type: hotkeyType
           }), new HotkeyRecord({
             key: 'shift+up',
-            description: /*#__PURE__*/React.createElement(FormattedMessage, messages.shiftUpDescription),
+            description: React.createElement(FormattedMessage, messages.shiftUpDescription),
             handler: function handler() {
               var focusedIndex = _this.state.focusedIndex;
 
@@ -168,7 +164,7 @@ function makeSelectable(BaseTable) {
             type: hotkeyType
           }), new HotkeyRecord({
             key: 'esc',
-            description: /*#__PURE__*/React.createElement(FormattedMessage, messages.deselectAllDescription),
+            description: React.createElement(FormattedMessage, messages.deselectAllDescription),
             handler: function handler() {
               _this.onSelect(new Set(), _this.state.focusedIndex);
             },
@@ -181,7 +177,7 @@ function makeSelectable(BaseTable) {
 
       _defineProperty(_assertThisInitialized(_this), "getProcessedProps", function () {
         var selectedItems = _this.props.selectedItems;
-        return _objectSpread(_objectSpread({}, _this.props), {}, {
+        return _objectSpread({}, _this.props, {
           selectedItems: Set.isSet(selectedItems) ? selectedItems : new Set(selectedItems)
         });
       });
@@ -246,6 +242,12 @@ function makeSelectable(BaseTable) {
         _this.anchorIndex = rowIndex;
       });
 
+      _defineProperty(_assertThisInitialized(_this), "clearFocus", function () {
+        _this.setState({
+          focusedIndex: undefined
+        });
+      });
+
       _defineProperty(_assertThisInitialized(_this), "handleRowClick", function (event, index) {
         if (event.metaKey || event.ctrlKey) {
           _this.selectToggle(index);
@@ -261,6 +263,19 @@ function makeSelectable(BaseTable) {
             selectedItems = _this$getProcessedPro4.selectedItems;
 
         _this.onSelect(selectedItems, index);
+      });
+
+      _defineProperty(_assertThisInitialized(_this), "handleTableBlur", function () {
+        var focusedIndex = _this.state.focusedIndex;
+
+        if (focusedIndex !== undefined) {
+          // table may get focus back right away in the same tick, in which case we shouldn't clear focus
+          _this.blurTimerID = setTimeout(_this.clearFocus);
+        }
+      });
+
+      _defineProperty(_assertThisInitialized(_this), "handleTableFocus", function () {
+        clearTimeout(_this.blurTimerID);
       });
 
       _defineProperty(_assertThisInitialized(_this), "handleShiftKeyDown", function (newFocusedIndex, boundary) {
@@ -334,6 +349,7 @@ function makeSelectable(BaseTable) {
       // the focusedItem will already be the new item
 
       _this.previousIndex = 0;
+      _this.blurTimerID = null;
       return _this;
     }
 
@@ -353,6 +369,7 @@ function makeSelectable(BaseTable) {
       key: "componentWillUnmount",
       value: function componentWillUnmount() {
         document.removeEventListener('keypress', this.handleKeyboardSearch);
+        clearTimeout(this.blurTimerID);
       }
     }, {
       key: "render",
@@ -362,14 +379,16 @@ function makeSelectable(BaseTable) {
             data = _this$props2.data;
         var focusedIndex = this.state.focusedIndex;
         var focusedItem = data[focusedIndex];
-        return /*#__PURE__*/React.createElement(Hotkeys, {
+        return React.createElement(Hotkeys, {
           configs: this.getHotkeyConfigs()
-        }, /*#__PURE__*/React.createElement(BaseTable, _extends({}, this.props, {
+        }, React.createElement(BaseTable, _extends({}, this.props, {
           className: classNames(className, 'is-selectable'),
           focusedIndex: focusedIndex,
           focusedItem: focusedItem,
           onRowClick: this.handleRowClick,
-          onRowFocus: this.handleRowFocus
+          onRowFocus: this.handleRowFocus,
+          onTableBlur: this.handleTableBlur,
+          onTableFocus: this.handleTableFocus
         })));
       }
     }]);

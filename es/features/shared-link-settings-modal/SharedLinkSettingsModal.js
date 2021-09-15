@@ -8,19 +8,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -72,17 +68,17 @@ function getAccessNoticeMessageId(accessLevel, canDownload) {
   return message;
 }
 
-var SharedLinkSettingsModal = /*#__PURE__*/function (_Component) {
+var SharedLinkSettingsModal =
+/*#__PURE__*/
+function (_Component) {
   _inherits(SharedLinkSettingsModal, _Component);
-
-  var _super = _createSuper(SharedLinkSettingsModal);
 
   function SharedLinkSettingsModal(props) {
     var _this;
 
     _classCallCheck(this, SharedLinkSettingsModal);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(SharedLinkSettingsModal).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "onSubmit", function (event) {
       event.preventDefault();
@@ -199,7 +195,7 @@ var SharedLinkSettingsModal = /*#__PURE__*/function (_Component) {
         return null;
       }
 
-      return /*#__PURE__*/React.createElement(VanityNameSection, {
+      return React.createElement(VanityNameSection, {
         canChangeVanityName: canChangeVanityName,
         isVanityEnabled: isVanityEnabled,
         error: vanityNameError,
@@ -218,12 +214,13 @@ var SharedLinkSettingsModal = /*#__PURE__*/function (_Component) {
           canChangePassword = _this$props3.canChangePassword,
           isPasswordAvailable = _this$props3.isPasswordAvailable,
           passwordCheckboxProps = _this$props3.passwordCheckboxProps,
+          passwordInformationText = _this$props3.passwordInformationText,
           passwordInputProps = _this$props3.passwordInputProps;
       var _this$state3 = this.state,
           isPasswordEnabled = _this$state3.isPasswordEnabled,
           password = _this$state3.password,
           passwordError = _this$state3.passwordError;
-      return /*#__PURE__*/React.createElement(PasswordSection, {
+      return React.createElement(PasswordSection, {
         canChangePassword: canChangePassword,
         error: passwordError,
         isPasswordAvailable: isPasswordAvailable,
@@ -233,6 +230,7 @@ var SharedLinkSettingsModal = /*#__PURE__*/function (_Component) {
         onPasswordChange: this.onPasswordChange,
         password: password,
         passwordCheckboxProps: passwordCheckboxProps,
+        passwordInformationText: passwordInformationText,
         passwordInputProps: passwordInputProps
       });
     }
@@ -247,7 +245,7 @@ var SharedLinkSettingsModal = /*#__PURE__*/function (_Component) {
           expirationDate = _this$state4.expirationDate,
           isExpirationEnabled = _this$state4.isExpirationEnabled,
           expirationError = _this$state4.expirationError;
-      return /*#__PURE__*/React.createElement(ExpirationSection, {
+      return React.createElement(ExpirationSection, {
         canChangeExpiration: canChangeExpiration,
         error: expirationError,
         expirationCheckboxProps: expirationCheckboxProps,
@@ -264,12 +262,12 @@ var SharedLinkSettingsModal = /*#__PURE__*/function (_Component) {
       var accessLevel = this.props.accessLevel;
       var isDownloadEnabled = this.state.isDownloadEnabled;
       var message = getAccessNoticeMessageId(accessLevel, isDownloadEnabled);
-      return message && /*#__PURE__*/React.createElement("p", {
+      return message && React.createElement("div", {
         className: "link-settings-modal-notice"
-      }, /*#__PURE__*/React.createElement(FormattedMessage, message), ' ', /*#__PURE__*/React.createElement(Link, {
+      }, React.createElement(FormattedMessage, message), ' ', React.createElement(Link, {
         href: "https://community.box.com/t5/Using-Shared-Links/Shared-Link-Settings/ta-p/50250",
         target: "_blank"
-      }, /*#__PURE__*/React.createElement(FormattedMessage, messages.sharedLinkSettingWarningLinkText)));
+      }, React.createElement(FormattedMessage, messages.sharedLinkSettingWarningLinkText)));
     }
   }, {
     key: "renderAllowDownloadSection",
@@ -282,11 +280,12 @@ var SharedLinkSettingsModal = /*#__PURE__*/function (_Component) {
           isDirectLinkAvailable = _this$props5.isDirectLinkAvailable,
           isDirectLinkUnavailableDueToDownloadSettings = _this$props5.isDirectLinkUnavailableDueToDownloadSettings,
           isDirectLinkUnavailableDueToAccessPolicy = _this$props5.isDirectLinkUnavailableDueToAccessPolicy,
+          isDirectLinkUnavailableDueToMaliciousContent = _this$props5.isDirectLinkUnavailableDueToMaliciousContent,
           isDownloadAvailable = _this$props5.isDownloadAvailable,
           item = _this$props5.item;
       var isDownloadEnabled = this.state.isDownloadEnabled;
       var classification = item.classification;
-      return /*#__PURE__*/React.createElement(AllowDownloadSection, {
+      return React.createElement(AllowDownloadSection, {
         canChangeDownload: canChangeDownload,
         classification: classification,
         directLink: directLink,
@@ -295,6 +294,7 @@ var SharedLinkSettingsModal = /*#__PURE__*/function (_Component) {
         isDirectLinkAvailable: isDirectLinkAvailable,
         isDirectLinkUnavailableDueToDownloadSettings: isDirectLinkUnavailableDueToDownloadSettings,
         isDirectLinkUnavailableDueToAccessPolicy: isDirectLinkUnavailableDueToAccessPolicy,
+        isDirectLinkUnavailableDueToMaliciousContent: isDirectLinkUnavailableDueToMaliciousContent,
         isDownloadAvailable: isDownloadAvailable,
         isDownloadEnabled: isDownloadEnabled,
         onChange: this.onAllowDownloadChange
@@ -306,9 +306,9 @@ var SharedLinkSettingsModal = /*#__PURE__*/function (_Component) {
       var item = this.props.item;
       var bannerPolicy = item.bannerPolicy,
           classification = item.classification;
-      return /*#__PURE__*/React.createElement("span", {
+      return React.createElement("span", {
         className: "bdl-SharedLinkSettingsModal-title"
-      }, /*#__PURE__*/React.createElement(FormattedMessage, messages.modalTitle), /*#__PURE__*/React.createElement(Classification, {
+      }, React.createElement(FormattedMessage, messages.modalTitle), React.createElement(Classification, {
         definition: bannerPolicy ? bannerPolicy.body : undefined,
         messageStyle: "tooltip",
         name: classification,
@@ -331,23 +331,23 @@ var SharedLinkSettingsModal = /*#__PURE__*/function (_Component) {
           submitting = _this$props6.submitting;
       var showInaccessibleSettingsNotice = !(canChangeDownload && canChangeExpiration && canChangePassword && canChangeVanityName);
       var disableSaveBtn = !(canChangeDownload || canChangeExpiration || canChangePassword || canChangeVanityName);
-      return /*#__PURE__*/React.createElement(Modal, _extends({
-        className: "shared-link-settings-modal",
+      return React.createElement(Modal, _extends({
+        className: "be-modal shared-link-settings-modal",
         isOpen: isOpen,
         onRequestClose: submitting ? undefined : onRequestClose,
         title: this.renderModalTitle()
-      }, modalProps), /*#__PURE__*/React.createElement("form", {
+      }, modalProps), React.createElement("form", {
         onSubmit: this.onSubmit
-      }, showInaccessibleSettingsNotice && /*#__PURE__*/React.createElement(InlineNotice, {
+      }, showInaccessibleSettingsNotice && React.createElement(InlineNotice, {
         type: "warning"
-      }, /*#__PURE__*/React.createElement(FormattedMessage, messages.inaccessibleSettingsNotice)), this.renderAccessLevelNotice(), this.renderExpirationSection(), this.renderPasswordSection(), this.renderVanityNameSection(), this.renderAllowDownloadSection(), /*#__PURE__*/React.createElement(ModalActions, null, /*#__PURE__*/React.createElement(Button, _extends({
+      }, React.createElement(FormattedMessage, messages.inaccessibleSettingsNotice)), this.renderAccessLevelNotice(), this.renderExpirationSection(), this.renderPasswordSection(), this.renderVanityNameSection(), this.renderAllowDownloadSection(), React.createElement(ModalActions, null, React.createElement(Button, _extends({
         isDisabled: submitting,
         onClick: onRequestClose,
         type: "button"
-      }, cancelButtonProps), /*#__PURE__*/React.createElement(FormattedMessage, commonMessages.cancel)), /*#__PURE__*/React.createElement(PrimaryButton, _extends({
+      }, cancelButtonProps), React.createElement(FormattedMessage, commonMessages.cancel)), React.createElement(PrimaryButton, _extends({
         isDisabled: submitting || disableSaveBtn,
         isLoading: submitting
-      }, saveButtonProps), /*#__PURE__*/React.createElement(FormattedMessage, commonMessages.save)))));
+      }, saveButtonProps), React.createElement(FormattedMessage, commonMessages.save)))));
     }
   }]);
 
@@ -398,6 +398,9 @@ _defineProperty(SharedLinkSettingsModal, "propTypes", {
   /** Whether or not password is currently enabled */
   isPasswordEnabled: PropTypes.bool.isRequired,
   passwordError: PropTypes.string,
+
+  /** Information shown below password input box * */
+  passwordInformationText: PropTypes.string,
   // Expiration props
 
   /** Whether or not user has permission to enable/disable/change expiration */
@@ -429,6 +432,9 @@ _defineProperty(SharedLinkSettingsModal, "propTypes", {
 
   /** Whether or not direct link is unavailable only due to access policy setting */
   isDirectLinkUnavailableDueToAccessPolicy: PropTypes.bool.isRequired,
+
+  /** Whether or not direct link is unavailable only due to malicious content policy */
+  isDirectLinkUnavailableDueToMaliciousContent: PropTypes.bool.isRequired,
   // Classification props
   item: PropTypes.object,
   // Hooks for resin

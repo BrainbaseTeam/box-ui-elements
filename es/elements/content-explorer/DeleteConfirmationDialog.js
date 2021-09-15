@@ -23,7 +23,7 @@ var DeleteConfirmationDialog = function DeleteConfirmationDialog(_ref) {
       appElement = _ref.appElement,
       intl = _ref.intl;
   var message = item.type === TYPE_FOLDER ? messages.deleteDialogFolderText : messages.deleteDialogFileText;
-  return /*#__PURE__*/React.createElement(Modal, {
+  return React.createElement(Modal, {
     appElement: appElement,
     className: CLASS_MODAL_CONTENT,
     contentLabel: intl.formatMessage(messages.deleteDialogLabel),
@@ -34,22 +34,22 @@ var DeleteConfirmationDialog = function DeleteConfirmationDialog(_ref) {
       return parentElement;
     },
     portalClassName: CLASS_MODAL
-  }, /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, message, {
+  }, React.createElement(FormattedMessage, _extends({}, message, {
     values: {
       name: item.name
     }
-  })), /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", {
     className: "be-modal-btns"
-  }, /*#__PURE__*/React.createElement(PrimaryButton, {
+  }, React.createElement(PrimaryButton, {
     isLoading: isLoading,
     onClick: onDelete,
     type: "button"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.delete)), /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(FormattedMessage, messages.delete)), React.createElement(Button, {
     autoFocus: true,
     isDisabled: isLoading,
     onClick: onCancel,
     type: "button"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.cancel))));
+  }, React.createElement(FormattedMessage, messages.cancel))));
 };
 
 export default injectIntl(DeleteConfirmationDialog);

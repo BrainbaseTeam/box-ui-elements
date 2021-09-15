@@ -13,6 +13,10 @@ var messages = defineMessages({
     "id": "be.contentSidebar.activityFeed.taskForm.taskEditWarningTitle",
     "defaultMessage": "Task Updated with Errors"
   },
+  taskGroupExceedsLimitWarningTitle: {
+    "id": "be.contentSidebar.activityFeed.taskForm.taskGroupExceedsWarningTitle",
+    "defaultMessage": "Exceeded max assignees per group"
+  },
   taskUpdateErrorMessage: {
     "id": "be.contentSidebar.activityFeed.taskForm.taskUpdateErrorMessage",
     "defaultMessage": "An error occurred while modifying this task. Please try again."
@@ -56,6 +60,14 @@ var messages = defineMessages({
   taskAnyInfoTooltip: {
     "id": "be.contentSidebar.activityFeed.taskForm.taskAnyInfoTooltip",
     "defaultMessage": "By default, all assignees are required to take action before a task is complete. Selecting this option will require only one assignee to complete this task."
+  },
+  taskAnyInfoGroupTooltip: {
+    "id": "be.contentSidebar.activityFeed.taskForm.taskAnyInfoGroupTooltip",
+    "defaultMessage": "Selecting this option will require only one assignee to complete this task. This will include assignees across all groups."
+  },
+  taskCreateGroupLabel: {
+    "id": "be.contentSidebar.activityFeed.taskForm.taskCreateGroupLabel",
+    "defaultMessage": "Group"
   }
 });
 export default messages;

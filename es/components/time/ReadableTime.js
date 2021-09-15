@@ -1,13 +1,13 @@
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-import React from 'react';
-import { FormattedMessage, FormattedRelative, FormattedDate } from 'react-intl';
+import { injectIntl } from 'react-intl';
 import { ONE_HOUR_MS } from '../../constants';
 import { isToday, isYesterday, isCurrentYear } from '../../utils/datetime';
 import messages from './messages';
+// exclude languages that do not have a grammar for uppercase (e.g. russian)
+var nonUppercaseLocales = ['ru'];
 
 var ReadableTime = function ReadableTime(_ref) {
-  var timestamp = _ref.timestamp,
+  var intl = _ref.intl,
+      timestamp = _ref.timestamp,
       _ref$relativeThreshol = _ref.relativeThreshold,
       relativeThreshold = _ref$relativeThreshol === void 0 ? ONE_HOUR_MS : _ref$relativeThreshol,
       _ref$allowFutureTimes = _ref.allowFutureTimestamps,
@@ -15,7 +15,10 @@ var ReadableTime = function ReadableTime(_ref) {
       _ref$alwaysShowTime = _ref.alwaysShowTime,
       alwaysShowTime = _ref$alwaysShowTime === void 0 ? false : _ref$alwaysShowTime,
       _ref$showWeekday = _ref.showWeekday,
-      showWeekday = _ref$showWeekday === void 0 ? false : _ref$showWeekday;
+      showWeekday = _ref$showWeekday === void 0 ? false : _ref$showWeekday,
+      _ref$uppercase = _ref.uppercase,
+      uppercase = _ref$uppercase === void 0 ? false : _ref$uppercase;
+  var shouldUppercase = uppercase && !nonUppercaseLocales.includes(intl.locale);
   var relativeIfNewerThanTs = Date.now() - relativeThreshold;
   var shouldShowYear = !isCurrentYear(timestamp);
 
@@ -28,6 +31,7 @@ var ReadableTime = function ReadableTime(_ref) {
   var dateMessage = messages.eventTime;
   var date = null;
   var weekday = null;
+  var output;
 
   if (isToday(timestamp)) {
     // e.g. Today at 12:30 PM
@@ -38,9 +42,8 @@ var ReadableTime = function ReadableTime(_ref) {
   } else if (showWeekday) {
     // e.g. Monday, Oct 5, 2018
     dateMessage = messages.eventTimeWeekdayLong;
-    weekday = /*#__PURE__*/React.createElement(FormattedDate, {
-      value: timestamp,
-      weekday: "long"
+    weekday = intl.formatDate(timestamp, {
+      weekday: 'long'
     });
   } else if (shouldShowYear && alwaysShowTime) {
     // e.g. Oct 5, 2018 at 10:30 PM
@@ -48,37 +51,42 @@ var ReadableTime = function ReadableTime(_ref) {
   } else if (!shouldShowYear && alwaysShowTime) {
     // e.g. Oct 5 at 10:30 PM
     dateMessage = messages.eventTimeDateShort;
-    date = /*#__PURE__*/React.createElement(FormattedDate, {
-      value: timestamp,
-      month: "short",
-      day: "numeric"
+    date = intl.formatDate(timestamp, {
+      month: 'short',
+      day: 'numeric'
     });
   } else if (!shouldShowYear && !alwaysShowTime) {
     // e.g. Oct 5
-    return /*#__PURE__*/React.createElement(FormattedDate, {
-      value: timestamp,
-      month: "short",
-      day: "numeric"
+    output = intl.formatDate(timestamp, {
+      month: 'short',
+      day: 'numeric'
     });
+    return shouldUppercase ? output.toLocaleUpperCase(intl.locale) : output;
   }
 
-  var output = /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, dateMessage, {
-    values: {
-      time: timestamp,
-      date: date,
-      weekday: weekday
-    }
-  })); // if the time stamp is within +/- the relative threshold for the current time,
+  var values = {
+    time: timestamp,
+    date: date,
+    weekday: weekday
+  };
+  output = intl.formatMessage(dateMessage, values); // if the time stamp is within +/- the relative threshold for the current time,
   // print the default time format
 
-  if (Math.abs(Date.now() - timestamp) <= relativeThreshold) {
-    output = /*#__PURE__*/React.createElement(FormattedRelative, {
-      value: timestamp
-    });
+  var timeDiff = timestamp - Date.now();
+
+  if (Math.abs(timeDiff) <= relativeThreshold) {
+    if (intl.formatRelativeTime) {
+      // react-intl v3
+      output = intl.formatRelativeTime(timeDiff);
+    } else {
+      // react-intl v2
+      output = intl.formatRelative(timestamp);
+    }
   }
 
-  return output;
+  return shouldUppercase ? output.toLocaleUpperCase(intl.locale) : output;
 };
 
-export default ReadableTime;
+export { ReadableTime as ReadableTimeComponent };
+export default injectIntl(ReadableTime);
 //# sourceMappingURL=ReadableTime.js.map

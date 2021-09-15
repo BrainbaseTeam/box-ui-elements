@@ -14,10 +14,10 @@ var NavList = function NavList(_ref) {
   var classes = classNames("nav-list", className, {
     'is-collapsed': collapsed
   });
-  return /*#__PURE__*/React.createElement("nav", {
+  return React.createElement("nav", {
     className: classes
-  }, heading ? /*#__PURE__*/React.createElement("h2", null, heading) : null, placeholder, /*#__PURE__*/React.createElement("ul", ulProps, React.Children.map(children, function (link) {
-    return link ? /*#__PURE__*/React.createElement("li", null, link) : null;
+  }, heading ? React.createElement("h2", null, heading) : null, placeholder, React.createElement("ul", ulProps, React.Children.map(children, function (link) {
+    return link ? React.createElement("li", null, link) : null;
   })));
 };
 

@@ -9,22 +9,22 @@ import React from 'react';
 import IconCloud from '../../icons/general/IconCloud';
 
 var DropShadowFilter = function DropShadowFilter() {
-  return /*#__PURE__*/React.createElement("filter", {
+  return React.createElement("filter", {
     id: "drop-shadow"
-  }, /*#__PURE__*/React.createElement("feGaussianBlur", {
+  }, React.createElement("feGaussianBlur", {
     in: "SourceAlpha",
     stdDeviation: "2"
-  }), /*#__PURE__*/React.createElement("feOffset", {
+  }), React.createElement("feOffset", {
     dx: "2",
     dy: "2",
     result: "offsetblur"
-  }), /*#__PURE__*/React.createElement("feFlood", {
+  }), React.createElement("feFlood", {
     floodColor: "black",
     floodOpacity: "0.3"
-  }), /*#__PURE__*/React.createElement("feComposite", {
+  }), React.createElement("feComposite", {
     in2: "offsetblur",
     operator: "in"
-  }), /*#__PURE__*/React.createElement("feMerge", null, /*#__PURE__*/React.createElement("feMergeNode", null), /*#__PURE__*/React.createElement("feMergeNode", {
+  }), React.createElement("feMerge", null, React.createElement("feMergeNode", null), React.createElement("feMergeNode", {
     in: "SourceGraphic"
   })));
 };
@@ -46,23 +46,21 @@ var DragCloud = function DragCloud(_ref) {
       style = _ref.style;
   var x = position.x,
       y = position.y;
-  return (
-    /*#__PURE__*/
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+  return (// eslint-disable-next-line jsx-a11y/no-static-element-interactions
     React.createElement("div", {
       className: "drag-cloud ".concat(className),
       onMouseDown: onMouseDown,
       onMouseUp: onMouseUp,
       onTouchEnd: onTouchEnd,
       onTouchStart: onTouchStart,
-      style: _objectSpread(_objectSpread({}, style), {}, {
+      style: _objectSpread({}, style, {
         top: "".concat(y, "px"),
         left: "".concat(x, "px")
       })
-    }, /*#__PURE__*/React.createElement(IconCloud, {
+    }, React.createElement(IconCloud, {
       filter: {
         id: 'drop-shadow',
-        definition: /*#__PURE__*/React.createElement(DropShadowFilter, null)
+        definition: React.createElement(DropShadowFilter, null)
       },
       height: cloudSize,
       width: cloudSize

@@ -1,3 +1,7 @@
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 /**
  * 
  * @file Uploads Manager action component
@@ -7,6 +11,7 @@ import { FormattedMessage } from 'react-intl';
 import messages from '../common/messages';
 import PrimaryButton from '../../components/primary-button';
 import { STATUS_ERROR } from '../../constants';
+import { RESIN_TAG_TARGET } from '../../common/variables';
 import './UploadsManagerAction.scss';
 
 var UploadsManagerAction = function UploadsManagerAction(_ref) {
@@ -19,12 +24,15 @@ var UploadsManagerAction = function UploadsManagerAction(_ref) {
   };
 
   var resumeMessage = hasMultipleFailedUploads ? messages.resumeAll : messages.resume;
-  return /*#__PURE__*/React.createElement("div", {
+
+  var resin = _defineProperty({}, RESIN_TAG_TARGET, 'uploadresumeheader');
+
+  return React.createElement("div", {
     className: "bcu-uploads-manager-action"
-  }, /*#__PURE__*/React.createElement(PrimaryButton, {
+  }, React.createElement(PrimaryButton, _extends({
     onClick: handleResumeClick,
     type: "button"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, resumeMessage)));
+  }, resin), React.createElement(FormattedMessage, resumeMessage)));
 };
 
 export default UploadsManagerAction;

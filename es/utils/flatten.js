@@ -5,6 +5,7 @@
  */
 import { getBadItemError } from './error';
 import { TYPE_FOLDER, TYPE_FILE, TYPE_WEBLINK } from '../constants';
+
 /**
  * Takes an item list and flattens it by moving
  * all item entries into the cache and replacing the list
@@ -17,7 +18,6 @@ import { TYPE_FOLDER, TYPE_FILE, TYPE_WEBLINK } from '../constants';
  * @param {WebLink} weblinkAPI api for web links
  * @return {Array} list with items replaced with reference keys
  */
-
 export default function (list, folderAPI, fileAPI, weblinkAPI) {
   var items = [];
   list.forEach(function (item) {

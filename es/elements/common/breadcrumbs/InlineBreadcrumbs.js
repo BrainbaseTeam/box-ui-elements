@@ -20,9 +20,9 @@ var InlineBreadcrumbs = function InlineBreadcrumbs(_ref) {
       _ref2$entries = _ref2.entries,
       breadcrumbs = _ref2$entries === void 0 ? [] : _ref2$entries;
 
-  return /*#__PURE__*/React.createElement("span", {
+  return React.createElement("span", {
     className: "be-inline-breadcrumbs"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.in), "\xA0", /*#__PURE__*/React.createElement(Breadcrumbs, {
+  }, React.createElement(FormattedMessage, messages.in), "\xA0", React.createElement(Breadcrumbs, {
     crumbs: breadcrumbs,
     delimiter: DELIMITER_SLASH,
     onCrumbClick: onItemClick,

@@ -174,7 +174,9 @@ function isActiveXObjectEnabledForIE(objectID) {
   return enabled;
 }
 
-var BrowserUtils = /*#__PURE__*/function () {
+var BrowserUtils =
+/*#__PURE__*/
+function () {
   function BrowserUtils() {
     _classCallCheck(this, BrowserUtils);
 

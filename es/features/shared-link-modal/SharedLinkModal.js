@@ -8,19 +8,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -34,12 +30,14 @@ import EmailSharedLink from './EmailSharedLink';
 import messages from './messages';
 import { accessLevelPropType, allowedAccessLevelsPropType, permissionLevelPropType } from './propTypes';
 
-var SharedLinkModal = /*#__PURE__*/function (_Component) {
+var SharedLinkModal =
+/*#__PURE__*/
+function (_Component) {
   _inherits(SharedLinkModal, _Component);
 
-  var _super = _createSuper(SharedLinkModal);
-
   function SharedLinkModal() {
+    var _getPrototypeOf2;
+
     var _this;
 
     _classCallCheck(this, SharedLinkModal);
@@ -48,7 +46,7 @@ var SharedLinkModal = /*#__PURE__*/function (_Component) {
       args[_key] = arguments[_key];
     }
 
-    _this = _super.call.apply(_super, [this].concat(args));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(SharedLinkModal)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_this), "state", {
       isEmailSharedLinkExpanded: false
@@ -87,7 +85,7 @@ var SharedLinkModal = /*#__PURE__*/function (_Component) {
           removeLinkButtonProps = _this$props.removeLinkButtonProps,
           sharedLink = _this$props.sharedLink,
           submitting = _this$props.submitting;
-      return /*#__PURE__*/React.createElement(SharedLink, {
+      return React.createElement(SharedLink, {
         accessLevel: accessLevel,
         accessMenuButtonProps: accessMenuButtonProps,
         allowedAccessLevels: allowedAccessLevels,
@@ -126,7 +124,7 @@ var SharedLinkModal = /*#__PURE__*/function (_Component) {
         return null;
       }
 
-      return /*#__PURE__*/React.createElement(EmailSharedLink, {
+      return React.createElement(EmailSharedLink, {
         contacts: contacts,
         defaultEmailMessage: defaultEmailMessage,
         emailMessageProps: emailMessageProps,
@@ -148,21 +146,21 @@ var SharedLinkModal = /*#__PURE__*/function (_Component) {
           onRequestClose = _this$props3.onRequestClose,
           submitting = _this$props3.submitting;
       var isEmailSharedLinkExpanded = this.state.isEmailSharedLinkExpanded;
-      return /*#__PURE__*/React.createElement(Modal, _extends({
+      return React.createElement(Modal, _extends({
         className: "shared-link-modal",
         focusElementSelector: ".shared-link-container input",
         isOpen: isOpen,
         onRequestClose: submitting ? undefined : onRequestClose,
-        title: /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.sharedLinkModalTitle, {
+        title: React.createElement(FormattedMessage, _extends({}, messages.sharedLinkModalTitle, {
           values: {
             itemName: itemName
           }
         }))
-      }, modalProps), this.renderSharedLink(), /*#__PURE__*/React.createElement("hr", null), this.renderEmailSharedLink(), !isEmailSharedLinkExpanded && /*#__PURE__*/React.createElement(ModalActions, null, /*#__PURE__*/React.createElement(Button, {
+      }, modalProps), this.renderSharedLink(), React.createElement("hr", null), this.renderEmailSharedLink(), !isEmailSharedLinkExpanded && React.createElement(ModalActions, null, React.createElement(Button, {
         isDisabled: submitting,
         onClick: onRequestClose,
         type: "button"
-      }, /*#__PURE__*/React.createElement(FormattedMessage, commonMessages.close))));
+      }, React.createElement(FormattedMessage, commonMessages.close))));
     }
   }]);
 

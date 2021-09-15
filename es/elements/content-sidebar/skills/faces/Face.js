@@ -24,29 +24,29 @@ var Face = function Face(_ref) {
   var faceClassName = classNames('be-face-wrapper', {
     'be-face-unselected': !isEditing && isAnyFaceSelected && !isCurrentFaceSelected
   });
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: faceClassName
-  }, /*#__PURE__*/React.createElement(PlainButton, {
+  }, React.createElement(PlainButton, {
     className: "be-face",
     "data-resin-target": SKILLS_TARGETS.FACES.FACE,
     onClick: function onClick() {
       return !isEditing && onSelect(face);
     },
     type: "button"
-  }, /*#__PURE__*/React.createElement("img", {
+  }, React.createElement("img", {
     alt: face.text,
     src: face.image_url,
     title: face.text
-  }), isFaceSelected && /*#__PURE__*/React.createElement(IconMinus, {
+  }), isFaceSelected && React.createElement(IconMinus, {
     color: COLOR_WHITE
-  })), isEditing && /*#__PURE__*/React.createElement(PlainButton, {
+  })), isEditing && React.createElement(PlainButton, {
     className: "be-face-delete",
     "data-resin-target": SKILLS_TARGETS.FACES.DELETE,
     onClick: function onClick() {
       return onDelete(face);
     },
     type: "button"
-  }, /*#__PURE__*/React.createElement(IconClose, {
+  }, React.createElement(IconClose, {
     color: COLOR_999,
     height: 16,
     width: 16

@@ -20,7 +20,7 @@ export function getIcon(dimension, rowData) {
 
   switch (type) {
     case TYPE_FOLDER:
-      return /*#__PURE__*/React.createElement(FolderIcon, {
+      return React.createElement(FolderIcon, {
         dimension: dimension,
         isCollab: has_collaborations,
         isExternal: is_externally_owned,
@@ -28,13 +28,13 @@ export function getIcon(dimension, rowData) {
       });
 
     case TYPE_FILE:
-      return /*#__PURE__*/React.createElement(FileIcon, {
+      return React.createElement(FileIcon, {
         dimension: dimension,
         extension: extension
       });
 
     case TYPE_WEBLINK:
-      return /*#__PURE__*/React.createElement(BookmarkIcon, {
+      return React.createElement(BookmarkIcon, {
         height: dimension,
         width: dimension
       });
@@ -47,7 +47,7 @@ export default (function () {
   var dimension = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 32;
   return function (_ref) {
     var rowData = _ref.rowData;
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "be-item-icon"
     }, getIcon(dimension, rowData));
   };

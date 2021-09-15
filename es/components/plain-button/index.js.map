@@ -1,1 +1,1 @@
-{"version":3,"sources":["../../../src/components/plain-button/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,eAAxB","sourcesContent":["// @flow\nexport { default } from './PlainButton';\n"],"file":"index.js"}
+{"version":3,"sources":["../../../src/components/plain-button/index.ts"],"names":["default"],"mappings":"AAEA,SAASA,OAAT,QAAwB,eAAxB","sourcesContent":["import { PlainButtonProps as Props } from './PlainButton';\n\nexport { default } from './PlainButton';\nexport type PlainButtonProps = Props;\n"],"file":"index.js"}

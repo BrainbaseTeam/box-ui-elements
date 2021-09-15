@@ -19,7 +19,7 @@ var Instances = function Instances(_ref) {
         template = _ref2.template;
     var templateKey = template.templateKey;
     var isOpen = editors.length === 1 || templateKey === selectedTemplateKey;
-    return /*#__PURE__*/React.createElement(Instance, {
+    return React.createElement(Instance, {
       canEdit: instance.canEdit,
       cascadePolicy: instance.cascadePolicy,
       data: instance.data,

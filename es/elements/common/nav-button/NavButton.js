@@ -18,7 +18,7 @@ import classNames from 'classnames';
 import { Route } from 'react-router-dom';
 import PlainButton from '../../../components/plain-button';
 import { isLeftClick } from '../../../utils/dom';
-var NavButton = /*#__PURE__*/React.forwardRef(function (props, ref) {
+var NavButton = React.forwardRef(function (props, ref) {
   var _props$activeClassNam = props.activeClassName,
       activeClassName = _props$activeClassNam === void 0 ? 'bdl-is-active' : _props$activeClassNam,
       children = props.children,
@@ -35,7 +35,7 @@ var NavButton = /*#__PURE__*/React.forwardRef(function (props, ref) {
       rest = _objectWithoutProperties(props, ["activeClassName", "children", "className", "component", "exact", "isActive", "onClick", "replace", "strict", "to"]);
 
   var path = _typeof(to) === 'object' ? to.pathname : to;
-  return /*#__PURE__*/React.createElement(Route, {
+  return React.createElement(Route, {
     exact: exact,
     path: path,
     strict: strict
@@ -44,7 +44,7 @@ var NavButton = /*#__PURE__*/React.forwardRef(function (props, ref) {
         location = _ref.location,
         match = _ref.match;
     var isActiveValue = !!(isActive ? isActive(match, location) : match);
-    return /*#__PURE__*/React.createElement(Component, _extends({
+    return React.createElement(Component, _extends({
       className: classNames(className, _defineProperty({}, activeClassName, isActiveValue)),
       onClick: function onClick(event) {
         if (_onClick) {

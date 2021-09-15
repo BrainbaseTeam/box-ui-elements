@@ -14,13 +14,13 @@ import Tooltip from '../Tooltip';
 import './AddButton.scss';
 
 var AddButton = function AddButton(props) {
-  return /*#__PURE__*/React.createElement(Tooltip, {
-    text: /*#__PURE__*/React.createElement(FormattedMessage, messages.add)
-  }, /*#__PURE__*/React.createElement(Button, _extends({
+  return React.createElement(Tooltip, {
+    text: React.createElement(FormattedMessage, messages.add)
+  }, React.createElement(Button, _extends({
     className: "be-btn-add",
     "aria-label": messages.add.defaultMessage,
     type: "button"
-  }, props), /*#__PURE__*/React.createElement(IconAddThin, null)));
+  }, props), React.createElement(IconAddThin, null)));
 };
 
 export default AddButton;

@@ -4,8 +4,8 @@ import { defineMessages, injectIntl } from 'react-intl';
 import classNames from 'classnames';
 import omit from 'lodash/omit';
 
-import IconClear from '../../icons/general/IconClear';
-import IconSearch from '../../icons/general/IconSearch';
+import ClearBadge16 from '../../icon/fill/ClearBadge16';
+import Search16 from '../../icon/fill/Search16';
 
 import makeLoadable from '../loading-indicator/makeLoadable';
 
@@ -129,7 +129,18 @@ class SearchForm extends React.Component<Props, State> {
     searchInput: ?HTMLInputElement;
 
     render() {
-        const { action, className, intl, isLoading, method, name, queryParams, useClearButton, ...rest } = this.props;
+        const {
+            action,
+            className,
+            intl,
+            isLoading,
+            method,
+            name,
+            queryParams,
+            onSubmit,
+            useClearButton,
+            ...rest
+        } = this.props;
         const { isEmpty } = this.state;
 
         const inputProps = omit(rest, [
@@ -152,20 +163,27 @@ class SearchForm extends React.Component<Props, State> {
 
         const SearchActions = () => (
             <div className="action-buttons">
-                <button
-                    type="button"
-                    className="action-button search-button"
-                    title={formatMessage(messages.searchButtonTitle)}
-                >
-                    <IconSearch />
-                </button>
+                {onSubmit ? (
+                    <button
+                        type="button"
+                        className="action-button search-button"
+                        title={formatMessage(messages.searchButtonTitle)}
+                    >
+                        <Search16 />
+                    </button>
+                ) : (
+                    <div className="action-button search-button">
+                        <Search16 />
+                    </div>
+                )}
+
                 <button
                     className="action-button clear-button"
                     onClick={this.onClearHandler}
                     title={formatMessage(messages.clearButtonTitle)}
                     type="button"
                 >
-                    <IconClear />
+                    <ClearBadge16 />
                 </button>
             </div>
         );

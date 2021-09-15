@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
 import { bdlGray62 } from '../../styles/variables';
 
@@ -52,10 +52,11 @@ const VanityNameSection = ({
     return (
         <div>
             <hr />
-            <Fieldset className="vanity-name-section" title={<FormattedMessage {...messages.customURLLabel} />}>
+            <Fieldset className="be vanity-name-section" title={<FormattedMessage {...messages.customURLLabel} />}>
                 <Checkbox
                     label={<FormattedMessage {...messages.vanityURLEnableText} />}
                     isChecked={isVanityEnabled}
+                    isDisabled={!canChangeVanityName}
                     subsection={isVanityEnabled ? vanityURLInput : undefined}
                     onChange={onCheckboxChange}
                 />
@@ -67,7 +68,7 @@ const VanityNameSection = ({
 VanityNameSection.propTypes = {
     canChangeVanityName: PropTypes.bool.isRequired,
     error: PropTypes.string,
-    intl: intlShape.isRequired,
+    intl: PropTypes.any,
     isVanityEnabled: PropTypes.bool.isRequired,
     vanityName: PropTypes.string.isRequired,
     vanityNameInputProps: PropTypes.object,

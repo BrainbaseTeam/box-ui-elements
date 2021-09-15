@@ -6,19 +6,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -40,7 +36,7 @@ import LoadingIndicator from '../../components/loading-indicator';
 import { Flyout, Overlay } from '../../components/flyout';
 import MenuToggle from '../../components/dropdown-menu/MenuToggle';
 import messages from './messages';
-import { TEMPLATE_CUSTOM_PROPERTIES } from './constants';
+import TEMPLATE_CUSTOM_PROPERTIES from './constants';
 import './TemplateDropdown.scss';
 
 var InputContainer = function InputContainer(_ref) {
@@ -48,7 +44,7 @@ var InputContainer = function InputContainer(_ref) {
       inputProps = _ref$inputProps === void 0 ? {} : _ref$inputProps,
       rest = _objectWithoutProperties(_ref, ["inputProps"]);
 
-  return /*#__PURE__*/React.createElement(SearchForm, _extends({}, inputProps, rest, {
+  return React.createElement(SearchForm, _extends({}, inputProps, rest, {
     shouldPreventClearEventPropagation: true,
     "data-resin-target": "metadata-templatesearch"
   }));
@@ -62,17 +58,17 @@ var getAvailableTemplates = function getAvailableTemplates(allTemplates, usedTem
   });
 };
 
-var TemplateDropdown = /*#__PURE__*/function (_React$PureComponent) {
+var TemplateDropdown =
+/*#__PURE__*/
+function (_React$PureComponent) {
   _inherits(TemplateDropdown, _React$PureComponent);
-
-  var _super = _createSuper(TemplateDropdown);
 
   function TemplateDropdown(props) {
     var _this;
 
     _classCallCheck(this, TemplateDropdown);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(TemplateDropdown).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "getDropdown", function () {
       var _this$props = _this.props,
@@ -91,7 +87,7 @@ var TemplateDropdown = /*#__PURE__*/function (_React$PureComponent) {
       var indicatorOrMessage = null;
 
       if (isDropdownBusy) {
-        indicatorOrMessage = /*#__PURE__*/React.createElement(LoadingIndicator, {
+        indicatorOrMessage = React.createElement(LoadingIndicator, {
           className: "metadata-instance-editor-template-message template-dropdown-loading-indicator"
         });
       } else if (!hasTemplates || !hasUnusedTemplates || !hasResults) {
@@ -107,9 +103,9 @@ var TemplateDropdown = /*#__PURE__*/function (_React$PureComponent) {
           message = messages.metadataTemplatesNoResults;
         }
 
-        indicatorOrMessage = /*#__PURE__*/React.createElement("i", {
+        indicatorOrMessage = React.createElement("i", {
           className: "metadata-instance-editor-template-message"
-        }, /*#__PURE__*/React.createElement(FormattedMessage, message));
+        }, React.createElement(FormattedMessage, message));
       }
 
       var renderedTemplates = templates.map(function (template) {
@@ -117,15 +113,15 @@ var TemplateDropdown = /*#__PURE__*/function (_React$PureComponent) {
         var buttonClassName = classNames('metadata-template-dropdown-select-template', {
           'metadata-template-dropdown-is-selected': isTemplateSelected
         });
-        return /*#__PURE__*/React.createElement(DatalistItem, {
+        return React.createElement(DatalistItem, {
           key: template.id
-        }, /*#__PURE__*/React.createElement(PlainButton, {
+        }, React.createElement(PlainButton, {
           className: buttonClassName,
           tabIndex: "-1",
           type: "button"
         }, isTemplateSelected ? activeTemplateIcon : defaultTemplateIcon, _this.getTemplateName(template)));
       });
-      return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(SelectorDropdown, {
+      return React.createElement(React.Fragment, null, React.createElement(SelectorDropdown, {
         className: "metadata-instance-editor-template-dropdown-menu",
         title: title,
         isAlwaysOpen: true,
@@ -140,7 +136,7 @@ var TemplateDropdown = /*#__PURE__*/function (_React$PureComponent) {
     _defineProperty(_assertThisInitialized(_this), "getSelector", function () {
       var intl = _this.props.intl;
       var filterText = _this.state.filterText;
-      return /*#__PURE__*/React.createElement(InputContainer, {
+      return React.createElement(InputContainer, {
         label: "",
         onChange: _this.handleUserInput,
         placeholder: intl.formatMessage(messages.metadataTemplateSearchPlaceholder),
@@ -206,11 +202,11 @@ var TemplateDropdown = /*#__PURE__*/function (_React$PureComponent) {
         return entryButton;
       }
 
-      return /*#__PURE__*/React.createElement(PlainButton, {
+      return React.createElement(PlainButton, {
         "data-resin-target": "metadata-templateaddmenu",
         className: buttonToggleClassName,
         type: "button"
-      }, /*#__PURE__*/React.createElement(MenuToggle, null, /*#__PURE__*/React.createElement(FormattedMessage, messages.metadataTemplateAdd)));
+      }, React.createElement(MenuToggle, null, React.createElement(FormattedMessage, messages.metadataTemplateAdd)));
     });
 
     _this.state = {
@@ -253,9 +249,9 @@ var TemplateDropdown = /*#__PURE__*/function (_React$PureComponent) {
      * @return {React.Node} - string or formatted name
      */
     value: function getTemplateName(template) {
-      return template.templateKey === TEMPLATE_CUSTOM_PROPERTIES ? /*#__PURE__*/React.createElement(FormattedMessage, _extends({
+      return template.templateKey === TEMPLATE_CUSTOM_PROPERTIES ? React.createElement(FormattedMessage, _extends({
         className: "template-display-name"
-      }, messages.customTitle)) : /*#__PURE__*/React.createElement("div", {
+      }, messages.customTitle)) : React.createElement("div", {
         className: "template-display-name"
       }, template.displayName);
     }
@@ -271,7 +267,7 @@ var TemplateDropdown = /*#__PURE__*/function (_React$PureComponent) {
     value: function render() {
       var className = this.props.className;
       var flyoutClassName = classNames('metadata-instance-editor-template-dropdown-flyout', className);
-      return /*#__PURE__*/React.createElement(Flyout, {
+      return React.createElement(Flyout, {
         className: flyoutClassName,
         closeOnClick: true,
         closeOnClickOutside: true,
@@ -279,7 +275,7 @@ var TemplateDropdown = /*#__PURE__*/function (_React$PureComponent) {
         onOpen: this.onOpen,
         position: "bottom-left",
         shouldDefaultFocus: true
-      }, this.renderEntryButton(), /*#__PURE__*/React.createElement(Overlay, null, this.getDropdown()));
+      }, this.renderEntryButton(), React.createElement(Overlay, null, this.getDropdown()));
     }
   }]);
 

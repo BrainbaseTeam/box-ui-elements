@@ -1,1 +1,1 @@
-{"version":3,"sources":["../../../src/components/draggable-list/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,iBAAxB","sourcesContent":["// @flow\nexport { default } from './DraggableList';\n"],"file":"index.js"}
+{"version":3,"sources":["../../../src/components/draggable-list/index.tsx"],"names":["default"],"mappings":"AAAA,SAASA,OAAT,QAAwB,iBAAxB","sourcesContent":["export { default } from './DraggableList';\n"],"file":"index.js"}

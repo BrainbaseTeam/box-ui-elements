@@ -19,7 +19,6 @@
     }
 
     .date-picker-description {
-        display: block;
         color: $bdl-gray-62;
     }
 
@@ -31,6 +30,7 @@
     }
 
     .date-picker-input:focus ~ .tooltip,
+    .date-picker-input:focus ~ .bdl-Tooltip,
     .date-picker-unix-time-input {
         display: none;
     }
@@ -68,7 +68,7 @@
     .date-picker-clear-btn {
         path {
             transition: fill linear .1s;
-            fill: $bdl-gray-40;
+            fill: $bdl-gray-50;
         }
     }
 

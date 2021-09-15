@@ -2,7 +2,7 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import Classification from '../classification';
+import Classification, { getClassificationLabelColor } from '../classification';
 import messages from './messages';
 
 function getTitle(isEmailLinkSectionExpanded, showCollaboratorList, item) {
@@ -10,19 +10,19 @@ function getTitle(isEmailLinkSectionExpanded, showCollaboratorList, item) {
   var title;
 
   if (isEmailLinkSectionExpanded) {
-    title = /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.emailModalTitle, {
+    title = React.createElement(FormattedMessage, _extends({}, messages.emailModalTitle, {
       values: {
         itemName: name
       }
     }));
   } else if (showCollaboratorList) {
-    title = /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.collaboratorListTitle, {
+    title = React.createElement(FormattedMessage, _extends({}, messages.collaboratorListTitle, {
       values: {
         itemName: name
       }
     }));
   } else {
-    title = /*#__PURE__*/React.createElement(FormattedMessage, _extends({}, messages.modalTitle, {
+    title = React.createElement(FormattedMessage, _extends({}, messages.modalTitle, {
       values: {
         itemName: name
       }
@@ -38,13 +38,16 @@ var UnifiedShareModalTitle = function UnifiedShareModalTitle(_ref) {
       item = _ref.item;
   var title = getTitle(isEmailLinkSectionExpanded, showCollaboratorList, item);
   var bannerPolicy = item.bannerPolicy,
+      canUserSeeClassification = item.canUserSeeClassification,
       classification = item.classification;
-  return /*#__PURE__*/React.createElement("span", {
+  var classificationColor = getClassificationLabelColor(bannerPolicy);
+  return React.createElement(React.Fragment, null, React.createElement("span", {
     className: "bdl-UnifiedShareModalTitle"
-  }, title, /*#__PURE__*/React.createElement(Classification, {
+  }, title), canUserSeeClassification && React.createElement(Classification, {
     definition: bannerPolicy ? bannerPolicy.body : undefined,
     messageStyle: "tooltip",
     name: classification,
+    color: classificationColor,
     className: "bdl-UnifiedShareModalTitle-classification"
   }));
 };

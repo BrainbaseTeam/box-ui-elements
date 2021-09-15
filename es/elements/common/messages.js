@@ -31,7 +31,7 @@ var messages = defineMessages({
   },
   previewErrorBlockedByPolicy: {
     "id": "be.previewErrorBlockedByPolicy",
-    "defaultMessage": "Your access is restricted due to the classification applied to this content."
+    "defaultMessage": "Your access to this content is restricted due to a security policy."
   },
   boxEditErrorBlockedByPolicy: {
     "id": "be.boxEditErrorBlockedByPolicy",
@@ -569,6 +569,10 @@ var messages = defineMessages({
     "id": "be.uploadsOneOrMoreChildFoldersFailedToUploadMessage",
     "defaultMessage": "One or more child folders failed to upload."
   },
+  uploadsPackageUploadErrorMessage: {
+    "id": "be.uploadsPackageUploadErrorMessage",
+    "defaultMessage": "Failed to upload package file. Please retry by saving as a single file."
+  },
   uploadsDefaultErrorMessage: {
     "id": "be.uploadsDefaultErrorMessage",
     "defaultMessage": "Something went wrong with the upload. Please try again."
@@ -595,7 +599,11 @@ var messages = defineMessages({
   },
   noActivity: {
     "id": "be.noActivity",
-    "defaultMessage": "No Activity Yet"
+    "defaultMessage": "No activity to show"
+  },
+  noActivityAnnotationPrompt: {
+    "id": "be.noActivityAnnotationPrompt",
+    "defaultMessage": "Hover over the preview and use the controls at the bottom to annotate the file."
   },
   noActivityCommentPrompt: {
     "id": "be.noActivityCommentPrompt",
@@ -624,6 +632,10 @@ var messages = defineMessages({
   versionUploaded: {
     "id": "be.versionUploaded",
     "defaultMessage": "{name} uploaded v{version_number}"
+  },
+  fileRequestDisplayName: {
+    "id": "be.fileRequestDisplayName",
+    "defaultMessage": "File Request"
   },
   defaultInlineErrorContentMessage: {
     "id": "be.defaultInlineErrorContentMessage",
@@ -744,6 +756,18 @@ var messages = defineMessages({
   priorCollaborator: {
     "id": "be.priorCollaborator",
     "defaultMessage": "A Prior Collaborator"
+  },
+  moveTo: {
+    "id": "be.moveTo",
+    "defaultMessage": "Move to..."
+  },
+  setThumbnailMenuItem: {
+    "id": "be.setThumbnailMenuItem",
+    "defaultMessage": "Set custom thumbnail"
+  },
+  removeThumbnailMenuItem: {
+    "id": "be.removeThumbnailMenuItem",
+    "defaultMessage": "Remove custom thumbnail"
   }
 });
 export default messages;

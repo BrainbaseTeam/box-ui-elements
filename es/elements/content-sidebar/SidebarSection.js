@@ -6,19 +6,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -36,10 +32,10 @@ import IconCaretDown from '../../icons/general/IconCaretDown';
 import { COLOR_999 } from '../../constants';
 import './SidebarSection.scss';
 
-var SidebarSection = /*#__PURE__*/function (_React$PureComponent) {
+var SidebarSection =
+/*#__PURE__*/
+function (_React$PureComponent) {
   _inherits(SidebarSection, _React$PureComponent);
-
-  var _super = _createSuper(SidebarSection);
 
   /**
    * [constructor]
@@ -52,7 +48,7 @@ var SidebarSection = /*#__PURE__*/function (_React$PureComponent) {
 
     _classCallCheck(this, SidebarSection);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(SidebarSection).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "toggleVisibility", function () {
       _this.setState(function (prevState) {
@@ -96,17 +92,18 @@ var SidebarSection = /*#__PURE__*/function (_React$PureComponent) {
       var sectionClassName = classNames('bcs-section', {
         'bcs-section-open': isOpen
       }, className);
-      return /*#__PURE__*/React.createElement("div", {
+      return React.createElement("div", {
         className: sectionClassName
-      }, title && /*#__PURE__*/React.createElement(PlainButton, {
+      }, title && React.createElement(PlainButton, {
+        "aria-expanded": isOpen,
         className: "bcs-section-title",
         "data-resin-target": interactionTarget,
         onClick: this.toggleVisibility,
         type: "button"
-      }, title, /*#__PURE__*/React.createElement(IconCaretDown, {
+      }, title, React.createElement(IconCaretDown, {
         color: COLOR_999,
         width: 8
-      })), (isOpen || !title) && /*#__PURE__*/React.createElement("div", {
+      })), (isOpen || !title) && React.createElement("div", {
         className: "bcs-section-content"
       }, children));
     }

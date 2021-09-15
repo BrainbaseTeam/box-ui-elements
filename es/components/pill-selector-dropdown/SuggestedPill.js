@@ -11,7 +11,8 @@ var SuggestedPill = function SuggestedPill(_ref) {
       onAdd = _ref.onAdd;
 
   var addSuggestedPill = function addSuggestedPill(event) {
-    event.preventDefault();
+    event.preventDefault(); // TODO: refactor this so inline conversions aren't required at every usage
+
     onAdd({
       email: email,
       id: id,
@@ -28,16 +29,16 @@ var SuggestedPill = function SuggestedPill(_ref) {
     }
   };
 
-  return /*#__PURE__*/React.createElement(Tooltip, {
+  return React.createElement(Tooltip, {
     position: "bottom-center",
     text: email
-  }, /*#__PURE__*/React.createElement(PlainButton, {
+  }, React.createElement(PlainButton, {
     className: "suggested-pill-invisible-button",
     onClick: addSuggestedPill,
     onKeyDown: handleKeyPress,
     type: "button"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "pill-text suggested-pill"
+  }, React.createElement("span", {
+    className: "bdl-Pill-text pill-text suggested-pill"
   }, name)));
 };
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
 var MenuSeparator = function MenuSeparator() {
-  return /*#__PURE__*/React.createElement("li", {
+  return React.createElement("li", {
     role: "separator"
   });
 };

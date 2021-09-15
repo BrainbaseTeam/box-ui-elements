@@ -5,6 +5,7 @@
  */
 
 import Cache from './Cache';
+import type APICache from './Cache';
 
 const KEY_PREFIX = 'localStore';
 const SERVICE_VERSION = '0';
@@ -23,8 +24,12 @@ class LocalStore {
      */
     constructor() {
         this.memoryStore = new Cache();
-        this.localStorage = window.localStorage;
-        this.isLocalStorageAvailable = this.canUseLocalStorage();
+        try {
+            this.localStorage = window.localStorage;
+            this.isLocalStorageAvailable = this.canUseLocalStorage();
+        } catch (e) {
+            this.isLocalStorageAvailable = false;
+        }
     }
 
     /**
