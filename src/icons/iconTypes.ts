@@ -22,6 +22,8 @@ export interface Icon extends TwoTonedIcon {
     strokeColor?: string;
     /** A number specifying the width of the icon's stroke */
     strokeWidth?: number;
+    /** Custom thumbnail icon url */
+    thumbnailUrl?: string;
 }
 
 export interface FileIcon {
