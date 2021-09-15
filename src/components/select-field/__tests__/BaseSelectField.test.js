@@ -1,8 +1,14 @@
 import React from 'react';
 import sinon from 'sinon';
+import { FormattedMessage } from 'react-intl';
 
 import { scrollIntoView } from '../../../utils/dom';
-import BaseSelectField, { OVERLAY_SCROLLABLE_CLASS } from '../BaseSelectField';
+import { BaseSelectFieldBase as BaseSelectField } from '../BaseSelectField';
+import { OVERLAY_SCROLLABLE_CLASS } from '../SelectFieldDropdown';
+import { ARROW_DOWN, ARROW_UP, ENTER, ESCAPE, SPACE, TAB } from '../../../common/keyboard-events';
+import CLEAR from '../constants';
+
+import messages from '../messages';
 
 const sandbox = sinon.sandbox.create();
 
@@ -16,6 +22,10 @@ describe('components/select-field/BaseSelectField', () => {
         jest.clearAllMocks();
     });
 
+    const intl = {
+        formatMessage: jest.fn(),
+    };
+
     const options = [
         { displayText: 'Any Type', value: '' },
         { displayText: 'Audio', value: 'audio' },
@@ -26,10 +36,12 @@ describe('components/select-field/BaseSelectField', () => {
     const shallowRenderSelectField = props =>
         shallow(
             <BaseSelectField
+                intl={intl}
                 isDisabled={false}
                 onChange={() => {}}
                 onOptionSelect={onOptionSelectSpy}
                 options={options}
+                shouldShowClearOption={false}
                 {...props}
             />,
         );
@@ -80,13 +92,12 @@ describe('components/select-field/BaseSelectField', () => {
             const wrapper = shallowRenderSelectField();
             const instance = wrapper.instance();
 
-            const buttonWrapper = wrapper.find('SelectButton');
-            expect(buttonWrapper.length).toBe(1);
+            const buttonWrapper = wrapper.find('PopperComponent').childAt(0);
             expect(buttonWrapper.prop('aria-activedescendant')).toEqual(null);
             expect(buttonWrapper.prop('aria-autocomplete')).toEqual('list');
             expect(buttonWrapper.prop('aria-expanded')).toBe(false);
             expect(buttonWrapper.prop('aria-owns')).toEqual(instance.selectFieldID);
-            expect(buttonWrapper.prop('role')).toEqual('combobox');
+            expect(buttonWrapper.prop('role')).toEqual('listbox');
             expect(buttonWrapper.prop('isDisabled')).toEqual(false);
         });
 
@@ -97,7 +108,7 @@ describe('components/select-field/BaseSelectField', () => {
                 activeItemID: 'datalistitem-123',
             });
 
-            const buttonWrapper = wrapper.find('SelectButton');
+            const buttonWrapper = wrapper.find('PopperComponent').childAt(0);
             expect(buttonWrapper.length).toBe(1);
             expect(buttonWrapper.prop('aria-activedescendant')).toEqual('datalistitem-123');
             expect(buttonWrapper.prop('aria-expanded')).toBe(true);
@@ -105,7 +116,7 @@ describe('components/select-field/BaseSelectField', () => {
 
         test('should render disabled select button if isDisabled is true', () => {
             const wrapper = shallowRenderSelectField({ isDisabled: true });
-            const buttonWrapper = wrapper.find('SelectButton');
+            const buttonWrapper = wrapper.find('PopperComponent').childAt(0);
             expect(buttonWrapper.prop('isDisabled')).toBe(true);
         });
 
@@ -113,7 +124,7 @@ describe('components/select-field/BaseSelectField', () => {
             const wrapper = shallowRenderSelectField({
                 buttonProps: { 'data-resin-thing': 'hi' },
             });
-            const buttonWrapper = wrapper.find('SelectButton');
+            const buttonWrapper = wrapper.find('PopperComponent').childAt(0);
             expect(buttonWrapper.prop('data-resin-thing')).toBe('hi');
         });
 
@@ -121,12 +132,52 @@ describe('components/select-field/BaseSelectField', () => {
             const wrapper = shallowRenderSelectField({
                 error: 'error',
             });
-            const buttonWrapper = wrapper.find('SelectButton');
+            const buttonWrapper = wrapper.find('PopperComponent').childAt(0);
             expect(buttonWrapper).toMatchSnapshot();
         });
     });
 
+    describe('renderSearchInput', () => {
+        test('should render SearchForm if shouldShowSearchInput is true', () => {
+            const wrapper = shallowRenderSelectField({
+                shouldShowSearchInput: true,
+            });
+
+            const searchForm = wrapper.find('SearchForm');
+
+            expect(searchForm.length).toBe(1);
+        });
+    });
+
     describe('renderSelectOptions()', () => {
+        test('should render FormattedMessage if searchText is not a substring of any of the options', () => {
+            const searchText = 'abc';
+            const wrapper = shallowRenderSelectField();
+            const instance = wrapper.instance();
+            instance.setState({
+                searchText,
+            });
+
+            const message = wrapper.find(FormattedMessage);
+
+            expect(message.props().id).toBe(messages.noResults.id);
+        });
+
+        test('should only render the option that matches the searchText substring', () => {
+            const searchText = 'Audio';
+            const wrapper = shallowRenderSelectField();
+            const instance = wrapper.instance();
+            instance.setState({
+                searchText,
+            });
+
+            const itemsWrapper = wrapper.find('DatalistItem');
+            const option = itemsWrapper.at(0);
+
+            expect(itemsWrapper.length).toBe(1);
+            expect(option.find('.bdl-SelectField-optionText').props().title).toEqual(searchText);
+        });
+
         test('should render DatalistItems per option', () => {
             const wrapper = shallowRenderSelectField();
             const itemsWrapper = wrapper.find('DatalistItem');
@@ -165,7 +216,7 @@ describe('components/select-field/BaseSelectField', () => {
             const wrapper = shallowRenderSelectField({
                 separatorIndices: [1, 3],
             });
-            const overlayWrapper = wrapper.find('.overlay');
+            const overlayWrapper = wrapper.find('PopperComponent').childAt(1);
             expect(overlayWrapper.childAt(1).prop('role')).toEqual('separator');
             expect(overlayWrapper.childAt(4).prop('role')).toEqual('separator');
         });
@@ -181,6 +232,29 @@ describe('components/select-field/BaseSelectField', () => {
 
             expect(optionRenderer).toHaveBeenCalledTimes(options.length);
             expect(itemsWrapper).toMatchSnapshot();
+        });
+
+        test('should render a clear option if shouldShowClearOption is true and value is CLEAR and searchText is empty string', () => {
+            const wrapper = shallowRenderSelectField({
+                options: [{ displayText: 'Clear All', value: CLEAR }],
+                shouldShowClearOption: true,
+            });
+            const itemsWrapper = wrapper.find('DatalistItem');
+
+            expect(itemsWrapper.at(0).prop('className')).toEqual('select-option is-clear-option');
+        });
+
+        test('should not render a clear option if shouldShowClearOption is true and value is CLEAR and searchText is not empty string', () => {
+            const wrapper = shallowRenderSelectField({
+                options: [{ displayText: 'Clear All', value: CLEAR }],
+                shouldShowClearOption: true,
+            });
+            wrapper.instance().setState({
+                searchText: 'C',
+            });
+
+            const itemsWrapper = wrapper.find('DatalistItem');
+            expect(itemsWrapper.at(0).prop('className')).not.toEqual('select-option is-clear-option');
         });
     });
 
@@ -199,11 +273,13 @@ describe('components/select-field/BaseSelectField', () => {
             const wrapper = shallowRenderSelectField();
             const instance = wrapper.instance();
 
-            const overlayWrapper = wrapper.find('.overlay-wrapper');
-            const overlay = wrapper.find('.overlay');
+            // Dive past the ForwardRef and SelectFieldDropdown
+            const overlay = wrapper
+                .find('PopperComponent')
+                .childAt(1)
+                .dive()
+                .dive();
 
-            expect(overlayWrapper.length).toBe(1);
-            expect(overlayWrapper.hasClass('is-visible')).toBe(false);
             expect(overlay.length).toBe(1);
             expect(overlay.is('ul')).toBe(true);
             expect(overlay.prop('role')).toEqual('listbox');
@@ -214,19 +290,46 @@ describe('components/select-field/BaseSelectField', () => {
         test('should render a listbox with aria-multiselectable when multiple prop is passed', () => {
             const wrapper = shallowRenderSelectField({ multiple: true });
 
-            const overlay = wrapper.find('.overlay');
+            // Dive past the ForwardRef and SelectFieldDropdown
+            const overlay = wrapper
+                .find('PopperComponent')
+                .childAt(1)
+                .dive()
+                .dive();
 
             expect(overlay.prop('aria-multiselectable')).toBe(true);
         });
 
-        test.each([[true, true], [false, false]])(
+        test.each([
+            [true, true],
+            [false, false],
+        ])(
             'should apply the correct CSS classes to the overlay element when isScrollable is %s',
             (isScrollable, result) => {
                 const wrapper = shallowRenderSelectField({ isScrollable });
-                const overlay = wrapper.find('.overlay');
+                // Dive past the ForwardRef and SelectFieldDropdown
+                const overlay = wrapper
+                    .find('PopperComponent')
+                    .childAt(1)
+                    .dive()
+                    .dive();
                 expect(overlay.hasClass(OVERLAY_SCROLLABLE_CLASS)).toBe(result);
             },
         );
+
+        test('should apply preventOverflow modifier when isEscapedWithReference is true', () => {
+            const wrapper = shallowRenderSelectField({ isEscapedWithReference: true });
+
+            const props = wrapper.find('PopperComponent').props();
+            expect(props.modifiers.preventOverflow).toEqual({ escapeWithReference: true });
+        });
+
+        test('should not apply preventOverflow modifier when isEscapedWithReference is not set', () => {
+            const wrapper = shallowRenderSelectField();
+
+            const props = wrapper.find('PopperComponent').props();
+            expect(props.modifiers.preventOverflow).toBeUndefined();
+        });
     });
 
     describe('onBlur', () => {
@@ -243,14 +346,60 @@ describe('components/select-field/BaseSelectField', () => {
             wrapper.simulate('blur');
         });
 
-        test('should call closeDropdown() when dropdown is open', () => {
+        test('should call closeDropdown() when dropdown is open and event.relatedTarget.classList does not contain select-button and does not contain search-input', () => {
             const wrapper = shallowRenderSelectField();
             const instance = wrapper.instance();
+            const spy = jest.spyOn(instance, 'closeDropdown');
             wrapper.setState({ isOpen: true });
 
-            sandbox.mock(instance).expects('closeDropdown');
+            const targetWithClassName = {
+                relatedTarget: document.createElement('button'),
+            };
 
-            wrapper.simulate('blur');
+            targetWithClassName.relatedTarget.className = 'not-select-button';
+            instance.handleBlur(targetWithClassName);
+
+            expect(spy).toHaveBeenCalled();
+        });
+
+        test.each`
+            className
+            ${'search-input'}
+            ${'select-button'}
+        `(
+            'should not call closeDropdown when dropdown is open and event.relatedTarget.classList contains $className',
+            ({ className }) => {
+                const wrapper = shallowRenderSelectField();
+                const instance = wrapper.instance();
+                const spy = jest.spyOn(instance, 'closeDropdown');
+                wrapper.setState({ isOpen: true });
+
+                const targetWithClassName = {
+                    relatedTarget: document.createElement('button'),
+                };
+
+                targetWithClassName.relatedTarget.className = className;
+                instance.handleBlur(targetWithClassName);
+
+                expect(spy).not.toHaveBeenCalled();
+            },
+        );
+
+        test('should not call closeDropdown when dropdown is open and event.relatedTarget.classList contains blurExceptionClassNames', () => {
+            const exception = 'foobar';
+            const wrapper = shallowRenderSelectField({ blurExceptionClassNames: [exception] });
+            const instance = wrapper.instance();
+            const spy = jest.spyOn(instance, 'closeDropdown');
+            wrapper.setState({ isOpen: true });
+
+            const targetWithClassName = {
+                relatedTarget: document.createElement('button'),
+            };
+
+            targetWithClassName.relatedTarget.className = exception;
+            instance.handleBlur(targetWithClassName);
+
+            expect(spy).not.toHaveBeenCalled();
         });
     });
 
@@ -258,7 +407,7 @@ describe('components/select-field/BaseSelectField', () => {
         let event;
         beforeEach(() => {
             event = {
-                key: 'ArrowDown',
+                key: ARROW_DOWN,
                 preventDefault: sandbox.mock(),
                 stopPropagation: sandbox.mock(),
             };
@@ -305,7 +454,7 @@ describe('components/select-field/BaseSelectField', () => {
         let event;
         beforeEach(() => {
             event = {
-                key: 'ArrowUp',
+                key: ARROW_UP,
                 preventDefault: sandbox.mock(),
                 stopPropagation: sandbox.mock(),
             };
@@ -360,7 +509,7 @@ describe('components/select-field/BaseSelectField', () => {
                 .never();
 
             wrapper.simulate('keyDown', {
-                key: 'Enter',
+                key: ENTER,
                 preventDefault: sandbox.mock().never(),
                 stopPropagation: sandbox.mock().never(),
             });
@@ -377,7 +526,7 @@ describe('components/select-field/BaseSelectField', () => {
                 .never();
 
             wrapper.simulate('keyDown', {
-                key: 'Enter',
+                key: ENTER,
                 preventDefault: sandbox.mock().never(),
                 stopPropagation: sandbox.mock().never(),
             });
@@ -396,14 +545,77 @@ describe('components/select-field/BaseSelectField', () => {
             sandbox.mock(instance).expects('closeDropdown');
 
             wrapper.simulate('keyDown', {
-                key: 'Enter',
+                key: ENTER,
                 preventDefault: sandbox.mock(),
                 stopPropagation: sandbox.mock(),
             });
         });
+
+        test('should call handleClearClick if shouldShowClearOption is true and activeItemIndex === 0', () => {
+            const activeItemIndex = 0;
+            const wrapper = shallowRenderSelectField({
+                shouldShowClearOption: true,
+            });
+
+            const instance = wrapper.instance();
+            wrapper.setState({ activeItemIndex, isOpen: true });
+
+            sandbox.mock(instance).expects('handleClearClick');
+
+            wrapper.simulate('keyDown', {
+                key: ENTER,
+                preventDefault: sandbox.mock(),
+                stopPropagation: sandbox.mock(),
+            });
+        });
+
+        const mockedSpaceEvent = { key: SPACE, target: {}, preventDefault: jest.fn(), stopPropagation: jest.fn() };
+        const mockedEnterEvent = { key: ENTER, target: {}, preventDefault: jest.fn(), stopPropagation: jest.fn() };
+        test.each`
+            event               | condition
+            ${mockedSpaceEvent} | ${'the key is SPACE'}
+            ${mockedEnterEvent} | ${'key is ENTER and no item is active'}
+        `(
+            'should not call handleClearClick / selectOption / closeDropdown if shouldShowSearchInput is true and $condition',
+            ({ event }) => {
+                const wrapper = shallowRenderSelectField({
+                    shouldShowSearchInput: true,
+                });
+
+                const instance = wrapper.instance();
+                const handleClearClickSpy = jest.spyOn(instance, 'handleClearClick');
+                const selectOptionSpy = jest.spyOn(instance, 'selectOption');
+                const closeDropdownSpy = jest.spyOn(instance, 'closeDropdown');
+
+                instance.handleKeyDown(event);
+                expect(handleClearClickSpy).not.toHaveBeenCalled();
+                expect(selectOptionSpy).not.toHaveBeenCalled();
+                expect(closeDropdownSpy).not.toHaveBeenCalled();
+            },
+        );
     });
 
     describe('onSpacebar', () => {
+        test('should not stop default event or select item when shouldShowSearchInput is true', () => {
+            const wrapper = shallowRenderSelectField();
+            const instance = wrapper.instance();
+            wrapper.setProps({
+                shouldShowSearchInput: true,
+            });
+            wrapper.setState({ isOpen: true });
+
+            sandbox
+                .mock(instance)
+                .expects('selectOption')
+                .never();
+
+            wrapper.simulate('keyDown', {
+                key: SPACE,
+                preventDefault: sandbox.mock().never(),
+                stopPropagation: sandbox.mock().never(),
+            });
+        });
+
         test('should not stop default event or select item when no item is active', () => {
             const wrapper = shallowRenderSelectField();
             const instance = wrapper.instance();
@@ -415,7 +627,7 @@ describe('components/select-field/BaseSelectField', () => {
                 .never();
 
             wrapper.simulate('keyDown', {
-                key: ' ',
+                key: SPACE,
                 preventDefault: sandbox.mock().never(),
                 stopPropagation: sandbox.mock().never(),
             });
@@ -432,7 +644,7 @@ describe('components/select-field/BaseSelectField', () => {
                 .never();
 
             wrapper.simulate('keyDown', {
-                key: ' ',
+                key: SPACE,
                 preventDefault: sandbox.mock().never(),
                 stopPropagation: sandbox.mock().never(),
             });
@@ -450,7 +662,25 @@ describe('components/select-field/BaseSelectField', () => {
                 .withArgs(activeItemIndex);
 
             wrapper.simulate('keyDown', {
-                key: ' ',
+                key: SPACE,
+                preventDefault: sandbox.mock(),
+                stopPropagation: sandbox.mock(),
+            });
+        });
+
+        test('should call handleClearClick if shouldShowClearOption is true and activeItemIndex === 0', () => {
+            const activeItemIndex = 0;
+            const wrapper = shallowRenderSelectField({
+                shouldShowClearOption: true,
+            });
+
+            const instance = wrapper.instance();
+            wrapper.setState({ activeItemIndex, isOpen: true });
+
+            sandbox.mock(instance).expects('handleClearClick');
+
+            wrapper.simulate('keyDown', {
+                key: SPACE,
                 preventDefault: sandbox.mock(),
                 stopPropagation: sandbox.mock(),
             });
@@ -467,7 +697,7 @@ describe('components/select-field/BaseSelectField', () => {
             instanceMock.expects('closeDropdown').never();
 
             wrapper.simulate('keyDown', {
-                key: 'Escape',
+                key: ESCAPE,
                 preventDefault: sandbox.mock().never(),
                 stopPropagation: sandbox.mock().never(),
             });
@@ -482,7 +712,57 @@ describe('components/select-field/BaseSelectField', () => {
             instanceMock.expects('closeDropdown');
 
             wrapper.simulate('keyDown', {
-                key: 'Escape',
+                key: ESCAPE,
+                preventDefault: sandbox.mock(),
+                stopPropagation: sandbox.mock(),
+            });
+        });
+    });
+
+    describe('onTab', () => {
+        test('should not close dropdown when dropdown is closed nor stop default event ', () => {
+            const wrapper = shallowRenderSelectField();
+            const instance = wrapper.instance();
+            const instanceMock = sandbox.mock(instance);
+            wrapper.setState({ isOpen: false });
+
+            instanceMock.expects('closeDropdown').never();
+
+            wrapper.simulate('keyDown', {
+                key: TAB,
+                preventDefault: sandbox.mock().never(),
+                stopPropagation: sandbox.mock().never(),
+            });
+        });
+
+        test('should close dropdown when dropdown is open and should not stop default event', () => {
+            const wrapper = shallowRenderSelectField();
+            const instance = wrapper.instance();
+            const instanceMock = sandbox.mock(instance);
+            wrapper.setState({ isOpen: true });
+
+            instanceMock.expects('closeDropdown');
+
+            wrapper.simulate('keyDown', {
+                key: TAB,
+                preventDefault: sandbox.mock().never(),
+                stopPropagation: sandbox.mock().never(),
+            });
+        });
+    });
+
+    describe('onAnyKey', () => {
+        test('should set the active item based on letter', () => {
+            const wrapper = shallowRenderSelectField();
+            const instance = wrapper.instance();
+            const instanceMock = sandbox.mock(instance);
+
+            wrapper.setState({ isOpen: true });
+
+            instanceMock.expects('setActiveItem').withArgs(2);
+
+            wrapper.simulate('keyDown', {
+                key: 'd',
                 preventDefault: sandbox.mock(),
                 stopPropagation: sandbox.mock(),
             });
@@ -496,6 +776,20 @@ describe('components/select-field/BaseSelectField', () => {
                 onChange: sandbox.mock().withArgs(['what', 'is', 'up']),
             });
             wrapper.instance().handleChange(['what', 'is', 'up']);
+        });
+    });
+
+    describe('handleClearClick', () => {
+        test('should call handleChange with empty array', () => {
+            const wrapper = shallowRenderSelectField();
+            const instance = wrapper.instance();
+
+            sandbox
+                .mock(instance)
+                .expects('handleChange')
+                .withArgs([]);
+
+            instance.handleClearClick();
         });
     });
 
@@ -517,7 +811,10 @@ describe('components/select-field/BaseSelectField', () => {
 
             sandbox.mock(instance).expects('openDropdown');
 
-            wrapper.find('SelectButton').simulate('click');
+            wrapper
+                .find('PopperComponent')
+                .childAt(0)
+                .simulate('click');
         });
 
         test('should close dropdown when it is open', () => {
@@ -527,39 +824,48 @@ describe('components/select-field/BaseSelectField', () => {
 
             sandbox.mock(instance).expects('closeDropdown');
 
-            wrapper.find('SelectButton').simulate('click');
+            wrapper
+                .find('PopperComponent')
+                .childAt(0)
+                .simulate('click');
         });
     });
 
     describe('handleButtonKeyDown', () => {
         [
             {
-                key: ' ',
+                key: SPACE,
             },
             {
-                key: 'Enter',
+                key: ENTER,
             },
         ].forEach(({ key }) => {
             test('should preventDefault() when key is space or enter and activeItemIndex != -1', () => {
                 const wrapper = shallowRenderSelectField();
                 wrapper.setState({ isOpen: true, activeItemIndex: 2 });
 
-                wrapper.find('SelectButton').simulate('keyDown', {
-                    key,
-                    preventDefault: sandbox.mock(),
-                    stopPropagation: sandbox.mock().never(),
-                });
+                wrapper
+                    .find('PopperComponent')
+                    .childAt(0)
+                    .simulate('keyDown', {
+                        key,
+                        preventDefault: sandbox.mock(),
+                        stopPropagation: sandbox.mock().never(),
+                    });
             });
 
             test('should not preventDefault() when key is space or enter and activeItemIndex == -1', () => {
                 const wrapper = shallowRenderSelectField();
                 wrapper.setState({ isOpen: true, activeItemIndex: -1 });
 
-                wrapper.find('SelectButton').simulate('keyDown', {
-                    key,
-                    preventDefault: sandbox.mock().never(),
-                    stopPropagation: sandbox.mock().never(),
-                });
+                wrapper
+                    .find('PopperComponent')
+                    .childAt(0)
+                    .simulate('keyDown', {
+                        key,
+                        preventDefault: sandbox.mock().never(),
+                        stopPropagation: sandbox.mock().never(),
+                    });
             });
         });
 
@@ -567,15 +873,38 @@ describe('components/select-field/BaseSelectField', () => {
             const wrapper = shallowRenderSelectField();
             wrapper.setState({ isOpen: true, activeItemIndex: 2 });
 
-            wrapper.find('SelectButton').simulate('keyDown', {
-                key: 'ArrowDown',
-                preventDefault: sandbox.mock().never(),
-                stopPropagation: sandbox.mock().never(),
-            });
+            wrapper
+                .find('PopperComponent')
+                .childAt(0)
+                .simulate('keyDown', {
+                    key: ARROW_DOWN,
+                    preventDefault: sandbox.mock().never(),
+                    stopPropagation: sandbox.mock().never(),
+                });
         });
     });
 
     describe('onOptionClick', () => {
+        test('should call handleClearClick if index is 0 and shouldShowClearOption is true', () => {
+            const wrapper = shallowRenderSelectField({
+                options: [{ displayText: 'Clear All', value: CLEAR }],
+                shouldShowClearOption: true,
+            });
+            wrapper.setState({
+                activeItemIndex: 0,
+            });
+            const instance = wrapper.instance();
+
+            sandbox.mock(instance).expects('handleClearClick');
+
+            wrapper
+                .find('DatalistItem')
+                .at(0)
+                .simulate('click', {
+                    preventDefault: sandbox.mock(),
+                });
+        });
+
         test('should select item and close dropdown when item is clicked', () => {
             const wrapper = shallowRenderSelectField();
             const instance = wrapper.instance();
@@ -591,15 +920,6 @@ describe('components/select-field/BaseSelectField', () => {
                 .simulate('click', {
                     preventDefault: sandbox.mock(),
                 });
-        });
-    });
-
-    describe('onOptionMouseDown', () => {
-        test('should prevent default when mousedown on overlay occurs to prevent blur', () => {
-            const wrapper = shallowRenderSelectField();
-            wrapper.find('.overlay').simulate('mouseDown', {
-                preventDefault: sandbox.mock(),
-            });
         });
     });
 
@@ -687,6 +1007,31 @@ describe('components/select-field/BaseSelectField', () => {
 
             expect(wrapper.state('isOpen')).toBe(true);
         });
+
+        test('should add document click listener', () => {
+            document.addEventListener = jest.fn();
+            const wrapper = shallowRenderSelectField();
+            const instance = wrapper.instance();
+
+            instance.openDropdown();
+
+            expect(document.addEventListener).toHaveBeenCalled();
+        });
+
+        test('should call this.searchInputRef.focus() if shouldShowSearchInput is true', () => {
+            const wrapper = shallowRenderSelectField({
+                shouldShowSearchInput: true,
+            });
+            const mockSearchInputRef = {
+                focus: jest.fn(),
+            };
+            const instance = wrapper.instance();
+            instance.searchInputRef = mockSearchInputRef;
+
+            instance.openDropdown();
+
+            expect(mockSearchInputRef.focus).toHaveBeenCalled();
+        });
     });
 
     describe('closeDropdown()', () => {
@@ -704,6 +1049,18 @@ describe('components/select-field/BaseSelectField', () => {
             expect(wrapper.state('isOpen')).toBe(false);
             expect(wrapper.state('activeItemID')).toEqual(null);
             expect(wrapper.state('activeItemIndex')).toEqual(-1);
+            expect(wrapper.state('searchText')).toBe('');
+        });
+
+        test('should remove document click listener', () => {
+            document.removeEventListener = jest.fn();
+            const wrapper = shallowRenderSelectField();
+            const instance = wrapper.instance();
+            wrapper.setState({ isOpen: true });
+
+            instance.closeDropdown();
+
+            expect(document.removeEventListener).toHaveBeenCalled();
         });
     });
 
@@ -736,6 +1093,55 @@ describe('components/select-field/BaseSelectField', () => {
         });
     });
 
+    describe('getFilteredOptions', () => {
+        test('should return the correct item when searchText is empty string', () => {
+            const wrapper = shallowRenderSelectField();
+            const instance = wrapper.instance();
+
+            const index = 0;
+
+            const item = instance.getFilteredOptions()[index];
+            expect(item).toEqual(options[index]);
+        });
+
+        test('should return the correct item when searchText is not empty string', () => {
+            const wrapper = shallowRenderSelectField();
+            const instance = wrapper.instance();
+            instance.setState({
+                searchText: 'Audio',
+            });
+
+            const indexBeforeFilter = 1; // Index of audio option in default options array
+            const indexAfterFilter = 0; // Index of audio option when user enters a search string of 'Audio'
+
+            const item = instance.getFilteredOptions()[indexAfterFilter];
+            expect(item).toEqual(options[indexBeforeFilter]);
+        });
+
+        test('should filter out the clear option if searchText is not empty string', () => {
+            const wrapper = shallowRenderSelectField({
+                options: [{ displayText: 'Clear All', value: CLEAR }],
+            });
+            const instance = wrapper.instance();
+            instance.setState({
+                searchText: 'Audio',
+            });
+
+            const filteredOptions = instance.getFilteredOptions();
+            expect(filteredOptions.length).toBe(0);
+        });
+
+        test('should not filter out the clear option if searchText is empty string', () => {
+            const wrapper = shallowRenderSelectField({
+                options: [{ displayText: 'Clear All', value: CLEAR }],
+            });
+            const instance = wrapper.instance();
+
+            const filteredOptions = instance.getFilteredOptions();
+            expect(filteredOptions.length).toBe(1);
+        });
+    });
+
     describe('selectSingleOption()', () => {
         test('should call handleChange() when index selected was not selected previously', () => {
             const wrapper = shallowRenderSelectField();
@@ -748,6 +1154,21 @@ describe('components/select-field/BaseSelectField', () => {
                 .withArgs([options[index]]);
 
             instance.selectSingleOption(index);
+        });
+
+        test('should call handleChange with the correct item when searchText is not empty string', () => {
+            const indexBeforeFilter = 1; // Index of audio option in default options array
+            const indexAfterFilter = 0; // Index of audio option after user inputs a search string of 'Audio'
+            const wrapper = shallowRenderSelectField();
+            const instance = wrapper.instance();
+            const spy = jest.spyOn(instance, 'handleChange');
+            instance.setState({
+                searchText: 'Audio',
+            });
+
+            instance.selectSingleOption(indexAfterFilter);
+
+            expect(spy).toHaveBeenCalledWith([options[indexBeforeFilter]]);
         });
 
         test('should not call handleChange() when index selected was previously selected', () => {
@@ -763,6 +1184,24 @@ describe('components/select-field/BaseSelectField', () => {
                 .never();
 
             instance.selectSingleOption(index);
+        });
+
+        test('should not call handleChange when index selected was previously selected and searchText is not empty string', () => {
+            const indexBeforeFilter = 1; // Index of audio option in default options array
+            const indexAfterFilter = 0; // Index of audio option after user inputs a search string of 'Audio'
+            const wrapper = shallowRenderSelectField({
+                selectedValues: [options[indexBeforeFilter].value],
+            });
+            const instance = wrapper.instance();
+            const spy = jest.spyOn(instance, 'handleChange');
+
+            instance.setState({
+                searchText: 'Audio',
+            });
+
+            instance.selectSingleOption(indexAfterFilter);
+
+            expect(spy).not.toHaveBeenCalled();
         });
 
         test('should call handleOptionSelect() even when index selected was previously selected', () => {
@@ -862,6 +1301,104 @@ describe('components/select-field/BaseSelectField', () => {
                 .withArgs(options[index]); // audio + video
 
             instance.selectMultiOption(index);
+        });
+
+        test('should call handleOptionSelect with correct value when searchText is not empty string', () => {
+            const indexBeforeFilter = 3; // Matches video option in original options array
+            const indexAfterFilter = 0; // Matches index of video option after search filter is applied
+            const wrapper = shallowRenderSelectField({
+                defaultValue: '',
+                selectedValues: ['audio'],
+            }); // default value index is 0 in this case
+            const instance = wrapper.instance();
+            const spy = jest.spyOn(instance, 'handleOptionSelect');
+
+            instance.setState({
+                searchText: 'Video',
+            });
+
+            instance.selectMultiOption(indexAfterFilter);
+
+            expect(spy).toHaveBeenCalledWith(options[indexBeforeFilter]); // audio + video
+        });
+    });
+
+    describe('updateSearchText', () => {
+        const wrapper = shallowRenderSelectField({
+            options: [
+                { displayText: 'hello', value: 0 },
+                { displayText: 'goodbye', value: 1 },
+            ],
+        });
+        const instance = wrapper.instance();
+
+        test('should set text in state and call setActiveItem if the input text is a substring of an option', () => {
+            const spy = jest.spyOn(instance, 'setActiveItem');
+            const text = 'he';
+
+            instance.updateSearchText(text);
+
+            expect(wrapper.state('searchText')).toBe(text);
+            expect(spy).toHaveBeenCalledWith(0);
+        });
+
+        test('should set text in state and not call setActiveItem if input text is not a substring of any of the options', () => {
+            const spy = jest.spyOn(instance, 'setActiveItem');
+            const text = 'woo';
+
+            instance.updateSearchText(text);
+
+            expect(wrapper.state('searchText')).toBe(text);
+            expect(spy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('handleDocumentClick', () => {
+        test('should close dropdown when click occurs outside of select field', () => {
+            const wrapper = shallowRenderSelectField();
+            const instance = wrapper.instance();
+            instance.closeDropdown = jest.fn();
+            wrapper.setState({ isOpen: true });
+
+            instance.handleDocumentClick({
+                target: document.createElement('div'),
+            });
+
+            expect(instance.closeDropdown).toHaveBeenCalled();
+        });
+
+        test('should not close dropdown when click occurs on select field container', () => {
+            const wrapper = shallowRenderSelectField();
+            const instance = wrapper.instance();
+            instance.closeDropdown = jest.fn();
+            wrapper.setState({ isOpen: true });
+
+            wrapper.simulate('click');
+
+            expect(instance.closeDropdown).not.toHaveBeenCalled();
+        });
+
+        test('should not close dropdown when click occurs on select field dropdown', () => {
+            const wrapper = shallowRenderSelectField();
+            const instance = wrapper.instance();
+            instance.closeDropdown = jest.fn();
+            wrapper.setState({ isOpen: true });
+
+            instance.handleDocumentClick({
+                target: document.getElementById(instance.selectFieldID),
+            });
+
+            expect(instance.closeDropdown).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('componentWillUnmount()', () => {
+        test('should remove document click listener', () => {
+            document.removeEventListener = jest.fn();
+            const wrapper = shallowRenderSelectField();
+            wrapper.setState({ isOpen: true });
+            wrapper.unmount();
+            expect(document.removeEventListener).toHaveBeenCalled();
         });
     });
 });

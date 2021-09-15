@@ -14,6 +14,7 @@ exports[`elements/content-sidebar/ActiveState/activity-feed/ActiveState should c
     />
   </InlineError>
   <ActiveState
+    currentFileVersionId="123"
     currentUser={
       Object {
         "id": "user_123445",
@@ -27,6 +28,7 @@ exports[`elements/content-sidebar/ActiveState/activity-feed/ActiveState should c
 
 exports[`elements/content-sidebar/ActiveState/activity-feed/ActiveState should render empty state 1`] = `
 <ActiveState
+  currentFileVersionId="123"
   currentUser={
     Object {
       "id": "user_123445",
@@ -41,9 +43,50 @@ exports[`elements/content-sidebar/ActiveState/activity-feed/ActiveState should r
 <ul
   className="bcs-activity-feed-active-state"
 >
-  <li
+  <ForwardRef(ActivityItem)
+    className="bcs-activity-feed-annotation-activity"
+    data-testid="annotation-activity"
+    isFocused={false}
+    key="annotationanno_123"
+  >
+    <AnnotationActivity
+      currentUser={
+        Object {
+          "id": "user_123445",
+          "name": "Rihanna",
+        }
+      }
+      isCurrentVersion={true}
+      item={
+        Object {
+          "created_at": "2018-07-03T14:43:52-07:00",
+          "created_by": Object {
+            "id": "user_123445",
+            "name": "Rihanna",
+          },
+          "description": Object {
+            "message": "This is an annotation",
+          },
+          "file_version": Object {
+            "id": "123",
+          },
+          "id": "anno_123",
+          "target": Object {
+            "location": Object {
+              "type": "page",
+              "value": 1,
+            },
+            "type": "region",
+          },
+          "type": "annotation",
+        }
+      }
+    />
+  </ForwardRef(ActivityItem)>
+  <ForwardRef(ActivityItem)
     className="bcs-activity-feed-comment"
     data-testid="comment"
+    isFocused={false}
     key="commentc_123"
   >
     <Comment
@@ -72,8 +115,8 @@ exports[`elements/content-sidebar/ActiveState/activity-feed/ActiveState should r
       tagged_message="test @[123:Jeezy] @[10:Kanye West]"
       type="comment"
     />
-  </li>
-  <li
+  </ForwardRef(ActivityItem)>
+  <ForwardRef(ActivityItem)
     className="bcs-version-item"
     data-testid="version"
     key="file_versionf_123"
@@ -91,10 +134,11 @@ exports[`elements/content-sidebar/ActiveState/activity-feed/ActiveState should r
       trashed_at="2018-07-03T14:43:52-07:00"
       type="file_version"
     />
-  </li>
-  <li
+  </ForwardRef(ActivityItem)>
+  <ForwardRef(ActivityItem)
     className="bcs-activity-feed-task-new"
     data-testid="task"
+    isFocused={false}
     key="taskt_345"
   >
     <ForwardRef
@@ -123,8 +167,10 @@ exports[`elements/content-sidebar/ActiveState/activity-feed/ActiveState should r
       created_at="2018-07-03T14:43:52-07:00"
       created_by={
         Object {
-          "id": 11,
-          "name": "Akon",
+          "target": Object {
+            "id": 11,
+            "name": "Akon",
+          },
         }
       }
       currentUser={
@@ -161,8 +207,8 @@ exports[`elements/content-sidebar/ActiveState/activity-feed/ActiveState should r
       task_type="GENERAL"
       type="task"
     />
-  </li>
-  <li
+  </ForwardRef(ActivityItem)>
+  <ForwardRef(ActivityItem)
     className="bcs-activity-feed-app-activity"
     data-testid="app-activity"
     key="app_activityapp_activity_12344556"
@@ -201,6 +247,6 @@ exports[`elements/content-sidebar/ActiveState/activity-feed/ActiveState should r
       rendered_text="this is text and a <a>link</a>"
       type="app_activity"
     />
-  </li>
+  </ForwardRef(ActivityItem)>
 </ul>
 `;

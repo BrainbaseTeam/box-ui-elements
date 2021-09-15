@@ -28,9 +28,12 @@
                 border: 1px solid $bdl-gray-50;
                 border-radius: 2px;
                 content: '';
+                pointer-events: none;
             }
 
             &::after {
+                @include bdl-transition($bdl-transitionDurationBase, transform);
+
                 position: absolute;
                 top: 6px;
                 left: 5px;
@@ -40,8 +43,8 @@
                 border-bottom: 2px solid $primary-color;
                 transform: rotate(45deg) scale(0) translate3d(0, 0, 0);
                 backface-visibility: hidden;
-                transition: transform .1s ease;
                 content: '';
+                pointer-events: none;
             }
         }
 
@@ -50,7 +53,7 @@
         }
 
         &:focus + span::before {
-            border-color: $primary-color;
+            border: 2px solid $primary-color;
         }
 
         &:disabled {
@@ -63,19 +66,20 @@
                 border-color: $bdl-gray-30;
             }
         }
-
-        + span + span {
-            margin-left: 10px;
-        }
     }
 }
 
+.bdl-Checkbox-labelTooltipWrapper {
+    margin-left: 10px;
+}
+
 .checkbox-tooltip-wrapper {
-    display: flex;
-    align-items: center;
+    display: inline-flex;
+    vertical-align: text-bottom;
 
     > .info-tooltip {
         position: relative;
+        display: inline-block;
         flex: none;
         width: 16px;
         height: 16px;
@@ -90,10 +94,12 @@
 .checkbox-container-box-ui-elements {
     margin: 0 0 0px;
 
+    &.bdl-is-disabled .checkbox-label,
     &.is-disabled .checkbox-label {
-        color: $bdl-gray-50;
+        color: $bdl-gray-62;
     }
 
+    > .bdl-Label,
     > .label {
         margin: 8px 0;
     }

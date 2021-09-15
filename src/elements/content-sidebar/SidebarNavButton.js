@@ -38,8 +38,7 @@ const SidebarNavButton = React.forwardRef<Props, React.Ref<any>>((props: Props, 
                 const isMatch = !!match;
                 const isActive = () => isMatch && !!isOpen;
                 const isActiveValue = isActive();
-                const isToggle = isMatch && match.isExact;
-                const sidebarState = { open: isToggle ? !isOpen : true };
+                const isExactMatch = isMatch && match.isExact;
                 const id = `${elementId}${elementId === '' ? '' : '_'}${sidebarView}`;
 
                 return (
@@ -48,18 +47,19 @@ const SidebarNavButton = React.forwardRef<Props, React.Ref<any>>((props: Props, 
                             activeClassName="bcs-is-selected"
                             aria-selected={isActiveValue}
                             aria-controls={`${id}-content`}
+                            aria-label={tooltip}
                             className="bcs-NavButton"
                             data-resin-target={dataResinTarget}
                             data-testid={dataTestId}
                             getDOMRef={ref}
                             id={id}
                             isActive={isActive}
-                            replace={isToggle}
+                            replace={isExactMatch}
                             role="tab"
                             tabIndex={isActiveValue ? '0' : '-1'}
                             to={{
                                 pathname: sidebarPath,
-                                state: sidebarState,
+                                state: { open: true },
                             }}
                             type="button"
                         >

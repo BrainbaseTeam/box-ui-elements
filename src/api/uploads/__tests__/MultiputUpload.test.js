@@ -120,6 +120,46 @@ describe('api/uploads/MultiputUpload', () => {
             expect(multiputUploadTest.numPartsUploading).toBe(1);
             expect(multiputUploadTest.parts[0].upload).toHaveBeenCalled();
         });
+
+        test('should call unpause when part is paused and in digest ready state', () => {
+            // Setup
+            multiputUploadTest.parts[0].isPaused = true;
+            multiputUploadTest.parts[1].isPaused = true;
+            multiputUploadTest.parts[0].state = PART_STATE_UPLOADING;
+            multiputUploadTest.parts[1].state = PART_STATE_DIGEST_READY;
+            multiputUploadTest.numPartsDigestReady = 1;
+
+            // Expectations
+            multiputUploadTest.parts[0].unpause = jest.fn();
+            multiputUploadTest.parts[1].unpause = jest.fn();
+
+            // Execute
+            multiputUploadTest.uploadNextPart();
+
+            // Verify
+            expect(multiputUploadTest.parts[0].unpause).not.toBeCalled();
+            expect(multiputUploadTest.parts[1].unpause).toBeCalled();
+        });
+
+        test('should call upload when part is not paused and in digest ready state', () => {
+            // Setup
+            multiputUploadTest.parts[0].isPaused = false;
+            multiputUploadTest.parts[1].isPaused = false;
+            multiputUploadTest.parts[0].state = PART_STATE_UPLOADING;
+            multiputUploadTest.parts[1].state = PART_STATE_DIGEST_READY;
+            multiputUploadTest.numPartsDigestReady = 1;
+
+            // Expectations
+            multiputUploadTest.parts[0].upload = jest.fn();
+            multiputUploadTest.parts[1].upload = jest.fn();
+
+            // Execute
+            multiputUploadTest.uploadNextPart();
+
+            // Verify
+            expect(multiputUploadTest.parts[0].upload).not.toBeCalled();
+            expect(multiputUploadTest.parts[1].upload).toBeCalled();
+        });
     });
 
     describe('canStartMorePartUploads()', () => {
@@ -325,8 +365,12 @@ describe('api/uploads/MultiputUpload', () => {
             multiputUploadTest.getBaseUploadUrlFromPreflightResponse = jest
                 .fn()
                 .mockReturnValueOnce('fupload-ec2usw1.app.box.com');
+            multiputUploadTest.xhr.post = jest.fn().mockReturnValueOnce({ data: {} });
+            multiputUploadTest.createSessionSuccessHandler = jest.fn();
+
             await multiputUploadTest.preflightSuccessHandler();
             expect(multiputUploadTest.config.parallelism).toBe(1);
+            expect(multiputUploadTest.createSessionSuccessHandler).toBeCalledTimes(1);
         });
 
         test('should call createSessionSuccessHandler when the session is created successfully', async () => {
@@ -415,6 +459,52 @@ describe('api/uploads/MultiputUpload', () => {
                 JSON.stringify(error),
             );
         });
+
+        describe('resolveConflict', () => {
+            test('should overwrite if overwrite is set to true and has context_info', async () => {
+                const data = { status: 409, context_info: { conflicts: { id: '30' } } };
+                const error = {
+                    response: {
+                        data,
+                    },
+                };
+
+                multiputUploadTest.getErrorResponse = jest.fn().mockReturnValueOnce(data);
+                multiputUploadTest.sessionErrorHandler = jest.fn();
+                multiputUploadTest.xhr.post = jest.fn().mockReturnValueOnce(Promise.reject(error));
+                multiputUploadTest.getBaseUploadUrlFromPreflightResponse = jest.fn().mockReturnValueOnce(uploadHost);
+                multiputUploadTest.overwrite = true;
+                multiputUploadTest.conflictCallback = jest.fn();
+                multiputUploadTest.createSessionRetry = jest.fn();
+
+                await multiputUploadTest.preflightSuccessHandler(preflightResponse);
+
+                expect(multiputUploadTest.sessionErrorHandler).not.toHaveBeenCalled();
+                expect(multiputUploadTest.conflictCallback).not.toHaveBeenCalled();
+                expect(multiputUploadTest.createSessionRetry).toHaveBeenCalled();
+            });
+            test('should invoke conflictCallback if exists', async () => {
+                const data = { status: 409 };
+                const error = {
+                    response: {
+                        data,
+                    },
+                };
+
+                multiputUploadTest.getErrorResponse = jest.fn().mockReturnValueOnce(data);
+                multiputUploadTest.sessionErrorHandler = jest.fn();
+                multiputUploadTest.xhr.post = jest.fn().mockReturnValueOnce(Promise.reject(error));
+                multiputUploadTest.getBaseUploadUrlFromPreflightResponse = jest.fn().mockReturnValueOnce(uploadHost);
+                multiputUploadTest.conflictCallback = jest.fn();
+                multiputUploadTest.createSessionRetry = jest.fn();
+
+                await multiputUploadTest.preflightSuccessHandler(preflightResponse);
+
+                expect(multiputUploadTest.sessionErrorHandler).not.toHaveBeenCalled();
+                expect(multiputUploadTest.conflictCallback).toHaveBeenCalled();
+                expect(multiputUploadTest.createSessionRetry).toHaveBeenCalled();
+            });
+        });
     });
 
     describe('getSessionSuccessHandler()', () => {
@@ -438,46 +528,10 @@ describe('api/uploads/MultiputUpload', () => {
         test('should call processNextParts if some parts are not uploaded', () => {
             // Setup
             multiputUploadTest.numPartsUploaded = 20;
-
             multiputUploadTest.processNextParts = jest.fn();
 
             // Execute
             multiputUploadTest.getSessionSuccessHandler(response.data);
-            expect(multiputUploadTest.processNextParts).toHaveBeenCalled();
-        });
-
-        test('should set parts that were in uploading state back to digest ready', () => {
-            // Setup
-            multiputUploadTest.numPartsUploaded = 20;
-            multiputUploadTest.numPartsUploading = 2;
-            multiputUploadTest.numPartsDigestReady = 0;
-            multiputUploadTest.firstUnuploadedPartIndex = 0;
-            multiputUploadTest.parts = [
-                { state: PART_STATE_UPLOADING, numUploadRetriesPerformed: 2, uploadedBytes: 5 },
-                { state: PART_STATE_UPLOADED, numUploadRetriesPerformed: 2, uploadedBytes: 5 },
-                { state: PART_STATE_UPLOADING, numUploadRetriesPerformed: 2, uploadedBytes: 5 },
-            ];
-
-            multiputUploadTest.processNextParts = jest.fn();
-
-            // Execute
-            multiputUploadTest.getSessionSuccessHandler(response.data);
-            expect(multiputUploadTest.numPartsUploading).toBe(0);
-            expect(multiputUploadTest.numPartsDigestReady).toBe(2);
-            expect(multiputUploadTest.parts[0].state).toBe(PART_STATE_DIGEST_READY);
-            expect(multiputUploadTest.parts[0].numUploadRetriesPerformed).toBe(0);
-            expect(multiputUploadTest.parts[0].uploadedBytes).toBe(0);
-            expect(multiputUploadTest.parts[0].timing).toStrictEqual({});
-
-            expect(multiputUploadTest.parts[1].state).toBe(PART_STATE_UPLOADED);
-            expect(multiputUploadTest.parts[1].numUploadRetriesPerformed).toBe(2);
-            expect(multiputUploadTest.parts[1].uploadedBytes).toBe(5);
-
-            expect(multiputUploadTest.parts[2].state).toBe(PART_STATE_DIGEST_READY);
-            expect(multiputUploadTest.parts[2].numUploadRetriesPerformed).toBe(0);
-            expect(multiputUploadTest.parts[2].uploadedBytes).toBe(0);
-            expect(multiputUploadTest.parts[2].timing).toStrictEqual({});
-
             expect(multiputUploadTest.processNextParts).toHaveBeenCalled();
         });
     });
@@ -524,6 +578,30 @@ describe('api/uploads/MultiputUpload', () => {
             expect(multiputUploadTest.abortSession).toHaveBeenCalled();
             expect(multiputUploadTest.upload).toHaveBeenCalled();
             expect(multiputUploadTest.numResumeRetries).toBe(0);
+        });
+
+        test('should retry on network disconnect', () => {
+            multiputUploadTest.numResumeRetries = 1;
+            multiputUploadTest.getErrorResponse = jest.fn(error => error.response);
+            multiputUploadTest.abortSession = jest.fn();
+            multiputUploadTest.upload = jest.fn();
+
+            let networkDisconnectError = { request: {} }; // No response
+
+            multiputUploadTest.getSessionErrorHandler(networkDisconnectError);
+            expect(multiputUploadTest.getErrorResponse).toHaveBeenCalledWith(networkDisconnectError);
+            expect(multiputUploadTest.abortSession).not.toHaveBeenCalled();
+            expect(multiputUploadTest.upload).not.toHaveBeenCalled();
+            expect(multiputUploadTest.numResumeRetries).toBe(2);
+
+            networkDisconnectError = {}; // No request or response
+            multiputUploadTest.numResumeRetries = 1;
+
+            multiputUploadTest.getSessionErrorHandler(networkDisconnectError);
+            expect(multiputUploadTest.getErrorResponse).toHaveBeenCalledWith(networkDisconnectError);
+            expect(multiputUploadTest.abortSession).not.toHaveBeenCalled();
+            expect(multiputUploadTest.upload).not.toHaveBeenCalled();
+            expect(multiputUploadTest.numResumeRetries).toBe(2);
         });
     });
 
@@ -621,6 +699,7 @@ describe('api/uploads/MultiputUpload', () => {
                 uploadedBytes: 1,
                 size: 1,
             };
+
             multiputUploadTest.numPartsUploading = 10;
             multiputUploadTest.numPartsUploaded = 10;
             multiputUploadTest.updateProgress = jest.fn();
@@ -629,6 +708,79 @@ describe('api/uploads/MultiputUpload', () => {
             multiputUploadTest.partUploadSuccessHandler(part);
             expect(multiputUploadTest.updateProgress).toHaveBeenCalledWith(part.uploadedBytes, partSize);
             expect(multiputUploadTest.processNextParts).toHaveBeenCalled();
+        });
+    });
+
+    describe('partUploadErrorHandler', () => {
+        const error = {
+            response: {
+                data: {
+                    status: 500,
+                },
+            },
+        };
+
+        beforeEach(() => {
+            // Setup
+            multiputUploadTest.isResumableUploadsEnabled = true;
+            multiputUploadTest.numPartsUploaded = 20;
+            multiputUploadTest.numPartsUploading = 2;
+            multiputUploadTest.numPartsDigestReady = 0;
+            multiputUploadTest.firstUnuploadedPartIndex = 0;
+            multiputUploadTest.parts = [
+                {
+                    state: PART_STATE_UPLOADING,
+                    numUploadRetriesPerformed: 2,
+                    uploadedBytes: 5,
+                    reset: jest.fn(),
+                    pause: jest.fn(),
+                },
+                {
+                    state: PART_STATE_UPLOADED,
+                    numUploadRetriesPerformed: 2,
+                    uploadedBytes: 5,
+                    reset: jest.fn(),
+                    pause: jest.fn(),
+                },
+                {
+                    state: PART_STATE_UPLOADING,
+                    numUploadRetriesPerformed: 2,
+                    uploadedBytes: 5,
+                    reset: jest.fn(),
+                    pause: jest.fn(),
+                },
+            ];
+
+            multiputUploadTest.sessionErrorHandler = jest.fn();
+        });
+
+        test('should update numPartsUploading and numPartsDigestReady properly', () => {
+            // Execute
+            multiputUploadTest.partUploadErrorHandler(error);
+
+            // Verify
+            expect(multiputUploadTest.numPartsUploading).toBe(0);
+            expect(multiputUploadTest.numPartsDigestReady).toBe(2);
+        });
+
+        test('should reset all parts in uploading state when part errors', () => {
+            // Execute
+            multiputUploadTest.partUploadErrorHandler(error);
+
+            // Verify
+            expect(multiputUploadTest.parts[0].reset).toBeCalled();
+            expect(multiputUploadTest.parts[1].reset).not.toBeCalled();
+            expect(multiputUploadTest.parts[2].reset).toBeCalled();
+        });
+
+        test('should pause all parts in uploading state when part errors', () => {
+            // Execute
+            multiputUploadTest.partUploadErrorHandler(error);
+
+            // Verify
+            expect(multiputUploadTest.parts[0].pause).toBeCalled();
+            expect(multiputUploadTest.parts[1].pause).not.toBeCalled();
+            expect(multiputUploadTest.parts[2].pause).toBeCalled();
         });
     });
 

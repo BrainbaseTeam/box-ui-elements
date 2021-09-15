@@ -27,6 +27,14 @@ import type { DetailsSidebarProps } from './DetailsSidebar';
 import type { ActivitySidebarProps } from './ActivitySidebar';
 import type { MetadataSidebarProps } from './MetadataSidebar';
 import type { VersionsSidebarProps } from './versions';
+import type { WithLoggerProps } from '../../common/types/logging';
+import type { ElementsXhrError, RequestOptions, ErrorContextProps } from '../../common/types/api';
+import type { MetadataEditor } from '../../common/types/metadata';
+import type { StringMap, Token, User, BoxItem } from '../../common/types/core';
+import type { AdditionalSidebarTab } from './flowTypes';
+import type { FeatureConfig } from '../common/feature-checking';
+import type APICache from '../../utils/Cache';
+
 import '../common/fonts.scss';
 import '../common/base.scss';
 import '../common/modal.scss';
@@ -56,6 +64,7 @@ type Props = {
     language?: string,
     messages?: StringMap,
     metadataSidebarProps: MetadataSidebarProps,
+    onAnnotationSelect?: Function,
     onVersionChange?: Function,
     onVersionHistoryClick?: Function,
     requestInterceptor?: Function,
@@ -275,7 +284,7 @@ class ContentSidebar extends React.Component<Props, State> {
      * @param {Object|void} [fetchOptions] - Fetch options
      * @return {void}
      */
-    fetchFile(fetchOptions: FetchOptions = {}): void {
+    fetchFile(fetchOptions: RequestOptions = {}): void {
         const { fileId }: Props = this.props;
         this.setState({ isLoading: true });
         if (fileId && SidebarUtils.canHaveSidebar(this.props)) {
@@ -324,6 +333,7 @@ class ContentSidebar extends React.Component<Props, State> {
             language,
             messages,
             metadataSidebarProps,
+            onAnnotationSelect,
             onVersionChange,
             onVersionHistoryClick,
             versionsSidebarProps,
@@ -358,6 +368,7 @@ class ContentSidebar extends React.Component<Props, State> {
                             isLoading={isLoading}
                             metadataEditors={metadataEditors}
                             metadataSidebarProps={metadataSidebarProps}
+                            onAnnotationSelect={onAnnotationSelect}
                             onVersionChange={onVersionChange}
                             onVersionHistoryClick={onVersionHistoryClick}
                             versionsSidebarProps={versionsSidebarProps}

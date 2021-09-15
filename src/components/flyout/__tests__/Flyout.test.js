@@ -27,6 +27,7 @@ describe('components/flyout/Flyout', () => {
     const FakeOverlay = ({
         onClick = () => {},
         onClose = () => {},
+        shouldDefaultFocus = false,
         ...rest
     }) => (
         <div {...rest} className="overlay-wrapper is-visible">
@@ -81,7 +82,6 @@ describe('components/flyout/Flyout', () => {
 
             expect(button.prop('id')).toEqual(instance.overlayButtonID);
             expect(button.key()).toEqual(instance.overlayButtonID);
-            expect(button.prop('role')).toEqual('button');
             expect(button.prop('aria-haspopup')).toEqual('true');
             expect(button.prop('aria-expanded')).toEqual('false');
             expect(button.prop('aria-controls')).toBeFalsy();

@@ -9,12 +9,14 @@ import TokenService from '../utils/TokenService';
 import { getTypedFileId } from '../utils/file';
 import Base from './Base';
 import { ERROR_CODE_FETCH_CURRENT_USER } from '../constants';
+import type { ElementsErrorCallback } from '../common/types/api';
+import type { TokenLiteral } from '../common/types/core';
 
 class Users extends Base {
     /**
      * API URL for Users
      *
-     * @return {string} base url for users
+     * @returns {string} base url for users
      */
     getUrl(): string {
         return `${this.getBaseApiUrl()}/users/me`;
@@ -24,7 +26,7 @@ class Users extends Base {
      * API URL for Users avatar
      *
      * @param {string} id - A box user id.
-     * @return {string} base url for users
+     * @returns {string} base url for users
      */
     getAvatarUrl(id: string): string {
         if (!id) {
@@ -39,7 +41,7 @@ class Users extends Base {
      *
      * @param {string} userId the user id
      * @param {string} fileId the file id
-     * @return {string} the user avatar URL string for a given user with access token attached
+     * @returns {string} the user avatar URL string for a given user with access token attached
      */
     async getAvatarUrlWithAccessToken(userId?: ?string, fileId: string): Promise<?string> {
         if (!userId) {
@@ -71,7 +73,7 @@ class Users extends Base {
     /**
      * API for fetching a user
      *
-     * @param {string} id - a box file id
+     * @param {string} id - a Box item id
      * @param {Function} successCallback - Success callback
      * @param {Function} errorCallback - Error callback
      * @param {Object} requestData - additional request data

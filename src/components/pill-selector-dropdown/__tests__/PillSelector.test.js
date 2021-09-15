@@ -26,7 +26,7 @@ describe('components/pill-selector-dropdown/PillSelector', () => {
                 <PillSelector onInput={onInputStub} onRemove={onRemoveStub} placeholder={placeholder} />,
             );
             const input = wrapper.find('textarea');
-            const selector = wrapper.find('.pill-selector-input-wrapper');
+            const selector = wrapper.find('.bdl-PillSelector');
 
             expect(wrapper.find('Tooltip').exists()).toBe(true);
             expect(selector.length).toBe(1);
@@ -68,7 +68,10 @@ describe('components/pill-selector-dropdown/PillSelector', () => {
         });
 
         test('should render pills when there are selected options using legacy text attribute', () => {
-            const options = [{ text: 'test', value: 'test' }, { text: 'blah', value: 'hi' }];
+            const options = [
+                { text: 'test', value: 'test' },
+                { text: 'blah', value: 'hi' },
+            ];
             const wrapper = shallow(
                 <PillSelector onInput={onInputStub} onRemove={onRemoveStub} selectedOptions={options} />,
             );
@@ -76,8 +79,25 @@ describe('components/pill-selector-dropdown/PillSelector', () => {
             expect(wrapper.find('Pill').length).toBe(2);
         });
 
+        test('should render RoundPill instead of standard Pill when showRoundedPills prop is true', () => {
+            const options = [{ text: 'test', value: 'test' }];
+            const wrapper = shallow(
+                <PillSelector
+                    onInput={onInputStub}
+                    onRemove={onRemoveStub}
+                    selectedOptions={options}
+                    showRoundedPills
+                />,
+            );
+
+            expect(wrapper.find('RoundPill').length).toBe(1);
+        });
+
         test('should render pills when there are selected options', () => {
-            const options = [{ displayText: 'test', value: 'test' }, { displayText: 'blah', value: 'hi' }];
+            const options = [
+                { displayText: 'test', value: 'test' },
+                { displayText: 'blah', value: 'hi' },
+            ];
             const wrapper = shallow(
                 <PillSelector onInput={onInputStub} onRemove={onRemoveStub} selectedOptions={options} />,
             );
@@ -94,7 +114,10 @@ describe('components/pill-selector-dropdown/PillSelector', () => {
                 const pattern = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
                 return pattern.test(displayText);
             };
-            const options = [{ displayText: 'test', value: 'test' }, { displayText: 'blah', value: 'hi' }];
+            const options = [
+                { displayText: 'test', value: 'test' },
+                { displayText: 'blah', value: 'hi' },
+            ];
             const wrapper = shallow(
                 <PillSelector
                     allowInvalidPills
@@ -110,6 +133,29 @@ describe('components/pill-selector-dropdown/PillSelector', () => {
             expect(pills.at(1).prop('isValid')).toBeFalsy();
         });
 
+        test('should render round pills using the class name returned by getPillClassName', () => {
+            const getPillClassName = ({ className }) => className;
+            const options = [
+                { displayText: 'Pill 1', value: '1', className: 'MyClass1' },
+                { displayText: 'Pill 2', value: '2', className: 'MyClass2' },
+                { displayText: 'Pill 3', value: '3', className: 'MyClass2' },
+            ];
+            const wrapper = shallow(
+                <PillSelector
+                    showRoundedPills
+                    onInput={onInputStub}
+                    onRemove={onRemoveStub}
+                    selectedOptions={options}
+                    getPillClassName={getPillClassName}
+                />,
+            );
+
+            const pills = wrapper.find('RoundPill');
+            expect(pills.at(0).prop('className')).toBe(options[0].className);
+            expect(pills.at(1).prop('className')).toBe(options[1].className);
+            expect(pills.at(2).prop('className')).toBe(options[2].className);
+        });
+
         test('should render pills when selected options are immutable', () => {
             const options = new List([
                 new OptionRecord({ text: 'test', value: 'test' }),
@@ -123,7 +169,10 @@ describe('components/pill-selector-dropdown/PillSelector', () => {
         });
 
         test('should render pill as selected when selected index is set', () => {
-            const options = [{ text: 'test', value: 'test' }, { text: 'blah', value: 'hi' }];
+            const options = [
+                { text: 'test', value: 'test' },
+                { text: 'blah', value: 'hi' },
+            ];
             const wrapper = shallow(
                 <PillSelector onInput={onInputStub} onRemove={onRemoveStub} selectedOptions={options} />,
             );
@@ -153,7 +202,7 @@ describe('components/pill-selector-dropdown/PillSelector', () => {
             );
             const input = wrapper.find('textarea');
 
-            expect(input.hasClass('pill-selector-input')).toBe(true);
+            expect(input.hasClass('bdl-PillSelector-input')).toBe(true);
             expect(input.hasClass(className)).toBe(true);
         });
 
@@ -198,7 +247,7 @@ describe('components/pill-selector-dropdown/PillSelector', () => {
         test('should set isFocused to false when called', () => {
             const wrapper = shallow(<PillSelector onInput={onInputStub} onRemove={onRemoveStub} />);
             wrapper.setState({ isFocused: true });
-            const inputWrapper = wrapper.find('.pill-selector-input-wrapper');
+            const inputWrapper = wrapper.find('.bdl-PillSelector');
             inputWrapper.simulate('blur');
             expect(wrapper.state('isFocused')).toBe(false);
         });
@@ -217,7 +266,7 @@ describe('components/pill-selector-dropdown/PillSelector', () => {
     describe('onFocus', () => {
         test('should set isFocused to true when called', () => {
             const wrapper = shallow(<PillSelector onInput={onInputStub} onRemove={onRemoveStub} />);
-            const inputWrapper = wrapper.find('.pill-selector-input-wrapper');
+            const inputWrapper = wrapper.find('.bdl-PillSelector');
             inputWrapper.simulate('focus');
             expect(wrapper.state('isFocused')).toBe(true);
         });
@@ -323,7 +372,10 @@ describe('components/pill-selector-dropdown/PillSelector', () => {
         });
 
         test('should select last pill when left arrow is pressed, input does not have value, and there are pills', () => {
-            const options = [{ text: 'test', value: 'test' }, { text: 'blah', value: 'blah' }];
+            const options = [
+                { text: 'test', value: 'test' },
+                { text: 'blah', value: 'blah' },
+            ];
             const wrapper = mount(
                 <PillSelector onInput={onInputStub} onRemove={onRemoveStub} selectedOptions={options} />,
             );
@@ -353,7 +405,10 @@ describe('components/pill-selector-dropdown/PillSelector', () => {
 
     describe('onKeyDown - ArrowRight', () => {
         test('should deselect last pill when right arrow is pressed and last pill is selected', () => {
-            const options = [{ text: 'test', value: 'test' }, { text: 'blah', value: 'blah' }];
+            const options = [
+                { text: 'test', value: 'test' },
+                { text: 'blah', value: 'blah' },
+            ];
             const wrapper = mount(
                 <PillSelector onInput={onInputStub} onRemove={onRemoveStub} selectedOptions={options} />,
             );
@@ -371,7 +426,10 @@ describe('components/pill-selector-dropdown/PillSelector', () => {
         });
 
         test('should select next pill when right arrow is pressed and selected pill is not last', () => {
-            const options = [{ text: 'test', value: 'test' }, { text: 'blah', value: 'blah' }];
+            const options = [
+                { text: 'test', value: 'test' },
+                { text: 'blah', value: 'blah' },
+            ];
             const wrapper = mount(
                 <PillSelector onInput={onInputStub} onRemove={onRemoveStub} selectedOptions={options} />,
             );

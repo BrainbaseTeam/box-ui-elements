@@ -2,8 +2,10 @@ import React from 'react';
 import cloneDeep from 'lodash/cloneDeep';
 import { mount } from 'enzyme';
 import noop from 'lodash/noop';
+import * as utils from '../utils';
 import { ContentExplorerComponent as ContentExplorer } from '../ContentExplorer';
-import { FOLDER_FIELDS_TO_FETCH } from '../../../utils/fields';
+import UploadDialog from '../../common/upload-dialog';
+import CONTENT_EXPLORER_FOLDER_FIELDS_TO_FETCH from '../constants';
 import { VIEW_MODE_GRID } from '../../../constants';
 
 jest.mock('../../common/header/Header', () => 'mock-header');
@@ -22,6 +24,7 @@ describe('elements/content-explorer/ContentExplorer', () => {
 
     beforeEach(() => {
         rootElement = document.createElement('div');
+        rootElement.appendChild(document.createElement('div'));
         document.body.appendChild(rootElement);
     });
 
@@ -80,7 +83,7 @@ describe('elements/content-explorer/ContentExplorer', () => {
                 'ASC',
                 expect.any(Function),
                 expect.any(Function),
-                { forceFetch: true, fields: FOLDER_FIELDS_TO_FETCH },
+                { forceFetch: true, fields: CONTENT_EXPLORER_FOLDER_FIELDS_TO_FETCH },
             );
         });
     });
@@ -209,7 +212,7 @@ describe('elements/content-explorer/ContentExplorer', () => {
         });
 
         describe('thumbnails', () => {
-            const baseItem = { id: '1', selected: true };
+            const baseItem = { id: '1', selected: true, type: 'file' };
             const baseCollection = {
                 boxItem: {},
                 id: '0',
@@ -218,10 +221,6 @@ describe('elements/content-explorer/ContentExplorer', () => {
                 selected: baseItem,
             };
             const thumbnailUrl = 'thumbnailUrl';
-            const getThumbnailUrl = jest.fn().mockReturnValue(thumbnailUrl);
-            const getFileAPI = jest.fn().mockReturnValue({
-                getThumbnailUrl,
-            });
             const callback = jest.fn();
 
             let wrapper;
@@ -235,6 +234,10 @@ describe('elements/content-explorer/ContentExplorer', () => {
             });
 
             test('should add thumbnailUrl', () => {
+                const getThumbnailUrl = jest.fn().mockReturnValue(thumbnailUrl);
+                const getFileAPI = jest.fn().mockReturnValue({
+                    getThumbnailUrl,
+                });
                 wrapper = getWrapper();
                 instance = wrapper.instance();
                 instance.api = { getFileAPI };
@@ -248,6 +251,167 @@ describe('elements/content-explorer/ContentExplorer', () => {
                         { currentCollection: newCollection, selected: newSelected },
                         callback,
                     );
+                });
+            });
+            test('should not call attemptThumbnailGeneration if thumbnail is null', () => {
+                const getThumbnailUrl = jest.fn().mockReturnValue(null);
+                const getFileAPI = jest.fn().mockReturnValue({
+                    getThumbnailUrl,
+                });
+
+                wrapper = getWrapper();
+                instance = wrapper.instance();
+                instance.api = { getFileAPI };
+                instance.setState = jest.fn();
+                instance.attemptThumbnailGeneration = jest.fn();
+
+                return instance.updateCollection(collection, item, callback).then(() => {
+                    expect(instance.attemptThumbnailGeneration).not.toHaveBeenCalled();
+                });
+            });
+
+            test('should not call attemptThumbnailGeneration if isThumbnailReady is true', () => {
+                const getThumbnailUrl = jest.fn().mockReturnValue(null);
+                const getFileAPI = jest.fn().mockReturnValue({
+                    getThumbnailUrl,
+                });
+
+                wrapper = getWrapper();
+                instance = wrapper.instance();
+                instance.api = { getFileAPI };
+                instance.setState = jest.fn();
+                instance.attemptThumbnailGeneration = jest.fn();
+                utils.isThumbnailReady = jest.fn().mockReturnValue(true);
+
+                return instance.updateCollection(collection, item, callback).then(() => {
+                    expect(instance.attemptThumbnailGeneration).not.toHaveBeenCalled();
+                });
+            });
+
+            test('should call attemptThumbnailGeneration if isThumbnailReady is false', () => {
+                const getThumbnailUrl = jest.fn().mockReturnValue(thumbnailUrl);
+                const getFileAPI = jest.fn().mockReturnValue({
+                    getThumbnailUrl,
+                });
+
+                wrapper = getWrapper();
+                instance = wrapper.instance();
+                instance.api = { getFileAPI };
+                instance.setState = jest.fn();
+                instance.attemptThumbnailGeneration = jest.fn();
+                utils.isThumbnailReady = jest.fn().mockReturnValue(false);
+
+                return instance.updateCollection(collection, item, callback).then(() => {
+                    expect(instance.attemptThumbnailGeneration).toHaveBeenCalled();
+                });
+            });
+
+            test('should not call attemptThumbnailGeneration or getThumbnailUrl if item is not file', () => {
+                const getThumbnailUrl = jest.fn().mockReturnValue(thumbnailUrl);
+                const getFileAPI = jest.fn().mockReturnValue({
+                    getThumbnailUrl,
+                });
+
+                wrapper = getWrapper();
+                instance = wrapper.instance();
+                instance.api = { getFileAPI };
+                instance.setState = jest.fn();
+                instance.attemptThumbnailGeneration = jest.fn();
+                utils.isThumbnailReady = jest.fn().mockReturnValue(false);
+
+                collection.items[0].type = 'folder';
+                return instance.updateCollection(collection, item, callback).then(() => {
+                    expect(instance.attemptThumbnailGeneration).not.toHaveBeenCalled();
+                    expect(getThumbnailUrl).not.toHaveBeenCalled();
+                });
+            });
+        });
+
+        describe('attemptThumbnailGeneration()', () => {
+            const entry1 = { name: 'entry1', updated: false };
+            const entry2 = { name: 'entry2', updated: false };
+            const itemWithRepresentation = { representations: { entries: [entry1, entry2] } };
+            const itemWithoutRepresentation = { name: 'item' };
+
+            let wrapper;
+            let instance;
+
+            test('should not update item in collection if grid view is not enabled', () => {
+                wrapper = getWrapper();
+                instance = wrapper.instance();
+                instance.updateItemInCollection = jest.fn();
+                return instance.attemptThumbnailGeneration(itemWithRepresentation).then(() => {
+                    expect(instance.updateItemInCollection).not.toHaveBeenCalled();
+                });
+            });
+
+            test('should not update item in collection if item does not have representation', () => {
+                wrapper = getWrapper();
+                instance = wrapper.instance();
+                instance.updateItemInCollection = jest.fn();
+                return instance.attemptThumbnailGeneration(itemWithoutRepresentation).then(() => {
+                    expect(instance.updateItemInCollection).not.toHaveBeenCalled();
+                });
+            });
+
+            test('should not update item in collection if updated representation matches given representation', () => {
+                wrapper = getWrapper();
+                instance = wrapper.instance();
+                instance.updateItemInCollection = jest.fn();
+                instance.api = {
+                    getFileAPI: jest
+                        .fn()
+                        .mockReturnValue({ generateRepresentation: jest.fn().mockReturnValue(entry1) }),
+                };
+                return instance.attemptThumbnailGeneration(itemWithRepresentation).then(() => {
+                    expect(instance.updateItemInCollection).not.toHaveBeenCalled();
+                });
+            });
+
+            test('should update item in collection if representation is updated', () => {
+                wrapper = getWrapper();
+                instance = wrapper.instance();
+                instance.updateItemInCollection = jest.fn();
+                instance.api = {
+                    getFileAPI: jest.fn().mockReturnValue({
+                        generateRepresentation: jest.fn().mockReturnValue({ ...entry1, updated: true }),
+                    }),
+                };
+                return instance.attemptThumbnailGeneration(itemWithRepresentation).then(() => {
+                    expect(instance.updateItemInCollection).toHaveBeenCalledWith({
+                        ...itemWithRepresentation,
+                        representations: { entries: [{ ...entry1, updated: true }, entry2] },
+                    });
+                });
+            });
+        });
+
+        describe('updateItemInCollection()', () => {
+            const item1 = { id: '1', updated: false };
+            const item2 = { id: '2', updated: false };
+            const baseCollection = { items: [item1, item2] };
+
+            let wrapper;
+            let instance;
+
+            beforeEach(() => {
+                wrapper = getWrapper();
+                instance = wrapper.instance();
+                instance.setState({ currentCollection: baseCollection });
+                instance.setState = jest.fn();
+            });
+
+            test('should not update collection if matching id is not present in collection', () => {
+                const item3 = { id: '3', updated: true };
+                instance.updateItemInCollection(item3);
+                expect(instance.setState).toHaveBeenCalledWith({ currentCollection: baseCollection });
+            });
+
+            test('should update collection if matching id is present in collection', () => {
+                const newItem2 = { id: '2', updated: true };
+                instance.updateItemInCollection(newItem2);
+                expect(instance.setState).toHaveBeenCalledWith({
+                    currentCollection: { ...baseCollection, items: [item1, newItem2] },
                 });
             });
         });
@@ -292,6 +456,131 @@ describe('elements/content-explorer/ContentExplorer', () => {
             const wrapper = getWrapper({ isSmall: true });
             const instance = wrapper.instance();
             expect(instance.getMaxNumberOfGridViewColumnsForWidth()).toBe(1);
+        });
+    });
+
+    describe('updateMetadata()', () => {
+        test('should update metadata for given Box item, field, old and new values', () => {
+            const item = {};
+            const field = 'amount';
+            const oldValue = 'abc';
+            const newValue = 'pqr';
+
+            const wrapper = getWrapper();
+            const instance = wrapper.instance();
+            instance.metadataQueryAPIHelper = {
+                updateMetadata: jest.fn(),
+            };
+
+            instance.updateMetadata(item, field, oldValue, newValue);
+            expect(instance.metadataQueryAPIHelper.updateMetadata).toHaveBeenCalledWith(
+                item,
+                field,
+                oldValue,
+                newValue,
+                expect.any(Function),
+                instance.errorCallback,
+            );
+        });
+    });
+
+    describe('updateMetadataSuccessCallback()', () => {
+        test('should correctly update the current collection and set the state', () => {
+            const boxItem = { id: 2 };
+            const field = 'amount';
+            const newValue = 111.22;
+            const collectionItem1 = {
+                id: 1,
+                metadata: {
+                    enterprise: {
+                        fields: [
+                            {
+                                name: 'name',
+                                key: 'name',
+                                value: 'abc',
+                                type: 'string',
+                            },
+                            {
+                                name: 'amount',
+                                key: 'amount',
+                                value: 100.34,
+                                type: 'float',
+                            },
+                        ],
+                    },
+                },
+            };
+            const collectionItem2 = {
+                id: 2,
+                metadata: {
+                    enterprise: {
+                        fields: [
+                            {
+                                name: 'name',
+                                key: 'name',
+                                value: 'pqr',
+                                type: 'string',
+                            },
+                            {
+                                name: 'amount',
+                                key: 'amount',
+                                value: 354.23,
+                                type: 'float',
+                            },
+                        ],
+                    },
+                },
+            };
+            const clonedCollectionItem2 = cloneDeep(collectionItem2);
+            const nextMarker = 'markermarkermarkermarkermarkermarker';
+            const currentCollection = {
+                items: [collectionItem1, collectionItem2],
+                nextMarker,
+            };
+            const wrapper = getWrapper();
+
+            // update the metadata
+            clonedCollectionItem2.metadata.enterprise.fields.find(item => item.key === field).value = newValue;
+
+            const updatedItems = [collectionItem1, clonedCollectionItem2];
+
+            wrapper.setState({ currentCollection });
+            const instance = wrapper.instance();
+            instance.setState = jest.fn();
+
+            instance.updateMetadataSuccessCallback(boxItem, field, newValue);
+            expect(instance.setState).toHaveBeenCalledWith({
+                currentCollection: {
+                    items: updatedItems,
+                    nextMarker,
+                    percentLoaded: 100,
+                },
+            });
+        });
+    });
+
+    describe('render()', () => {
+        test('should render UploadDialog with contentUploaderProps', () => {
+            const contentUploaderProps = {
+                apiHost: 'https://api.box.com',
+                chunked: false,
+            };
+            const wrapper = getWrapper({ canUpload: true, contentUploaderProps });
+            wrapper.setState({
+                currentCollection: {
+                    permissions: {
+                        can_upload: true,
+                    },
+                },
+            });
+            const uploadDialogElement = wrapper.find(UploadDialog);
+            expect(uploadDialogElement.length).toBe(1);
+            expect(uploadDialogElement.prop('contentUploaderProps')).toEqual(contentUploaderProps);
+        });
+
+        test('should render test id for e2e testing', () => {
+            const wrapper = getWrapper();
+            expect(wrapper.find('[data-testid="content-explorer"]')).toHaveLength(1);
         });
     });
 });

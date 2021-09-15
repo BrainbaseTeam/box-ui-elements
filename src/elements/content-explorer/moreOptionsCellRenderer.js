@@ -7,6 +7,7 @@
 import React from 'react';
 import Checkbox from '../../components/checkbox';
 import MoreOptions from './MoreOptions';
+import type { BoxItem } from '../../common/types/core';
 import { PERMISSION_CAN_DOWNLOAD } from '../../constants';
 
 export default (

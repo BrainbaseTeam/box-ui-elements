@@ -1,19 +1,13 @@
 // @flow
+import type { MetadataInstanceV2 } from './metadata';
+import type { SortDirection, BoxItem } from './core';
+
 type MetadataQueryResponseEntryEnterprise = {
     [string]: MetadataInstanceV2,
 };
 
-type MetadataQueryResponseEntryMetadata = {
-    [string]: MetadataQueryResponseEntryEnterprise,
-};
-
-type MetadataQueryResponseEntry = {
-    item: BoxItem,
-    metadata: MetadataQueryResponseEntryMetadata,
-};
-
-type MetadataQueryResponse = {
-    entries: Array<MetadataQueryResponseEntry>,
+type MetadataQueryResponseData = {
+    entries: Array<BoxItem>,
     next_marker?: string,
 };
 
@@ -22,61 +16,35 @@ type MetadataQueryOrderByClause = {
     field_key: string,
 };
 
+type MetadataFieldConfig = {
+    canEdit?: boolean,
+    displayName?: string,
+    key: string,
+};
+
+// FieldsToShow array items could be simple strings or objects
+// e.g. const fieldsToShow: FieldsToShow = [ 'name', { key: 'desc', displayName: 'Desc', canEdit: true } ];
+type FieldsToShow = Array<MetadataFieldConfig | string>;
+
 type MetadataQuery = {
     ancestor_folder_id: string,
+    fields?: Array<string>,
+    from: string,
     limit?: number,
-    next_marker?: string,
+    marker?: string,
     order_by?: Array<MetadataQueryOrderByClause>,
-    query: string,
-    query_params: Object,
-};
-
-type MetadataColumnConfig = {
-    canEdit?: boolean,
-    name: string,
-};
-
-type MetadataColumnsToShow = Array<MetadataColumnConfig | string>;
-
-type FlattenedMetadataQueryResponseEntryMetadata = {
-    data?: StringAnyMap,
-    id?: string,
-    metadataTemplate?: {
-        templateKey: string,
-        type: string,
+    query?: string,
+    query_params?: {
+        [string]: boolean | number | string,
     },
-};
-
-type FlattenedMetadataQueryResponseEntry = {
-    id: string,
-    metadata: FlattenedMetadataQueryResponseEntryMetadata,
-    name?: string,
-    permissions?: BoxItemPermission,
-    size?: number,
-};
-
-type FlattenedMetadataQueryResponse = {
-    items: Array<FlattenedMetadataQueryResponseEntry>,
-    nextMarker?: string,
-};
-
-type FlattenedMetadataQueryResponseCollection = {
-    items: Array<FlattenedMetadataQueryResponseEntry>,
-    nextMarker: string,
-    percentLoaded: Number,
+    use_index?: string,
 };
 
 export type {
-    FlattenedMetadataQueryResponse,
-    FlattenedMetadataQueryResponseCollection,
-    FlattenedMetadataQueryResponseEntry,
-    FlattenedMetadataQueryResponseEntryMetadata,
-    MetadataColumnConfig,
-    MetadataColumnsToShow,
+    MetadataFieldConfig,
+    FieldsToShow,
     MetadataQuery,
     MetadataQueryOrderByClause,
-    MetadataQueryResponse,
-    MetadataQueryResponseEntry,
+    MetadataQueryResponseData,
     MetadataQueryResponseEntryEnterprise,
-    MetadataQueryResponseEntryMetadata,
 };

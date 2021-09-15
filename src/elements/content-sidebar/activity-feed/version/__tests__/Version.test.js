@@ -2,10 +2,11 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import selectors from '../../../../common/selectors/version';
 import { VersionBase as Version } from '../Version';
-import { PLACEHOLDER_USER, VERSION_UPLOAD_ACTION } from '../../../../../constants';
+import { FILE_REQUEST_NAME, PLACEHOLDER_USER, VERSION_UPLOAD_ACTION } from '../../../../../constants';
+import messages from '../../../../common/messages';
 
 const translationProps = {
-    intl: { formatMessage: () => {} },
+    intl: { formatMessage: anyString => anyString },
 };
 
 describe('elements/content-sidebar/ActivityFeed/version/Version', () => {
@@ -58,7 +59,7 @@ describe('elements/content-sidebar/ActivityFeed/version/Version', () => {
 
         const wrapper = shallow(<Version {...version} {...translationProps} />);
 
-        expect(wrapper.exists('IconInfoInverted')).toBe(true);
+        expect(wrapper.exists('IconInfo')).toBe(true);
         expect(wrapper.hasClass('bcs-Version')).toBe(true);
     });
 
@@ -72,6 +73,23 @@ describe('elements/content-sidebar/ActivityFeed/version/Version', () => {
         selectors.getVersionUser = jest.fn().mockReturnValueOnce(versionUser);
 
         const wrapper = getWrapper();
+
+        expect(wrapper.find('FormattedMessage').prop('values')).toEqual({
+            name: <strong>{expected}</strong>,
+            version_number: '1',
+        });
+    });
+
+    test.each`
+        versionUser                                         | expected
+        ${defaultUser}                                      | ${defaultUser.name}
+        ${restoreUser}                                      | ${restoreUser.name}
+        ${trashedUser}                                      | ${trashedUser.name}
+        ${{ ...PLACEHOLDER_USER, name: FILE_REQUEST_NAME }} | ${messages.fileRequestDisplayName}
+    `('should render the correct user name if uploader_user_name present', ({ expected, versionUser }) => {
+        selectors.getVersionUser = jest.fn().mockReturnValueOnce(versionUser);
+
+        const wrapper = getWrapper({ ...translationProps, uploader_display_name: FILE_REQUEST_NAME });
 
         expect(wrapper.find('FormattedMessage').prop('values')).toEqual({
             name: <strong>{expected}</strong>,

@@ -5,24 +5,28 @@ import PlainButton from '../../components/plain-button';
 import Tooltip from '../../components/tooltip';
 import IconSecurityClassification from '../../icons/general/IconSecurityClassification';
 import SecurityBadge from '../security';
-import { bdlYellorange } from '../../styles/variables';
+import { bdlYellow50 } from '../../styles/variables';
 import type { Position } from '../../components/tooltip';
 import './ClassifiedBadge.scss';
 
 type Props = {
+    color?: string,
     name: string,
     onClick?: (event: SyntheticEvent<HTMLButtonElement>) => void,
     tooltipPosition?: Position,
     tooltipText?: string,
 };
 
-const ClassifiedBadge = ({ name, onClick, tooltipPosition = 'bottom-center', tooltipText }: Props) => {
+const ICON_SIZE = 12;
+
+const ClassifiedBadge = ({ color, name, onClick, tooltipPosition = 'bottom-center', tooltipText }: Props) => {
     const isClickable = typeof onClick === 'function';
     const isTooltipDisabled = !tooltipText;
     const badge = (
         <SecurityBadge
             className="bdl-ClassifiedBadge"
-            icon={<IconSecurityClassification color={bdlYellorange} height={10} width={10} strokeWidth={3} />}
+            color={color}
+            icon={<IconSecurityClassification height={ICON_SIZE} width={ICON_SIZE} />}
             message={name}
         />
     );
@@ -42,6 +46,10 @@ const ClassifiedBadge = ({ name, onClick, tooltipPosition = 'bottom-center', too
             )}
         </Tooltip>
     );
+};
+
+ClassifiedBadge.defaultProps = {
+    color: bdlYellow50,
 };
 
 export default ClassifiedBadge;

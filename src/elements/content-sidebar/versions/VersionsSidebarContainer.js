@@ -19,10 +19,12 @@ import VersionsSidebar from './VersionsSidebar';
 import VersionsSidebarAPI from './VersionsSidebarAPI';
 import { withAPIContext } from '../../common/api-context';
 import type { VersionActionCallback, VersionChangeCallback } from './flowTypes';
+import type { BoxItemVersion, BoxItem, FileVersions } from '../../../common/types/core';
 
 type Props = {
     api: API,
     fileId: string,
+    hasSidebarInitialized?: boolean,
     history: RouterHistory,
     match: Match,
     onVersionChange: VersionChangeCallback,

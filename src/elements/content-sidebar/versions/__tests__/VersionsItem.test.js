@@ -8,7 +8,7 @@ import VersionsItemActions from '../VersionsItemActions';
 import VersionsItemButton from '../VersionsItemButton';
 import VersionsItemRetention from '../VersionsItemRetention';
 import { ReadableTime } from '../../../../components/time';
-import { PLACEHOLDER_USER, VERSION_UPLOAD_ACTION } from '../../../../constants';
+import { FILE_REQUEST_NAME, PLACEHOLDER_USER, VERSION_UPLOAD_ACTION } from '../../../../constants';
 
 jest.mock('../../../../utils/dom', () => ({
     ...jest.requireActual('../../../../utils/dom'),
@@ -25,6 +25,7 @@ describe('elements/content-sidebar/versions/VersionsItem', () => {
     const unknownUser = <FormattedMessage {...messages.versionUserUnknown} />;
     const defaults = {
         created_at: defaultDate,
+        extension: 'docx',
         id: '12345',
         is_download_available: true,
         modified_at: defaultDate,
@@ -128,6 +129,20 @@ describe('elements/content-sidebar/versions/VersionsItem', () => {
         });
 
         test.each`
+            versionUser                                         | expected
+            ${defaultUser}                                      | ${defaultUser.name}
+            ${restoreUser}                                      | ${restoreUser.name}
+            ${trashedUser}                                      | ${trashedUser.name}
+            ${{ ...PLACEHOLDER_USER, name: FILE_REQUEST_NAME }} | ${(<FormattedMessage {...messages.fileRequestDisplayName} />)}
+        `('should render the correct user name if uploader_user_name present', ({ expected, versionUser }) => {
+            selectors.getVersionUser.mockReturnValueOnce(versionUser);
+
+            const wrapper = getWrapper({ version: { ...defaults, uploader_display_name: FILE_REQUEST_NAME } });
+            const result = wrapper.find('[data-testid="bcs-VersionsItem-log"]').find('FormattedMessage');
+            expect(result.prop('values')).toEqual({ name: expected });
+        });
+
+        test.each`
             created_at     | restored_at    | trashed_at     | expected
             ${defaultDate} | ${null}        | ${null}        | ${defaultDate}
             ${defaultDate} | ${restoreDate} | ${null}        | ${restoreDate}
@@ -169,16 +184,32 @@ describe('elements/content-sidebar/versions/VersionsItem', () => {
             },
         );
 
-        test('should disable preview if the file is watermarked and missing the can_download permission', () => {
+        test.each`
+            extension | isCurrent | showPreview
+            ${'docx'} | ${true}   | ${true}
+            ${'xlsb'} | ${true}   | ${true}
+            ${'xlsm'} | ${true}   | ${true}
+            ${'xlsx'} | ${true}   | ${true}
+            ${'docx'} | ${false}  | ${true}
+            ${'xlsb'} | ${false}  | ${false}
+            ${'xlsm'} | ${false}  | ${false}
+            ${'xlsx'} | ${false}  | ${false}
+        `(
+            'should restrict preview for non-current versions with extensions that could use the office viewer',
+            ({ extension, isCurrent, showPreview }) => {
+                const wrapper = getWrapper({
+                    isCurrent,
+                    version: getVersion({ extension }),
+                });
+
+                expect(wrapper.find(VersionsItemActions).prop('showPreview')).toBe(showPreview);
+                expect(wrapper.find(VersionsItemButton).prop('isDisabled')).toBe(!showPreview);
+            },
+        );
+
+        test('should disable preview if the file is watermarked', () => {
             const wrapper = getWrapper({
                 isWatermarked: true,
-                version: getVersion({
-                    permissions: {
-                        can_download: false,
-                        can_preview: true, // Download should take priority in this case, even if can_preview is true
-                        can_upload: true,
-                    },
-                }),
             });
             const actions = wrapper.find(VersionsItemActions);
             const button = wrapper.find(VersionsItemButton);

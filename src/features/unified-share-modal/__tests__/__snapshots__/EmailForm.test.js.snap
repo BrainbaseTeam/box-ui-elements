@@ -33,10 +33,12 @@ exports[`features/unified-share-modal/EmailForm render() should not show inline 
           }
         }
         getContacts={[MockFunction]}
+        getPillClassName={[Function]}
         onContactAdd={[Function]}
         onContactRemove={[Function]}
         onInput={[Function]}
         selectedContacts={Array []}
+        showContactAvatars={true}
         validateForError={[Function]}
         validator={[Function]}
       />
@@ -78,10 +80,12 @@ exports[`features/unified-share-modal/EmailForm render() should not show inline 
           }
         }
         getContacts={[MockFunction]}
+        getPillClassName={[Function]}
         onContactAdd={[Function]}
         onContactRemove={[Function]}
         onInput={[Function]}
         selectedContacts={Array []}
+        showContactAvatars={true}
         validateForError={[Function]}
         validator={[Function]}
       />
@@ -128,10 +132,12 @@ exports[`features/unified-share-modal/EmailForm render() should render default c
           }
         }
         getContacts={[MockFunction]}
+        getPillClassName={[Function]}
         onContactAdd={[Function]}
         onContactRemove={[Function]}
         onInput={[Function]}
         selectedContacts={Array []}
+        showContactAvatars={true}
         validateForError={[Function]}
         validator={[Function]}
       />
@@ -181,10 +187,12 @@ exports[`features/unified-share-modal/EmailForm render() should render default c
             }
           }
           getContacts={[MockFunction]}
+          getPillClassName={[Function]}
           onContactAdd={[Function]}
           onContactRemove={[Function]}
           onInput={[Function]}
           selectedContacts={Array []}
+          showContactAvatars={true}
           validateForError={[Function]}
           validator={[Function]}
         />
@@ -192,6 +200,7 @@ exports[`features/unified-share-modal/EmailForm render() should render default c
     </div>
   </Tooltip>
   <TextArea
+    data-testid="be-emailform-message"
     label={
       <FormattedMessage
         defaultMessage="Message"
@@ -199,13 +208,17 @@ exports[`features/unified-share-modal/EmailForm render() should render default c
       />
     }
     onChange={[Function]}
+    placeholder="boxui.share.messageSelectorPlaceholder"
     rows={3}
     value=""
   />
   <ModalActions>
     <Button
+      className=""
       isDisabled={false}
+      isLoading={false}
       onClick={[Function]}
+      showRadar={false}
       type="button"
     >
       <FormattedMessage
@@ -260,16 +273,19 @@ exports[`features/unified-share-modal/EmailForm render() should render default c
           }
         }
         getContacts={[MockFunction]}
+        getPillClassName={[Function]}
         onContactAdd={[Function]}
         onContactRemove={[Function]}
         onInput={[Function]}
         selectedContacts={Array []}
+        showContactAvatars={true}
         validateForError={[Function]}
         validator={[Function]}
       />
     </Tooltip>
   </div>
   <TextArea
+    data-testid="be-emailform-message"
     label={
       <FormattedMessage
         defaultMessage="Message"
@@ -277,13 +293,17 @@ exports[`features/unified-share-modal/EmailForm render() should render default c
       />
     }
     onChange={[Function]}
+    placeholder="boxui.share.messageSelectorPlaceholder"
     rows={3}
     value=""
   />
   <ModalActions>
     <Button
+      className=""
       isDisabled={false}
+      isLoading={false}
       onClick={[Function]}
+      showRadar={false}
       type="button"
     >
       <FormattedMessage
@@ -338,10 +358,12 @@ exports[`features/unified-share-modal/EmailForm render() should render default c
           }
         }
         getContacts={[MockFunction]}
+        getPillClassName={[Function]}
         onContactAdd={[Function]}
         onContactRemove={[Function]}
         onInput={[Function]}
         selectedContacts={Array []}
+        showContactAvatars={true}
         validateForError={[Function]}
         validator={[Function]}
       />
@@ -388,16 +410,19 @@ exports[`features/unified-share-modal/EmailForm render() should render default c
           }
         }
         getContacts={[MockFunction]}
+        getPillClassName={[Function]}
         onContactAdd={[Function]}
         onContactRemove={[Function]}
         onInput={[Function]}
         selectedContacts={Array []}
+        showContactAvatars={true}
         validateForError={[Function]}
         validator={[Function]}
       />
     </Tooltip>
   </div>
   <TextArea
+    data-testid="be-emailform-message"
     label={
       <FormattedMessage
         defaultMessage="Message"
@@ -405,13 +430,17 @@ exports[`features/unified-share-modal/EmailForm render() should render default c
       />
     }
     onChange={[Function]}
+    placeholder="boxui.share.messageSelectorPlaceholder"
     rows={3}
     value=""
   />
   <ModalActions>
     <Button
+      className=""
       isDisabled={false}
+      isLoading={false}
       onClick={[Function]}
+      showRadar={false}
       type="button"
     >
       <FormattedMessage
@@ -471,16 +500,19 @@ exports[`features/unified-share-modal/EmailForm render() should render default c
           }
         }
         getContacts={[MockFunction]}
+        getPillClassName={[Function]}
         onContactAdd={[Function]}
         onContactRemove={[Function]}
         onInput={[Function]}
         selectedContacts={Array []}
+        showContactAvatars={true}
         validateForError={[Function]}
         validator={[Function]}
       />
     </Tooltip>
   </div>
   <TextArea
+    data-testid="be-emailform-message"
     label={
       <FormattedMessage
         defaultMessage="Message"
@@ -488,13 +520,17 @@ exports[`features/unified-share-modal/EmailForm render() should render default c
       />
     }
     onChange={[Function]}
+    placeholder="boxui.share.messageSelectorPlaceholder"
     rows={3}
     value=""
   />
   <ModalActions>
     <Button
+      className=""
       isDisabled={false}
+      isLoading={false}
       onClick={[Function]}
+      showRadar={false}
       type="button"
     >
       <FormattedMessage
@@ -549,16 +585,19 @@ exports[`features/unified-share-modal/EmailForm render() should render default c
           }
         }
         getContacts={[MockFunction]}
+        getPillClassName={[Function]}
         onContactAdd={[Function]}
         onContactRemove={[Function]}
         onInput={[Function]}
         selectedContacts={Array []}
+        showContactAvatars={true}
         validateForError={[Function]}
         validator={[Function]}
       />
     </Tooltip>
   </div>
   <TextArea
+    data-testid="be-emailform-message"
     label={
       <FormattedMessage
         defaultMessage="Message"
@@ -566,6 +605,7 @@ exports[`features/unified-share-modal/EmailForm render() should render default c
       />
     }
     onChange={[Function]}
+    placeholder="boxui.share.messageSelectorPlaceholder"
     rows={3}
     value=""
   />
@@ -587,8 +627,11 @@ exports[`features/unified-share-modal/EmailForm render() should render default c
   </div>
   <ModalActions>
     <Button
+      className=""
       isDisabled={false}
+      isLoading={false}
       onClick={[Function]}
+      showRadar={false}
       type="button"
     >
       <FormattedMessage
@@ -646,10 +689,12 @@ exports[`features/unified-share-modal/EmailForm render() should render tooltip a
           }
         }
         getContacts={[MockFunction]}
+        getPillClassName={[Function]}
         onContactAdd={[Function]}
         onContactRemove={[Function]}
         onInput={[Function]}
         selectedContacts={Array []}
+        showContactAvatars={true}
         validateForError={[Function]}
         validator={[Function]}
       />
@@ -691,10 +736,12 @@ exports[`features/unified-share-modal/EmailForm render() should render tooltip a
           }
         }
         getContacts={[MockFunction]}
+        getPillClassName={[Function]}
         onContactAdd={[Function]}
         onContactRemove={[Function]}
         onInput={[Function]}
         selectedContacts={Array []}
+        showContactAvatars={true}
         validateForError={[Function]}
         validator={[Function]}
       />
@@ -736,10 +783,12 @@ exports[`features/unified-share-modal/EmailForm render() should render tooltip a
           }
         }
         getContacts={[MockFunction]}
+        getPillClassName={[Function]}
         onContactAdd={[Function]}
         onContactRemove={[Function]}
         onInput={[Function]}
         selectedContacts={Array []}
+        showContactAvatars={true}
         validateForError={[Function]}
         validator={[Function]}
       />
@@ -781,10 +830,12 @@ exports[`features/unified-share-modal/EmailForm render() should render tooltip a
           }
         }
         getContacts={[MockFunction]}
+        getPillClassName={[Function]}
         onContactAdd={[Function]}
         onContactRemove={[Function]}
         onInput={[Function]}
         selectedContacts={Array []}
+        showContactAvatars={true}
         validateForError={[Function]}
         validator={[Function]}
       />

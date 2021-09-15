@@ -6,6 +6,7 @@ import TaskModal from './TaskModal';
 import { TASK_TYPE_APPROVAL } from '../../constants';
 import type { TaskFormProps } from './activity-feed/task-form/TaskForm';
 import type { TaskType } from '../../common/types/tasks';
+import type { ElementsXhrError } from '../../common/types/api';
 
 type Props = {|
     history: RouterHistory,
@@ -21,6 +22,8 @@ type State = {
 };
 
 class AddTaskButton extends React.Component<Props, State> {
+    buttonRef = React.createRef<HTMLButtonElement>();
+
     state = {
         error: null,
         isTaskFormOpen: false,
@@ -43,10 +46,17 @@ class AddTaskButton extends React.Component<Props, State> {
     handleModalClose = () => {
         const { onTaskModalClose } = this.props;
         this.setState({ isTaskFormOpen: false, error: null });
+        if (this.buttonRef.current) {
+            this.buttonRef.current.focus();
+        }
         onTaskModalClose();
     };
 
     handleSubmitError = (e: ElementsXhrError) => this.setState({ error: e });
+
+    setAddTaskButtonRef = (element: HTMLButtonElement) => {
+        this.buttonRef.current = element;
+    };
 
     render() {
         const { isDisabled, taskFormProps } = this.props;
@@ -54,7 +64,11 @@ class AddTaskButton extends React.Component<Props, State> {
 
         return (
             <>
-                <AddTaskMenu isDisabled={isDisabled} onMenuItemClick={this.handleClickMenuItem} />
+                <AddTaskMenu
+                    isDisabled={isDisabled}
+                    onMenuItemClick={this.handleClickMenuItem}
+                    setAddTaskButtonRef={this.setAddTaskButtonRef}
+                />
                 <TaskModal
                     error={error}
                     onSubmitError={this.handleSubmitError}

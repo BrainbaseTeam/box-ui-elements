@@ -25,7 +25,7 @@ exports[`features/collaborator-avatars/CollaboratorList render() should render d
     </Link>
   </div>
   <ul
-    className="collaborator-list"
+    className="be collaborator-list"
   >
     <CollaboratorListItem
       collaborator={
@@ -92,6 +92,9 @@ exports[`features/collaborator-avatars/CollaboratorList render() should render d
   <ModalActions>
     <Button
       className="btn-done"
+      isLoading={false}
+      showRadar={false}
+      type="submit"
     >
       <FormattedMessage
         defaultMessage="Done"
@@ -127,7 +130,7 @@ exports[`features/collaborator-avatars/CollaboratorList render() should render e
     </Link>
   </div>
   <ul
-    className="collaborator-list"
+    className="be collaborator-list"
   >
     <CollaboratorListItem
       collaborator={
@@ -195,6 +198,9 @@ exports[`features/collaborator-avatars/CollaboratorList render() should render e
   <ModalActions>
     <Button
       className="btn-done"
+      isLoading={false}
+      showRadar={false}
+      type="submit"
     >
       <FormattedMessage
         defaultMessage="Done"

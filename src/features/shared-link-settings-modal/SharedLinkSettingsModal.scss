@@ -15,7 +15,27 @@
     }
 
     .checkbox-subsection {
+        max-width: 400px;
         margin-left: 0;
+
+        .custom-url-preview {
+            overflow: hidden;
+        }
+    }
+
+    .password-section {
+        .password-section-information {
+            display: flex;
+            color: $bdl-gray-62;
+        }
+
+        .password-section-information-icon path {
+            fill: $bdl-gray-62;
+        }
+
+        .password-section-information-text {
+            margin-left: $bdl-grid-unit * 2;
+        }
     }
 
     .vanity-name-section {
@@ -46,6 +66,7 @@
     }
 
     .link-settings-modal-notice {
+        margin: 0 0 ($bdl-grid-unit * 5);
         color: $bdl-gray-62;
     }
 }

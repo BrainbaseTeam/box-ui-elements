@@ -38,7 +38,7 @@ describe('components/pill-selector-dropdown/PillSelectorDropdown', () => {
             const selectorDropdown = wrapper.find('SelectorDropdown');
 
             expect(selectorDropdown.is('SelectorDropdown')).toBe(true);
-            expect(selectorDropdown.hasClass('pill-selector-wrapper')).toBe(true);
+            expect(selectorDropdown.hasClass('bdl-PillSelectorDropdown')).toBe(true);
             expect(selectorDropdown.hasClass(className)).toBe(true);
             expect(selectorDropdown.prop('onEnter')).toEqual(instance.handleEnter);
             expect(selectorDropdown.prop('onSelect')).toEqual(instance.handleSelect);
@@ -72,6 +72,15 @@ describe('components/pill-selector-dropdown/PillSelectorDropdown', () => {
             instance.addPillsFromInput = addPillsFromInputMock;
             instance.handleBlur();
             expect(addPillsFromInputMock).toHaveBeenCalledTimes(1);
+        });
+
+        test.each([
+            ['test', true],
+            ['', false],
+        ])('should render Label component when label exists', (value, expected) => {
+            const labelProp = { label: value };
+            const wrapper = getWrapper(labelProp);
+            expect(wrapper.exists('Label')).toBe(expected);
         });
     });
 

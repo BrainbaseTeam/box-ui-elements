@@ -1,5 +1,6 @@
+import { renderHook } from '@testing-library/react-hooks';
 import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed';
-import { isActivateKey, isLeftClick, scrollIntoView } from '../dom';
+import { isActivateKey, isFocusableElement, isLeftClick, scrollIntoView, useIsContentOverflowed } from '../dom';
 
 jest.mock('scroll-into-view-if-needed');
 
@@ -57,6 +58,52 @@ describe('util/dom', () => {
             const itemEl = document.querySelector('.input');
             scrollIntoView(itemEl);
             expect(scrollIntoViewIfNeeded).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('isFocusableElement', () => {
+        afterEach(() => {
+            document.body.innerHTML = '';
+        });
+
+        test.each`
+            innerHTMLValue                                                                       | result   | description
+            ${null}                                                                              | ${false} | ${'null'}
+            ${'<span class="checkbox-pointer-target"/>'}                                         | ${true}  | ${'an element with a checkbox class'}
+            ${'<div class="checkbox-label"><span class="other-classname"></span></div>'}         | ${true}  | ${'an element with a parent with a checkbox class'}
+            ${'<div class="other-parent-classname"><span class="other-classname"></span></div>'} | ${false} | ${'an element with no checkbox classes and a parent without a checkbox class'}
+            ${'<span class="other-classname"/>'}                                                 | ${false} | ${'an element with no checkbox classes and no parent element'}
+            ${'<span class="btn-content"/>'}                                                     | ${true}  | ${'an element with a button class'}
+            ${'<button class="btn" type="submit"><span class="other-classname"/></div>'}         | ${true}  | ${'an element with a parent with a button class'}
+            ${'<button class="bdl-Button" type="submit"><span class="other-classname"/></div>'}  | ${true}  | ${'an element with a parent with a bdl-namespaced button class'}
+            ${'<div class="other-parent-classname"><span class="other-classname"/></div>'}       | ${false} | ${'an element with no button classes and a parent without a button class'}
+            ${'<span className="other-classname" />'}                                            | ${false} | ${'an element with no button classes and no parent element'}
+        `('returns $result when given $description', ({ innerHTMLValue, result }) => {
+            document.body.innerHTML = innerHTMLValue;
+            const spanElement = document.querySelector('span');
+            expect(isFocusableElement(spanElement)).toBe(result);
+        });
+    });
+
+    describe('useIsContentOverflowed', () => {
+        test.each`
+            ref                                                  | isOverflowed | note
+            ${{ current: { offsetWidth: 10, scrollWidth: 20 } }} | ${true}      | ${'offset < scroll'}
+            ${{ current: { offsetWidth: 20, scrollWidth: 10 } }} | ${false}     | ${'offset > scroll'}
+            ${{ current: { offsetWidth: 20, scrollWidth: 20 } }} | ${false}     | ${'offset == scroll'}
+            ${{ current: null }}                                 | ${false}     | ${'null ref'}
+        `('given $note, result is $isOverflowed', ({ ref, isOverflowed }) => {
+            const { result } = renderHook(() => useIsContentOverflowed(ref));
+            expect(result.current).toBe(isOverflowed);
+        });
+
+        test('responds to change in ref value with new result', async () => {
+            const ref = { current: { offsetWidth: 20, scrollWidth: 10 } };
+            const { result, rerender } = renderHook(() => useIsContentOverflowed(ref));
+            expect(result.current).toBe(false);
+            ref.current = { offsetWidth: 10, scrollWidth: 20 };
+            rerender();
+            expect(result.current).toBe(true);
         });
     });
 });

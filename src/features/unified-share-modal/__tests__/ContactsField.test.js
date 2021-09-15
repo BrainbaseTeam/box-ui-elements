@@ -1,11 +1,20 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { emailValidator } from '../../../utils/validators';
+
 import { ContactsFieldBase as ContactsField } from '../ContactsField';
 import messages from '../messages';
 
 describe('features/unified-share-modal/ContactsField', () => {
     const contactsFromServer = [
+        {
+            email: 'w@example.com',
+            id: '9875',
+            isExternalUser: false,
+            name: 'W User',
+            type: 'user',
+        },
         {
             email: 'x@example.com',
             id: '12345',
@@ -56,6 +65,27 @@ describe('features/unified-share-modal/ContactsField', () => {
         },
     ];
 
+    const suggestions = {
+        // expectedContacts[1]
+        '23456': {
+            id: '23456',
+            userScore: 0.5,
+            email: 'y@example.com',
+            name: 'Y User',
+            type: 'user',
+            isExternalUser: false,
+        },
+        // expectedContacts[2]
+        '34567': {
+            id: '34567',
+            userScore: 0.1,
+            email: 'z@example.com',
+            name: 'Z User',
+            type: 'user',
+            isExternalUser: true,
+        },
+    };
+
     const intl = { formatMessage: jest.fn() };
 
     const getWrapper = (props = {}) =>
@@ -78,19 +108,18 @@ describe('features/unified-share-modal/ContactsField', () => {
         );
 
     describe('addSuggestedContacts()', () => {
-        const suggestions = {
-            '23456': { id: '23456', userScore: 0.5 }, // expectedContacts[1]
-            '34567': { id: '34567', userScore: 0.1 }, // expectedContacts[2]
-        };
-
-        test('should sort suggestions by highest score', () => {
+        test('should sort suggestions by highest score without duplication', () => {
             const wrapper = getWrapper({
                 suggestedCollaborators: suggestions,
             });
 
             const result = wrapper.instance().addSuggestedContacts(expectedContacts);
 
-            expect(result).toEqual([expectedContacts[1], expectedContacts[2], expectedContacts[0]]);
+            expect(result.map(c => c.id)).toEqual([
+                expectedContacts[1].id,
+                expectedContacts[2].id,
+                expectedContacts[0].id,
+            ]);
         });
 
         test('should setState with number of suggested items showing', () => {
@@ -101,21 +130,6 @@ describe('features/unified-share-modal/ContactsField', () => {
             wrapper.instance().addSuggestedContacts(expectedContacts);
 
             expect(wrapper.state().numSuggestedShowing).toEqual(2);
-        });
-
-        test('should not add suggestions not in the contact list', () => {
-            const wrapper = getWrapper({
-                suggestedCollaborators: {
-                    '56789': { id: '56789', userScore: 1 },
-                    '67890': { id: '67890', userScore: 0.1 },
-                },
-            });
-
-            const result = wrapper.instance().addSuggestedContacts(expectedContacts);
-            const resultIDs = result.map(contact => contact.id);
-
-            expect(resultIDs).not.toContain('56789');
-            expect(resultIDs).not.toContain('67890');
         });
     });
 
@@ -160,7 +174,7 @@ describe('features/unified-share-modal/ContactsField', () => {
             const wrapper = getWrapper({
                 selectedContacts: [],
             });
-            const addSuggestedContactsMock = jest.fn();
+            const addSuggestedContactsMock = jest.fn(c => c);
 
             wrapper.setState({ pillSelectorInputValue: 'x@' });
             wrapper.instance().addSuggestedContacts = addSuggestedContactsMock;
@@ -173,7 +187,18 @@ describe('features/unified-share-modal/ContactsField', () => {
             });
 
             wrapper.instance().filterContacts(contactsFromServer);
-            expect(addSuggestedContactsMock).toHaveBeenCalledWith([expectedContacts[0]]);
+            expect(addSuggestedContactsMock).toHaveBeenCalled();
+        });
+
+        test('Should return contacts in the correct format', () => {
+            const wrapper = getWrapper({
+                selectedContacts: [],
+                suggestedCollaborators: suggestions,
+            });
+
+            wrapper.setState({ pillSelectorInputValue: 'user' });
+            const result = wrapper.instance().filterContacts(contactsFromServer);
+            expect(result).toMatchSnapshot();
         });
     });
 
@@ -238,6 +263,21 @@ describe('features/unified-share-modal/ContactsField', () => {
             expect(onInput).toHaveBeenCalled();
         });
 
+        test('should get avatar URLs when prop is provided', async () => {
+            const getContacts = jest.fn().mockReturnValue(Promise.resolve(contactsFromServer));
+            const getContactAvatarUrlMock = jest.fn(contact => `/test?id=${contact.id}`);
+
+            const wrapper = getWrapper({
+                getContactAvatarUrl: getContactAvatarUrlMock,
+                getContacts,
+                showContactAvatars: true,
+            });
+            wrapper.instance().handlePillSelectorInput('w');
+            await wrapper.instance().getContactsPromise('w');
+
+            expect(wrapper.find('PillSelectorDropdown ContactDatalistItem').props().getContactAvatarUrl).toBeDefined();
+        });
+
         test('should reset contacts if input is empty', async () => {
             const getContacts = jest.fn().mockReturnValue(Promise.resolve(contactsFromServer));
             const onInput = jest.fn();
@@ -254,6 +294,26 @@ describe('features/unified-share-modal/ContactsField', () => {
             expect(wrapper.state('contacts')).toEqual([]);
             expect(onInput).toHaveBeenCalled();
         });
+    });
+
+    describe('parseItems()', () => {
+        test.each`
+            inputValue                                                    | expectedItems
+            ${'a@example.com'}                                            | ${['a@example.com']}
+            ${'Foo Bar <fbar@example.com>; Test User <test@example.com>'} | ${['fbar@example.com', 'test@example.com']}
+            ${'not_an_email; Test User <test@example.com>'}               | ${['test@example.com']}
+            ${'malformed,emailtest@example.com'}                          | ${[]}
+            ${'123'}                                                      | ${[]}
+            ${'not_an_email'}                                             | ${[]}
+        `(
+            'should correctly parse pill selector input "$inputValue" and return $expectedItems',
+            ({ inputValue, expectedItems }) => {
+                const wrapper = getWrapper({ validator: emailValidator });
+                const { parseItems } = wrapper.find('PillSelectorDropdown').props();
+
+                expect(parseItems(inputValue)).toEqual(expectedItems);
+            },
+        );
     });
 
     describe('render', () => {

@@ -6,6 +6,7 @@
 
 import 'regenerator-runtime/runtime';
 import React, { Component } from 'react';
+import type { Node } from 'react';
 import classNames from 'classnames';
 import debounce from 'lodash/debounce';
 import getProp from 'lodash/get';
@@ -17,7 +18,7 @@ import UploadDialog from '../common/upload-dialog';
 import CreateFolderDialog from '../common/create-folder-dialog';
 import Internationalize from '../common/Internationalize';
 import makeResponsive from '../common/makeResponsive';
-import Pagination from '../common/pagination/Pagination';
+import OffsetBasedPagination from '../../features/pagination/OffsetBasedPagination';
 import { isFocusableElement, isInputElement, focus } from '../../utils/dom';
 import API from '../../api';
 import Content from './Content';
@@ -49,6 +50,21 @@ import {
     VIEW_SELECTED,
 } from '../../constants';
 import { FILE_SHARED_LINK_FIELDS_TO_FETCH } from '../../utils/fields';
+import type { ElementsXhrError } from '../../common/types/api';
+import type {
+    View,
+    DefaultView,
+    StringAnyMap,
+    StringMap,
+    SortBy,
+    SortDirection,
+    Token,
+    Access,
+    BoxItemPermission,
+    BoxItem,
+    Collection,
+} from '../../common/types/core';
+
 import '../common/fonts.scss';
 import '../common/base.scss';
 import '../common/modal.scss';
@@ -63,13 +79,17 @@ type Props = {
     cancelButtonLabel?: string,
     chooseButtonLabel?: string,
     className: string,
+    clearSelectedItemsOnNavigation: boolean,
     clientName: string,
+    contentUploaderProps: ContentUploaderProps,
     currentFolderId?: string,
     defaultView: DefaultView,
     extensions: string[],
     initialPage: number,
     initialPageSize: number,
+    isHeaderLogoVisible?: boolean,
     isLarge: boolean,
+    isPaginationVisible?: boolean,
     isSmall: boolean,
     isTouch: boolean,
     language?: string,
@@ -79,11 +99,18 @@ type Props = {
     messages?: StringMap,
     onCancel: Function,
     onChoose: Function,
+    renderCustomActionButtons?: ({
+        onCancel: Function,
+        onChoose: Function,
+        selectedCount: number,
+        selectedItems: BoxItem[],
+    }) => Node,
     requestInterceptor?: Function,
     responseInterceptor?: Function,
     rootFolderId: string,
     sharedLink?: string,
     sharedLinkPassword?: string,
+    showSelectedButton: boolean,
     sortBy: SortBy,
     sortDirection: SortDirection,
     token: Token,
@@ -149,6 +176,11 @@ class ContentPicker extends Component<Props, State> {
         uploadHost: DEFAULT_HOSTNAME_UPLOAD,
         clientName: CLIENT_NAME_CONTENT_PICKER,
         defaultView: DEFAULT_VIEW_FILES,
+        contentUploaderProps: {},
+        showSelectedButton: true,
+        clearSelectedItemsOnNavigation: false,
+        isHeaderLogoVisible: true,
+        isPaginationVisible: true,
     };
 
     /**
@@ -274,25 +306,48 @@ class ContentPicker extends Component<Props, State> {
     }
 
     /**
-     * Choose button action.
+     * Gets selected items from state.
      * Clones values before returning so that
      * object references are broken. Also cleans
      * up the selected attribute since it was
      * added by the file picker.
      *
      * @private
-     * @fires choose
-     * @return {void}
+     * @return {BoxItem[]}
      */
-    choose = (): void => {
+    getSelectedItems = (): BoxItem[] => {
         const { selected }: State = this.state;
-        const { onChoose }: Props = this.props;
-        const results: BoxItem[] = Object.keys(selected).map(key => {
+        return Object.keys(selected).map(key => {
             const clone: BoxItem = { ...selected[key] };
             delete clone.selected;
             return clone;
         });
+    };
+
+    /**
+     * Choose button action.
+     *
+     * @private
+     * @fires choose
+     * @return {void}
+     */
+    choose = (): void => {
+        const { onChoose }: Props = this.props;
+        const results = this.getSelectedItems();
         onChoose(results);
+    };
+
+    /**
+     * Deletes selected keys off of selected items in state.
+     *
+     * @private
+     * @return {void}
+     */
+    deleteSelectedKeys = (): void => {
+        const { selected }: State = this.state;
+
+        // Clear out the selected field
+        Object.keys(selected).forEach(key => delete selected[key].selected);
     };
 
     /**
@@ -304,10 +359,8 @@ class ContentPicker extends Component<Props, State> {
      */
     cancel = (): void => {
         const { onCancel }: Props = this.props;
-        const { selected }: State = this.state;
 
-        // Clear out the selected field
-        Object.keys(selected).forEach(key => delete selected[key].selected);
+        this.deleteSelectedKeys();
 
         // Reset the selected state
         this.setState({ selected: {} }, () => onCancel());
@@ -425,17 +478,24 @@ class ContentPicker extends Component<Props, State> {
      * @return {void}
      */
     fetchFolderSuccessCallback(collection: Collection, triggerNavigationEvent: boolean): void {
-        const { rootFolderId }: Props = this.props;
+        const { clearSelectedItemsOnNavigation, rootFolderId }: Props = this.props;
         const { id, name }: Collection = collection;
 
-        // New folder state
-        const newState = {
+        const commonState = {
             currentCollection: collection,
             rootName: id === rootFolderId ? name : '',
         };
 
+        // New folder state
+        const newState = clearSelectedItemsOnNavigation ? { ...commonState, selected: {} } : commonState;
+
         // Close any open modals
         this.closeModals();
+
+        // Deletes selected keys
+        if (clearSelectedItemsOnNavigation) {
+            this.deleteSelectedKeys();
+        }
 
         if (triggerNavigationEvent) {
             // Fire folder navigation event
@@ -879,10 +939,12 @@ class ContentPicker extends Component<Props, State> {
     handleSharedLinkSuccess = (item: BoxItem) => {
         // if no shared link currently exists, create a shared link with enterprise default
         if (!item[FIELD_SHARED_LINK]) {
+            // $FlowFixMe
             this.changeShareAccess(null, item);
         } else {
             const { selected } = this.state;
             const { id, type } = item;
+            // $FlowFixMe
             const cacheKey = this.api.getAPI(type).getCacheKey(id);
             // if shared link already exists, update the collection in state
             this.updateItemInCollection(item);
@@ -1121,6 +1183,7 @@ class ContentPicker extends Component<Props, State> {
             canUpload,
             canSetShareAccess,
             canCreateNewFolder,
+            contentUploaderProps,
             extensions,
             maxSelectable,
             type,
@@ -1129,6 +1192,8 @@ class ContentPicker extends Component<Props, State> {
             sharedLinkPassword,
             apiHost,
             uploadHost,
+            isHeaderLogoVisible,
+            isPaginationVisible,
             isSmall,
             className,
             measureRef,
@@ -1136,6 +1201,8 @@ class ContentPicker extends Component<Props, State> {
             cancelButtonLabel,
             requestInterceptor,
             responseInterceptor,
+            renderCustomActionButtons,
+            showSelectedButton,
         }: Props = this.props;
         const {
             view,
@@ -1167,6 +1234,7 @@ class ContentPicker extends Component<Props, State> {
                     <div className="be-app-element" onKeyDown={this.onKeyDown} tabIndex={0}>
                         <Header
                             view={view}
+                            isHeaderLogoVisible={isHeaderLogoVisible}
                             isSmall={isSmall}
                             searchQuery={searchQuery}
                             logoUrl={logoUrl}
@@ -1204,7 +1272,10 @@ class ContentPicker extends Component<Props, State> {
                             onShareAccessChange={this.changeShareAccess}
                         />
                         <Footer
+                            currentCollection={currentCollection}
                             selectedCount={selectedCount}
+                            selectedItems={this.getSelectedItems()}
+                            showSelectedButton={showSelectedButton}
                             hasHitSelectionLimit={hasHitSelectionLimit}
                             isSingleSelect={isSingleSelect}
                             onSelectedClick={this.showSelected}
@@ -1212,13 +1283,16 @@ class ContentPicker extends Component<Props, State> {
                             onCancel={this.cancel}
                             chooseButtonLabel={chooseButtonLabel}
                             cancelButtonLabel={cancelButtonLabel}
+                            renderCustomActionButtons={renderCustomActionButtons}
                         >
-                            <Pagination
-                                offset={offset}
-                                onChange={this.paginate}
-                                pageSize={currentPageSize}
-                                totalCount={totalCount}
-                            />
+                            {isPaginationVisible ? (
+                                <OffsetBasedPagination
+                                    offset={offset}
+                                    onOffsetChange={this.paginate}
+                                    pageSize={currentPageSize}
+                                    totalCount={totalCount}
+                                />
+                            ) : null}
                         </Footer>
                     </div>
                     {allowUpload && !!this.appElement ? (
@@ -1233,6 +1307,7 @@ class ContentPicker extends Component<Props, State> {
                             onClose={this.uploadSuccessHandler}
                             parentElement={this.rootElement}
                             appElement={this.appElement}
+                            contentUploaderProps={contentUploaderProps}
                             requestInterceptor={requestInterceptor}
                             responseInterceptor={responseInterceptor}
                         />

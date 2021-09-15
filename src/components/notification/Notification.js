@@ -9,6 +9,8 @@ import IconClose from '../../icons/general/IconClose';
 import IconInfoThin from '../../icons/general/IconInfoThin';
 import IconSync from '../../icons/general/IconSync';
 
+import type { NotificationType } from '../../common/types/core';
+
 import './Notification.scss';
 
 // @NOTE: We can't import these constants from ./constant.js because `react-docgen`
@@ -16,11 +18,11 @@ import './Notification.scss';
 // see https://github.com/reactjs/react-docgen/issues/33
 const DURATION_SHORT = 'short';
 const DURATION_LONG = 'long';
+const OVERFLOW_WRAP = 'wrap';
 const TYPE_DEFAULT = 'default';
 const TYPE_INFO = 'info';
 const TYPE_WARN = 'warn';
 const TYPE_ERROR = 'error';
-const OVERFLOW_WRAP = 'wrap';
 
 const DURATION_TIMES = {
     [DURATION_SHORT]: 5000,
@@ -65,7 +67,7 @@ type Props = {
      * - `error`: red
      */
     overflow?: 'wrap' | 'ellipsis',
-    type: 'default' | 'info' | 'warn' | 'error',
+    type: NotificationType,
 };
 
 class Notification extends React.Component<Props> {

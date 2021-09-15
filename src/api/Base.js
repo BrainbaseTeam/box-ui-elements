@@ -7,6 +7,7 @@
 import noop from 'lodash/noop';
 import Xhr from '../utils/Xhr';
 import Cache from '../utils/Cache';
+import UploadsReachability from './uploads/UploadsReachability';
 import { getTypedFileId } from '../utils/file';
 import { getBadItemError, getBadPermissionsError } from '../utils/error';
 import {
@@ -17,6 +18,8 @@ import {
     HTTP_PUT,
     HTTP_DELETE,
 } from '../constants';
+import type { ElementsErrorCallback, APIOptions } from '../common/types/api';
+import type APICache from '../utils/Cache';
 
 class Base {
     /**
@@ -47,7 +50,7 @@ class Base {
     /**
      * @property {*}
      */
-    options: Options;
+    options: APIOptions;
 
     /**
      * @property {Function}
@@ -75,6 +78,11 @@ class Base {
     errorCallback: ElementsErrorCallback;
 
     /**
+     * @property {UploadsReachability}
+     */
+    uploadsReachability: UploadsReachability;
+
+    /**
      * [constructor]
      *
      * @param {Object} [options]
@@ -85,7 +93,7 @@ class Base {
      * @param {string} [options.uploadHost] - Upload host name
      * @return {Base} Base instance
      */
-    constructor(options: Options) {
+    constructor(options: APIOptions) {
         this.cache = options.cache || new Cache();
         this.apiHost = options.apiHost || DEFAULT_HOSTNAME_API;
         this.uploadHost = options.uploadHost || DEFAULT_HOSTNAME_UPLOAD;
@@ -95,6 +103,7 @@ class Base {
         this.destroyed = false;
         this.consoleLog = !!options.consoleLog && !!window.console ? window.console.log || noop : noop;
         this.consoleError = !!options.consoleError && !!window.console ? window.console.error || noop : noop;
+        this.uploadsReachability = new UploadsReachability();
     }
 
     /**

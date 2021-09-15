@@ -8,16 +8,19 @@ import classNames from 'classnames';
 import getProp from 'lodash/get';
 import noop from 'lodash/noop';
 import TetherComponent from 'react-tether';
-import { FormattedMessage, injectIntl, type IntlShape } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
-import DeleteConfirmation from '../common/delete-confirmation';
+import ActivityCard from '../ActivityCard';
 import ActivityTimestamp from '../common/activity-timestamp';
+import DeleteConfirmation from '../common/delete-confirmation';
 import IconTrash from '../../../../icons/general/IconTrash';
 import Media from '../../../../components/media';
 import messages from './messages';
 import { bdlGray80 } from '../../../../styles/variables';
 import { Link } from '../../../../components/link';
 import { MenuItem } from '../../../../components/menu';
+import type { AppItem, ActivityTemplateItem, ActionItemError } from '../../../../common/types/feed';
+import type { User, BoxItemPermission } from '../../../../common/types/core';
 import './AppActivity.scss';
 
 type Props = {
@@ -28,7 +31,7 @@ type Props = {
     currentUser?: User,
     error?: ActionItemError,
     id: string,
-    intl: IntlShape,
+    intl: any,
     isPending?: boolean,
     onDelete: ({ id: string, permissions?: {} }) => void,
     permissions?: BoxItemPermission,
@@ -118,56 +121,60 @@ class AppActivity extends React.PureComponent<Props, State> {
         const { isConfirmingDelete } = this.state;
 
         return (
-            <Media
-                className={classNames('bcs-AppActivity', {
-                    'bcs-is-pending': isPending || error,
-                })}
+            <ActivityCard
+                className="bcs-AppActivity"
                 data-resin-target="loaded"
                 data-resin-feature={`appActivityCard${templateId}`}
             >
-                <Media.Figure>
-                    <img
-                        className="bcs-AppActivity-icon"
-                        alt={intl.formatMessage(messages.appActivityAltIcon, { appActivityName: name })}
-                        src={icon_url}
-                    />
-                </Media.Figure>
+                <Media
+                    className={classNames({
+                        'bcs-is-pending': isPending || error,
+                    })}
+                >
+                    <Media.Figure>
+                        <img
+                            className="bcs-AppActivity-icon"
+                            alt={intl.formatMessage(messages.appActivityAltIcon, { appActivityName: name })}
+                            src={icon_url}
+                        />
+                    </Media.Figure>
 
-                <Media.Body className="bcs-AppActivity-body">
-                    {isMenuVisible && (
-                        <TetherComponent
-                            attachment="top right"
-                            className="bcs-AppActivity-confirm"
-                            constraints={[{ to: 'scrollParent', attachment: 'together' }]}
-                            targetAttachment="bottom right"
-                        >
-                            <Media.Menu isDisabled={isConfirmingDelete}>
-                                <MenuItem onClick={this.handleDeleteClick}>
-                                    <IconTrash color={bdlGray80} />
-                                    <FormattedMessage {...messages.appActivityDeleteMenuItem} />
-                                </MenuItem>
-                            </Media.Menu>
+                    <Media.Body className="bcs-AppActivity-body">
+                        {isMenuVisible && (
+                            <TetherComponent
+                                attachment="top right"
+                                className="bcs-AppActivity-confirm"
+                                constraints={[{ to: 'scrollParent', attachment: 'together' }]}
+                                targetAttachment="bottom right"
+                            >
+                                <Media.Menu isDisabled={isConfirmingDelete}>
+                                    <MenuItem onClick={this.handleDeleteClick}>
+                                        <IconTrash color={bdlGray80} />
+                                        <FormattedMessage {...messages.appActivityDeleteMenuItem} />
+                                    </MenuItem>
+                                </Media.Menu>
 
-                            {isConfirmingDelete && (
-                                <DeleteConfirmation
-                                    isOpen={isConfirmingDelete}
-                                    message={messages.appActivityDeletePrompt}
-                                    onDeleteCancel={this.handleDeleteCancel}
-                                    onDeleteConfirm={this.handleDeleteConfirm}
-                                />
-                            )}
-                        </TetherComponent>
-                    )}
+                                {isConfirmingDelete && (
+                                    <DeleteConfirmation
+                                        isOpen={isConfirmingDelete}
+                                        message={messages.appActivityDeletePrompt}
+                                        onDeleteCancel={this.handleDeleteCancel}
+                                        onDeleteConfirm={this.handleDeleteConfirm}
+                                    />
+                                )}
+                            </TetherComponent>
+                        )}
 
-                    <figcaption className="bcs-AppActivity-headline">{name}</figcaption>
+                        <figcaption className="bcs-AppActivity-headline">{name}</figcaption>
 
-                    <div>
-                        <ActivityTimestamp date={createdAtTimestamp} />
-                    </div>
+                        <div>
+                            <ActivityTimestamp date={createdAtTimestamp} />
+                        </div>
 
-                    {this.parseActivity().map(mapActivityNodes)}
-                </Media.Body>
-            </Media>
+                        {this.parseActivity().map(mapActivityNodes)}
+                    </Media.Body>
+                </Media>
+            </ActivityCard>
         );
     }
 }

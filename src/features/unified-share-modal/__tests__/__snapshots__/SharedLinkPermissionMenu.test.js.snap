@@ -7,13 +7,13 @@ exports[`features/unified-share-modal/SharedLinkPermissionMenu render() it shoul
   isRightAligned={false}
 >
   <PlainButton
-    className="lnk is-disabled"
+    className="lnk is-disabled bdl-is-disabled"
     disabled={true}
   >
     <MenuToggle>
       <FormattedMessage
-        defaultMessage="Can view and download"
-        id="boxui.unifiedShare.sharedLinkPermissionsViewDownload"
+        defaultMessage="Can edit"
+        id="boxui.unifiedShare.sharedLinkPermissionsEdit"
       />
     </MenuToggle>
   </PlainButton>
@@ -24,26 +24,34 @@ exports[`features/unified-share-modal/SharedLinkPermissionMenu render() it shoul
   >
     <SelectMenuItem
       isSelected={true}
+      key="canEdit"
+      onClick={[Function]}
+    >
+      <div
+        className="ums-share-permissions-menu-item"
+      >
+        <span>
+          <FormattedMessage
+            defaultMessage="Can edit"
+            id="boxui.unifiedShare.sharedLinkPermissionsEdit"
+          />
+        </span>
+      </div>
+    </SelectMenuItem>
+    <SelectMenuItem
+      isSelected={false}
       key="canViewDownload"
       onClick={[Function]}
     >
-      <div>
-        <strong>
+      <div
+        className="ums-share-permissions-menu-item"
+      >
+        <span>
           <FormattedMessage
             defaultMessage="Can view and download"
             id="boxui.unifiedShare.sharedLinkPermissionsViewDownload"
           />
-        </strong>
-        <small
-          className="usm-menu-description"
-        >
-           
-          <FormattedMessage
-            defaultMessage="Users can view and download"
-            id="boxui.unifiedShare.sharedLinkPermissionsViewDownloadDescription"
-          />
-           
-        </small>
+        </span>
       </div>
     </SelectMenuItem>
     <SelectMenuItem
@@ -51,23 +59,15 @@ exports[`features/unified-share-modal/SharedLinkPermissionMenu render() it shoul
       key="canViewOnly"
       onClick={[Function]}
     >
-      <div>
-        <strong>
+      <div
+        className="ums-share-permissions-menu-item"
+      >
+        <span>
           <FormattedMessage
             defaultMessage="Can view only"
             id="boxui.unifiedShare.sharedLinkPermissionsViewOnly"
           />
-        </strong>
-        <small
-          className="usm-menu-description"
-        >
-           
-          <FormattedMessage
-            defaultMessage="Users can view only"
-            id="boxui.unifiedShare.sharedLinkPermissionsViewOnlyDescription"
-          />
-           
-        </small>
+        </span>
       </div>
     </SelectMenuItem>
   </Menu>
@@ -86,8 +86,8 @@ exports[`features/unified-share-modal/SharedLinkPermissionMenu render() it shoul
   >
     <MenuToggle>
       <FormattedMessage
-        defaultMessage="Can view and download"
-        id="boxui.unifiedShare.sharedLinkPermissionsViewDownload"
+        defaultMessage="Can edit"
+        id="boxui.unifiedShare.sharedLinkPermissionsEdit"
       />
     </MenuToggle>
   </PlainButton>
@@ -98,26 +98,34 @@ exports[`features/unified-share-modal/SharedLinkPermissionMenu render() it shoul
   >
     <SelectMenuItem
       isSelected={true}
+      key="canEdit"
+      onClick={[Function]}
+    >
+      <div
+        className="ums-share-permissions-menu-item"
+      >
+        <span>
+          <FormattedMessage
+            defaultMessage="Can edit"
+            id="boxui.unifiedShare.sharedLinkPermissionsEdit"
+          />
+        </span>
+      </div>
+    </SelectMenuItem>
+    <SelectMenuItem
+      isSelected={false}
       key="canViewDownload"
       onClick={[Function]}
     >
-      <div>
-        <strong>
+      <div
+        className="ums-share-permissions-menu-item"
+      >
+        <span>
           <FormattedMessage
             defaultMessage="Can view and download"
             id="boxui.unifiedShare.sharedLinkPermissionsViewDownload"
           />
-        </strong>
-        <small
-          className="usm-menu-description"
-        >
-           
-          <FormattedMessage
-            defaultMessage="Users can view and download"
-            id="boxui.unifiedShare.sharedLinkPermissionsViewDownloadDescription"
-          />
-           
-        </small>
+        </span>
       </div>
     </SelectMenuItem>
     <SelectMenuItem
@@ -125,23 +133,15 @@ exports[`features/unified-share-modal/SharedLinkPermissionMenu render() it shoul
       key="canViewOnly"
       onClick={[Function]}
     >
-      <div>
-        <strong>
+      <div
+        className="ums-share-permissions-menu-item"
+      >
+        <span>
           <FormattedMessage
             defaultMessage="Can view only"
             id="boxui.unifiedShare.sharedLinkPermissionsViewOnly"
           />
-        </strong>
-        <small
-          className="usm-menu-description"
-        >
-           
-          <FormattedMessage
-            defaultMessage="Users can view only"
-            id="boxui.unifiedShare.sharedLinkPermissionsViewOnlyDescription"
-          />
-           
-        </small>
+        </span>
       </div>
     </SelectMenuItem>
   </Menu>
@@ -155,7 +155,155 @@ exports[`features/unified-share-modal/SharedLinkPermissionMenu render() it shoul
   isRightAligned={false}
 >
   <PlainButton
-    className="lnk is-disabled"
+    className="lnk is-disabled bdl-is-disabled"
+    disabled={true}
+  >
+    <MenuToggle>
+      <FormattedMessage
+        defaultMessage="Can view and download"
+        id="boxui.unifiedShare.sharedLinkPermissionsViewDownload"
+      />
+    </MenuToggle>
+  </PlainButton>
+  <Menu
+    className="ums-share-permissions-menu"
+    isHidden={false}
+    isSubmenu={false}
+  >
+    <SelectMenuItem
+      isSelected={false}
+      key="canEdit"
+      onClick={[Function]}
+    >
+      <div
+        className="ums-share-permissions-menu-item"
+      >
+        <span>
+          <FormattedMessage
+            defaultMessage="Can edit"
+            id="boxui.unifiedShare.sharedLinkPermissionsEdit"
+          />
+        </span>
+      </div>
+    </SelectMenuItem>
+    <SelectMenuItem
+      isSelected={true}
+      key="canViewDownload"
+      onClick={[Function]}
+    >
+      <div
+        className="ums-share-permissions-menu-item"
+      >
+        <span>
+          <FormattedMessage
+            defaultMessage="Can view and download"
+            id="boxui.unifiedShare.sharedLinkPermissionsViewDownload"
+          />
+        </span>
+      </div>
+    </SelectMenuItem>
+    <SelectMenuItem
+      isSelected={false}
+      key="canViewOnly"
+      onClick={[Function]}
+    >
+      <div
+        className="ums-share-permissions-menu-item"
+      >
+        <span>
+          <FormattedMessage
+            defaultMessage="Can view only"
+            id="boxui.unifiedShare.sharedLinkPermissionsViewOnly"
+          />
+        </span>
+      </div>
+    </SelectMenuItem>
+  </Menu>
+</DropdownMenu>
+`;
+
+exports[`features/unified-share-modal/SharedLinkPermissionMenu render() it should render correct menu 4`] = `
+<DropdownMenu
+  constrainToScrollParent={false}
+  constrainToWindow={true}
+  isRightAligned={false}
+>
+  <PlainButton
+    className="lnk"
+    disabled={false}
+  >
+    <MenuToggle>
+      <FormattedMessage
+        defaultMessage="Can view and download"
+        id="boxui.unifiedShare.sharedLinkPermissionsViewDownload"
+      />
+    </MenuToggle>
+  </PlainButton>
+  <Menu
+    className="ums-share-permissions-menu"
+    isHidden={false}
+    isSubmenu={false}
+  >
+    <SelectMenuItem
+      isSelected={false}
+      key="canEdit"
+      onClick={[Function]}
+    >
+      <div
+        className="ums-share-permissions-menu-item"
+      >
+        <span>
+          <FormattedMessage
+            defaultMessage="Can edit"
+            id="boxui.unifiedShare.sharedLinkPermissionsEdit"
+          />
+        </span>
+      </div>
+    </SelectMenuItem>
+    <SelectMenuItem
+      isSelected={true}
+      key="canViewDownload"
+      onClick={[Function]}
+    >
+      <div
+        className="ums-share-permissions-menu-item"
+      >
+        <span>
+          <FormattedMessage
+            defaultMessage="Can view and download"
+            id="boxui.unifiedShare.sharedLinkPermissionsViewDownload"
+          />
+        </span>
+      </div>
+    </SelectMenuItem>
+    <SelectMenuItem
+      isSelected={false}
+      key="canViewOnly"
+      onClick={[Function]}
+    >
+      <div
+        className="ums-share-permissions-menu-item"
+      >
+        <span>
+          <FormattedMessage
+            defaultMessage="Can view only"
+            id="boxui.unifiedShare.sharedLinkPermissionsViewOnly"
+          />
+        </span>
+      </div>
+    </SelectMenuItem>
+  </Menu>
+</DropdownMenu>
+`;
+
+exports[`features/unified-share-modal/SharedLinkPermissionMenu render() it should render correct menu 5`] = `
+<DropdownMenu
+  constrainToScrollParent={false}
+  constrainToWindow={true}
+  isRightAligned={false}
+>
+  <PlainButton
+    className="lnk is-disabled bdl-is-disabled"
     disabled={true}
   >
     <MenuToggle>
@@ -172,26 +320,34 @@ exports[`features/unified-share-modal/SharedLinkPermissionMenu render() it shoul
   >
     <SelectMenuItem
       isSelected={false}
+      key="canEdit"
+      onClick={[Function]}
+    >
+      <div
+        className="ums-share-permissions-menu-item"
+      >
+        <span>
+          <FormattedMessage
+            defaultMessage="Can edit"
+            id="boxui.unifiedShare.sharedLinkPermissionsEdit"
+          />
+        </span>
+      </div>
+    </SelectMenuItem>
+    <SelectMenuItem
+      isSelected={false}
       key="canViewDownload"
       onClick={[Function]}
     >
-      <div>
-        <strong>
+      <div
+        className="ums-share-permissions-menu-item"
+      >
+        <span>
           <FormattedMessage
             defaultMessage="Can view and download"
             id="boxui.unifiedShare.sharedLinkPermissionsViewDownload"
           />
-        </strong>
-        <small
-          className="usm-menu-description"
-        >
-           
-          <FormattedMessage
-            defaultMessage="Users can view and download"
-            id="boxui.unifiedShare.sharedLinkPermissionsViewDownloadDescription"
-          />
-           
-        </small>
+        </span>
       </div>
     </SelectMenuItem>
     <SelectMenuItem
@@ -199,30 +355,22 @@ exports[`features/unified-share-modal/SharedLinkPermissionMenu render() it shoul
       key="canViewOnly"
       onClick={[Function]}
     >
-      <div>
-        <strong>
+      <div
+        className="ums-share-permissions-menu-item"
+      >
+        <span>
           <FormattedMessage
             defaultMessage="Can view only"
             id="boxui.unifiedShare.sharedLinkPermissionsViewOnly"
           />
-        </strong>
-        <small
-          className="usm-menu-description"
-        >
-           
-          <FormattedMessage
-            defaultMessage="Users can view only"
-            id="boxui.unifiedShare.sharedLinkPermissionsViewOnlyDescription"
-          />
-           
-        </small>
+        </span>
       </div>
     </SelectMenuItem>
   </Menu>
 </DropdownMenu>
 `;
 
-exports[`features/unified-share-modal/SharedLinkPermissionMenu render() it should render correct menu 4`] = `
+exports[`features/unified-share-modal/SharedLinkPermissionMenu render() it should render correct menu 6`] = `
 <DropdownMenu
   constrainToScrollParent={false}
   constrainToWindow={true}
@@ -246,26 +394,34 @@ exports[`features/unified-share-modal/SharedLinkPermissionMenu render() it shoul
   >
     <SelectMenuItem
       isSelected={false}
+      key="canEdit"
+      onClick={[Function]}
+    >
+      <div
+        className="ums-share-permissions-menu-item"
+      >
+        <span>
+          <FormattedMessage
+            defaultMessage="Can edit"
+            id="boxui.unifiedShare.sharedLinkPermissionsEdit"
+          />
+        </span>
+      </div>
+    </SelectMenuItem>
+    <SelectMenuItem
+      isSelected={false}
       key="canViewDownload"
       onClick={[Function]}
     >
-      <div>
-        <strong>
+      <div
+        className="ums-share-permissions-menu-item"
+      >
+        <span>
           <FormattedMessage
             defaultMessage="Can view and download"
             id="boxui.unifiedShare.sharedLinkPermissionsViewDownload"
           />
-        </strong>
-        <small
-          className="usm-menu-description"
-        >
-           
-          <FormattedMessage
-            defaultMessage="Users can view and download"
-            id="boxui.unifiedShare.sharedLinkPermissionsViewDownloadDescription"
-          />
-           
-        </small>
+        </span>
       </div>
     </SelectMenuItem>
     <SelectMenuItem
@@ -273,23 +429,15 @@ exports[`features/unified-share-modal/SharedLinkPermissionMenu render() it shoul
       key="canViewOnly"
       onClick={[Function]}
     >
-      <div>
-        <strong>
+      <div
+        className="ums-share-permissions-menu-item"
+      >
+        <span>
           <FormattedMessage
             defaultMessage="Can view only"
             id="boxui.unifiedShare.sharedLinkPermissionsViewOnly"
           />
-        </strong>
-        <small
-          className="usm-menu-description"
-        >
-           
-          <FormattedMessage
-            defaultMessage="Users can view only"
-            id="boxui.unifiedShare.sharedLinkPermissionsViewOnlyDescription"
-          />
-           
-        </small>
+        </span>
       </div>
     </SelectMenuItem>
   </Menu>

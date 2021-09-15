@@ -72,8 +72,9 @@ describe('features/quick-search/QuickSearchItem', () => {
 
         expect(itemName.prop('title')).toEqual(itemData.name);
         expect(itemName.text()).toEqual(itemData.name);
-        expect(searchTerm.is('mark.search-term')).toBe(true);
-        expect(searchTerm.text()).toEqual('test');
+
+        expect(searchTerm.at(1).is('mark.search-term')).toBe(true);
+        expect(searchTerm.at(1).text()).toEqual('test');
     });
 
     test('should render Link for item info when shouldNavigateOnItemClick is passed in', () => {
@@ -102,13 +103,13 @@ describe('features/quick-search/QuickSearchItem', () => {
 
         expect(itemName.text()).toEqual(multiMarkItemData.name);
 
-        expect(searchTerm.length).toEqual(2);
+        expect(searchTerm.length).toEqual(5);
     });
 
     test('should render parent folder icon', () => {
         const wrapper = mount(<QuickSearchItem itemData={itemData} />);
 
-        expect(wrapper.find('IconSmallFolder').prop('title')).toBeTruthy();
+        expect(wrapper.find('Folder16').prop('title')).toBeTruthy();
     });
 
     test('should render parent name', () => {
@@ -129,7 +130,6 @@ describe('features/quick-search/QuickSearchItem', () => {
         const itemDataWithoutParent = {
             ...itemData,
             parentName: undefined,
-            parentFolderRenderer: undefined,
         };
         const wrapper = mount(<QuickSearchItem itemData={itemDataWithoutParent} />);
 

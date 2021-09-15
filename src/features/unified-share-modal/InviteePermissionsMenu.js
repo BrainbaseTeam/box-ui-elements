@@ -90,6 +90,7 @@ class InviteePermissionsMenu extends Component<Props> {
             <PlainButton
                 className={classNames('lnk', {
                     'is-disabled': disabled,
+                    'bdl-is-disabled': disabled,
                 })}
                 disabled={disabled}
                 {...inviteePermissionsButtonProps}
@@ -117,7 +118,7 @@ class InviteePermissionsMenu extends Component<Props> {
         // TODO: `DropdownMenu` doesn't currently handle a scenario where the menu is taller than
         // the available vertical space. cannot use the constraint props here in short windows.
         return (
-            <div className="invitee-menu-wrap">
+            <div className="be invitee-menu-wrap">
                 <DropdownMenu>
                     {plainButtonWrap}
                     {this.renderMenu()}

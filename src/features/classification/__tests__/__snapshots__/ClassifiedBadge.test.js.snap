@@ -12,12 +12,11 @@ exports[`features/classification/ClassifiedBadge should render a classified badg
 >
   <SecurityBadge
     className="bdl-ClassifiedBadge"
+    color="#ffeb7f"
     icon={
       <IconSecurityClassification
-        color="#f5b31b"
-        height={10}
-        strokeWidth={3}
-        width={10}
+        height={12}
+        width={12}
       />
     }
     message="Confidential"
@@ -36,12 +35,11 @@ exports[`features/classification/ClassifiedBadge should render a classified badg
 >
   <SecurityBadge
     className="bdl-ClassifiedBadge"
+    color="#ffeb7f"
     icon={
       <IconSecurityClassification
-        color="#f5b31b"
-        height={10}
-        strokeWidth={3}
-        width={10}
+        height={12}
+        width={12}
       />
     }
     message="Confidential"
@@ -67,12 +65,11 @@ exports[`features/classification/ClassifiedBadge should render a classified badg
   >
     <SecurityBadge
       className="bdl-ClassifiedBadge"
+      color="#ffeb7f"
       icon={
         <IconSecurityClassification
-          color="#f5b31b"
-          height={10}
-          strokeWidth={3}
-          width={10}
+          height={12}
+          width={12}
         />
       }
       message="Confidential"

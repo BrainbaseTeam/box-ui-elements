@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import * as UploaderUtils from '../../../utils/uploads';
+import Browser from '../../../utils/Browser';
 import { ContentUploaderComponent, CHUNKED_UPLOAD_MIN_SIZE_BYTES } from '../ContentUploader';
 import Footer from '../Footer';
 import {
@@ -16,6 +17,8 @@ import {
 } from '../../../constants';
 
 const EXPAND_UPLOADS_MANAGER_ITEMS_NUM_THRESHOLD = 5;
+
+jest.mock('../../../utils/Browser');
 
 describe('elements/content-uploader/ContentUploader', () => {
     const getWrapper = (props = {}) => shallow(<ContentUploaderComponent {...props} />);
@@ -62,15 +65,40 @@ describe('elements/content-uploader/ContentUploader', () => {
         test('should set itemIds to be an empty when method is called with an empty array', () => {
             const onComplete = jest.fn();
             const useUploadsManager = false;
+            const isResumableUploadsEnabled = false;
             const wrapper = getWrapper({
                 onComplete,
                 useUploadsManager,
+                isResumableUploadsEnabled,
             });
 
             wrapper.instance().updateViewAndCollection([], null);
 
             expect(wrapper.state().itemIds).toEqual({});
         });
+
+        test.each([
+            ['not', true, 'not', STATUS_PENDING, 0],
+            ['', true, '', STATUS_COMPLETE, 1],
+            ['', false, 'not', STATUS_STAGED, 1],
+        ])(
+            'should %s call onComplete when isResumableUploadsEnabled is %s and %s all items are finished',
+            (a, isResumableUploadsEnabled, b, status, expected) => {
+                const onComplete = jest.fn();
+                const useUploadsManager = true;
+                const wrapper = getWrapper({
+                    onComplete,
+                    useUploadsManager,
+                    isResumableUploadsEnabled,
+                });
+                const instance = wrapper.instance();
+                const items = [{ status }, { status: STATUS_COMPLETE }, { status: STATUS_ERROR }];
+
+                instance.updateViewAndCollection(items, null);
+
+                expect(onComplete).toHaveBeenCalledTimes(expected);
+            },
+        );
     });
 
     describe('addFilesToUploadQueue()', () => {
@@ -92,6 +120,41 @@ describe('elements/content-uploader/ContentUploader', () => {
             wrapper.instance().addFilesToUploadQueue([{ name: 'yoyo', size: 1000 }], jest.fn(), false);
 
             const expected = { yoyo: true, yoyo_0_10000: true };
+            expect(wrapper.state().itemIds).toEqual(expected);
+        });
+
+        test('should handle accepting package "files" separate from folders', () => {
+            const mockFile = { name: 'hi' };
+            Browser.isSafari = jest.fn(() => true);
+            const entry = {
+                isDirectory: true,
+                kind: 'file',
+                file: fn => {
+                    fn(mockFile);
+                },
+            };
+            const wrapper = getWrapper({
+                rootFolderId: 0,
+                isFolderUploadEnabled: true,
+                hasUploads: true,
+                useUploadsManager: true,
+            });
+
+            global.Date.now = jest.fn(() => 10000);
+
+            wrapper.setProps({
+                files: [mockFile],
+                dataTransferItems: [
+                    {
+                        kind: 'file',
+                        type: 'application/zip',
+                        getAsFile: jest.fn(() => mockFile),
+                        webkitGetAsEntry: () => entry,
+                        name: 'hi',
+                    },
+                ],
+            });
+            const expected = { hi: true, hi_0_10000: true };
             expect(wrapper.state().itemIds).toEqual(expected);
         });
     });
@@ -184,6 +247,116 @@ describe('elements/content-uploader/ContentUploader', () => {
             instance.resumeFile(item);
             expect(item.api.resume).toBeCalled();
             expect(instance.updateViewAndCollection).toBeCalled();
+        });
+    });
+
+    describe('onClick()', () => {
+        test('should cancel folder upload in progress', () => {
+            const item = { api: {}, isFolder: true, status: STATUS_IN_PROGRESS };
+            const onClickCancel = jest.fn();
+            const wrapper = getWrapper({ onClickCancel });
+            const instance = wrapper.instance();
+
+            instance.removeFileFromUploadQueue = jest.fn();
+
+            instance.onClick(item);
+
+            expect(instance.removeFileFromUploadQueue).toBeCalledWith(item);
+            expect(onClickCancel.mock.calls.length).toBe(1);
+        });
+
+        test.each([
+            [
+                'should set bytesUploadedOnLastResume when status is error and item is resumable',
+                {
+                    api: { sessionId: 123, totalUploadedBytes: 123456 },
+                    status: STATUS_ERROR,
+                    file: { size: CHUNKED_UPLOAD_MIN_SIZE_BYTES + 1 },
+                },
+                true,
+                true,
+            ],
+            [
+                'should not set bytesUploadedOnLastResume when file size <= CHUNKED_UPLOAD_MIN_SIZE_BYTES',
+                {
+                    api: { sessionId: 123, totalUploadedBytes: 123456 },
+                    status: STATUS_ERROR,
+                    file: { size: CHUNKED_UPLOAD_MIN_SIZE_BYTES },
+                },
+                true,
+                true,
+            ],
+            [
+                'should not set bytesUploadedOnLastResume when resumable uploads is not enabled',
+                {
+                    api: { sessionId: 123, totalUploadedBytes: 123456 },
+                    status: STATUS_ERROR,
+                    file: { size: CHUNKED_UPLOAD_MIN_SIZE_BYTES + 1 },
+                },
+                false,
+                true,
+            ],
+            [
+                'should not set bytesUploadedOnLastResume when not chunked upload',
+                {
+                    api: { sessionId: 123, totalUploadedBytes: 123456 },
+                    status: STATUS_ERROR,
+                    file: { size: CHUNKED_UPLOAD_MIN_SIZE_BYTES + 1 },
+                },
+                true,
+                false,
+            ],
+            [
+                'should not set bytesUploadedOnLastResume when item api has no session id',
+                {
+                    api: { sessionId: undefined, totalUploadedBytes: 123456 },
+                    status: STATUS_ERROR,
+                    file: { size: CHUNKED_UPLOAD_MIN_SIZE_BYTES + 1 },
+                },
+                true,
+                true,
+            ],
+            [
+                'should not set bytesUploadedOnLastResume when status is not error',
+                {
+                    api: { sessionId: 123, totalUploadedBytes: 123456 },
+                    status: STATUS_COMPLETE,
+                    file: { size: CHUNKED_UPLOAD_MIN_SIZE_BYTES + 1 },
+                },
+                true,
+                true,
+            ],
+        ])('%o', (test, item, isResumableUploadsEnabled, chunked) => {
+            jest.spyOn(UploaderUtils, 'isMultiputSupported').mockImplementation(() => true);
+            const isChunkedUpload = chunked && item.file.size > CHUNKED_UPLOAD_MIN_SIZE_BYTES;
+            const isResumable = isResumableUploadsEnabled && isChunkedUpload && item.api.sessionId;
+            const onClickCancel = jest.fn();
+            const onClickResume = jest.fn();
+            const onClickRetry = jest.fn();
+            const wrapper = getWrapper({
+                chunked,
+                isResumableUploadsEnabled,
+                onClickCancel,
+                onClickResume,
+                onClickRetry,
+            });
+            const instance = wrapper.instance();
+            instance.removeFileFromUploadQueue = jest.fn();
+            instance.resumeFile = jest.fn();
+            instance.resetFile = jest.fn();
+            instance.uploadFile = jest.fn();
+
+            instance.onClick(item);
+
+            if (item.status === STATUS_ERROR && isResumable) {
+                expect(item.bytesUploadedOnLastResume).toBe(item.api.totalUploadedBytes);
+                expect(onClickResume.mock.calls.length).toBe(1);
+            } else if (item.status === STATUS_ERROR) {
+                expect(onClickRetry.mock.calls.length).toBe(1);
+            } else {
+                expect(item.bytesUploadedOnLastResume).toBe(undefined);
+                expect(onClickCancel.mock.calls.length).toBe(1);
+            }
         });
     });
 

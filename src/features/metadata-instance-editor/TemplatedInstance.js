@@ -2,9 +2,11 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Field from './fields/Field';
+import MetadataField from '../metadata-instance-fields/MetadataField';
 import messages from './messages';
 import { isHidden } from './metadataUtil';
+import type { MetadataFields, MetadataTemplate, MetadataFieldValue } from '../../common/types/metadata';
+import MetadataInstanceEditorContext from './MetadataInstanceEditorContext';
 import './TemplatedInstance.scss';
 
 type Props = {
@@ -22,13 +24,15 @@ const TemplatedInstance = ({ canEdit, data = {}, errors, onFieldChange, onFieldR
     const hasVisibleFields = hasFields && fields.some(field => !isHidden(field));
     const showNoFieldsMessage = !hasFields;
     const showHiddenFieldsMessage = hasFields && !hasVisibleFields;
+    const { blurExceptionClassNames } = React.useContext(MetadataInstanceEditorContext);
 
     return (
         <>
             {hasVisibleFields &&
                 fields.map(field => (
-                    <Field
+                    <MetadataField
                         key={field.id}
+                        blurExceptionClassNames={blurExceptionClassNames}
                         canEdit={canEdit}
                         dataKey={field.key}
                         dataValue={data[field.key]}

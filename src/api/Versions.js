@@ -18,6 +18,8 @@ import {
     PERMISSION_CAN_DELETE,
     PERMISSION_CAN_UPLOAD,
 } from '../constants';
+import type { ElementsErrorCallback } from '../common/types/api';
+import type { BoxItem, FileVersions, BoxItemVersionPermission, BoxItemVersion } from '../common/types/core';
 
 class Versions extends OffsetBasedAPI {
     /**

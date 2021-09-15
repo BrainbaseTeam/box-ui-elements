@@ -7,6 +7,7 @@ import DraftJSMentionSelectorCore from './DraftJSMentionSelectorCore';
 import DraftMentionItem from './DraftMentionItem';
 import FormInput from '../form/FormInput';
 import * as messages from '../input-messages';
+import type { SelectorItems } from '../../../common/types/core';
 
 /**
  * Scans a Draft ContentBlock for entity ranges, so they can be annotated
@@ -26,7 +27,9 @@ const mentionStrategy = (contentBlock, callback, contentState) => {
 
 type Props = {
     className?: string,
-    contacts: SelectorItems,
+    contacts: SelectorItems<>,
+    contactsLoaded?: boolean,
+    description?: React.Node,
     editorState?: EditorState,
     hideLabel?: boolean,
     isDisabled?: boolean,
@@ -47,7 +50,7 @@ type Props = {
 };
 
 type State = {
-    contacts: SelectorItems,
+    contacts: SelectorItems<>,
     error: ?Object,
     internalEditorState: ?EditorState,
     isTouched: boolean,
@@ -244,11 +247,13 @@ class DraftJSMentionSelector extends React.Component<Props, State> {
     render() {
         const {
             className = '',
+            contactsLoaded,
             editorState: externalEditorState,
             hideLabel,
             isDisabled,
             isRequired,
             label,
+            description,
             mentionTriggers,
             name,
             onMention,
@@ -271,12 +276,14 @@ class DraftJSMentionSelector extends React.Component<Props, State> {
                 <FormInput name={name} onValidityStateUpdate={this.handleValidityStateUpdateHandler}>
                     <DraftJSMentionSelectorCore
                         contacts={contacts}
+                        contactsLoaded={contactsLoaded}
                         editorState={editorState}
                         error={error}
                         hideLabel={hideLabel}
                         isDisabled={isDisabled}
                         isRequired={isRequired}
                         label={label}
+                        description={description}
                         mentionTriggers={mentionTriggers}
                         onBlur={handleBlur}
                         onChange={handleChange}

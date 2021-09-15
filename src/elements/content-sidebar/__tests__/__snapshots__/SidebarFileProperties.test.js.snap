@@ -20,6 +20,26 @@ exports[`elements/content-sidebar/SidebarFileProperties render() should render I
 </LoadingIndicatorWrapper>
 `;
 
+exports[`elements/content-sidebar/SidebarFileProperties render() should render ItemProperties for anonymous uploaders 1`] = `
+<LoadingIndicatorWrapper>
+  <ItemProperties
+    createdAt="2018-04-18T16:56:05.352Z"
+    description="foo"
+    descriptionTextareaProps={
+      Object {
+        "data-resin-target": "description",
+      }
+    }
+    modifiedAt="2018-04-18T16:56:05.352Z"
+    onDescriptionChange={[MockFunction]}
+    owner="foo"
+    retentionPolicyProps={Object {}}
+    size="1 B"
+    uploader="File Request"
+  />
+</LoadingIndicatorWrapper>
+`;
+
 exports[`elements/content-sidebar/SidebarFileProperties render() should render an error 1`] = `
 <Fragment>
   <InlineError
@@ -42,6 +62,7 @@ exports[`elements/content-sidebar/SidebarFileProperties render() should render a
       Object {
         "formatDate": [Function],
         "formatMessage": [Function],
+        "formatRelativeTime": [Function],
       }
     }
   />
@@ -139,11 +160,11 @@ exports[`elements/content-sidebar/SidebarFileProperties render() should render r
                 <div />
               </FormattedDate>
               <PlainButton
-                className="lnk"
+                className="lnk bdl-RetentionLink"
                 onClick={[MockFunction]}
               >
                 <button
-                  className="btn-plain lnk"
+                  className="btn-plain lnk bdl-RetentionLink"
                   onClick={[MockFunction]}
                   type="submit"
                 >

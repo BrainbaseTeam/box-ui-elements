@@ -7,10 +7,10 @@ $arrow-size: 6px;
     position: relative;
     max-width: 330px;
     padding: 20px;
-    color: $white;
+    color: $bdl-dark-blue-02;
     word-wrap: break-word;
-    background-color: $bdl-purple-rain;
-    border-color: $bdl-purple-rain;
+    background-color: $bdl-dark-blue;
+    border-color: $bdl-dark-blue;
     border-radius: 4px;
 
     &::before {
@@ -24,6 +24,17 @@ $arrow-size: 6px;
     .nav-link-callout-target-attached-middle.nav-link-callout-target-attached-right > & {
         &::before {
             top: 50%;
+            right: 100%;
+            margin-top: -$arrow-size;
+            border-right-color: inherit;
+        }
+    }
+
+    .nav-link-callout-target-attached-bottom.nav-link-callout-target-attached-right > & {
+        left: 10px;
+
+        &::before {
+            top: 85%;
             right: 100%;
             margin-top: -$arrow-size;
             border-right-color: inherit;

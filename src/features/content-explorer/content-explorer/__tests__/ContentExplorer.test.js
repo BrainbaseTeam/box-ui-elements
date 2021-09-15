@@ -72,6 +72,40 @@ describe('features/content-explorer/content-explorer/ContentExplorer', () => {
             expect(wrapper.find(ContentExplorerHeaderActions).find('.header-actions-accessory').length).toBe(1);
         });
 
+        test('should pass onSelectedClick to ContentExplorerActionButtons', () => {
+            const onSelectedClick = () => {};
+            const wrapper = renderComponent({ onSelectedClick });
+            expect(wrapper.find('ContentExplorerActionButtons').prop('onSelectedClick')).toEqual(onSelectedClick);
+        });
+
+        test('should render ContentExplorerSelectAll with isSelectAllAllowed = true', () => {
+            const isSelectAllAllowed = true;
+            const wrapper = renderComponent({ isSelectAllAllowed });
+
+            expect(wrapper.exists('ContentExplorerSelectAll')).toBeTruthy();
+        });
+
+        test('should not render ContentExplorerSelectAll with isSelectAllAllowed = false', () => {
+            const isSelectAllAllowed = false;
+            const wrapper = renderComponent({ isSelectAllAllowed });
+
+            expect(wrapper.find('ContentExplorerSelectAll').length).toBe(0);
+        });
+
+        test('should pass numTotalItems to ContentExplorerSelectAll', () => {
+            const numTotalItems = 12345;
+            const wrapper = renderComponent({ isSelectAllAllowed: true, numTotalItems });
+            expect(wrapper.find('ContentExplorerSelectAll').prop('numTotalItems')).toEqual(numTotalItems);
+        });
+
+        test('should pass isSelectAllChecked to ContentExplorerSelectAll', () => {
+            const isSelectAllChecked = true;
+            const wrapper = renderComponent({ isSelectAllAllowed: true });
+            wrapper.setState({ isSelectAllChecked });
+
+            expect(wrapper.find('ContentExplorerSelectAll').prop('isSelectAllChecked')).toEqual(isSelectAllChecked);
+        });
+
         test("customInput should be false if the props isn't passed down", () => {
             const wrapper = renderComponent();
             expect(wrapper.find('ContentExplorerHeaderActions').prop('customInput')).toBe(undefined);
@@ -271,7 +305,11 @@ describe('features/content-explorer/content-explorer/ContentExplorer', () => {
 
         test('should call onSelectItem with the selected item when clicking an item', () => {
             const clickedItemIndex = 1;
-            const items = [{ id: '1', name: 'item1' }, { id: '2', name: 'item2' }, { id: '3', name: 'item3' }];
+            const items = [
+                { id: '1', name: 'item1' },
+                { id: '2', name: 'item2' },
+                { id: '3', name: 'item3' },
+            ];
             const wrapper = renderComponent({ items, onSelectItem: onSelectItemSpy }, true);
 
             wrapper
@@ -285,7 +323,11 @@ describe('features/content-explorer/content-explorer/ContentExplorer', () => {
         test('should call onSelectItem with the selected item and store the latest item in the selectedItems state when clicking multiple items', () => {
             const clickedItemIndex = 1;
             const clickedItemIndex2 = 2;
-            const items = [{ id: '1', name: 'item1' }, { id: '2', name: 'item2' }, { id: '3', name: 'item3' }];
+            const items = [
+                { id: '1', name: 'item1' },
+                { id: '2', name: 'item2' },
+                { id: '3', name: 'item3' },
+            ];
             const wrapper = renderComponent({ items, onSelectItem: onSelectItemSpy }, true);
 
             wrapper
@@ -309,7 +351,11 @@ describe('features/content-explorer/content-explorer/ContentExplorer', () => {
         test('should call onSelectItem with the selected items and store all selected item in the selectedItems state when clicking multiple items [Multi-Select mode]', () => {
             const clickedItemIndex = 1;
             const clickedItemIndex2 = 2;
-            const items = [{ id: '1', name: 'item1' }, { id: '2', name: 'item2' }, { id: '3', name: 'item3' }];
+            const items = [
+                { id: '1', name: 'item1' },
+                { id: '2', name: 'item2' },
+                { id: '3', name: 'item3' },
+            ];
             const wrapper = renderComponent(
                 {
                     items,
@@ -411,7 +457,10 @@ describe('features/content-explorer/content-explorer/ContentExplorer', () => {
         test('should not show search empty state when viewing folder in search results', () => {
             const wrapper = renderComponent({}, false);
             wrapper.setState({
-                foldersPath: [{ id: '123', name: '123' }, { id: '234', name: '234' }],
+                foldersPath: [
+                    { id: '123', name: '123' },
+                    { id: '234', name: '234' },
+                ],
                 isInSearchMode: true,
             });
             const Component = wrapper.instance().renderItemListEmptyState;
@@ -537,6 +586,88 @@ describe('features/content-explorer/content-explorer/ContentExplorer', () => {
                 const result = wrapper.instance().toggleSelectedItem(selectedItems, item);
                 expect(Object.keys(result).length).toEqual(expectedLength);
             });
+            test('should set initialSelectedItems', () => {
+                const wrapper = renderComponent(
+                    {
+                        initialSelectedItems: selectedItems,
+                        contentExplorerMode: ContentExplorerModes.SELECT_FILE,
+                    },
+                    false,
+                );
+                const actionButtons = wrapper.find('ContentExplorerActionButtons');
+                expect(actionButtons.prop('selectedItems')).toEqual(selectedItems);
+            });
+        });
+    });
+
+    describe('handleSelectAllClick()', () => {
+        const items = [
+            { id: 'item1', name: 'name1' },
+            { id: 'item2', name: 'name2' },
+        ];
+        const selectedItems = { item1: { id: 'item1', name: 'name1' }, item2: { id: 'item2', name: 'name2' } };
+
+        test('should add items to selectedItems when selectAll is called', () => {
+            const wrapper = renderComponent({ items });
+            const result = wrapper.instance().selectAll();
+
+            expect(result).toStrictEqual(selectedItems);
+        });
+
+        test('should remove items from selectedItems when unselectAll is called', () => {
+            const wrapper = renderComponent({ items });
+            wrapper.setState({ selectedItems });
+            const result = wrapper.instance().unselectAll();
+
+            expect(result).toStrictEqual({});
+        });
+
+        test('should call selectAll when handleSelectAllClick and checkbox is not selected', () => {
+            const wrapper = renderComponent({ items });
+            const instance = wrapper.instance();
+            wrapper.setState({ isSelectAllChecked: false });
+
+            instance.selectAll = jest.fn();
+
+            instance.unselectAll = jest.fn();
+
+            instance.handleSelectAllClick();
+
+            expect(wrapper.state('isSelectAllChecked')).toBeTruthy();
+            expect(instance.selectAll).toHaveBeenCalledTimes(1);
+            expect(instance.unselectAll).toHaveBeenCalledTimes(0);
+        });
+
+        test('should call unselectAll when handleSelectAllClick and checkbox is selected', () => {
+            const wrapper = renderComponent({ items });
+            wrapper.setState({ isSelectAllChecked: true });
+            const instance = wrapper.instance();
+
+            instance.selectAll = jest.fn();
+
+            instance.unselectAll = jest.fn();
+
+            instance.handleSelectAllClick();
+
+            expect(wrapper.state('isSelectAllChecked')).toBeFalsy();
+            expect(instance.selectAll).toHaveBeenCalledTimes(0);
+            expect(instance.unselectAll).toHaveBeenCalledTimes(1);
+        });
+
+        test('should not call selectAll or unselectAll when handleSelectAllClick and checkbox is not selected but items are still loading', () => {
+            const wrapper = renderComponent({ items: [{ isLoading: true }] });
+            wrapper.setState({ isSelectAllChecked: true });
+            const instance = wrapper.instance();
+
+            instance.selectAll = jest.fn();
+
+            instance.unselectAll = jest.fn();
+
+            instance.handleSelectAllClick();
+
+            expect(wrapper.state('isSelectAllChecked')).toBeTruthy();
+            expect(instance.selectAll).toHaveBeenCalledTimes(0);
+            expect(instance.unselectAll).toHaveBeenCalledTimes(0);
         });
     });
 });

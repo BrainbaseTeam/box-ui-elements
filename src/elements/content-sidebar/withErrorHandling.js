@@ -11,6 +11,8 @@ import InlineError from '../../components/inline-error/InlineError';
 
 import SidebarSection from './SidebarSection';
 
+import type { Errors } from './flowTypes';
+
 type Props = {
     errorCode?: string,
 } & Errors;
@@ -37,7 +39,7 @@ const withErrorHandling = (WrappedComponent: React.ComponentType<any>) => ({
         return (
             <>
                 <InlineError title={<FormattedMessage {...inlineError.title} />}>
-                    {<FormattedMessage {...inlineError.content} />}
+                    <FormattedMessage {...inlineError.content} />
                 </InlineError>
                 <WrappedComponent {...rest} />
             </>

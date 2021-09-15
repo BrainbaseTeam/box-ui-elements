@@ -7,6 +7,9 @@
 import Item from './Item';
 import { CACHE_PREFIX_WEBLINK, ERROR_CODE_FETCH_WEBLINK } from '../constants';
 import { findMissingProperties } from '../utils/fields';
+import type { RequestOptions } from '../common/types/api';
+import type { BoxItem } from '../common/types/core';
+import type APICache from '../utils/Cache';
 
 class WebLink extends Item {
     /**
@@ -43,7 +46,7 @@ class WebLink extends Item {
         id: string,
         successCallback: (newItem: BoxItem) => void,
         errorCallback: Function,
-        { fields }: FetchOptions = {},
+        { fields }: RequestOptions = {},
     ): Promise<void> {
         if (this.isDestroyed()) {
             return;

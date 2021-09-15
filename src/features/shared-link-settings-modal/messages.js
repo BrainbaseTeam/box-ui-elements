@@ -2,8 +2,8 @@ import { defineMessages } from 'react-intl';
 
 const messages = defineMessages({
     allowDownloadLabel: {
-        defaultMessage: 'Allow users with the Shared Link to download this item',
-        description: 'Label for option to enable downloads on a Shared Link',
+        defaultMessage: 'Allow users with the shared link to download this item',
+        description: 'Label for option to enable downloads on a shared link',
         id: 'boxui.share.sharedLinkSettings.allowDownloadLabel',
     },
     allowDownloadTitle: {
@@ -17,10 +17,15 @@ const messages = defineMessages({
         id: 'boxui.share.sharedLinkSettings.directLinkLabel',
     },
     directDownloadBlockedByAccessPolicyWithClassification: {
-        defaultMessage: 'Download has been disabled for content due to the classification',
+        defaultMessage: 'Download has been disabled for content due to the classification.',
         description:
             'Text to show that direct link download is disabled due to applied shield access policy with classification',
         id: 'boxui.share.sharedLinkSettings.directDownloadBlockedByAccessPolicyWithClassification',
+    },
+    directDownloadBlockedByMaliciousContent: {
+        defaultMessage: 'Download for this content has been disabled due to a security policy.',
+        description: 'Text to show that direct link download is disabled due to security policy',
+        id: 'boxui.share.sharedLinkSettings.directDownloadBlockedByMaliciousContent',
     },
     directDownloadBlockedByAccessPolicyWithoutClassification: {
         defaultMessage: 'Download has been disabled for content without classification.',
@@ -36,7 +41,7 @@ const messages = defineMessages({
     },
     modalTitle: {
         defaultMessage: 'Shared Link Settings',
-        description: 'Title for Shared Link Settings modal',
+        description: 'Title for shared link settings modal (title-case)',
         id: 'boxui.share.sharedLinkSettings.modalTitle',
     },
     customURLLabel: {
@@ -51,7 +56,7 @@ const messages = defineMessages({
     },
     expirationLabel: {
         defaultMessage: 'Disable Shared Link on',
-        description: 'Label for option to enable expiration on a Shared Link',
+        description: 'Label for option to enable expiration on a shared link',
         id: 'boxui.share.sharedLinkSettings.expirationLabel',
     },
     passwordLabel: {

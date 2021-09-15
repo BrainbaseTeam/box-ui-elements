@@ -87,6 +87,8 @@ class SharedLinkSettingsModal extends Component {
         /** Whether or not password is currently enabled */
         isPasswordEnabled: PropTypes.bool.isRequired,
         passwordError: PropTypes.string,
+        /** Information shown below password input box * */
+        passwordInformationText: PropTypes.string,
 
         // Expiration props
         /** Whether or not user has permission to enable/disable/change expiration */
@@ -112,6 +114,8 @@ class SharedLinkSettingsModal extends Component {
         isDirectLinkUnavailableDueToDownloadSettings: PropTypes.bool.isRequired,
         /** Whether or not direct link is unavailable only due to access policy setting */
         isDirectLinkUnavailableDueToAccessPolicy: PropTypes.bool.isRequired,
+        /** Whether or not direct link is unavailable only due to malicious content policy */
+        isDirectLinkUnavailableDueToMaliciousContent: PropTypes.bool.isRequired,
 
         // Classification props
         item: PropTypes.object,
@@ -257,7 +261,13 @@ class SharedLinkSettingsModal extends Component {
     }
 
     renderPasswordSection() {
-        const { canChangePassword, isPasswordAvailable, passwordCheckboxProps, passwordInputProps } = this.props;
+        const {
+            canChangePassword,
+            isPasswordAvailable,
+            passwordCheckboxProps,
+            passwordInformationText,
+            passwordInputProps,
+        } = this.props;
         const { isPasswordEnabled, password, passwordError } = this.state;
 
         return (
@@ -271,6 +281,7 @@ class SharedLinkSettingsModal extends Component {
                 onPasswordChange={this.onPasswordChange}
                 password={password}
                 passwordCheckboxProps={passwordCheckboxProps}
+                passwordInformationText={passwordInformationText}
                 passwordInputProps={passwordInputProps}
             />
         );
@@ -301,7 +312,7 @@ class SharedLinkSettingsModal extends Component {
 
         return (
             message && (
-                <p className="link-settings-modal-notice">
+                <div className="link-settings-modal-notice">
                     <FormattedMessage {...message} />{' '}
                     <Link
                         href="https://community.box.com/t5/Using-Shared-Links/Shared-Link-Settings/ta-p/50250"
@@ -309,7 +320,7 @@ class SharedLinkSettingsModal extends Component {
                     >
                         <FormattedMessage {...messages.sharedLinkSettingWarningLinkText} />
                     </Link>
-                </p>
+                </div>
             )
         );
     }
@@ -323,6 +334,7 @@ class SharedLinkSettingsModal extends Component {
             isDirectLinkAvailable,
             isDirectLinkUnavailableDueToDownloadSettings,
             isDirectLinkUnavailableDueToAccessPolicy,
+            isDirectLinkUnavailableDueToMaliciousContent,
             isDownloadAvailable,
             item,
         } = this.props;
@@ -340,6 +352,7 @@ class SharedLinkSettingsModal extends Component {
                 isDirectLinkAvailable={isDirectLinkAvailable}
                 isDirectLinkUnavailableDueToDownloadSettings={isDirectLinkUnavailableDueToDownloadSettings}
                 isDirectLinkUnavailableDueToAccessPolicy={isDirectLinkUnavailableDueToAccessPolicy}
+                isDirectLinkUnavailableDueToMaliciousContent={isDirectLinkUnavailableDueToMaliciousContent}
                 isDownloadAvailable={isDownloadAvailable}
                 isDownloadEnabled={isDownloadEnabled}
                 onChange={this.onAllowDownloadChange}
@@ -388,7 +401,7 @@ class SharedLinkSettingsModal extends Component {
         const disableSaveBtn = !(canChangeDownload || canChangeExpiration || canChangePassword || canChangeVanityName);
         return (
             <Modal
-                className="shared-link-settings-modal"
+                className="be-modal shared-link-settings-modal"
                 isOpen={isOpen}
                 onRequestClose={submitting ? undefined : onRequestClose}
                 title={this.renderModalTitle()}

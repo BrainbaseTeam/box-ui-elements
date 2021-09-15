@@ -2,13 +2,17 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
-import { EditorState, Modifier } from 'draft-js';
+import { EditorState } from 'draft-js';
 
 import DatalistItem from '../../datalist-item';
 import DraftJSEditor from '../../draft-js-editor';
 import SelectorDropdown from '../../selector-dropdown';
+import { addMention, defaultMentionTriggers, getActiveMentionForEditorState } from './utils';
 
 import messages from './messages';
+
+import type { SelectorItems } from '../../../common/types/core';
+import type { Mention } from './utils';
 
 import './MentionSelector.scss';
 
@@ -31,11 +35,17 @@ type MentionStartStateProps = {
     message?: React.Node,
 };
 
-const MentionStartState = ({ message }: MentionStartStateProps) => <div className="mention-start-state">{message}</div>;
+const MentionStartState = ({ message }: MentionStartStateProps) => (
+    <div role="alert" className="mention-start-state">
+        {message}
+    </div>
+);
 
 type Props = {
     className?: string,
-    contacts: SelectorItems,
+    contacts: SelectorItems<>,
+    contactsLoaded?: boolean,
+    description?: React.Node,
     editorState: EditorState,
     error?: ?Object,
     hideLabel?: boolean,
@@ -54,7 +64,7 @@ type Props = {
 };
 
 type State = {
-    activeMention: Object | null,
+    activeMention: Mention | null,
     isFocused: boolean,
     mentionPattern: RegExp,
 };
@@ -65,7 +75,7 @@ class DraftJSMentionSelector extends React.Component<Props, State> {
         contacts: [],
         isDisabled: false,
         isRequired: false,
-        mentionTriggers: ['@', '＠', '﹫'],
+        mentionTriggers: defaultMentionTriggers,
         selectorRow: <DefaultSelectorRow />,
         startMentionMessage: <DefaultStartMentionMessage />,
     };
@@ -91,7 +101,7 @@ class DraftJSMentionSelector extends React.Component<Props, State> {
         const { contacts: currentContacts } = this.props;
         const { activeMention } = this.state;
 
-        if (activeMention !== null && !currentContacts.length && prevContacts !== currentContacts) {
+        if (activeMention !== null && !currentContacts.length && prevContacts.length !== currentContacts.length) {
             // if empty set of contacts get passed in, set active mention to null
             this.setState({
                 activeMention: null,
@@ -108,42 +118,7 @@ class DraftJSMentionSelector extends React.Component<Props, State> {
     getActiveMentionForEditorState(editorState: EditorState) {
         const { mentionPattern } = this.state;
 
-        const contentState = editorState.getCurrentContent();
-        const selectionState = editorState.getSelection();
-
-        const startKey = selectionState.getStartKey();
-        const activeBlock = contentState.getBlockForKey(startKey);
-
-        const cursorPosition = selectionState.getStartOffset();
-
-        let result = null;
-
-        // Break the active block into entity ranges.
-        activeBlock.findEntityRanges(
-            character => character.getEntity() === null,
-            (start, end) => {
-                // Find the active range (is the cursor inside this range?)
-                if (start <= cursorPosition && cursorPosition <= end) {
-                    // Determine if the active range contains a mention.
-                    const activeRangeText = activeBlock.getText().substr(start, cursorPosition - start);
-                    const mentionMatch = activeRangeText.match(mentionPattern);
-
-                    if (mentionMatch) {
-                        result = {
-                            blockID: startKey,
-                            mentionString: mentionMatch[2],
-                            mentionTrigger: mentionMatch[1],
-                            start: start + mentionMatch.index,
-                            end: cursorPosition,
-                        };
-                    }
-                }
-
-                return null;
-            },
-        );
-
-        return result;
+        return getActiveMentionForEditorState(editorState, mentionPattern);
     }
 
     /**
@@ -210,7 +185,6 @@ class DraftJSMentionSelector extends React.Component<Props, State> {
      */
     handleChange = (nextEditorState: EditorState) => {
         const { onChange } = this.props;
-
         const activeMention = this.getActiveMentionForEditorState(nextEditorState);
 
         this.setState(
@@ -236,49 +210,8 @@ class DraftJSMentionSelector extends React.Component<Props, State> {
     addMention(mention: Object) {
         const { activeMention } = this.state;
         const { editorState } = this.props;
-        const { start, end } = activeMention || {};
 
-        const { id, name } = mention;
-
-        const contentState = editorState.getCurrentContent();
-        const selectionState = editorState.getSelection();
-
-        const preInsertionSelectionState = selectionState.merge({
-            anchorOffset: start,
-            focusOffset: end,
-        });
-
-        const textToInsert = `@${name}`;
-
-        const contentStateWithEntity = contentState.createEntity('MENTION', 'IMMUTABLE', { id });
-
-        const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
-
-        const contentStateWithLink = Modifier.replaceText(
-            contentState,
-            preInsertionSelectionState,
-            textToInsert,
-            null,
-            entityKey,
-        );
-
-        const spaceOffset = preInsertionSelectionState.getStartOffset() + textToInsert.length;
-        const selectionStateForAddingSpace = preInsertionSelectionState.merge({
-            anchorOffset: spaceOffset,
-            focusOffset: spaceOffset,
-        });
-
-        const contentStateWithLinkAndExtraSpace = Modifier.insertText(
-            contentStateWithLink,
-            selectionStateForAddingSpace,
-            ' ',
-        );
-
-        const editorStateWithLink = EditorState.push(
-            editorState,
-            contentStateWithLinkAndExtraSpace,
-            'change-block-type',
-        );
+        const editorStateWithLink = addMention(editorState, activeMention, mention);
 
         this.setState(
             {
@@ -304,12 +237,14 @@ class DraftJSMentionSelector extends React.Component<Props, State> {
         const {
             className,
             contacts,
+            contactsLoaded,
             editorState,
             error,
             hideLabel,
             isDisabled,
             isRequired,
             label,
+            description,
             onReturn,
             placeholder,
             selectorRow,
@@ -321,6 +256,10 @@ class DraftJSMentionSelector extends React.Component<Props, State> {
         const classes = classNames('mention-selector-wrapper', className);
 
         const showMentionStartState = !!(onMention && activeMention && !activeMention.mentionString && isFocused);
+
+        const usersFoundMessage = this.shouldDisplayMentionLookup()
+            ? { ...messages.usersFound, values: { usersCount: contacts.length } }
+            : messages.noUsersFound;
 
         return (
             <div className={classes}>
@@ -335,6 +274,7 @@ class DraftJSMentionSelector extends React.Component<Props, State> {
                             isFocused={isFocused}
                             isRequired={isRequired}
                             label={label}
+                            description={description}
                             onBlur={this.handleBlur}
                             onFocus={this.handleFocus}
                             onChange={this.handleChange}
@@ -354,6 +294,11 @@ class DraftJSMentionSelector extends React.Component<Props, State> {
                         : []}
                 </SelectorDropdown>
                 {showMentionStartState ? <MentionStartState message={startMentionMessage} /> : null}
+                {contactsLoaded && (
+                    <span className="accessibility-hidden" data-testid="accessibility-alert" role="alert">
+                        <FormattedMessage {...usersFoundMessage} />
+                    </span>
+                )}
             </div>
         );
     }

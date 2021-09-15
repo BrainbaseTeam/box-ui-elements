@@ -1,23 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`elements/content-sidebar/ActivityFeed/task-new/Task should correctly render task 1`] = `
-<div
+<ForwardRef(ActivityCard)
   className="bcs-Task"
+  data-resin-feature="tasks"
+  data-resin-numassignees={2}
+  data-resin-taskid="123125"
+  data-resin-tasktype="GENERAL"
 >
   <Media
-    as="div"
     className="bcs-Task-media"
     data-testid="task-card"
   >
     <MediaFigure
-      as="figure"
       className="bcs-Task-avatar"
     >
       <Avatar
         user={
           Object {
-            "id": "1",
-            "name": "Jake Thomas",
+            "id": "5",
+            "name": "Steven Yang",
             "type": "user",
           }
         }
@@ -46,7 +48,6 @@ exports[`elements/content-sidebar/ActivityFeed/task-new/Task should correctly re
       >
         <MediaMenu
           data-testid="task-actions-menu"
-          dropdownProps={Object {}}
           isDisabled={false}
           menuProps={
             Object {
@@ -85,19 +86,11 @@ exports[`elements/content-sidebar/ActivityFeed/task-new/Task should correctly re
       <div
         className="bcs-Task-headline"
       >
-        <FormattedMessage
-          defaultMessage="{user} assigned you a Task"
-          id="be.contentSidebar.activityFeed.taskNew.tasksFeedHeadlineGeneralCurrentUser"
-          values={
-            Object {
-              "user": <UserLink
-                data-resin-target="activityfeed-profilelink"
-                id="1"
-                name="Jake Thomas"
-                type="user"
-              />,
-            }
-          }
+        <UserLink
+          data-resin-target="activityfeed-profilelink"
+          id="5"
+          name="Steven Yang"
+          type="user"
         />
       </div>
       <div>
@@ -105,22 +98,28 @@ exports[`elements/content-sidebar/ActivityFeed/task-new/Task should correctly re
           date={1262304000000}
         />
       </div>
+      <div
+        className="bcs-Task-status"
+      >
+        <Memo()
+          status="NOT_STARTED"
+        />
+        <TaskMultiFileIcon
+          isMultiFile={false}
+        />
+        <TaskCompletionRuleIcon
+          completionRule="ALL_ASSIGNEES"
+        />
+      </div>
+      <div
+        className="bcs-Task-dueDate"
+      />
       <div>
         <ActivityMessage
           id="123125"
           tagged_message="This is where we tell each other what we need to do"
           translationEnabled={false}
           translationFailed={null}
-        />
-      </div>
-      <div
-        className="bcs-Task-statusContainer"
-      >
-        <Component
-          status="NOT_STARTED"
-        />
-        <TaskCompletionRuleIcon
-          completionRule="ALL_ASSIGNEES"
         />
       </div>
       <div
@@ -173,8 +172,10 @@ exports[`elements/content-sidebar/ActivityFeed/task-new/Task should correctly re
       </div>
       <div
         className="bcs-Task-actionsContainer"
+        data-testid="action-container"
       >
         <TaskActions
+          isMultiFile={false}
           onTaskApproval={[Function]}
           onTaskComplete={[Function]}
           onTaskReject={[Function]}
@@ -237,5 +238,5 @@ exports[`elements/content-sidebar/ActivityFeed/task-new/Task should correctly re
     }
     taskType="GENERAL"
   />
-</div>
+</ForwardRef(ActivityCard)>
 `;

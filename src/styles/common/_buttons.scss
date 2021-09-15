@@ -37,6 +37,7 @@
         outline: none;
     }
 
+    &:not(.bdl-is-disabled),
     &:not(.is-disabled) {
         &:hover {
             background-color: darken($white, 3%);
@@ -48,11 +49,12 @@
         }
 
         &:focus {
-            border-color: darken($bdl-gray-30, 14%);
+            border-color: $bdl-gray;
             box-shadow: 0 1px 2px fade-out($black, .9);
         }
     }
 
+    &.bdl-is-disabled,
     &.is-disabled,
     &.is-loading {
         top: 0; /* prevents disabled button from being depressed on click */
@@ -76,6 +78,7 @@
         }
     }
 
+    &.bdl-is-disabled,
     &.is-disabled {
         box-shadow: none;
         opacity: .4;
@@ -115,9 +118,11 @@ button svg {
     border-color: $primary-color;
     -webkit-font-smoothing: antialiased;
 
+    &:not(.bdl-is-disabled),
     &:not(.is-disabled) {
         &:focus {
-            border-color: $primary-color;
+            background-color: lighten($primary-color, 8%);
+            border: 1px solid $primary-color;
             box-shadow: inset 0 0 0 1px fade-out($white, .2), 0 1px 2px fade-out($black, .9);
         }
 

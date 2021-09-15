@@ -20,11 +20,14 @@ exports[`components/ContentSidebar/ActivityFeed/task-form/TaskForm addResinInfo(
     data-resin-isediting={true}
     data-resin-numassigneesadded={1}
     data-resin-numassigneesremoved={1}
+    data-resin-numgroupssadded={0}
     data-resin-target="activityfeed-approvalformcancel"
     data-resin-taskid={12345678}
     data-testid="task-form-cancel-button"
     isDisabled={false}
+    isLoading={false}
     onClick={[Function]}
+    showRadar={false}
     type="button"
   >
     <button
@@ -43,6 +46,7 @@ exports[`components/ContentSidebar/ActivityFeed/task-form/TaskForm addResinInfo(
       data-resin-isediting={true}
       data-resin-numassigneesadded={1}
       data-resin-numassigneesremoved={1}
+      data-resin-numgroupssadded={0}
       data-resin-target="activityfeed-approvalformcancel"
       data-resin-taskid={12345678}
       data-testid="task-form-cancel-button"
@@ -77,6 +81,7 @@ exports[`components/ContentSidebar/ActivityFeed/task-form/TaskForm addResinInfo(
     data-resin-isediting={true}
     data-resin-numassigneesadded={1}
     data-resin-numassigneesremoved={1}
+    data-resin-numgroupssadded={0}
     data-resin-target="activityfeed-approvalformpost"
     data-resin-taskid={12345678}
     data-testid="task-form-submit-button"
@@ -99,11 +104,14 @@ exports[`components/ContentSidebar/ActivityFeed/task-form/TaskForm addResinInfo(
       data-resin-isediting={true}
       data-resin-numassigneesadded={1}
       data-resin-numassigneesremoved={1}
+      data-resin-numgroupssadded={0}
       data-resin-target="activityfeed-approvalformpost"
       data-resin-taskid={12345678}
       data-testid="task-form-submit-button"
       isDisabled={false}
       isLoading={false}
+      showRadar={false}
+      type="submit"
     >
       <button
         className="btn btn-primary bcs-task-input-submit-btn"
@@ -121,6 +129,7 @@ exports[`components/ContentSidebar/ActivityFeed/task-form/TaskForm addResinInfo(
         data-resin-isediting={true}
         data-resin-numassigneesadded={1}
         data-resin-numassigneesremoved={1}
+        data-resin-numgroupssadded={0}
         data-resin-target="activityfeed-approvalformpost"
         data-resin-taskid={12345678}
         data-testid="task-form-submit-button"

@@ -22,6 +22,7 @@ import {
 } from '../../constants';
 
 import type { CommonGridViewFunctions } from './flowTypes';
+import type { BoxItem } from '../../common/types/core';
 import './MoreOptionsCell.scss';
 
 type Props = {
