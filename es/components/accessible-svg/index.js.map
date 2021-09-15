@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/components/accessible-svg/index.ts"],"names":["default"],"mappings":"AAAA,SAASA,OAAT,QAAwB,iBAAxB","sourcesContent":["export { default } from './AccessibleSVG';\n"],"file":"index.js"}

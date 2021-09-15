@@ -5,8 +5,6 @@
 .idea
 _site
 __diff_output__
-dist
-es
 node_modules
 npm-debug.log
 npm-error.log

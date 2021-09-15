@@ -1,0 +1,6 @@
+var ANONYMOUS_USER_ID = '2';
+var BYTES_IN_MB = 1048576;
+var DEFAULT_MULTIPLIER = 1;
+var EMPTY_VALUE = '--';
+export { ANONYMOUS_USER_ID, BYTES_IN_MB, DEFAULT_MULTIPLIER, EMPTY_VALUE };
+//# sourceMappingURL=constants.js.map

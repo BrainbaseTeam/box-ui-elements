@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/components/guide-tooltip/index.ts"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,gBAAxB","sourcesContent":["// @flow\nexport { default } from './GuideTooltip';\n"],"file":"index.js"}

@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/features/message-center/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,4BAAxB","sourcesContent":["// @flow\nexport { default } from './components/MessageCenter';\n"],"file":"index.js"}

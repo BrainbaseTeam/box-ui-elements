@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/icons/item-icon-monotone/index.tsx"],"names":["default"],"mappings":"AAAA,cAAc,oBAAd;AACA,SAASA,OAAT,QAAwB,oBAAxB","sourcesContent":["export * from './ItemIconMonotone';\nexport { default } from './ItemIconMonotone';\n"],"file":"index.js"}

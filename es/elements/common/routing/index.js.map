@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../src/elements/common/routing/index.js"],"names":["default","withRouterAndRef"],"mappings":"AAAA;AACA,SAASA,OAAO,IAAIC,gBAApB,QAA4C,oBAA5C","sourcesContent":["// eslint-disable-next-line import/prefer-default-export\nexport { default as withRouterAndRef } from './withRouterAndRef';\n"],"file":"index.js"}

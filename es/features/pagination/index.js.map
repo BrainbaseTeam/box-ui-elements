@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/features/pagination/index.js"],"names":["default"],"mappings":"AACA,SAASA,OAAT,QAAwB,cAAxB","sourcesContent":["// @flow\nexport { default } from './Pagination';\n"],"file":"index.js"}
