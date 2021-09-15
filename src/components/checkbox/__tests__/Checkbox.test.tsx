@@ -13,7 +13,7 @@ describe('components/checkbox/Checkbox', () => {
     });
 
     test('should correctly render default component', () => {
-        expect(wrapper.find('.checkbox-container').length).toBeTruthy();
+        expect(wrapper.find('.checkbox-container-box-ui-elements').length).toBeTruthy();
         expect(wrapper.find('input').prop('id')).toEqual('1');
         expect(wrapper.find('input').prop('name')).toEqual('name');
         expect(wrapper.find('input').prop('type')).toEqual('checkbox');
