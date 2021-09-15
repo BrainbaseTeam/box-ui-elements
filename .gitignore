@@ -7,8 +7,6 @@ _site
 __diff_output__
 dist
 es
-i18n/*.js
-i18n/json
 node_modules
 npm-debug.log
 npm-error.log
