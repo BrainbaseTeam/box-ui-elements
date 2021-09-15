@@ -9,6 +9,8 @@ import Button from '../../components/button';
 import ButtonGroup from '../../components/button-group';
 import PrimaryButton from '../../components/primary-button';
 import './Footer.scss';
+import {FormattedMessage} from 'react-intl';
+import messages from 'elements/common/messages';
 
 type Props = {
     children: React.Node,
@@ -28,10 +30,10 @@ const Footer = ({
             {pickedCount > 0 && (
             <ButtonGroup>
                 <Button onClick={onBatchCancel} type="button">
-                    Cancel
+                    <FormattedMessage {...messages.cancel} />
                 </Button>
                 <PrimaryButton onClick={onBatchDownload} type="button">
-                    Download
+                    <FormattedMessage {...messages.download} />
                 </PrimaryButton>
             </ButtonGroup>
             )}

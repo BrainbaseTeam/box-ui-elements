@@ -93,30 +93,6 @@ const MoreOptions = ({
         return <span />;
     }
 
-    const moveToMenuItem = {
-        id: 'be.moveTo',
-        description: 'Move to...',
-        defaultMessage: 'Move to...',
-    };
-
-    const copyMenuItem = {
-        id: 'be.copy',
-        description: 'Copy',
-        defaultMessage: 'Copy'
-    }
-
-    const setThumbnailMenuItem = {
-        id: 'be.setThumbnail',
-        description: 'Set custom thumbnail',
-        defaultMessage: 'Set custom thumbnail',
-    };
-
-    const removeThumbnailMenuItem = {
-        id: 'be.removeThumbnail',
-        description: 'Remove custom thumbnail',
-        defaultMessage: 'Remove custom thumbnail',
-    };
-
     return (
         <div className="bce-more-options">
             <DropdownMenu constrainToScrollParent isRightAligned>
@@ -161,22 +137,22 @@ const MoreOptions = ({
                     )}
                     {allowMoveTo && (
                         <MenuItem onClick={onMoveTo}>
-                            <FormattedMessage {...moveToMenuItem} />
+                            <FormattedMessage {...messages.moveTo} />
                         </MenuItem>
                     )}
                     {allowCopy && (
                         <MenuItem onClick={onCopy}>
-                            <FormattedMessage {...copyMenuItem} />
+                            <FormattedMessage {...messages.copy} />
                         </MenuItem>
                     )}
                     {allowSetThumbnail && (
                         <MenuItem className="menu-item-set-thumbnail" onClick={onSetThumbnail}>
-                            <FormattedMessage {...setThumbnailMenuItem} />
+                            <FormattedMessage {...messages.setThumbnailMenuItem} />
                         </MenuItem>
                     )}
                     {allowRemoveThumbnail && (
                         <MenuItem onClick={onRemoveThumbnail}>
-                            <FormattedMessage {...removeThumbnailMenuItem} />
+                            <FormattedMessage {...messages.removeThumbnailMenuItem} />
                         </MenuItem>
                     )}
                 </Menu>

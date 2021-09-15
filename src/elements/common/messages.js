@@ -955,6 +955,21 @@ const messages = defineMessages({
             'If a user has been deleted, we call the user "a prior collaborator" - meaning someone who used to be able to collaborate on the content.',
         defaultMessage: 'A Prior Collaborator',
     },
+    moveTo: {
+        id: 'be.moveTo',
+        description: 'Label for move to action',
+        defaultMessage: 'Move to...',
+    },
+    setThumbnailMenuItem: {
+        id: 'be.setThumbnailMenuItem',
+        description: 'Label for set custom thumbnail action',
+        defaultMessage: 'Set custom thumbnail',
+    },
+    removeThumbnailMenuItem: {
+        id: 'be.removeThumbnailMenuItem',
+        description: 'Label for remove custom thumbnail action',
+        defaultMessage: 'Remove custom thumbnail',
+    },
 });
 
 export default messages;
