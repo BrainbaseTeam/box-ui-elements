@@ -122,6 +122,16 @@ class ContentExplorer extends ES6Wrapper {
     };
 
     /**
+     * Callback for managing tags items
+     *
+     * @return {void}
+     */
+     onManageTags = (data: BoxItem): void => {
+        this.emit('manageTags', data);
+    };
+
+
+    /**
      * Callback for copying items
      *
      * @return {void}
@@ -183,6 +193,7 @@ class ContentExplorer extends ES6Wrapper {
                 onBatchCancel={this.onBatchCancel}
                 onCustomShare={this.onCustomShare}
                 onMoveTo={this.onMoveTo}
+                onManageTags={this.onManageTags}
                 onCopy={this.onCopy}
                 onSetThumbnail={this.onSetThumbnail}
                 onRemoveThumbnail={this.onRemoveThumbnail}
