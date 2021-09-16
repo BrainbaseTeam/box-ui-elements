@@ -125,6 +125,7 @@ type Props = {
     onDelete: Function,
     onDownload: Function,
     onMoveTo: Function,
+    onManageTags: Function,
     onCopy: Function,
     onNavigate: Function,
     onPreview: Function,
@@ -224,6 +225,7 @@ class ContentExplorer extends Component<Props, State> {
         onRename: noop,
         onCreate: noop,
         onMoveTo: noop,
+        onManageTags: noop,
         onCopy: noop,
         onSelect: noop,
         onSetThumbnail: noop,
@@ -1040,6 +1042,19 @@ class ContentExplorer extends Component<Props, State> {
     };
 
     /**
+     * Manage tags items
+     *
+     * @private
+     * @param {Object} item - file or folder object
+     * @return {void}
+     */
+    manageTags = (item: BoxItem): void => {
+        const { onManageTags }: Props = this.props;
+
+        onManageTags(item);
+    };
+
+    /**
      * Copy items
      *
      * @private
@@ -1846,6 +1861,7 @@ class ContentExplorer extends Component<Props, State> {
                             onItemDelete={this.delete}
                             onItemDownload={this.download}
                             onItemMoveTo={this.moveTo}
+                            onItemManageTags={this.manageTags}
                             onItemCopy={this.copy}
                             onItemPick={this.pick}
                             onItemPreview={this.preview}

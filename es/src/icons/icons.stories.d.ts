@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { ItemIconProps } from './item-icon';
 export declare const itemIcons: () => JSX.Element;
 declare const _default: {

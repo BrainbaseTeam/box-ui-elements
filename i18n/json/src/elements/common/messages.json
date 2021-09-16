@@ -60,6 +60,11 @@
     "defaultMessage": "Close"
   },
   {
+    "id": "be.manageTags",
+    "description": "Label for manage tags action.",
+    "defaultMessage": "Manage tags"
+  },
+  {
     "id": "be.copy",
     "description": "Label for copy action.",
     "defaultMessage": "Copy"

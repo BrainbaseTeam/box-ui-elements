@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import Tooltip from './Tooltip';
 export declare const positioning: {
     (): JSX.Element;

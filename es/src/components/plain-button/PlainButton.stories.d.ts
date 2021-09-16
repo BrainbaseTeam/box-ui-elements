@@ -1,3 +1,4 @@
+/// <reference types="react" />
 export declare const regular: () => JSX.Element;
 export declare const disabled: () => JSX.Element;
 declare const _default: {

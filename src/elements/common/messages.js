@@ -67,6 +67,11 @@ const messages = defineMessages({
         description: 'Label for close action.',
         defaultMessage: 'Close',
     },
+    manageTags: {
+        id: 'be.manageTags',
+        description: 'Label for manage tags action.',
+        defaultMessage: 'Manage tags',
+    },
     copy: {
         id: 'be.copy',
         description: 'Label for copy action.',

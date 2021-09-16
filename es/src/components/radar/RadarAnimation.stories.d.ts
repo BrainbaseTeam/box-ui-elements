@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import RadarAnimation from './RadarAnimation';
 export declare const bottomLeft: () => JSX.Element;
 export declare const bottomCenter: () => JSX.Element;

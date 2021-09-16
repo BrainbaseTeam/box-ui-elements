@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { Icon } from '../iconTypes';
 interface IconMetadataColoredProps extends Icon {
     /** A string describing the icon's type */

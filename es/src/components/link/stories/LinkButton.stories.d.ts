@@ -1,3 +1,4 @@
+/// <reference types="react" />
 export declare const basic: () => JSX.Element;
 export declare const withCustomComponent: () => JSX.Element;
 declare const _default: {
