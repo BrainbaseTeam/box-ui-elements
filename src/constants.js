@@ -110,6 +110,7 @@ export const FIELD_ENTRIES = 'entries';
 export const FIELD_DOWNLOAD_URL = 'download_url';
 export const FIELD_ACCESS = 'access';
 export const FIELD_URL = 'url';
+export const FIELD_TAGS = 'tags';
 export const FIELD_CREATED_BY = 'created_by';
 export const FIELD_MODIFIED_BY = 'modified_by';
 export const FIELD_OWNED_BY = 'owned_by';

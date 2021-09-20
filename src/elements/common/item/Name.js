@@ -2,6 +2,7 @@
 import React from 'react';
 import ItemName from './ItemName';
 import ItemDetails from './ItemDetails';
+import IconTag from '../../../icons/general/IconTag';
 import { VIEW_SEARCH } from '../../../constants';
 import type { View, BoxItem } from '../../../common/types/core';
 
@@ -33,6 +34,7 @@ const Name = ({
         {view === VIEW_SEARCH || showDetails ? (
             <ItemDetails item={item} onItemClick={onItemClick} rootId={rootId} view={view} />
         ) : null}
+        <IconTag className="icon-tag" height={13} width={13} viewBox="0 0 13 13" />
     </div>
 );
 

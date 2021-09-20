@@ -123,6 +123,11 @@ const MoreOptions = ({
                             <FormattedMessage {...messages.delete} />
                         </MenuItem>
                     )}
+                    {allowManageTags && (
+                        <MenuItem onClick={onManageTags}>
+                            <FormattedMessage {...messages.manageTags} />
+                        </MenuItem>
+                    )}
                     {allowDownload && (
                         <MenuItem onClick={onDownload}>
                             <FormattedMessage {...messages.download} />
@@ -141,11 +146,6 @@ const MoreOptions = ({
                     {allowMoveTo && (
                         <MenuItem onClick={onMoveTo}>
                             <FormattedMessage {...messages.moveTo} />
-                        </MenuItem>
-                    )}
-                    {allowManageTags && (
-                        <MenuItem onClick={onManageTags}>
-                            <FormattedMessage {...messages.manageTags} />
                         </MenuItem>
                     )}
                     {allowCopy && (
