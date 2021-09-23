@@ -120,6 +120,7 @@ type Props = {
     metadataQuery?: MetadataQuery,
     onBatchCancel: Function,
     onBatchDownload: Function,
+    onBatchManageTags: Function,
     onCreate: Function,
     onCustomShare: Function,
     onDelete: Function,
@@ -218,6 +219,7 @@ class ContentExplorer extends Component<Props, State> {
         className: '',
         onBatchCancel: noop,
         onBatchDownload: noop,
+        onBatchManageTags: noop,
         onCustomShare: noop,
         onDelete: noop,
         onDownload: noop,
@@ -1150,6 +1152,26 @@ class ContentExplorer extends Component<Props, State> {
     };
 
     /**
+     * Starts batch manage tags
+     *
+     * @private
+     * @return {void}
+     */
+     batchManageTags = (): void => {
+        const { onBatchManageTags }: Props = this.props;
+        const { picked }: State = this.state;
+
+        const results: BoxItem[] = Object.keys(picked).map(key => {
+            const clone: BoxItem = { ...picked[key] };
+            delete clone.picked;
+            return clone;
+        });
+
+        onBatchManageTags(results);
+    };
+
+
+    /**
      * Starts batch download
      *
      * @private
@@ -1882,6 +1904,7 @@ class ContentExplorer extends Component<Props, State> {
                             <Footer
                                 pickedCount={pickedCount}
                             onBatchDownload={this.batchDownload}
+                            onBatchManageTags={this.batchManageTags}
                             onBatchCancel={this.batchCancel}
                         >
                             <Pagination

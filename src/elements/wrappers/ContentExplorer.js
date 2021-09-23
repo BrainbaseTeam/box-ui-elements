@@ -95,6 +95,15 @@ class ContentExplorer extends ES6Wrapper {
     };
 
     /**
+     * Callback for batch manage tags
+     *
+     * @return {void}
+     */
+     onBatchManageTags = (data: BoxItem[]): void => {
+        this.emit('batchManageTags', data);
+    };
+
+    /**
      * Callback for batch download cancel
      *
      * @return {void}
@@ -129,7 +138,6 @@ class ContentExplorer extends ES6Wrapper {
      onManageTags = (data: BoxItem): void => {
         this.emit('manageTags', data);
     };
-
 
     /**
      * Callback for copying items
@@ -190,6 +198,7 @@ class ContentExplorer extends ES6Wrapper {
                 onNavigate={this.onNavigate}
                 onInteraction={this.onInteraction}
                 onBatchDownload={this.onBatchDownload}
+                onBatchManageTags={this.onBatchManageTags}
                 onBatchCancel={this.onBatchCancel}
                 onCustomShare={this.onCustomShare}
                 onMoveTo={this.onMoveTo}

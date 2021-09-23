@@ -20,6 +20,7 @@ const Footer = ({
     pickedCount,
     onBatchCancel,
     onBatchDownload,
+    onBatchManageTags,
     children
 }: Props) => (
     <footer className="bce-footer">
@@ -31,6 +32,9 @@ const Footer = ({
             <ButtonGroup>
                 <Button onClick={onBatchCancel} type="button">
                     <FormattedMessage {...messages.cancel} />
+                </Button>
+                <Button onClick={onBatchManageTags} type="button">
+                    <FormattedMessage {...messages.manageTags} />
                 </Button>
                 <PrimaryButton onClick={onBatchDownload} type="button">
                     <FormattedMessage {...messages.download} />
