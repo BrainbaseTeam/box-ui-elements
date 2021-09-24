@@ -34,7 +34,7 @@ const Name = ({
         {view === VIEW_SEARCH || showDetails ? (
             <ItemDetails item={item} onItemClick={onItemClick} rootId={rootId} view={view} />
         ) : null}
-        <IconTag className="icon-tag" height={13} width={13} viewBox="0 0 13 13" />
+        {item.tags?.length ? <IconTag className="icon-tag" height={13} width={13} viewBox="0 0 13 13" /> : null}
         {item.tags && (<span>{item.tags.join(', ')}</span>)}
     </div>
 );
