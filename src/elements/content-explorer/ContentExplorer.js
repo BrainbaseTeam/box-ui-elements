@@ -120,11 +120,13 @@ type Props = {
     metadataQuery?: MetadataQuery,
     onBatchCancel: Function,
     onBatchDownload: Function,
+    onBatchManageTags: Function,
     onCreate: Function,
     onCustomShare: Function,
     onDelete: Function,
     onDownload: Function,
     onMoveTo: Function,
+    onManageTags: Function,
     onCopy: Function,
     onNavigate: Function,
     onPreview: Function,
@@ -217,6 +219,7 @@ class ContentExplorer extends Component<Props, State> {
         className: '',
         onBatchCancel: noop,
         onBatchDownload: noop,
+        onBatchManageTags: noop,
         onCustomShare: noop,
         onDelete: noop,
         onDownload: noop,
@@ -224,6 +227,7 @@ class ContentExplorer extends Component<Props, State> {
         onRename: noop,
         onCreate: noop,
         onMoveTo: noop,
+        onManageTags: noop,
         onCopy: noop,
         onSelect: noop,
         onSetThumbnail: noop,
@@ -1040,6 +1044,19 @@ class ContentExplorer extends Component<Props, State> {
     };
 
     /**
+     * Manage tags items
+     *
+     * @private
+     * @param {Object} item - file or folder object
+     * @return {void}
+     */
+    manageTags = (item: BoxItem): void => {
+        const { onManageTags }: Props = this.props;
+
+        onManageTags(item);
+    };
+
+    /**
      * Copy items
      *
      * @private
@@ -1133,6 +1150,26 @@ class ContentExplorer extends Component<Props, State> {
     download = (item: BoxItem): void => {
         this.select(item, this.downloadCallback);
     };
+
+    /**
+     * Starts batch manage tags
+     *
+     * @private
+     * @return {void}
+     */
+     batchManageTags = (): void => {
+        const { onBatchManageTags }: Props = this.props;
+        const { picked }: State = this.state;
+
+        const results: BoxItem[] = Object.keys(picked).map(key => {
+            const clone: BoxItem = { ...picked[key] };
+            delete clone.picked;
+            return clone;
+        });
+
+        onBatchManageTags(results);
+    };
+
 
     /**
      * Starts batch download
@@ -1846,6 +1883,7 @@ class ContentExplorer extends Component<Props, State> {
                             onItemDelete={this.delete}
                             onItemDownload={this.download}
                             onItemMoveTo={this.moveTo}
+                            onItemManageTags={this.manageTags}
                             onItemCopy={this.copy}
                             onItemPick={this.pick}
                             onItemPreview={this.preview}
@@ -1866,6 +1904,7 @@ class ContentExplorer extends Component<Props, State> {
                             <Footer
                                 pickedCount={pickedCount}
                             onBatchDownload={this.batchDownload}
+                            onBatchManageTags={this.batchManageTags}
                             onBatchCancel={this.batchCancel}
                         >
                             <Pagination

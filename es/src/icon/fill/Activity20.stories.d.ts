@@ -1,3 +1,4 @@
+/// <reference types="react" />
 export declare const activity20: () => JSX.Element;
 declare const _default: {
     title: string;

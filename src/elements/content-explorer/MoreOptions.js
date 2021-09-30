@@ -50,6 +50,7 @@ const MoreOptions = ({
     onItemPreview,
     onItemCustomShare,
     onItemMoveTo,
+    onItemManageTags,
     onItemCopy,
     onItemSetThumbnail,
     onItemRemoveThumbnail,
@@ -64,6 +65,7 @@ const MoreOptions = ({
     const onPreview = () => onItemPreview(item);
     const onCustomShare = () => onItemCustomShare(item);
     const onMoveTo = () => onItemMoveTo(item);
+    const onManageTags = () => onItemManageTags(item);
     const onCopy = () => onItemCopy(item);
     const onSetThumbnail = () => onItemSetThumbnail(item);
     const onRemoveThumbnail = () => onItemRemoveThumbnail(item);
@@ -82,11 +84,12 @@ const MoreOptions = ({
     const allowDownload =
         canDownload && permissions[PERMISSION_CAN_DOWNLOAD] && type === TYPE_FILE && !Browser.isMobile();
     const allowMoveTo = permissions[PERMISSION_CAN_RENAME];
+    const allowManageTags = permissions[PERMISSION_CAN_RENAME];
     const allowCopy = permissions[PERMISSION_CAN_RENAME];
     const allowSetThumbnail = type === TYPE_FOLDER && permissions[PERMISSION_CAN_RENAME] && !item.metadata;
     const allowRemoveThumbnail = type === TYPE_FOLDER && permissions[PERMISSION_CAN_RENAME] && item.metadata;
 
-    const allowed = allowDelete || allowRename || allowDownload || allowPreview
+    const allowed = allowDelete || allowRename || allowDownload || allowManageTags || allowPreview
         || allowShare || allowOpen || allowMoveTo || allowCopy || allowSetThumbnail || allowRemoveThumbnail;
 
     if (!allowed) {
@@ -118,6 +121,11 @@ const MoreOptions = ({
                     {allowDelete && (
                         <MenuItem onClick={onDelete}>
                             <FormattedMessage {...messages.delete} />
+                        </MenuItem>
+                    )}
+                    {allowManageTags && (
+                        <MenuItem onClick={onManageTags}>
+                            <FormattedMessage {...messages.manageTags} />
                         </MenuItem>
                     )}
                     {allowDownload && (

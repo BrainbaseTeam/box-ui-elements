@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { SVGProps } from '../components/accessible-svg/AccessibleSVG';
 /**
  * This is an auto-generated component and should not be edited

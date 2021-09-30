@@ -1,3 +1,4 @@
+/// <reference types="react" />
 export declare const basic: () => JSX.Element;
 export declare const withOptionalText: () => JSX.Element;
 export declare const withInfoTooltip: () => JSX.Element;

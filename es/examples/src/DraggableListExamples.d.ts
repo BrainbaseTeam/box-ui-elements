@@ -14,7 +14,7 @@ declare class DraggableListExamples extends Component<Props, State> {
         listId: string;
     };
     componentDidMount(): void;
-    getItems: (count: number) => ReorderListItem[];
+    getItems: (count: number) => Array<ReorderListItem>;
     onDragEnd: (sourceIndex: number, destinationIndex: number) => void;
     render(): JSX.Element;
 }

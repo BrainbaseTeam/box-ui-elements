@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { IntlConfig } from 'react-intl';
 export declare const MILLISECONDS_PER_YEAR: number;
 declare type ReadableTimeProps = {

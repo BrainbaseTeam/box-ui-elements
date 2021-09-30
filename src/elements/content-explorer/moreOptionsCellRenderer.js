@@ -25,6 +25,7 @@ export default (
     onItemPreview: Function,
     onItemCustomShare: Function,
     onItemMoveTo: Function,
+    onItemManageTags: Function,
     onItemCopy: Function,
     onItemSetThumbnail: Function,
     onItemRemoveThumbnail: Function,
@@ -49,6 +50,7 @@ export default (
             onItemPreview={onItemPreview}
             onItemCustomShare={onItemCustomShare}
             onItemMoveTo={onItemMoveTo}
+            onItemManageTags={onItemManageTags}
             onItemCopy={onItemCopy}
             onItemSetThumbnail={onItemSetThumbnail}
             onItemRemoveThumbnail={onItemRemoveThumbnail}

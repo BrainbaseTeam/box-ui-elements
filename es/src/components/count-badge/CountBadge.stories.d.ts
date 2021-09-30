@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import CountBadge from './CountBadge';
 export declare const withAnimation: () => JSX.Element;
 export declare const withoutAnimation: () => JSX.Element;
