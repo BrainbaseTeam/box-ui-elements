@@ -1,3 +1,4 @@
+/// <reference types="react" />
 export interface AvatarInitialsProps {
     className?: string;
     id?: string | number | null;

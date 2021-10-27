@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import LinkGroup from '../LinkGroup';
 export declare const basic: () => JSX.Element;
 declare const _default: {

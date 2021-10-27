@@ -1,3 +1,5 @@
+/// <reference types="react" />
+/// <reference types="@emotion/core" />
 import { Props as ActivityCardProps } from './ActivityCard';
 import './SelectableActivityCard.scss';
 export declare type Props = {

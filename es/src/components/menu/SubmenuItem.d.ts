@@ -57,7 +57,7 @@ declare class SubmenuItem extends React.Component<SubmenuItemProps, SubmenuItemS
     submenuTriggerEl: HTMLElement | null | undefined;
     submenuEl: HTMLElement | null | undefined;
     handleKeyDown: (event: React.KeyboardEvent<HTMLLIElement>) => void;
-    closeSubmenu: (() => void) & import("lodash").Cancelable;
+    closeSubmenu: import("lodash").DebouncedFunc<() => void>;
     closeSubmenuAndFocusTrigger: (isKeyboardEvent: boolean | null | undefined) => void;
     openSubmenu: () => void;
     openSubmenuAndFocus: () => void;

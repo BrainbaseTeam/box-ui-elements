@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import './Ghost.scss';
 declare type Dimension = string | number;
 declare type Props = {

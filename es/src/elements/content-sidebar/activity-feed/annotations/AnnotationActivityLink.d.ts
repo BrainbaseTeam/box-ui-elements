@@ -1,3 +1,4 @@
+/// <reference types="@emotion/core" />
 import * as React from 'react';
 import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 import './AnnotationActivityLink.scss';

@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import Menu from '../Menu';
 export declare const basic: () => JSX.Element;
 export declare const withSubmenu: () => JSX.Element;

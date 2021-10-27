@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { TwoTonedIcon } from '../iconTypes';
 interface SandboxesInterstitialStateProps extends TwoTonedIcon {
     primaryColor?: string;

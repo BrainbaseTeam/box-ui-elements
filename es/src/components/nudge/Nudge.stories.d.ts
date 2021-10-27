@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import Nudge from './Nudge';
 export declare const regular: () => JSX.Element;
 declare const _default: {

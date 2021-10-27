@@ -32,7 +32,7 @@ declare class Button extends React.Component<ButtonProps> {
         showRadar: boolean;
         type: ButtonType;
     };
-    handleClick: (event: React.SyntheticEvent<HTMLButtonElement, Event>) => void;
+    handleClick: (event: React.SyntheticEvent<HTMLButtonElement>) => void;
     render(): JSX.Element;
 }
 export default Button;
