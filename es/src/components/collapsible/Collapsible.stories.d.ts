@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import Collapsible from './Collapsible';
 export declare const withBorder: () => JSX.Element;
 export declare const withoutBorder: () => JSX.Element;

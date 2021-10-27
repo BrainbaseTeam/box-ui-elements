@@ -14,7 +14,7 @@ declare class RadioGroup extends React.Component<RadioGroupProps, RadioGroupStat
         className: string;
     };
     constructor(props: RadioGroupProps);
-    onChangeHandler: (event: React.SyntheticEvent<HTMLElement, Event>) => void;
+    onChangeHandler: (event: React.SyntheticEvent<HTMLElement>) => void;
     render(): JSX.Element;
 }
 export default RadioGroup;

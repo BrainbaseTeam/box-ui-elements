@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import './Crawler.scss';
 export declare enum LoadingIndicatorSize {
     SMALL = "small",

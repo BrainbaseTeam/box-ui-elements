@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { Icon } from '../iconTypes';
 interface IconBell2Props extends Icon {
     /** A boolean indicating whether this icon is filled or just outlined */

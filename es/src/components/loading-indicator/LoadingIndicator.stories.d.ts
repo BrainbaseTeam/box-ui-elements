@@ -1,3 +1,4 @@
+/// <reference types="react" />
 export declare const defaultSize: () => JSX.Element;
 export declare const smallSize: () => JSX.Element;
 export declare const mediumSize: () => JSX.Element;

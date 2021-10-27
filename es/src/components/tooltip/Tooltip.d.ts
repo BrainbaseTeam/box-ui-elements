@@ -71,12 +71,12 @@ declare class Tooltip extends React.Component<TooltipProps, State> {
     tetherRef: React.RefObject<TetherComponent>;
     position: () => void;
     closeTooltip: () => void;
-    fireChildEvent: (type: string, event: React.SyntheticEvent<HTMLElement, Event>) => void;
-    handleTooltipEvent: (event: React.MouseEvent<HTMLElement, MouseEvent> | React.KeyboardEvent<HTMLElement>) => void;
-    handleMouseEnter: (event: React.SyntheticEvent<HTMLElement, Event>) => void;
-    handleMouseLeave: (event: React.SyntheticEvent<HTMLElement, Event>) => void;
-    handleFocus: (event: React.SyntheticEvent<HTMLElement, Event>) => void;
-    handleBlur: (event: React.SyntheticEvent<HTMLElement, Event>) => void;
+    fireChildEvent: (type: string, event: React.SyntheticEvent<HTMLElement>) => void;
+    handleTooltipEvent: (event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
+    handleMouseEnter: (event: React.SyntheticEvent<HTMLElement>) => void;
+    handleMouseLeave: (event: React.SyntheticEvent<HTMLElement>) => void;
+    handleFocus: (event: React.SyntheticEvent<HTMLElement>) => void;
+    handleBlur: (event: React.SyntheticEvent<HTMLElement>) => void;
     isControlled: () => boolean;
     handleKeyDown: (event: React.KeyboardEvent<HTMLElement>) => void;
     isShown: () => boolean | undefined;

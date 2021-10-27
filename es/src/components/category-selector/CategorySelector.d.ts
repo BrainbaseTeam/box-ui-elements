@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import './CategorySelector.scss';
 export interface Category {
     displayText: string;

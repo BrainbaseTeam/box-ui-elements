@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import ContextMenu from './ContextMenu';
 import '../../../examples/styles/ContextMenuExamples.scss';
 export declare const basic: () => JSX.Element;

@@ -1,3 +1,5 @@
+/// <reference types="react" />
+/// <reference types="@emotion/core" />
 declare type Props = {
     className?: string;
     height?: number;

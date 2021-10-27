@@ -89,10 +89,10 @@ declare class DatePicker extends React.Component<DatePickerProps> {
     focusDatePicker: () => void;
     handleInputKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
     handleInputBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
-    handleButtonClick: (event: React.SyntheticEvent<HTMLButtonElement, Event>) => void;
+    handleButtonClick: (event: React.SyntheticEvent<HTMLButtonElement>) => void;
     formatDisplay: (date?: Date | null | undefined) => string;
-    formatValue: (date: Date | null) => React.ReactText;
-    clearDate: (event: React.SyntheticEvent<HTMLButtonElement, Event>) => void;
+    formatValue: (date: Date | null) => string | number;
+    clearDate: (event: React.SyntheticEvent<HTMLButtonElement>) => void;
     render(): JSX.Element;
 }
 export { DatePicker as DatePickerBase };

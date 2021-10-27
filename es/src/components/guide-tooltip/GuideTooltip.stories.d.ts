@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import GuideTooltip from './GuideTooltip';
 export declare const allOptions: {
     (): JSX.Element;

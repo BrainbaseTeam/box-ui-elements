@@ -31,7 +31,7 @@ import DeleteConfirmationDialog from './DeleteConfirmationDialog';
 import Content from './Content';
 import isThumbnailReady from './utils';
 import { isFocusableElement, isInputElement, focus } from '../../utils/dom';
-import {FILE_SHARED_LINK_FIELDS_TO_FETCH, FOLDER_FIELDS_TO_FETCH} from '../../utils/fields';
+import { FILE_SHARED_LINK_FIELDS_TO_FETCH } from '../../utils/fields';
 import CONTENT_EXPLORER_FOLDER_FIELDS_TO_FETCH from './constants';
 import LocalStore from '../../utils/LocalStore';
 import { withFeatureConsumer, withFeatureProvider, type FeatureConfig } from '../common/feature-checking';
@@ -120,18 +120,18 @@ type Props = {
     metadataQuery?: MetadataQuery,
     onBatchCancel: Function,
     onBatchDownload: Function,
+    onCopy: Function,
     onCreate: Function,
     onCustomShare: Function,
     onDelete: Function,
     onDownload: Function,
     onMoveTo: Function,
-    onCopy: Function,
     onNavigate: Function,
     onPreview: Function,
+    onRemoveThumbnail: Function,
     onRename: Function,
     onSelect: Function,
     onSetThumbnail: Function,
-    onRemoveThumbnail: Function,
     onUpload: Function,
     previewLibraryVersion: string,
     requestInterceptor?: Function,
@@ -586,7 +586,7 @@ class ContentExplorer extends Component<Props, State> {
             currentOffset: offset,
         });
 
-        let fields = FOLDER_FIELDS_TO_FETCH;
+        const fields = CONTENT_EXPLORER_FOLDER_FIELDS_TO_FETCH;
         fields.push('metadata.enterprise_261189234.customThumbnail');
 
         // Fetch the folder using folder API
@@ -600,7 +600,7 @@ class ContentExplorer extends Component<Props, State> {
                 this.fetchFolderSuccessCallback(collection, triggerNavigationEvent);
             },
             this.errorCallback,
-            { fields: CONTENT_EXPLORER_FOLDER_FIELDS_TO_FETCH, forceFetch: true },
+            { fields, forceFetch: true },
         );
     };
 
@@ -1013,7 +1013,7 @@ class ContentExplorer extends Component<Props, State> {
         this.setState({ picked });
     };
 
-     /**
+    /**
      * Activates custom share
      *
      * @private
@@ -1865,10 +1865,10 @@ class ContentExplorer extends Component<Props, State> {
                         {!isErrorView && (
                             <Footer
                                 pickedCount={pickedCount}
-                            onBatchDownload={this.batchDownload}
-                            onBatchCancel={this.batchCancel}
-                        >
-                            <Pagination
+                                onBatchDownload={this.batchDownload}
+                                onBatchCancel={this.batchCancel}
+                            >
+                                <Pagination
                                     hasNextMarker={hasNextMarker}
                                     hasPrevMarker={hasPreviousMarker}
                                     offset={offset}

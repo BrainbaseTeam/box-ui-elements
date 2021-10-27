@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { FieldProps } from 'formik';
 import { RadioButtonProps } from './RadioButton';
 export declare type RadioButtonFieldProps = Partial<FieldProps> & RadioButtonProps;

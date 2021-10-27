@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import RadioGroup from '../RadioGroup';
 export declare const basic: () => JSX.Element;
 export declare const withCustomRadioButtonComponent: () => JSX.Element;

@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import Button from './Button';
 export declare const regular: () => JSX.Element;
 export declare const loading: () => JSX.Element;

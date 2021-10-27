@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { FieldProps } from 'formik';
 import { CheckboxProps } from './Checkbox';
 export declare type CheckboxFieldProps = Partial<FieldProps> & CheckboxProps;

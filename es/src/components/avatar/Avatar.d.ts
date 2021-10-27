@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import './Avatar.scss';
 declare const SIZES: {
     small: boolean;

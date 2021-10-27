@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import Avatar from './Avatar';
 export declare const regular: () => JSX.Element;
 export declare const small: () => JSX.Element;
