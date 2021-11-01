@@ -5,5 +5,7 @@ import type { BoxItem } from '../../common/types/core';
 
 export default (item: BoxItem) => {
     const status = getProp(item, 'representations.entries[0].status.state');
+
+    console.log(item, status);
     return status === REPRESENTATIONS_RESPONSE_SUCCESS || status === REPRESENTATIONS_RESPONSE_VIEWABLE;
 };
