@@ -15,8 +15,6 @@ const ItemGridThumbnail = ({ item }: Props) => {
         thumbnailUrl = item.metadata.enterprise_261189234.customThumbnail.url;
     }
 
-    console.log(thumbnailUrl && isThumbnailReady(item), thumbnailUrl, 'thumbnailUrl');
-
     return (
         <div className="bce-ItemGridThumbnail">
             {thumbnailUrl && isThumbnailReady(item) ? (
