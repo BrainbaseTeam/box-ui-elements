@@ -1,13 +1,14 @@
 @import '../../styles/variables';
-@import '../../styles/mixins/overlay';
 
 .aria-menu {
-    @include bdl-Overlay-container;
-
     margin: 0;
+    padding: 8px 0;
     white-space: nowrap;
     list-style: none;
     background: $white;
+    border: 1px solid $bdl-gray-30;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px 0 fade-out($black, .9);
 
     &:not(.should-outline-focus):focus {
         outline: none;
@@ -15,9 +16,9 @@
 
     [role='separator'] {
         height: 0;
-        margin: ($bdl-grid-unit * 2) $bdl-grid-unit;
+        margin: 8px 0;
         border: 0;
-        border-top: 1px solid $bdl-gray-10;
+        border-top: 1px solid $bdl-gray-30;
     }
 
     a,
@@ -28,10 +29,6 @@
     .lnk:focus {
         text-decoration: none;
     }
-
-    .bdl-MenuHeader {
-        display: none;
-    }
 }
 
 .menu-item {
@@ -39,10 +36,15 @@
     display: flex;
     align-items: center;
     min-height: 30px;
-    color: $bdl-gray;
+    color: $bdl-gray-80;
     cursor: pointer;
 
-    @include bdl-Overlay-listItemContainer;
+    &,
+    &.btn-plain,
+    &.btn-plain:hover,
+    &.btn-plain:active {
+        padding: 5px 35px 5px 15px;
+    }
 
     &.menu-section-header {
         color: $black;
@@ -57,17 +59,17 @@
 
     &.is-select-item {
         position: relative;
-        padding-left: 38px;
+        padding-left: 30px;
 
         /* checkmark */
         &.is-selected::before {
             position: absolute;
-            top: 10px;
+            top: 8px;
             left: 14px;
             width: 6px;
             height: 12px;
             margin: auto;
-            border-color: $bdl-gray;
+            border-color: $bdl-gray-80;
             border-style: none solid solid none;
             border-width: 2px;
             transform: rotate(45deg);
@@ -78,12 +80,16 @@
     &:not([aria-disabled]) {
         &:focus,
         &:hover {
-            color: $bdl-gray;
-            background-color: $bdl-gray-05;
+            color: $bdl-gray-80;
+            background-color: $bdl-gray-10;
+        }
+
+        &:focus {
+            outline: 1px dashed $bdl-gray;
         }
     }
 
-    svg:not(.menu-item-arrow) {
-        margin-right: $bdl-grid-unit * 4;
+    svg {
+        margin-right: 10px;
     }
 }

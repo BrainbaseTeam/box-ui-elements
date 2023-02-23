@@ -1,8 +1,7 @@
 // @flow
 import * as React from 'react';
-import * as constants from './constants';
 import type { BoxItemPermission, ItemType } from '../../common/types/core';
-import type { TargetingApi } from '../targeting/types';
+import * as constants from './constants';
 
 // DRY: Invert the constants so that we can construct the appropriate enum types
 const accessLevelValues = {
@@ -13,7 +12,6 @@ const accessLevelValues = {
 export type accessLevelType = $Keys<typeof accessLevelValues>;
 
 const permissionLevelValues = {
-    [constants.CAN_EDIT]: 'CAN_EDIT',
     [constants.CAN_VIEW_DOWNLOAD]: 'CAN_VIEW_DOWNLOAD',
     [constants.CAN_VIEW_ONLY]: 'CAN_VIEW_ONLY',
 };
@@ -33,28 +31,19 @@ export type allowedAccessLevelsType = {
 };
 
 export type accessLevelsDisabledReasonType = {
-    peopleInThisItem?:
-        | typeof constants.DISABLED_REASON_ACCESS_POLICY
-        | typeof constants.DISABLED_REASON_MALICIOUS_CONTENT
-        | null,
-    peopleInYourCompany?:
-        | typeof constants.DISABLED_REASON_ACCESS_POLICY
-        | typeof constants.DISABLED_REASON_MALICIOUS_CONTENT
-        | null,
-    peopleWithTheLink?:
-        | typeof constants.DISABLED_REASON_ACCESS_POLICY
-        | typeof constants.DISABLED_REASON_MALICIOUS_CONTENT
-        | null,
+    peopleInThisItem?: 'access_policy' | null,
+    peopleInYourCompany?: 'access_policy' | null,
+    peopleWithTheLink?: 'access_policy' | null,
 };
 
 export type contactType = {
     email?: string,
-    id: string,
+    id: number | string,
     isExternalUser?: boolean,
     name?: string,
     text?: string,
     type: string,
-    value?: string,
+    value?: number | string,
 };
 
 export type SuggestedCollab = contactType & {
@@ -76,7 +65,7 @@ export type item = {
     bannerPolicy?: {
         body: string,
         colorID?: number,
-        title?: string,
+        title: string,
     },
     canUserSeeClassification: boolean,
     classification?: string,
@@ -140,7 +129,6 @@ export type trackingPropsType = {
         ftuxConfirmButtonProps?: Object,
         modalProps?: Object,
         onLoad?: Function,
-        onLoadSharedLink?: Function,
     },
     removeLinkConfirmModalTracking: {
         cancelButtonProps?: Object,
@@ -163,7 +151,6 @@ export type sharedLinkType = {
     isDownloadAllowed: boolean,
     isDownloadSettingAvailable: boolean,
     isEditAllowed: boolean,
-    isEditSettingAvailable: boolean,
     isNewSharedLink: boolean,
     isPreviewAllowed: boolean,
     permissionLevel: permissionLevelType,
@@ -172,7 +159,6 @@ export type sharedLinkType = {
 
 export type collaboratorType = {
     collabID: number,
-    email?: string,
     expiration?: {
         executeAt: string,
     },
@@ -193,23 +179,6 @@ export type tooltipComponentIdentifierType =
     | 'shared-link-copy-button'
     | 'shared-link-settings'
     | 'shared-link-toggle';
-
-export type justificationCheckpointType =
-    | typeof constants.JUSTIFICATION_CHECKPOINT_COLLAB
-    | typeof constants.JUSTIFICATION_CHECKPOINT_CREATE_SHARED_LINK
-    | typeof constants.JUSTIFICATION_CHECKPOINT_DOWNLOAD
-    | typeof constants.JUSTIFICATION_CHECKPOINT_EXTERNAL_COLLAB;
-
-export type justificationReasonType = {
-    description?: string,
-    id: string,
-    isDetailsRequired?: boolean,
-    title: string,
-};
-export type getJustificationReasonsResponseType = {
-    classificationLabelId: string,
-    options: Array<justificationReasonType>,
-};
 
 // Prop types used in the invite section of the Unified Share Form
 type InviteSectionTypes = {
@@ -239,30 +208,6 @@ type InviteSectionTypes = {
     showUpgradeOptions: boolean,
     /** Data for suggested collaborators shown at bottom of input box. UI doesn't render when this has length of 0. */
     suggestedCollaborators?: SuggestedCollabLookup,
-};
-
-// Additional invite section types that related with information barrier, external collab
-// restrictions and business justifications.
-export type CollabRestrictionType =
-    | typeof constants.COLLAB_RESTRICTION_TYPE_ACCESS_POLICY
-    | typeof constants.COLLAB_RESTRICTION_TYPE_INFORMATION_BARRIER;
-
-type CollabRestrictionsTypes = {
-    /** The type of restriction that applies to restrictedCollabEmails */
-    collabRestrictionType?: CollabRestrictionType,
-    /** Function that fetches the array of justification reason options to display on the justification select field */
-    getJustificationReasons?: (
-        itemTypedID: string,
-        checkpoint: justificationCheckpointType,
-    ) => Promise<getJustificationReasonsResponseType>,
-    /** Determines whether or not a business justification can be provided to bypass external collab restrictions */
-    isCollabRestrictionJustificationAllowed?: boolean,
-    /** Function that is called when all restricted collaborators are removed from the email form */
-    onRemoveAllRestrictedCollabs?: () => void,
-    /** An array of all the collab email addresses that have been determined to be restricted by a security policy. */
-    restrictedCollabEmails: Array<string>,
-    /** An array of all the group ids that have been determined to be restricted by a security policy. */
-    restrictedGroups: Array<number>,
 };
 
 // Prop types used in the shared link section of the Unified Share Form
@@ -319,32 +264,15 @@ type EmailFormTypes = {
     sendSharedLinkError: React.Node,
 };
 
-type AdvancedContentInsightsUSProps = {
-    isAdvancedContentInsightsChecked?: boolean,
-    /** Handler function that gets called whenever the Advanced Content Insights toggle changes */
-    onAdvancedContentInsightsToggle?: Function,
-};
-
-export type USMConfig = {
-    /** Whether the "Email Shared Link" button and form should be rendered in the USM/USF */
-    showEmailSharedLinkForm: boolean,
-    /* Whether the message section of the invite collaborator page should be rendered in the USM/USF */
-    showInviteCollaboratorMessageSection: boolean,
-};
-
 // Prop types shared by both the Unified Share Modal and the Unified Share Form
 type BaseUnifiedShareProps = CollaboratorAvatarsTypes &
-    AdvancedContentInsightsUSProps &
     EmailFormTypes &
-    CollabRestrictionsTypes &
     InviteSectionTypes &
     SharedLinkSectionTypes & {
         /** Inline message */
         allShareRestrictionWarning?: React.Node,
         /** Flag to determine whether to enable invite collaborators section */
         canInvite: boolean,
-        /** Configuration object for hiding parts of the USM */
-        config?: USMConfig,
         /** Whether the full USM should be rendered */
         displayInModal?: boolean,
         /** Whether the form should focus the shared link after the URL is resolved */
@@ -375,50 +303,32 @@ export type USMProps = BaseUnifiedShareProps & {
     closeConfirmModal: () => void,
     /** Whether initial data for the USM has already been received */
     initialDataReceived: boolean,
-    /** Whether the allow edit shared link for file FF is enabled */
-    isAllowEditSharedLinkForFileEnabled?: boolean,
     /** Whether the USM is open */
     isOpen?: boolean,
     /** Handler function that removes the shared link, used in the Remove Link Confirm Modal */
     onRemoveLink: () => void,
     /** Handler function for when the USM is closed */
     onRequestClose?: Function,
-    /** Whether the FTUX tag should be rendered for the Can Edit option */
-    sharedLinkEditTagTargetingApi?: TargetingApi,
-    /** Whether the FTUX tooltip should be rendered for Editable Shared Links  */
-    sharedLinkEditTooltipTargetingApi?: TargetingApi,
 };
 
 // Prop types for the Unified Share Form, passed from the Unified Share Modal
 export type USFProps = BaseUnifiedShareProps & {
     /** Function for closing the FTUX tooltip */
     handleFtuxCloseClick: () => void,
-    /** Whether the allow edit shared link for file FF is enabled */
-    isAllowEditSharedLinkForFileEnabled: boolean,
     /** Whether the data for the USM/USF is being fetched */
     isFetching: boolean,
     /** Function for opening the Remove Link Confirm Modal */
     openConfirmModal: () => void,
-    /** Function for opening the Upgrade Plan Modal */
-    openUpgradePlanModal: () => void,
-    /** Whether the FTUX tag should be rendered for the Can Edit option */
-    sharedLinkEditTagTargetingApi?: TargetingApi,
-    /** Whether the FTUX tooltip should be rendered for Editable Shared Links  */
-    sharedLinkEditTooltipTargetingApi?: TargetingApi,
     /** Whether the shared link has loaded */
     sharedLinkLoaded: boolean,
     /** Whether the FTUX tooltip should be rendered */
     shouldRenderFTUXTooltip: boolean,
-    /** Whether the upgrade inline notice should be rendered */
-    showUpgradeInlineNotice?: boolean,
 };
 
 export type InviteCollaboratorsRequest = {
-    classificationLabelId?: string,
     emailMessage: string,
     emails: string,
     groupIDs: string,
-    justificationReason?: justificationReasonType,
     numOfInviteeGroups: number,
     numsOfInvitees: number,
     permission: string,

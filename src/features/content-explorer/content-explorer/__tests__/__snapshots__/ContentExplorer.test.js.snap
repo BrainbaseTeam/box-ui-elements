@@ -17,7 +17,6 @@ exports[`features/content-explorer/content-explorer/ContentExplorer render() cus
         },
       ]
     }
-    numTotalItems={100}
     onEnterFolder={[Function]}
     onExitSearch={[Function]}
     onFoldersPathUpdated={[Function]}
@@ -27,7 +26,6 @@ exports[`features/content-explorer/content-explorer/ContentExplorer render() cus
   <ItemList
     contentExplorerMode="selectFile"
     height={500}
-    isResponsive={false}
     items={Array []}
     noItemsRenderer={[Function]}
     numItemsPerPage={100}
@@ -51,8 +49,6 @@ exports[`features/content-explorer/content-explorer/ContentExplorer render() cus
         "name": "folder",
       }
     }
-    isNoSelectionAllowed={false}
-    isResponsive={false}
     selectedItems={Object {}}
   />
 </div>

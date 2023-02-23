@@ -15,12 +15,6 @@
         pointer-events: none;
     }
 
-    &:hover {
-        svg .fill-color {
-            fill: $bdl-gray-80;
-        }
-    }
-
     &.bcs-is-selected {
         &::before {
             background-color: $blue;
@@ -30,23 +24,12 @@
             fill: $blue;
         }
     }
-}
 
-.is-responsive-web {
-    @include breakpoint($medium-screen) {
-        .bcs-NavButton {
-            width: $sidebarTabResponsiveSize;
-            height: $sidebarTabResponsiveSize;
-            margin-right: $bdl-grid-unit * 3;
+    &:hover {
+        background-color: $bdl-gray-05;
 
-            &::before {
-                top: $sidebarTabResponsiveSize;
-                right: 0;
-                bottom: 0;
-                left: 0;
-                width: auto;
-                height: 2px;
-            }
+        &:not(.bcs-is-selected) svg .fill-color {
+            fill: $bdl-gray-80;
         }
     }
 }

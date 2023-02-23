@@ -4,7 +4,6 @@ let groups;
 const BASE_URL = 'https://www.foo.com';
 const FILE_ID = 'foo';
 const id = 123;
-
 describe('api/Groups', () => {
     beforeEach(() => {
         groups = new Groups({});

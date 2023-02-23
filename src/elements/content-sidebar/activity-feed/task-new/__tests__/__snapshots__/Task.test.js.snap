@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`elements/content-sidebar/ActivityFeed/task-new/Task should correctly render task 1`] = `
-<ForwardRef(ActivityCard)
+<div
   className="bcs-Task"
   data-resin-feature="tasks"
   data-resin-numassignees={2}
@@ -9,14 +9,15 @@ exports[`elements/content-sidebar/ActivityFeed/task-new/Task should correctly re
   data-resin-tasktype="GENERAL"
 >
   <Media
+    as="div"
     className="bcs-Task-media"
     data-testid="task-card"
   >
     <MediaFigure
+      as="figure"
       className="bcs-Task-avatar"
     >
       <Avatar
-        badgeIcon={<IconTaskGeneral />}
         user={
           Object {
             "id": "5",
@@ -24,6 +25,11 @@ exports[`elements/content-sidebar/ActivityFeed/task-new/Task should correctly re
             "type": "user",
           }
         }
+      />
+      <IconTaskGeneral
+        className="bcs-Task-avatarBadge"
+        height={20}
+        width={20}
       />
     </MediaFigure>
     <MediaBody>
@@ -44,6 +50,7 @@ exports[`elements/content-sidebar/ActivityFeed/task-new/Task should correctly re
       >
         <MediaMenu
           data-testid="task-actions-menu"
+          dropdownProps={Object {}}
           isDisabled={false}
           menuProps={
             Object {
@@ -111,9 +118,10 @@ exports[`elements/content-sidebar/ActivityFeed/task-new/Task should correctly re
         className="bcs-Task-dueDate"
       />
       <div>
-        <ForwardRef(withFeatureConsumer(ActivityMessage))
+        <ActivityMessage
           id="123125"
           tagged_message="This is where we tell each other what we need to do"
+          translationEnabled={false}
           translationFailed={null}
         />
       </div>
@@ -233,5 +241,5 @@ exports[`elements/content-sidebar/ActivityFeed/task-new/Task should correctly re
     }
     taskType="GENERAL"
   />
-</ForwardRef(ActivityCard)>
+</div>
 `;

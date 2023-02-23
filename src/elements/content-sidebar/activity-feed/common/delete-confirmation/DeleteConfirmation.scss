@@ -1,13 +1,11 @@
 @import '../../../../../styles/variables';
-@import '../../../../../styles/mixins/overlay';
 
 .bcs-DeleteConfirmation {
     width: 212px;
 
     .overlay {
-        @include bdl-Overlay-container;
-
         padding: 20px;
+        border-radius: $bdl-border-radius-size;
     }
 }
 
@@ -16,11 +14,11 @@
 }
 
 // overrides for confirm/cancel button spacing
-.btn.bcs-DeleteConfirmation-delete,
-.btn.bcs-DeleteConfirmation-cancel {
+.bcs-DeleteConfirmation-delete,
+.bcs-DeleteConfirmation-cancel {
     margin-left: 0;
 }
 
-.btn.bcs-DeleteConfirmation-cancel {
+.bcs-DeleteConfirmation-cancel {
     margin-right: 10px;
 }

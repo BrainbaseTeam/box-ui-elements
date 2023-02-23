@@ -41,7 +41,6 @@ class AccessibleSVG extends React.Component<AccessibleSVGProps & SVGProps> {
             svgProps['aria-labelledby'] = titleID;
             svgProps.role = 'img';
         } else {
-            svgProps['aria-hidden'] = 'true';
             svgProps.role = 'presentation';
         }
 

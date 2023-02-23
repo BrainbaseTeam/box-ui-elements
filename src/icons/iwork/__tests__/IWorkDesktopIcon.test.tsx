@@ -9,23 +9,23 @@ describe('icons/iwork/IWorkDesktopIcon', () => {
     [
         {
             extension: 'pages',
-            component: 'PagesForMac32',
+            component: 'IconIWorkPagesDesktop',
         },
         {
             extension: 'numbers',
-            component: 'NumbersForMac32',
+            component: 'IconIWorkNumbersDesktop',
         },
         {
             extension: 'key',
-            component: 'KeynoteForMac32',
+            component: 'IconIWorkKeynoteDesktop',
         },
     ].forEach(({ extension, component }) => {
         test('should correctly render default icon', () => {
             const wrapper = getWrapper({ extension });
 
             expect(wrapper.is(component)).toBe(true);
-            expect(wrapper.prop('height')).toEqual(32);
-            expect(wrapper.prop('width')).toEqual(32);
+            expect(wrapper.prop('height')).toEqual(30);
+            expect(wrapper.prop('width')).toEqual(30);
         });
 
         test('should set class when specified', () => {

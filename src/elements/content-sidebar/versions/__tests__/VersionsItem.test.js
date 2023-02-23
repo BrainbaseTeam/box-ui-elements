@@ -25,7 +25,6 @@ describe('elements/content-sidebar/versions/VersionsItem', () => {
     const unknownUser = <FormattedMessage {...messages.versionUserUnknown} />;
     const defaults = {
         created_at: defaultDate,
-        extension: 'docx',
         id: '12345',
         is_download_available: true,
         modified_at: defaultDate,
@@ -184,32 +183,16 @@ describe('elements/content-sidebar/versions/VersionsItem', () => {
             },
         );
 
-        test.each`
-            extension | isCurrent | showPreview
-            ${'docx'} | ${true}   | ${true}
-            ${'xlsb'} | ${true}   | ${true}
-            ${'xlsm'} | ${true}   | ${true}
-            ${'xlsx'} | ${true}   | ${true}
-            ${'docx'} | ${false}  | ${true}
-            ${'xlsb'} | ${false}  | ${false}
-            ${'xlsm'} | ${false}  | ${false}
-            ${'xlsx'} | ${false}  | ${false}
-        `(
-            'should restrict preview for non-current versions with extensions that could use the office viewer',
-            ({ extension, isCurrent, showPreview }) => {
-                const wrapper = getWrapper({
-                    isCurrent,
-                    version: getVersion({ extension }),
-                });
-
-                expect(wrapper.find(VersionsItemActions).prop('showPreview')).toBe(showPreview);
-                expect(wrapper.find(VersionsItemButton).prop('isDisabled')).toBe(!showPreview);
-            },
-        );
-
-        test('should disable preview if the file is watermarked', () => {
+        test('should disable preview if the file is watermarked and missing the can_download permission', () => {
             const wrapper = getWrapper({
                 isWatermarked: true,
+                version: getVersion({
+                    permissions: {
+                        can_download: false,
+                        can_preview: true, // Download should take priority in this case, even if can_preview is true
+                        can_upload: true,
+                    },
+                }),
             });
             const actions = wrapper.find(VersionsItemActions);
             const button = wrapper.find(VersionsItemButton);

@@ -1,7 +1,7 @@
 ```
 <div className="icon-wrapper">
-    <IWorkDesktopIcon extension="pages" />
     <IWorkDesktopIcon extension="numbers" />
+    <IWorkDesktopIcon extension="pages" />
     <IWorkDesktopIcon extension="key" />
 </div>
 ```

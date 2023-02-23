@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import getProp from 'lodash/get';
-import AutoSizer from '@box/react-virtualized/dist/commonjs/AutoSizer';
-import Column from '@box/react-virtualized/dist/commonjs/Table/Column';
-import Table from '@box/react-virtualized/dist/commonjs/Table';
-import defaultTableRowRenderer from '@box/react-virtualized/dist/commonjs/Table/defaultRowRenderer';
-import '@box/react-virtualized/styles.css';
+
+import Column from 'react-virtualized/dist/commonjs/Table/Column';
+import Table from 'react-virtualized/dist/commonjs/Table';
+import defaultTableRowRenderer from 'react-virtualized/dist/commonjs/Table/defaultRowRenderer';
+import 'react-virtualized/styles.css';
 
 import { withInfiniteLoader } from '../../../components/react-virtualized-helpers';
 
@@ -22,22 +22,6 @@ import './ItemList.scss';
 const TABLE_CELL_CLASS = 'table-cell';
 
 const InfiniteLoaderTable = withInfiniteLoader(Table);
-
-const DEFAULT_ROW_HEIGHT = 40;
-
-const withAutoSizer = WrappedComponent => {
-    return props => {
-        return (
-            <div style={{ flex: 1 }}>
-                <AutoSizer>
-                    {({ width: w, height: h }) => <WrappedComponent {...props} width={w} height={h} />}
-                </AutoSizer>
-            </div>
-        );
-    };
-};
-
-const TableResponsive = withAutoSizer(Table);
 
 const itemIconCellRenderer = rendererParams => {
     const {
@@ -73,7 +57,6 @@ const itemNameCellRenderer = rendererParams => {
         name && (
             <div className={TABLE_CELL_CLASS}>
                 <ItemListName
-                    itemId={id}
                     type={type}
                     name={name}
                     label={label}
@@ -125,10 +108,8 @@ const itemLoadingPlaceholderRenderer = rendererParams => {
 };
 
 const ItemList = ({
-    additionalColumns,
     contentExplorerMode,
     className = '',
-    isResponsive = false,
     items,
     numItemsPerPage,
     numTotalItems,
@@ -137,16 +118,12 @@ const ItemList = ({
     onItemDoubleClick,
     onItemNameClick,
     onLoadMoreItems,
-    headerHeight,
-    headerRenderer,
     itemIconRenderer,
     itemNameLinkRenderer,
     itemButtonRenderer,
-    itemRowRenderer = defaultTableRowRenderer,
     noItemsRenderer,
     width,
     height,
-    rowHeight = DEFAULT_ROW_HEIGHT,
 }) => {
     const getRow = ({ index }) => items[index];
 
@@ -189,14 +166,14 @@ const ItemList = ({
             );
         }
 
-        const defaultRow = itemRowRenderer({
+        const defaultRow = defaultTableRowRenderer({
             ...rendererParams,
             className: itemRowClassname,
         });
         return React.cloneElement(defaultRow, { 'data-testid': `item-row-${testId}` });
     };
 
-    let TableComponent = isResponsive ? TableResponsive : Table;
+    let TableComponent = Table;
     const tableProps = {};
 
     if (onLoadMoreItems) {
@@ -210,23 +187,14 @@ const ItemList = ({
         };
     }
 
-    if (!noItemsRenderer || items.length > 0) {
-        tableProps.headerHeight = headerHeight;
-        tableProps.headerRowRenderer = headerRenderer;
-    }
-
     return (
-        <div
-            className={classNames('content-explorer-item-list table', className, {
-                'bdl-ContentExplorerItemList--responsive': isResponsive,
-            })}
-        >
+        <div className={classNames('content-explorer-item-list table', className)}>
             <TableComponent
                 gridClassName="table-body"
                 headerClassName="table-header-item"
                 width={width}
                 height={height}
-                rowHeight={rowHeight}
+                rowHeight={40}
                 rowCount={items.length}
                 onRowClick={onItemClick}
                 onRowDoubleClick={onItemDoubleClick}
@@ -257,7 +225,6 @@ const ItemList = ({
                     flexGrow={1}
                     flexShrink={0}
                 />
-                {additionalColumns}
                 <Column
                     className="item-list-button-col"
                     cellRenderer={itemButtonCellRenderer}
@@ -277,10 +244,8 @@ const ItemList = ({
 ItemList.displayName = 'ItemList';
 
 ItemList.propTypes = {
-    additionalColumns: PropTypes.arrayOf(PropTypes.element),
     className: PropTypes.string,
     contentExplorerMode: ContentExplorerModePropType.isRequired,
-    isResponsive: PropTypes.bool,
     items: ItemsPropType.isRequired,
     numItemsPerPage: PropTypes.number,
     numTotalItems: PropTypes.number,
@@ -289,16 +254,12 @@ ItemList.propTypes = {
     onItemDoubleClick: PropTypes.func,
     onItemNameClick: PropTypes.func,
     onLoadMoreItems: PropTypes.func,
-    headerHeight: PropTypes.number,
-    headerRenderer: PropTypes.func,
     itemIconRenderer: PropTypes.func,
     itemNameLinkRenderer: PropTypes.func,
     itemButtonRenderer: PropTypes.func,
-    itemRowRenderer: PropTypes.func,
     noItemsRenderer: PropTypes.func,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
-    rowHeight: PropTypes.number,
 };
 
 export { ItemList as ItemListBase };

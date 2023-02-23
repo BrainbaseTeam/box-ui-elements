@@ -69,19 +69,6 @@ describe('elements/content-sidebar/versions/VersionsSidebarContainer', () => {
         });
     });
 
-    describe('componentDidMount', () => {
-        test('should call onLoad after a successful fetchData() call', async () => {
-            const onLoad = jest.fn();
-            const fetchData = jest.fn(() => Promise.resolve());
-            const instance = getWrapper({ onLoad }).instance();
-
-            instance.fetchData = fetchData;
-
-            await instance.componentDidMount();
-            expect(onLoad).toHaveBeenCalled();
-        });
-    });
-
     describe('handleActionDelete', () => {
         test('should call api endpoint helpers', () => {
             const handleDelete = jest.fn();
@@ -204,9 +191,9 @@ describe('elements/content-sidebar/versions/VersionsSidebarContainer', () => {
         test('should set state to default values with error message', () => {
             const wrapper = getWrapper();
 
-            wrapper.instance().handleFetchError({ status: 500 });
+            wrapper.instance().handleFetchError();
 
-            expect(wrapper.state()).toMatchObject({
+            expect(wrapper.state()).toEqual({
                 error: messages.versionFetchError,
                 isLoading: false,
                 isWatermarked: false,
@@ -214,17 +201,6 @@ describe('elements/content-sidebar/versions/VersionsSidebarContainer', () => {
                 versionLimit: Infinity,
                 versions: [],
             });
-
-            expect(wrapper).toMatchSnapshot();
-        });
-
-        test('should create StaticVersionSidebar if onUpgradeClick is present', () => {
-            const wrapper = getWrapper({
-                onUpgradeClick: () => {},
-            });
-            wrapper.instance().handleFetchError({ status: 403 });
-
-            expect(wrapper).toMatchSnapshot();
         });
     });
 

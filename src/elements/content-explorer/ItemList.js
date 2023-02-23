@@ -8,8 +8,8 @@ import React from 'react';
 import classNames from 'classnames';
 import { injectIntl } from 'react-intl';
 import type { InjectIntlProvidedProps } from 'react-intl';
-import { Table, Column } from '@box/react-virtualized/dist/es/Table';
-import AutoSizer from '@box/react-virtualized/dist/es/AutoSizer';
+import { Table, Column } from 'react-virtualized/dist/es/Table';
+import AutoSizer from 'react-virtualized/dist/es/AutoSizer';
 import KeyBinder from '../common/KeyBinder';
 import nameCellRenderer from '../common/item/nameCellRenderer';
 import iconCellRenderer from '../common/item/iconCellRenderer';
@@ -21,7 +21,7 @@ import dateCellRenderer from './dateCellRenderer';
 import moreOptionsCellRenderer from './moreOptionsCellRenderer';
 import { FIELD_DATE, FIELD_ID, FIELD_NAME, FIELD_SIZE, VIEW_FOLDER, VIEW_RECENTS } from '../../constants';
 import type { View, Collection } from '../../common/types/core';
-import '@box/react-virtualized/styles.css';
+import 'react-virtualized/styles.css';
 import './ItemList.scss';
 
 type Props = {
@@ -166,7 +166,6 @@ const ItemList = ({
                                 disableSort
                                 dataKey={FIELD_ID}
                                 cellRenderer={iconCell}
-                                headerRole="gridcell"
                                 width={isSmall ? 30 : 50}
                                 flexShrink={0}
                             />
@@ -211,7 +210,6 @@ const ItemList = ({
                                 disableSort
                                 dataKey={FIELD_ID}
                                 cellRenderer={moreOptionsCell}
-                                headerRole="gridcell"
                                 width={isSmall || !canShare ? 58 : 140}
                                 flexShrink={0}
                             />

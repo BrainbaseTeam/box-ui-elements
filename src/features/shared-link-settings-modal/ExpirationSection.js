@@ -17,7 +17,6 @@ const displayFormat = {
 
 const ExpirationSection = ({
     canChangeExpiration,
-    dateFormat,
     error,
     expirationCheckboxProps = {},
     expirationDate,
@@ -30,7 +29,6 @@ const ExpirationSection = ({
     const datepicker = (
         <div>
             <DatePicker
-                dateFormat={dateFormat}
                 displayFormat={displayFormat}
                 error={error}
                 hideLabel
@@ -48,7 +46,7 @@ const ExpirationSection = ({
     return (
         <div>
             <hr />
-            <Fieldset className="be expiration-section" title={<FormattedMessage {...messages.expirationTitle} />}>
+            <Fieldset className="expiration-section" title={<FormattedMessage {...messages.expirationTitle} />}>
                 <Checkbox
                     isChecked={isExpirationEnabled}
                     isDisabled={!canChangeExpiration}
@@ -65,8 +63,6 @@ const ExpirationSection = ({
 
 ExpirationSection.propTypes = {
     canChangeExpiration: PropTypes.bool.isRequired,
-    /** The format of the date value for form submit */
-    dateFormat: PropTypes.string,
     error: PropTypes.string,
     expirationCheckboxProps: PropTypes.object,
     expirationDate: PropTypes.instanceOf(Date),

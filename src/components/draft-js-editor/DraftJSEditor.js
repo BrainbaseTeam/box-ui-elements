@@ -19,7 +19,6 @@ const OptionalFormattedMessage = () => (
     </span>
 );
 type Props = {
-    description?: React.Node,
     editorState: EditorState,
     error?: ?Object,
     hideLabel?: boolean,
@@ -80,8 +79,6 @@ class DraftJSEditor extends React.Component<Props> {
 
     labelID = uniqueId('label');
 
-    descriptionID = uniqueId('description');
-
     render() {
         const {
             editorState,
@@ -91,7 +88,6 @@ class DraftJSEditor extends React.Component<Props> {
             isDisabled,
             isRequired,
             label,
-            description,
             onFocus,
             placeholder,
         } = this.props;
@@ -111,8 +107,7 @@ class DraftJSEditor extends React.Component<Props> {
                 ariaAutoComplete: inputProps['aria-autocomplete'],
                 ariaExpanded: inputProps['aria-expanded'],
                 ariaOwneeID: inputProps['aria-owns'],
-                ariaMultiline: true,
-                role: 'textbox',
+                role: inputProps.role,
             };
         }
 
@@ -122,9 +117,6 @@ class DraftJSEditor extends React.Component<Props> {
                     {label}
                     {!isRequired && <OptionalFormattedMessage />}
                 </span>
-                <span className="accessibility-hidden screenreader-description" id={this.descriptionID}>
-                    {description}
-                </span>
 
                 <Tooltip isShown={!!error} position="bottom-left" text={error ? error.message : ''} theme="error">
                     {/* need div so tooltip can set aria-describedby */}
@@ -132,7 +124,6 @@ class DraftJSEditor extends React.Component<Props> {
                         <Editor
                             {...a11yProps}
                             ariaLabelledBy={this.labelID}
-                            ariaDescribedBy={this.descriptionID}
                             editorState={editorState}
                             handleReturn={this.handleReturn}
                             onBlur={handleBlur}

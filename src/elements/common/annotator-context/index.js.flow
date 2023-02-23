@@ -5,10 +5,6 @@ declare export {
   WithAnnotationsComponent,
   ComponentWithAnnotations
 } from "./withAnnotations";
-    declare export {
-    default as useAnnotatorEvents,
-    UseAnnotatorEventsProps
-} from "./useAnnotatorEvents";
 declare export {
   default as withAnnotatorContext,
   WithAnnotatorContextProps

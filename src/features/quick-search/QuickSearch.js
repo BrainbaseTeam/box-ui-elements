@@ -24,8 +24,6 @@ type Props = {
     noItemsMessage?: React.Node,
     /** Function called with the index of the selected option and the event (selected by keyboard or click) */
     onSelect?: Function,
-    /** Optional title text that will be rendered above the list */
-    title?: React.Node,
 };
 
 type State = {
@@ -50,16 +48,7 @@ class QuickSearch extends React.Component<Props, State> {
     };
 
     render() {
-        const {
-            children,
-            className,
-            dividerIndex,
-            errorMessage,
-            inputProps,
-            noItemsMessage,
-            onSelect,
-            title,
-        } = this.props;
+        const { children, className, dividerIndex, errorMessage, inputProps, noItemsMessage, onSelect } = this.props;
         const { showMessage } = this.state;
 
         return (
@@ -68,7 +57,6 @@ class QuickSearch extends React.Component<Props, State> {
                     dividerIndex={dividerIndex}
                     onSelect={onSelect}
                     selector={<QuickSearchSelector {...inputProps} />}
-                    title={title}
                 >
                     {children}
                 </SelectorDropdown>

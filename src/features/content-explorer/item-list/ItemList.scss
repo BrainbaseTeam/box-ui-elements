@@ -1,12 +1,5 @@
 @import '../../../styles/variables';
 
-.bdl-ContentExplorerItemList--responsive {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    min-height: 285px;
-}
-
 .content-explorer-item-list {
     .table-header-item {
         color: $bdl-gray-62;
@@ -85,6 +78,6 @@
         width: 75%;
         height: 12px;
         background-color: $bdl-gray-30;
-        border-radius: $bdl-border-radius-size;
+        border-radius: 3px;
     }
 }

@@ -60,7 +60,7 @@ import {
     PLACEHOLDER_USER,
 } from '../constants';
 
-// Minimum set of fields needed for folder requests
+// Minimum set of fields needed for Content Explorer / Picker
 const FOLDER_FIELDS_TO_FETCH = [
     FIELD_ID,
     FIELD_NAME,
@@ -126,23 +126,6 @@ const PREVIEW_FIELDS_TO_FETCH = [
     FIELD_IS_DOWNLOAD_AVAILABLE,
 ];
 
-// Fields needed to get versions for a file in activity feed
-const FEED_FILE_VERSIONS_FIELDS_TO_FETCH = [
-    FIELD_CREATED_AT,
-    FIELD_EXTENSION,
-    FIELD_IS_DOWNLOAD_AVAILABLE,
-    FIELD_MODIFIED_AT,
-    FIELD_MODIFIED_BY,
-    FIELD_NAME,
-    FIELD_RESTORED_AT,
-    FIELD_RESTORED_BY,
-    FIELD_SIZE,
-    FIELD_TRASHED_AT,
-    FIELD_TRASHED_BY,
-    FIELD_UPLOADER_DISPLAY_NAME,
-    FIELD_VERSION_NUMBER,
-];
-
 // Fields needed to get information on the current version of a file
 const FILE_VERSION_FIELDS_TO_FETCH = [
     FIELD_FILE_VERSION,
@@ -156,17 +139,17 @@ const FILE_VERSION_FIELDS_TO_FETCH = [
 
 // Fields needed to get versions for a file
 const FILE_VERSIONS_FIELDS_TO_FETCH = [
-    FIELD_AUTHENTICATED_DOWNLOAD_URL, // Expensive field to fetch
+    FIELD_AUTHENTICATED_DOWNLOAD_URL,
     FIELD_CREATED_AT,
     FIELD_EXTENSION,
     FIELD_IS_DOWNLOAD_AVAILABLE,
     FIELD_MODIFIED_AT,
     FIELD_MODIFIED_BY,
     FIELD_NAME,
-    FIELD_PERMISSIONS, // Expensive field to fetch
+    FIELD_PERMISSIONS,
     FIELD_RESTORED_AT,
     FIELD_RESTORED_BY,
-    FIELD_RETENTION, // Expensive field to fetch
+    FIELD_RETENTION,
     FIELD_SIZE,
     FIELD_TRASHED_AT,
     FIELD_TRASHED_BY,
@@ -272,7 +255,6 @@ function fillUserPlaceholder(obj: Object): Object {
 export {
     APP_ACTIVITY_FIELDS_TO_FETCH,
     COMMENTS_FIELDS_TO_FETCH,
-    FEED_FILE_VERSIONS_FIELDS_TO_FETCH,
     FILE_SHARED_LINK_FIELDS_TO_FETCH,
     FILE_VERSION_FIELDS_TO_FETCH,
     FILE_VERSIONS_FIELDS_TO_FETCH,

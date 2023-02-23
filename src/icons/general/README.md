@@ -902,11 +902,6 @@ width?: number,
         propsDocumentation: iconPropsDocumentation,
     },
     {
-        name: 'IconSearchJuicy',
-        component: require('./IconSearchJuicy').default,
-        propsDocumentation: iconPropsDocumentation,
-    },
-    {
         name: 'IconSecurityClassification',
         component: require('./IconSecurityClassification').default,
         propsDocumentation: iconPropsDocumentation,

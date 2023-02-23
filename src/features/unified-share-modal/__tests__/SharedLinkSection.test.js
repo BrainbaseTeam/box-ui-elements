@@ -1,13 +1,12 @@
 import React from 'react';
 import sinon from 'sinon';
-import { ANYONE_IN_COMPANY, ANYONE_WITH_LINK, CAN_EDIT, CAN_VIEW_DOWNLOAD } from '../constants';
 
-import { SharedLinkSectionBase as SharedLinkSection } from '../SharedLinkSection';
+import SharedLinkSection from '../SharedLinkSection';
 
 const sandbox = sinon.sandbox.create();
 
 describe('features/unified-share-modal/SharedLinkSection', () => {
-    const intl = { formatMessage: jest.fn().mockImplementation(message => message.defaultMessage) };
+    const intl = { formatMessage: sandbox.spy() };
     const defaultItem = {
         grantedPermissions: {
             itemShare: true,
@@ -54,77 +53,6 @@ describe('features/unified-share-modal/SharedLinkSection', () => {
         ).toMatchSnapshot();
     });
 
-    test('should render GuideTooltip with isShown set to true if canShow is true', () => {
-        const wrapper = getWrapper({
-            isAllowEditSharedLinkForFileEnabled: true,
-            sharedLink: {
-                accessLevel: ANYONE_WITH_LINK,
-                canChangeAccessLevel: false,
-                enterpriseName: 'Box',
-                expirationTimestamp: 0,
-                isEditSettingAvailable: true,
-                permissionLevel: CAN_EDIT,
-                url: 'https://example.com/shared-link',
-            },
-            sharedLinkEditTooltipTargetingApi: {
-                canShow: true,
-                onComplete: jest.fn(),
-                onShow: jest.fn(),
-            },
-        });
-
-        expect(wrapper.find('GuideTooltip').props().isShown).toBe(true);
-    });
-
-    test('should call onClose when GuideTooltip is dismissed', () => {
-        const onClose = jest.fn();
-        const wrapper = getWrapper({
-            isAllowEditSharedLinkForFileEnabled: true,
-            sharedLink: {
-                accessLevel: ANYONE_WITH_LINK,
-                canChangeAccessLevel: false,
-                enterpriseName: 'Box',
-                expirationTimestamp: 0,
-                isEditSettingAvailable: true,
-                permissionLevel: CAN_EDIT,
-                url: 'https://example.com/shared-link',
-            },
-            sharedLinkEditTooltipTargetingApi: {
-                canShow: true,
-                onClose,
-                onShow: jest.fn(),
-            },
-        });
-
-        wrapper
-            .find('GuideTooltip')
-            .dive()
-            .simulate('dismiss');
-
-        expect(onClose).toHaveBeenCalledTimes(1);
-    });
-
-    test.each`
-        permissionLevel      | testID
-        ${CAN_EDIT}          | ${'shared-link-editable-publicly-available-message'}
-        ${CAN_VIEW_DOWNLOAD} | ${'shared-link-publicly-available-message'}
-    `(
-        'should render correct message based on permissionLevel and when accessLevel is ANYONE_WITH_LINK',
-        ({ testID, permissionLevel }) => {
-            const wrapper = getWrapper({
-                sharedLink: {
-                    accessLevel: ANYONE_WITH_LINK,
-                    canChangeAccessLevel: false,
-                    enterpriseName: 'Box',
-                    expirationTimestamp: 0,
-                    url: 'https://example.com/shared-link',
-                    permissionLevel,
-                },
-            });
-            expect(wrapper.find(`[data-testid="${testID}"]`).length).toEqual(1);
-        },
-    );
-
     test('should render a default component when there is a shared link but user lacks permission to toggle off', () => {
         const wrapper = getWrapper({
             sharedLink: {
@@ -148,7 +76,7 @@ describe('features/unified-share-modal/SharedLinkSection', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    test('should match snapshot when shared link expiration is set', () => {
+    test('should account for shared link expirations being set', () => {
         const wrapper = getWrapper({
             sharedLink: {
                 accessLevel: 'peopleInYourCompany',
@@ -257,29 +185,6 @@ describe('features/unified-share-modal/SharedLinkSection', () => {
             expect(wrapper).toMatchSnapshot();
         });
     });
-    [
-        {
-            isEditSettingAvailable: true,
-        },
-        {
-            isEditSettingAvailable: false,
-        },
-    ].forEach(({ isEditSettingAvailable }) => {
-        test('should render proper list of permission options based on the the edit setting availability', () => {
-            const wrapper = getWrapper({
-                sharedLink: {
-                    accessLevel: 'peopleInYourCompany',
-                    canChangeAccessLevel: true,
-                    enterpriseName: 'Box',
-                    isEditSettingAvailable,
-                    expirationTimestamp: 0,
-                    url: 'https://example.com/shared-link',
-                },
-            });
-
-            expect(wrapper).toMatchSnapshot();
-        });
-    });
 
     test('should render disabled create shared link message when item share is false and url is empty', () => {
         const sharedLink = { url: '', canChangeAccessLevel: true };
@@ -296,34 +201,6 @@ describe('features/unified-share-modal/SharedLinkSection', () => {
         const tooltip = wrapper.find('.usm-disabled-message-tooltip');
 
         expect(tooltip).toMatchSnapshot();
-    });
-
-    test.each`
-        config                                | emailButtonExists | description
-        ${undefined}                          | ${true}           | ${'should render email shared link button when config is undefined'}
-        ${{ foo: 'bar' }}                     | ${true}           | ${'should render email shared link button when config does not contain showEmailSharedLinkForm'}
-        ${{ showEmailSharedLinkForm: true }}  | ${true}           | ${'should render email shared link button when config.showEmailSharedLinkForm is true'}
-        ${{ showEmailSharedLinkForm: false }} | ${false}          | ${'should not render email shared link button when config.showEmailSharedLinkForm is false'}
-    `('$description', ({ config, emailButtonExists }) => {
-        const sharedLink = { url: 'https://example.com/shared-link' };
-        const wrapper = getWrapper({ config, sharedLink });
-        expect(wrapper.exists('.email-shared-link-btn')).toBe(emailButtonExists);
-    });
-
-    test('should have aria-label and role on shared link expiration badge when expiration timestamp exists', () => {
-        // Set an expiration timestamp so that Toggle is rendered with expiration icon
-        const sharedLink = {
-            expirationTimestamp: 1,
-            url: 'https://example.com/shared-link',
-        };
-        const wrapper = getWrapper({ sharedLink });
-        const toggle = wrapper.find('Toggle');
-
-        // The aria-label attr is on a span, which is contained within the label of the Toggle component
-        const spanLabel = toggle.dive().find('.shared-link-expiration-badge');
-
-        expect(spanLabel.prop('aria-label')).toBe('Expires');
-        expect(spanLabel.prop('role')).toBe('img');
     });
 
     describe('componentDidMount()', () => {
@@ -362,74 +239,6 @@ describe('features/unified-share-modal/SharedLinkSection', () => {
         afterEach(() => {
             global.navigator.clipboard = undefined;
         });
-
-        test('should render correct shared link message when permissionLevel is elevated to CAN_EDIT and accessLevel is ANYONE_IN_COMPANY', () => {
-            const sharedLink = {
-                accessLevel: ANYONE_IN_COMPANY,
-                url: 'http://example.com/',
-                isNewSharedLink: false,
-                permissionLevel: CAN_VIEW_DOWNLOAD,
-            };
-
-            const wrapper = getWrapper({ sharedLink });
-
-            wrapper.setProps({
-                sharedLink: {
-                    accessLevel: ANYONE_IN_COMPANY,
-                    url: 'http://example.com/',
-                    isNewSharedLink: false,
-                    permissionLevel: CAN_EDIT,
-                },
-            });
-
-            expect(
-                wrapper.find(`[data-testid="shared-link-elevated-editable-company-available-message"]`).length,
-            ).toEqual(1);
-        });
-
-        test.each`
-            accessLevel          | should
-            ${ANYONE_IN_COMPANY} | ${'updated to a non CAN_EDIT permission'}
-            ${ANYONE_WITH_LINK}  | ${'accessLevel is updated to a non ANYONE_IN_COMPANY access level'}
-        `(
-            'should no longer show warning message after permissionLevel is elevated to CAN_EDIT and then $should',
-            ({ accessLevel }) => {
-                const sharedLink = {
-                    accessLevel: ANYONE_IN_COMPANY,
-                    url: 'http://example.com/',
-                    isNewSharedLink: false,
-                    permissionLevel: CAN_VIEW_DOWNLOAD,
-                };
-
-                const wrapper = getWrapper({ sharedLink });
-
-                wrapper.setProps({
-                    sharedLink: {
-                        accessLevel: ANYONE_IN_COMPANY,
-                        url: 'http://example.com/',
-                        isNewSharedLink: false,
-                        permissionLevel: CAN_EDIT,
-                    },
-                });
-
-                expect(
-                    wrapper.find(`[data-testid="shared-link-elevated-editable-company-available-message"]`).length,
-                ).toEqual(1);
-
-                wrapper.setProps({
-                    sharedLink: {
-                        accessLevel,
-                        url: 'http://example.com/',
-                        isNewSharedLink: false,
-                        permissionLevel: CAN_VIEW_DOWNLOAD,
-                    },
-                });
-
-                expect(
-                    wrapper.find(`[data-testid="shared-link-elevated-editable-company-available-message"]`).length,
-                ).toEqual(0);
-            },
-        );
 
         test('should call addSharedLink when modal is triggered to create a URL', () => {
             const sharedLink = { url: '', isNewSharedLink: false };
@@ -509,20 +318,6 @@ describe('features/unified-share-modal/SharedLinkSection', () => {
             expect(onCopyErrorMock).toBeCalledTimes(0);
         });
 
-        test('should call onSharedLinkCopy with current permission level when copy button is clicked', () => {
-            const onSharedLinkCopy = jest.fn();
-            const sharedLink = { url: 'http://example.com/', isNewSharedLink: false, permissionLevel: CAN_EDIT };
-
-            const wrapper = getWrapper({
-                sharedLink,
-                trackingProps: { onSharedLinkCopy },
-            });
-
-            wrapper.find('TextInputWithCopyButton').prop('onCopySuccess')();
-
-            expect(onSharedLinkCopy).toBeCalledWith(CAN_EDIT);
-        });
-
         test('should only initiate copy when we specifically request a copy to be triggered', () => {
             const sharedLink = { url: '', isNewSharedLink: false };
             const addSharedLink = jest.fn();
@@ -589,44 +384,6 @@ describe('features/unified-share-modal/SharedLinkSection', () => {
             expect(onCopyErrorMock).toBeCalledTimes(1);
             expect(wrapper.find('TextInputWithCopyButton').prop('triggerCopyOnLoad')).toBe(false);
             expect(wrapper.state('isCopySuccessful')).toEqual(false);
-        });
-
-        test.each`
-            isEditSettingAvailable | isAllowEditSharedLinkForFileEnabled | canShow  | expected | should
-            ${false}               | ${false}                            | ${false} | ${0}     | ${'should not call onShow if user cannot edit and ESL FF is off and canShow is false'}
-            ${true}                | ${false}                            | ${false} | ${0}     | ${'should not call onShow if user can edit but ESL FF is off and canShow is false'}
-            ${true}                | ${true}                             | ${false} | ${0}     | ${'should not call onShow if user can edit and ESL FF is on but canShow is false'}
-            ${true}                | ${true}                             | ${true}  | ${1}     | ${'should call onShow if user can edit and ESL FF is on and canShow is true'}
-        `('$should', ({ canShow, isAllowEditSharedLinkForFileEnabled, isEditSettingAvailable, expected }) => {
-            const onShow = jest.fn();
-            const onComplete = jest.fn();
-            const wrapper = getWrapper({
-                isAllowEditSharedLinkForFileEnabled,
-                sharedLink: {
-                    accessLevel: ANYONE_WITH_LINK,
-                    canChangeAccessLevel: false,
-                    enterpriseName: 'Box',
-                    expirationTimestamp: 0,
-                    isEditSettingAvailable,
-                    permissionLevel: CAN_EDIT,
-                    url: 'https://example.com/shared-link',
-                },
-                sharedLinkEditTooltipTargetingApi: {
-                    canShow: false,
-                    onComplete,
-                    onShow,
-                },
-            });
-
-            wrapper.setProps({
-                sharedLinkEditTooltipTargetingApi: {
-                    canShow,
-                    onComplete,
-                    onShow,
-                },
-            });
-
-            expect(onShow).toHaveBeenCalledTimes(expected);
         });
     });
 });

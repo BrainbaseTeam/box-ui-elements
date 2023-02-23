@@ -3,13 +3,6 @@ import { shallow } from 'enzyme';
 
 import ActiveState from '../ActiveState';
 import AnnotationActivity from '../../annotations';
-import {
-    FEED_ITEM_TYPE_ANNOTATION,
-    FEED_ITEM_TYPE_APP_ACTIVITY,
-    FEED_ITEM_TYPE_COMMENT,
-    FEED_ITEM_TYPE_TASK,
-    FEED_ITEM_TYPE_VERSION,
-} from '../../../../../constants';
 
 const currentUser = {
     id: 'user_123445',
@@ -19,7 +12,7 @@ const currentUser = {
 const otherUser = { name: 'Akon', id: 11 };
 
 const annotation = {
-    type: FEED_ITEM_TYPE_ANNOTATION,
+    type: 'annotation',
     id: 'anno_123',
     created_at: '2018-07-03T14:43:52-07:00',
     description: {
@@ -39,7 +32,7 @@ const annotation = {
 };
 
 const comment = {
-    type: FEED_ITEM_TYPE_COMMENT,
+    type: 'comment',
     id: 'c_123',
     created_at: '2018-07-03T14:43:52-07:00',
     tagged_message: 'test @[123:Jeezy] @[10:Kanye West]',
@@ -47,7 +40,7 @@ const comment = {
 };
 
 const fileVersion = {
-    type: FEED_ITEM_TYPE_VERSION,
+    type: 'file_version',
     id: 'f_123',
     created_at: '2018-07-03T14:43:52-07:00',
     trashed_at: '2018-07-03T14:43:52-07:00',
@@ -56,7 +49,7 @@ const fileVersion = {
 };
 
 const taskWithAssignment = {
-    type: FEED_ITEM_TYPE_TASK,
+    type: 'task',
     id: 't_345',
     created_at: '2018-07-03T14:43:52-07:00',
     created_by: { target: otherUser },
@@ -115,7 +108,7 @@ const appActivity = {
         can_delete: true,
     },
     rendered_text: 'this is text and a <a>link</a>',
-    type: FEED_ITEM_TYPE_APP_ACTIVITY,
+    type: 'app_activity',
     currentUser,
 };
 
@@ -149,13 +142,6 @@ describe('elements/content-sidebar/ActiveState/activity-feed/ActiveState', () =>
         expect(wrapper.find('[data-testid="task"]')).toHaveLength(1);
         expect(wrapper.find('[data-testid="app-activity"]')).toHaveLength(1);
         expect(wrapper.find('[data-testid="annotation-activity"]')).toHaveLength(1);
-    });
-
-    test('should correctly render ActivityThread for annotations and comments if has replies', () => {
-        const wrapper = getShallowWrapper({
-            hasReplies: true,
-        }).dive();
-        expect(wrapper.find('[data-testid="activity-thread"]')).toHaveLength(2);
     });
 
     test('should correctly render with an inline error if some feed items fail to fetch', () => {

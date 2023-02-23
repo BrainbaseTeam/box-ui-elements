@@ -2,7 +2,6 @@ import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 
 import ImageTooltipContent from '../ImageTooltipContent';
-// @ts-ignore flow import
 import testImageSrc from '../getTestImageSrc';
 
 describe('components/image-tooltip/ImageTooltipContent', () => {
@@ -10,10 +9,9 @@ describe('components/image-tooltip/ImageTooltipContent', () => {
         const tooltipContent = 'Hey I am content';
         const tooltipTitle = 'I am a title';
         const image = <img src={testImageSrc} alt="foo" />;
-        const onImageLoadMock = jest.fn();
 
         const wrapper: ShallowWrapper = shallow(
-            <ImageTooltipContent content={tooltipContent} onImageLoad={onImageLoadMock} title={tooltipTitle}>
+            <ImageTooltipContent content={tooltipContent} title={tooltipTitle}>
                 {image}
             </ImageTooltipContent>,
         );

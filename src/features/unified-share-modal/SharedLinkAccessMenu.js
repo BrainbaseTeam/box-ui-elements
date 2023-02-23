@@ -10,13 +10,7 @@ import Tooltip from '../../components/tooltip';
 import type { ItemType } from '../../common/types/core';
 
 import SharedLinkAccessLabel from './SharedLinkAccessLabel';
-import {
-    ANYONE_WITH_LINK,
-    ANYONE_IN_COMPANY,
-    DISABLED_REASON_ACCESS_POLICY,
-    DISABLED_REASON_MALICIOUS_CONTENT,
-    PEOPLE_IN_ITEM,
-} from './constants';
+import { ANYONE_WITH_LINK, ANYONE_IN_COMPANY, PEOPLE_IN_ITEM } from './constants';
 import messages from './messages';
 import type { accessLevelType, accessLevelsDisabledReasonType, allowedAccessLevelsType } from './flowTypes';
 
@@ -62,13 +56,11 @@ class SharedLinkAccessMenu extends React.Component<Props> {
     renderMenu() {
         const { accessLevel, accessLevelsDisabledReason, allowedAccessLevels, enterpriseName, itemType } = this.props;
         return (
-            <Menu className="usm-share-access-menu" data-testid="usm-share-access-menu">
+            <Menu className="usm-share-access-menu">
                 {accessLevels.map(level => {
                     const isDisabled = !allowedAccessLevels[level];
-                    const isDisabledByAccessPolicy =
-                        accessLevelsDisabledReason[level] === DISABLED_REASON_ACCESS_POLICY;
-                    const isDisabledByMaliciousContent =
-                        accessLevelsDisabledReason[level] === DISABLED_REASON_MALICIOUS_CONTENT;
+                    const isDisabledByAccessPolicy = accessLevelsDisabledReason[level] === 'access_policy';
+                    const isDisabledByMaliciousContent = accessLevelsDisabledReason[level] === 'malicious_content';
                     const isDisabledByPolicy = isDisabledByAccessPolicy || isDisabledByMaliciousContent;
                     const tooltipMessage = isDisabledByMaliciousContent
                         ? messages.disabledMaliciousContentShareLinkPermission
@@ -136,7 +128,6 @@ class SharedLinkAccessMenu extends React.Component<Props> {
                             'is-disabled': submitting,
                             'bdl-is-disabled': submitting,
                         })}
-                        data-testid="usm-share-access-toggle"
                         disabled={submitting}
                         {...sharedLinkAccessMenuButtonProps}
                     >

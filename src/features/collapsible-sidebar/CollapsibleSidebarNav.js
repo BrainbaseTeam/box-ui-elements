@@ -46,8 +46,6 @@ type Props = {
 
     /** Additional classes */
     className?: string,
-    /** Props for react-scrollbars-custom Scrollbar component */
-    customScrollBarProps?: {},
 };
 
 type State = {
@@ -128,7 +126,7 @@ class CollapsibleSidebarNav extends React.Component<Props, State> {
     throttleOnUpdateHandler = throttle(this.onUpdateHandler, 50);
 
     render() {
-        const { className, children, customScrollBarProps = {} } = this.props;
+        const { className, children } = this.props;
         const { isScrolling, scrollShadowClassName } = this.state;
 
         const classes = classNames('bdl-CollapsibleSidebar-nav', className, {
@@ -140,7 +138,6 @@ class CollapsibleSidebarNav extends React.Component<Props, State> {
                 <Scrollbar
                     ref={this.scrollRef}
                     className={scrollShadowClassName}
-                    noScrollX
                     onScroll={this.throtteldOnScrollHandler}
                     onUpdate={this.throttleOnUpdateHandler}
                     renderer={props => {
@@ -160,7 +157,6 @@ class CollapsibleSidebarNav extends React.Component<Props, State> {
                     trackYProps={{
                         style: { background: 'none', top: '0', height: '100%', width: '8px', marginRight: '1px' },
                     }}
-                    {...customScrollBarProps}
                 >
                     <div className={classes}>{children}</div>
                 </Scrollbar>

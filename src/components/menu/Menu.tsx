@@ -2,8 +2,6 @@ import * as React from 'react';
 import omit from 'lodash/omit';
 import classNames from 'classnames';
 
-import MenuContext from './MenuContext';
-
 import './Menu.scss';
 
 /**
@@ -89,11 +87,7 @@ class Menu extends React.Component<MenuProps> {
             const focusedMenuItemEl = this.menuItemEls[this.focusIndex];
             this.setMenuItemEls();
             const { menuIndex } = this.getMenuItemElFromEventTarget(focusedMenuItemEl);
-
-            const isFocusedElementMissing = menuIndex === -1;
-            const isFocusIndexOutOfBounds = this.focusIndex >= this.menuItemEls.length;
-
-            this.setFocus(isFocusedElementMissing && !isFocusIndexOutOfBounds ? this.focusIndex : menuIndex);
+            this.setFocus(menuIndex);
         }
     }
 
@@ -294,18 +288,12 @@ class Menu extends React.Component<MenuProps> {
                 setRef(ref);
             }
         };
-        if (menuProps.role === undefined) {
-            menuProps.role = 'menu';
-        }
+        menuProps.role = 'menu';
         menuProps.tabIndex = -1;
         menuProps.onClick = this.handleClick;
         menuProps.onKeyDown = this.handleKeyDown;
 
-        return (
-            <ul {...menuProps}>
-                <MenuContext.Provider value={{ closeMenu: this.fireOnCloseHandler }}>{children}</MenuContext.Provider>
-            </ul>
-        );
+        return <ul {...menuProps}>{children}</ul>;
     }
 }
 

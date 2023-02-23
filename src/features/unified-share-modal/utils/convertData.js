@@ -10,7 +10,6 @@ import {
     PERMISSION_CAN_DOWNLOAD,
     PERMISSION_CAN_PREVIEW,
     STATUS_ACCEPTED,
-    STATUS_INACTIVE,
     TYPE_FOLDER,
 } from '../../../constants';
 import {
@@ -21,55 +20,17 @@ import {
     CAN_VIEW_ONLY,
     COLLAB_GROUP_TYPE,
     COLLAB_USER_TYPE,
-    DISABLED_REASON_ACCESS_POLICY,
-    DISABLED_REASON_MALICIOUS_CONTENT,
     PEOPLE_IN_ITEM,
 } from '../constants';
-import {
-    bdlDarkBlue50,
-    bdlGray20,
-    bdlGreenLight50,
-    bdlLightBlue50,
-    bdlOrange50,
-    bdlPurpleRain50,
-    bdlWatermelonRed50,
-    bdlYellow50,
-} from '../../../styles/variables';
-import {
-    CLASSIFICATION_COLOR_ID_0,
-    CLASSIFICATION_COLOR_ID_1,
-    CLASSIFICATION_COLOR_ID_2,
-    CLASSIFICATION_COLOR_ID_3,
-    CLASSIFICATION_COLOR_ID_4,
-    CLASSIFICATION_COLOR_ID_5,
-    CLASSIFICATION_COLOR_ID_6,
-    CLASSIFICATION_COLOR_ID_7,
-} from '../../classification/constants';
 import type {
-    AvatarURLMap,
     ContentSharingCollaborationsRequest,
     ContentSharingItemAPIResponse,
     ContentSharingItemDataType,
     ContentSharingUserDataType,
-    ConvertCollabOptions,
     SharedLinkSettingsOptions,
 } from '../../../elements/content-sharing/types';
-import type {
-    BoxItemPermission,
-    Collaborations,
-    GroupCollection,
-    SharedLink,
-    User,
-    UserCollection,
-} from '../../../common/types/core';
-import type {
-    accessLevelsDisabledReasonType,
-    allowedAccessLevelsType,
-    collaboratorsListType,
-    collaboratorType,
-    contactType,
-    InviteCollaboratorsRequest,
-} from '../flowTypes';
+import type { BoxItemPermission, Collaborations, SharedLink, User, UserCollection } from '../../../common/types/core';
+import type { collaboratorsListType, collaboratorType, contactType, InviteCollaboratorsRequest } from '../flowTypes';
 
 /**
  * The following constants are used for converting API requests
@@ -97,68 +58,15 @@ export const USM_TO_API_PERMISSION_LEVEL_MAP = {
     [CAN_VIEW_ONLY]: PERMISSION_CAN_PREVIEW,
 };
 
-const API_TO_USM_CLASSIFICATION_COLORS_MAP = {
-    [bdlYellow50]: CLASSIFICATION_COLOR_ID_0,
-    [bdlOrange50]: CLASSIFICATION_COLOR_ID_1,
-    [bdlWatermelonRed50]: CLASSIFICATION_COLOR_ID_2,
-    [bdlPurpleRain50]: CLASSIFICATION_COLOR_ID_3,
-    [bdlLightBlue50]: CLASSIFICATION_COLOR_ID_4,
-    [bdlDarkBlue50]: CLASSIFICATION_COLOR_ID_5,
-    [bdlGreenLight50]: CLASSIFICATION_COLOR_ID_6,
-    [bdlGray20]: CLASSIFICATION_COLOR_ID_7,
-};
-
-const APP_USERS_DOMAIN_REGEXP = new RegExp('boxdevedition.com');
-
-/**
- * Convert access levels disabled reasons into USM format.
- *
- * @param {{ [string]: string }} disabledReasons
- * @returns {accessLevelsDisabledReasonType | null}
- */
-export const convertAccessLevelsDisabledReasons = (disabledReasons?: {
-    [string]: typeof DISABLED_REASON_ACCESS_POLICY | typeof DISABLED_REASON_MALICIOUS_CONTENT | null,
-}): accessLevelsDisabledReasonType | null => {
-    if (!disabledReasons) return null;
-    const convertedReasons = {};
-    Object.entries(disabledReasons).forEach(([level, reason]) => {
-        convertedReasons[API_TO_USM_ACCESS_LEVEL_MAP[level]] = reason;
-    });
-    return convertedReasons;
-};
-
-/**
- * Convert allowed access levels into USM format.
- *
- * @param {Array<string>} [levelsFromAPI]
- * @returns {allowedAccessLevelsType | null}
- */
-export const convertAllowedAccessLevels = (levelsFromAPI?: Array<string>): allowedAccessLevelsType | null => {
-    if (!levelsFromAPI) return null;
-    const convertedLevels = {
-        peopleInThisItem: false,
-        peopleInYourCompany: false,
-        peopleWithTheLink: false,
-    };
-    levelsFromAPI.forEach(level => {
-        convertedLevels[API_TO_USM_ACCESS_LEVEL_MAP[level]] = true;
-    });
-    return convertedLevels;
-};
-
 /**
  * Convert a response from the Item API to the object that the USM expects.
  *
  * @param {BoxItem} itemAPIData
  * @returns {ContentSharingItemDataType} Object containing item and shared link information
  */
-
 export const convertItemResponse = (itemAPIData: ContentSharingItemAPIResponse): ContentSharingItemDataType => {
     const {
         allowed_invitee_roles,
-        allowed_shared_link_access_levels,
-        allowed_shared_link_access_levels_disabled_reasons,
-        classification,
         id,
         description,
         extension,
@@ -177,19 +85,6 @@ export const convertItemResponse = (itemAPIData: ContentSharingItemAPIResponse):
         can_set_share_access: canChangeAccessLevel,
         can_share: itemShare,
     } = permissions;
-
-    // Convert classification data for the item if available
-    let classificationData = {};
-    if (classification) {
-        const { color, definition, name: classificationName } = classification;
-        classificationData = {
-            bannerPolicy: {
-                body: definition,
-                colorID: API_TO_USM_CLASSIFICATION_COLORS_MAP[color],
-            },
-            classification: classificationName,
-        };
-    }
 
     const isEditAllowed = allowed_invitee_roles.indexOf(INVITEE_ROLE_EDITOR) !== -1;
 
@@ -219,9 +114,7 @@ export const convertItemResponse = (itemAPIData: ContentSharingItemAPIResponse):
 
         sharedLink = {
             accessLevel,
-            accessLevelsDisabledReason:
-                convertAccessLevelsDisabledReasons(allowed_shared_link_access_levels_disabled_reasons) || {},
-            allowedAccessLevels: convertAllowedAccessLevels(allowed_shared_link_access_levels) || ALLOWED_ACCESS_LEVELS, // show all access levels by default
+            allowedAccessLevels: ALLOWED_ACCESS_LEVELS,
             canChangeAccessLevel,
             canChangeDownload,
             canChangeExpiration,
@@ -249,7 +142,7 @@ export const convertItemResponse = (itemAPIData: ContentSharingItemAPIResponse):
 
     return {
         item: {
-            canUserSeeClassification: !!classification,
+            canUserSeeClassification: false,
             description,
             extension,
             grantedPermissions: {
@@ -263,7 +156,6 @@ export const convertItemResponse = (itemAPIData: ContentSharingItemAPIResponse):
             permissions, // the original permissions are necessary for PUT requests to the Item API
             type,
             typedID: type === TYPE_FOLDER ? getTypedFolderId(id) : getTypedFileId(id),
-            ...classificationData,
         },
         sharedLink,
     };
@@ -307,11 +199,6 @@ export const convertSharedLinkPermissions = (newSharedLinkPermissionLevel: strin
 
 /**
  * Convert a shared link settings object from the USM into the format that the API expects.
- * This function compares the provided access level to both API and internal USM access level constants, to accommodate two potential flows:
- * - Changing the settings for a shared link right after the shared link has been created. The access level is saved directly from the data
- *   returned by the API, so it is in API format.
- * - Changing the settings for a shared link in any other scenario. The access level is saved from the initial calls to the Item API and
- *   convertItemResponse, so it is in internal USM format.
  *
  * @param {SharedLinkSettingsOptions} newSettings
  * @param {accessLevel} string
@@ -321,7 +208,6 @@ export const convertSharedLinkPermissions = (newSharedLinkPermissionLevel: strin
 export const convertSharedLinkSettings = (
     newSettings: SharedLinkSettingsOptions,
     accessLevel: string,
-    isDownloadAvailable: boolean,
     serverURL: string,
 ): $Shape<SharedLink> => {
     const {
@@ -335,17 +221,10 @@ export const convertSharedLinkSettings = (
     const convertedSettings: $Shape<SharedLink> = {
         unshared_at: expirationTimestamp && isExpirationEnabled ? new Date(expirationTimestamp).toISOString() : null,
         vanity_url: serverURL && vanityName ? `${serverURL}${vanityName}` : '',
+        // Download permissions can only be set on "company" or "open" shared links.
+        // A Flow limitation prevents the usage of an && statement in an object spread: https://github.com/facebook/flow/issues/5946
+        ...(accessLevel !== PEOPLE_IN_ITEM ? { permissions: { can_download, can_preview: !can_download } } : {}),
     };
-
-    // Download permissions can only be set on "company" or "open" shared links.
-    if (![ACCESS_COLLAB, PEOPLE_IN_ITEM].includes(accessLevel)) {
-        const permissions: BoxItemPermission = { can_preview: !can_download };
-        if (isDownloadAvailable) {
-            permissions.can_download = can_download;
-        }
-
-        convertedSettings.permissions = permissions;
-    }
 
     /**
      * This block covers the following cases:
@@ -360,7 +239,7 @@ export const convertSharedLinkSettings = (
      *   returns password = '' and isPasswordEnabled = true. In these cases, the password should *not*
      *   be converted to null, because that would remove the existing password.
      */
-    if ([ANYONE_WITH_LINK, ACCESS_OPEN].includes(accessLevel)) {
+    if (accessLevel === ANYONE_WITH_LINK) {
         if (isPasswordEnabled && !!password) {
             convertedSettings.password = password;
         } else if (!isPasswordEnabled) {
@@ -372,59 +251,15 @@ export const convertSharedLinkSettings = (
 };
 
 /**
- * Convert a collaborator.
- * Note: We do not retrieve the avatar URL of collaborators right after inviting them,
- * so the avatar fields (hasCustomAvatar and imageURL) are not set in that case.
- *
- * @param {ConvertCollabOptions} options
- * @returns {collaboratorType | null} Object containing a collaborator
- */
-export const convertCollab = ({
-    collab,
-    avatarURLMap,
-    ownerEmail,
-    isCurrentUserOwner = false,
-}: ConvertCollabOptions): collaboratorType | null => {
-    if (!collab || collab.status !== STATUS_ACCEPTED) return null;
-
-    const ownerEmailDomain = ownerEmail && /@/.test(ownerEmail) ? ownerEmail.split('@')[1] : null;
-
-    const {
-        accessible_by: { id: userID, login: email, name, type },
-        id: collabID,
-        expires_at: executeAt,
-        role,
-    } = collab;
-    const avatarURL = avatarURLMap ? avatarURLMap[userID] : undefined;
-    const convertedCollab: collaboratorType = {
-        collabID: parseInt(collabID, 10),
-        email,
-        hasCustomAvatar: !!avatarURL,
-        imageURL: avatarURL,
-        isExternalCollab: checkIsExternalUser(isCurrentUserOwner, ownerEmailDomain, email),
-        name,
-        translatedRole: `${role[0].toUpperCase()}${role.slice(1)}`, // capitalize the user's role
-        type,
-        userID: parseInt(userID, 10),
-    };
-    if (executeAt) {
-        convertedCollab.expiration = { executeAt };
-    }
-    return convertedCollab;
-};
-
-/**
  * Convert a response from the Item Collaborations API into the object that the USM expects.
  *
  * @param {Collaborations} collabsAPIData
- * @param {AvatarURLMap | null} avatarURLMap
  * @param {string | null | undefined} ownerEmail
  * @param {boolean} isCurrentUserOwner
  * @returns {collaboratorsListType} Object containing an array of collaborators
  */
 export const convertCollabsResponse = (
     collabsAPIData: Collaborations,
-    avatarURLMap: ?AvatarURLMap,
     ownerEmail: ?string,
     isCurrentUserOwner: boolean,
 ): collaboratorsListType => {
@@ -432,17 +267,33 @@ export const convertCollabsResponse = (
 
     if (!entries.length) return { collaborators: [] };
 
-    const collaborators = [];
+    const ownerEmailDomain = ownerEmail && /@/.test(ownerEmail) ? ownerEmail.split('@')[1] : null;
 
-    entries
+    const collaborators = entries
         // Only show accepted collaborations
         .filter(collab => collab.status === STATUS_ACCEPTED)
-        .forEach(collab => {
-            const convertedCollab = convertCollab({ collab, avatarURLMap, ownerEmail, isCurrentUserOwner });
-            if (convertedCollab) {
-                // Necessary for Flow checking
-                collaborators.push(convertedCollab);
+        .map(collab => {
+            const {
+                accessible_by: { id: userID, login: email, name, type },
+                id: collabID,
+                expires_at: executeAt,
+                role,
+            } = collab;
+            const convertedCollab: collaboratorType = {
+                collabID: parseInt(collabID, 10),
+                email,
+                hasCustomAvatar: false, // to do: connect to Avatar API
+                imageURL: null, // to do: connect to Avatar API
+                isExternalCollab: checkIsExternalUser(isCurrentUserOwner, ownerEmailDomain, email),
+                name,
+                translatedRole: `${role[0].toUpperCase()}${role.slice(1)}`, // capitalize the user's role
+                type,
+                userID: parseInt(userID, 10),
+            };
+            if (executeAt) {
+                convertedCollab.expiration = { executeAt };
             }
+            return convertedCollab;
         });
 
     return { collaborators };
@@ -458,50 +309,33 @@ export const convertCollabsResponse = (
  */
 export const convertCollabsRequest = (
     collabRequest: InviteCollaboratorsRequest,
-    existingCollaboratorsList: collaboratorsListType | null,
 ): ContentSharingCollaborationsRequest => {
     const { emails, groupIDs, permission } = collabRequest;
     const emailArray = emails ? emails.split(',') : [];
     const groupIDArray = groupIDs ? groupIDs.split(',') : [];
-    const collabSet = new Set();
-    if (existingCollaboratorsList) {
-        existingCollaboratorsList.collaborators.forEach(collab => {
-            if (collab.type === COLLAB_USER_TYPE && !!collab.email) {
-                collabSet.add(collab.email);
-            } else if (collab.type === COLLAB_GROUP_TYPE && !!collab.userID) {
-                collabSet.add(collab.userID.toString());
-            }
-        });
-    }
 
     const roleSettings = {
         role: permission.toLowerCase(), // USM permissions are identical to API roles, except for the casing
     };
 
-    const groups = groupIDArray
-        .filter(groupID => !collabSet.has(groupID))
-        .map(groupID => ({
-            accessible_by: {
-                id: groupID,
-                type: COLLAB_GROUP_TYPE,
-            },
-            ...roleSettings,
-        }));
+    const groups = groupIDArray.map(groupID => ({
+        accessible_by: {
+            id: groupID,
+            type: COLLAB_GROUP_TYPE,
+        },
+        ...roleSettings,
+    }));
 
-    const users = emailArray
-        .filter(email => !collabSet.has(email))
-        .map(email => ({
-            accessible_by: {
-                login: email,
-                type: COLLAB_USER_TYPE,
-            },
-            ...roleSettings,
-        }));
+    const users = emailArray.map(email => ({
+        accessible_by: {
+            login: email,
+            type: COLLAB_USER_TYPE,
+        },
+        ...roleSettings,
+    }));
 
     return { groups, users };
 };
-
-const sortByName = ({ name: nameA = '' }, { name: nameB = '' }) => nameA.localeCompare(nameB);
 
 /**
  * Convert an enterprise users API response into an array of internal USM contacts.
@@ -510,22 +344,14 @@ const sortByName = ({ name: nameA = '' }, { name: nameB = '' }) => nameA.localeC
  * @param {string|null} currentUserID
  * @returns {Array<contactType>} Array of USM contacts
  */
-export const convertUserContactsResponse = (
+export const convertContactsResponse = (
     contactsAPIData: UserCollection,
     currentUserID: string | null,
 ): Array<contactType> => {
     const { entries = [] } = contactsAPIData;
 
-    // Return all active users except for the current user and app users
+    // Return all users except for the current user
     return entries
-        .filter(
-            ({ id, login: email, status }) =>
-                id !== currentUserID &&
-                email &&
-                !APP_USERS_DOMAIN_REGEXP.test(email) &&
-                status &&
-                status !== STATUS_INACTIVE,
-        )
         .map(contact => {
             const { id, login: email, name, type } = contact;
             return {
@@ -535,54 +361,5 @@ export const convertUserContactsResponse = (
                 type,
             };
         })
-        .sort(sortByName);
-};
-
-/**
- * Convert an enterprise users API response into an object of internal USM contacts, keyed by email, which is
- * then passed to the mergeContacts function.
- *
- * @param {UserCollection} contactsAPIData
- * @returns { [string]: contactType } Object of USM contacts
- */
-export const convertUserContactsByEmailResponse = (contactsAPIData: UserCollection): { [string]: contactType } => {
-    const { entries = [] } = contactsAPIData;
-    const contactsMap = {};
-
-    entries.forEach(contact => {
-        const { id, login: email = '', name, type } = contact;
-        contactsMap[email] = {
-            id,
-            email,
-            name,
-            type,
-        };
-    });
-
-    return contactsMap;
-};
-
-/**
- * Convert an enterprise groups API response into an array of internal USM contacts.
- *
- * @param {GroupCollection} contactsAPIData
- * @returns {Array<contactType>} Array of USM contacts
- */
-export const convertGroupContactsResponse = (contactsAPIData: GroupCollection): Array<contactType> => {
-    const { entries = [] } = contactsAPIData;
-
-    // Only return groups with the correct permissions
-    return entries
-        .filter(({ permissions }) => {
-            return permissions && permissions.can_invite_as_collaborator;
-        })
-        .map(contact => {
-            const { id, name, type } = contact;
-            return {
-                id,
-                name,
-                type,
-            };
-        })
-        .sort(sortByName);
+        .filter(({ id }) => id !== currentUserID);
 };

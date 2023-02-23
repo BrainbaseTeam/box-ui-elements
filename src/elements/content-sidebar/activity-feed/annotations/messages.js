@@ -11,11 +11,6 @@ const messages = defineMessages({
         defaultMessage: 'Are you sure you want to permanently delete this comment?',
         description: 'Confirmation prompt text to delete the annotation comment',
     },
-    annotationActivityEditMenuItem: {
-        id: 'be.contentSidebar.activityFeed.annotationActivity.annotationActivityEditMenuItem',
-        defaultMessage: 'Modify',
-        description: 'Text to show on menu item to edit the annotation comment',
-    },
     annotationActivityPostedFullDateTime: {
         id: 'be.contentSidebar.activityFeed.annotationActivity.annotationActivityPostedFullDateTime',
         defaultMessage: '{time, date, full} at {time, time, short}',
@@ -25,11 +20,6 @@ const messages = defineMessages({
         id: 'be.contentSidebar.activityFeed.annotationActivityPageItem',
         defaultMessage: 'Page {number}',
         description: 'Annotation activity item link shown on annotation activity',
-    },
-    annotationActivityResolveMenuItem: {
-        id: 'be.contentSidebar.activityFeed.annotationActivity.annotationActivityResolveMenuItem',
-        defaultMessage: 'Resolve',
-        description: 'Text to show on menu item to resolve the annotation comment',
     },
     annotationActivityVersionLink: {
         id: 'be.contentSidebar.activityFeed.annotationActivityVersionLink',
@@ -41,11 +31,6 @@ const messages = defineMessages({
         defaultMessage: 'Version Unavailable',
         description:
             'Annotation activity item link shown on annotation activity for previous file version that is unavailable',
-    },
-    annotationActivityUnresolveMenuItem: {
-        id: 'be.contentSidebar.activityFeed.annotationActivity.annotationActivityUnresolveMenuItem',
-        defaultMessage: 'Unresolve',
-        description: 'Text to show on menu item to unresolve the annotation comment',
     },
 });
 

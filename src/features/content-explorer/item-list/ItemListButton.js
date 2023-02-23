@@ -9,19 +9,12 @@ import ContentExplorerModes from '../modes';
 
 import messages from '../messages';
 
-const ItemListButton = ({
-    contentExplorerMode,
-    id = '',
-    isChecked = false,
-    isDisabled = false,
-    isSelected = false,
-    name,
-}) => {
+const ItemListButton = ({ contentExplorerMode, id = '', isDisabled = false, isSelected = false, name }) => {
     if (contentExplorerMode === ContentExplorerModes.MULTI_SELECT) {
         return (
             <Checkbox
                 hideLabel
-                isChecked={isChecked || (!isDisabled && isSelected)}
+                isChecked={!isDisabled && isSelected}
                 isDisabled={isDisabled}
                 label={<FormattedMessage {...messages.selectItem} values={{ name }} />}
                 name="item"
@@ -45,7 +38,6 @@ const ItemListButton = ({
 ItemListButton.propTypes = {
     contentExplorerMode: ContentExplorerModePropType.isRequired,
     id: PropTypes.string,
-    isChecked: PropTypes.bool,
     isDisabled: PropTypes.bool,
     isSelected: PropTypes.bool,
     name: PropTypes.string.isRequired,

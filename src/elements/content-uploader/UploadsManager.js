@@ -21,24 +21,22 @@ type Props = {
     items: UploadItem[],
     onItemActionClick: Function,
     onRemoveActionClick: (item: UploadItem) => void,
-    onUpgradeCTAClick?: Function,
     onUploadsManagerActionClick: Function,
     toggleUploadsManager: Function,
     view: View,
 };
 
 const UploadsManager = ({
+    items,
+    view,
+    onItemActionClick,
+    onRemoveActionClick,
+    onUploadsManagerActionClick,
+    toggleUploadsManager,
     isExpanded,
     isVisible,
     isResumableUploadsEnabled,
     isDragging,
-    items,
-    onItemActionClick,
-    onRemoveActionClick,
-    onUpgradeCTAClick,
-    onUploadsManagerActionClick,
-    toggleUploadsManager,
-    view,
 }: Props) => {
     /**
      * Keydown handler for progress bar
@@ -100,7 +98,6 @@ const UploadsManager = ({
                     items={items}
                     onClick={onItemActionClick}
                     onRemoveClick={onRemoveActionClick}
-                    onUpgradeCTAClick={onUpgradeCTAClick}
                     view={view}
                 />
             </div>

@@ -16,8 +16,6 @@ This project adheres to the [Box Open Code of Conduct](http://opensource.box.com
 
 ## How to contribute
 
-_If you're a Box employee, you do not need to file an issue._
-
 - **File an issue** - if you found a bug, want to request an enhancement, or want to implement something (bug fix or feature).
 - **Make changes** - See the [developing guide](DEVELOPING.md).
 - **Send a pull request** - if you want to contribute code. Please be sure to file an issue first.
@@ -50,9 +48,7 @@ longer description here if necessary.
 include BREAKING CHANGE keyword for breaking changes.
 ```
 
-The message summary should be a one-sentence description of the change, and it must be 72 characters in length or shorter. For a list of tags, please [click here](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional#type-enum). See the [default release rules](https://github.com/conventional-changelog/commitlint/blob/master/%40commitlint/config-conventional/index.js) based on the commit tag. Note that you must include the exact keyword "BREAKING CHANGE" for breaking changes, to learn more [click here](https://github.com/conventional-changelog/conventional-changelog/blob/master/packages/conventional-changelog-conventionalcommits/parser-opts.js#L13). IMPORTANT: Add "BREAKING CHANGE" to your PR title as well, because when multiple commits are merged the PR title takes precedence as the merge commit message.
-
-Shown below are examples of the release type that will be done based on a commit message.
+The message summary should be a one-sentence description of the change, and it must be 72 characters in length or shorter. For a list of tags, please [click here](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional#type-enum). We use the angular style for tags. See the [default release rules](https://github.com/semantic-release/commit-analyzer/blob/master/lib/default-release-rules.js) based on the commit tag. Shown below are examples of the release type that will be done based on a commit message.
 
 #### Commit Types
 
@@ -102,7 +98,3 @@ Make sure that all tests are passing before submitting a pull request. See the [
 Send the pull request from your feature branch to us. Be sure to include a description (as mentioned above in step 4) that lets us know what work you did.
 
 Keep in mind that we like to see one issue addressed per pull request, as this helps keep our git history clean and we can more easily track down issues.
-
-### Step 8: Add `ready-to-merge` label
-
-After your pull request has been approved and the check statuses are green, please add the `ready-to-merge` label instead of using the merge button. This will add your pull request to the merge queue and merge your pull request when it is safe. If you are unable to add the `ready-to-merge` label, please ask an approver or maintainer for assistance.

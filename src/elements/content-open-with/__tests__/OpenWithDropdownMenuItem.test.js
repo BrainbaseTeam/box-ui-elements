@@ -10,8 +10,8 @@ describe('elements/content-open-with/OpenWithDropdownMenuItem', () => {
     test('should render the description and correct icon', () => {
         const props = {
             integration: {
-                displayName: 'Google Docs',
-                displayDescription: 'Open With Google Docs',
+                displayName: 'Adobe Sign',
+                displayDescription: 'Open With Adobe',
                 appIntegrationId: '1',
                 disabledReasons: [],
             },

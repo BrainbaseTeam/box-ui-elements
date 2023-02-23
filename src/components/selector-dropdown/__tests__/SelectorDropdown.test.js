@@ -172,16 +172,12 @@ describe('components/selector-dropdown/SelectorDropdown', () => {
 
     describe('handleInput()', () => {
         test('should call openDropdown() when key is pressed', () => {
-            const event = {
-                key: 'a',
-            };
-
             const wrapper = renderEmptyDropdown();
             const instance = wrapper.instance();
 
             sandbox.mock(instance).expects('openDropdown');
 
-            wrapper.simulate('keyDown', event);
+            wrapper.simulate('keyPress');
         });
 
         test('should call openDropdown() when text is pasted', () => {

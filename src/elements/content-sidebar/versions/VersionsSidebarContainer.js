@@ -15,11 +15,10 @@ import type { MessageDescriptor } from 'react-intl';
 import API from '../../../api';
 import messages from './messages';
 import openUrlInsideIframe from '../../../utils/iframe';
-import StaticVersionsSidebar from './StaticVersionSidebar';
 import VersionsSidebar from './VersionsSidebar';
 import VersionsSidebarAPI from './VersionsSidebarAPI';
 import { withAPIContext } from '../../common/api-context';
-import type { VersionActionCallback, VersionChangeCallback, SidebarLoadCallback } from './flowTypes';
+import type { VersionActionCallback, VersionChangeCallback } from './flowTypes';
 import type { BoxItemVersion, BoxItem, FileVersions } from '../../../common/types/core';
 
 type Props = {
@@ -28,8 +27,6 @@ type Props = {
     hasSidebarInitialized?: boolean,
     history: RouterHistory,
     match: Match,
-    onLoad: SidebarLoadCallback,
-    onUpgradeClick?: () => void,
     onVersionChange: VersionChangeCallback,
     onVersionDelete: VersionActionCallback,
     onVersionDownload: VersionActionCallback,
@@ -51,7 +48,6 @@ type State = {
 
 class VersionsSidebarContainer extends React.Component<Props, State> {
     static defaultProps = {
-        onLoad: noop,
         onVersionChange: noop,
         onVersionDelete: noop,
         onVersionDownload: noop,
@@ -76,11 +72,8 @@ class VersionsSidebarContainer extends React.Component<Props, State> {
     window: any = window;
 
     componentDidMount() {
-        const { onLoad } = this.props;
         this.initialize();
-        this.fetchData().then(() => {
-            onLoad({ component: 'preview', feature: 'versions' });
-        });
+        this.fetchData();
     }
 
     componentDidUpdate({ fileId: prevFileId, versionId: prevVersionId }: Props) {
@@ -215,8 +208,8 @@ class VersionsSidebarContainer extends React.Component<Props, State> {
         this.api = new VersionsSidebarAPI(this.props);
     };
 
-    fetchData = (): Promise<?[BoxItem, FileVersions]> => {
-        return this.api
+    fetchData = (): void => {
+        this.api
             .fetchData()
             .then(this.handleFetchSuccess)
             .catch(this.handleFetchError);
@@ -282,11 +275,7 @@ class VersionsSidebarContainer extends React.Component<Props, State> {
     };
 
     render() {
-        const { fileId, parentName, onUpgradeClick } = this.props;
-
-        if (onUpgradeClick) {
-            return <StaticVersionsSidebar onUpgradeClick={onUpgradeClick} parentName={parentName} {...this.state} />;
-        }
+        const { fileId, parentName } = this.props;
 
         return (
             <VersionsSidebar

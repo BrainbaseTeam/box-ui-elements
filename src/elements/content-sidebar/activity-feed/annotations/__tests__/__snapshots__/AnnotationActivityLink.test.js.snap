@@ -2,18 +2,23 @@
 
 exports[`elements/content-sidebar/ActivityFeed/annotations/AnnotationActivityLink should correctly render annotation activity link 1`] = `
 <PlainButton
-  className="bcs-AnnotationActivityLink"
+  className="bcs-AnnotationActivity-link"
   data-resin-iscurrent="true"
   data-resin-itemid="123"
   data-resin-target="annotationLink"
-  data-testid="bcs-AnnotationActivity-link"
   isDisabled={false}
   onClick={[Function]}
   onMouseDown={[Function]}
   type="button"
 >
-  <span
-    className="bcs-AnnotationActivityLink-message"
+  <FormattedMessage
+    defaultMessage="Page {number}"
+    id="be.contentSidebar.activityFeed.annotationActivityPageItem"
+    values={
+      Object {
+        "number": 1,
+      }
+    }
   />
 </PlainButton>
 `;

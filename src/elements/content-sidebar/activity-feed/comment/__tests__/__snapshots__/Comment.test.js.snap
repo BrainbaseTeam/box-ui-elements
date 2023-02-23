@@ -1,13 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`elements/content-sidebar/ActivityFeed/comment/Comment should correctly render comment 1`] = `
-<ForwardRef(ActivityCard)
+<div
   className="bcs-Comment"
 >
   <Media
+    as="div"
     className="bcs-Comment-media"
   >
-    <MediaFigure>
+    <MediaFigure
+      as="figure"
+    >
       <Component
         user={
           Object {
@@ -35,12 +38,7 @@ exports[`elements/content-sidebar/ActivityFeed/comment/Comment should correctly 
       >
         <MediaMenu
           data-testid="comment-actions-menu"
-          dropdownProps={
-            Object {
-              "onMenuClose": [Function],
-              "onMenuOpen": [Function],
-            }
-          }
+          dropdownProps={Object {}}
           isDisabled={false}
           menuProps={
             Object {
@@ -53,7 +51,9 @@ exports[`elements/content-sidebar/ActivityFeed/comment/Comment should correctly 
             data-testid="delete-comment"
             onClick={[Function]}
           >
-            <Trash16 />
+            <IconTrash
+              color="#4e4e4e"
+            />
             <FormattedMessage
               defaultMessage="Delete"
               id="be.contentSidebar.activityFeed.comment.commentDeleteMenuItem"
@@ -70,33 +70,33 @@ exports[`elements/content-sidebar/ActivityFeed/comment/Comment should correctly 
           name="50 Cent"
         />
       </div>
-      <div
-        className="bcs-Comment-timestamp"
-      >
+      <div>
         <ActivityTimestamp
           date={1506534041000}
         />
       </div>
-      <ActivityStatus />
-      <ForwardRef(withFeatureConsumer(ActivityMessage))
+      <ActivityMessage
         id="123"
-        isEdited={false}
         tagged_message="test"
+        translationEnabled={false}
         translationFailed={null}
       />
     </MediaBody>
   </Media>
-</ForwardRef(ActivityCard)>
+</div>
 `;
 
 exports[`elements/content-sidebar/ActivityFeed/comment/Comment should correctly render comment when translation is enabled 1`] = `
-<ForwardRef(ActivityCard)
+<div
   className="bcs-Comment"
 >
   <Media
+    as="div"
     className="bcs-Comment-media"
   >
-    <MediaFigure>
+    <MediaFigure
+      as="figure"
+    >
       <Component
         user={
           Object {
@@ -116,17 +116,13 @@ exports[`elements/content-sidebar/ActivityFeed/comment/Comment should correctly 
           name="50 Cent"
         />
       </div>
-      <div
-        className="bcs-Comment-timestamp"
-      >
+      <div>
         <ActivityTimestamp
           date={1506534041000}
         />
       </div>
-      <ActivityStatus />
-      <ForwardRef(withFeatureConsumer(ActivityMessage))
+      <ActivityMessage
         id="123"
-        isEdited={false}
         onTranslate={[MockFunction]}
         tagged_message="test"
         translationEnabled={true}
@@ -134,17 +130,20 @@ exports[`elements/content-sidebar/ActivityFeed/comment/Comment should correctly 
       />
     </MediaBody>
   </Media>
-</ForwardRef(ActivityCard)>
+</div>
 `;
 
 exports[`elements/content-sidebar/ActivityFeed/comment/Comment should render an error when one is defined 1`] = `
-<ForwardRef(ActivityCard)
+<div
   className="bcs-Comment"
 >
   <Media
+    as="div"
     className="bcs-Comment-media bcs-is-pending"
   >
-    <MediaFigure>
+    <MediaFigure
+      as="figure"
+    >
       <Component
         user={
           Object {
@@ -164,18 +163,15 @@ exports[`elements/content-sidebar/ActivityFeed/comment/Comment should render an 
           name="50 Cent"
         />
       </div>
-      <div
-        className="bcs-Comment-timestamp"
-      >
+      <div>
         <ActivityTimestamp
           date={1506534041000}
         />
       </div>
-      <ActivityStatus />
-      <ForwardRef(withFeatureConsumer(ActivityMessage))
+      <ActivityMessage
         id="123"
-        isEdited={false}
         tagged_message="test"
+        translationEnabled={false}
         translationFailed={true}
       />
     </MediaBody>
@@ -184,17 +180,20 @@ exports[`elements/content-sidebar/ActivityFeed/comment/Comment should render an 
     message="errorrrrr"
     title="error"
   />
-</ForwardRef(ActivityCard)>
+</div>
 `;
 
 exports[`elements/content-sidebar/ActivityFeed/comment/Comment should render commenter as a link 1`] = `
-<ForwardRef(ActivityCard)
+<div
   className="bcs-Comment"
 >
   <Media
+    as="div"
     className="bcs-Comment-media"
   >
-    <MediaFigure>
+    <MediaFigure
+      as="figure"
+    >
       <Component
         user={
           Object {
@@ -214,21 +213,18 @@ exports[`elements/content-sidebar/ActivityFeed/comment/Comment should render com
           name="50 Cent"
         />
       </div>
-      <div
-        className="bcs-Comment-timestamp"
-      >
+      <div>
         <ActivityTimestamp
           date={1506534041000}
         />
       </div>
-      <ActivityStatus />
-      <ForwardRef(withFeatureConsumer(ActivityMessage))
+      <ActivityMessage
         id="123"
-        isEdited={false}
         tagged_message="test"
+        translationEnabled={false}
         translationFailed={null}
       />
     </MediaBody>
   </Media>
-</ForwardRef(ActivityCard)>
+</div>
 `;

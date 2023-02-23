@@ -8,7 +8,7 @@ import { Modal, ModalActions } from '../../components/modal';
 import InlineNotice from '../../components/inline-notice';
 import Link from '../../components/link/LinkBase';
 import commonMessages from '../../common/messages';
-import Classification, { getClassificationLabelColor } from '../classification';
+import Classification from '../classification';
 
 import VanityNameSection from './VanityNameSection';
 import PasswordSection from './PasswordSection';
@@ -49,8 +49,6 @@ function getAccessNoticeMessageId(accessLevel, canDownload) {
 
 class SharedLinkSettingsModal extends Component {
     static propTypes = {
-        /** The format of the expiration date value for form submit */
-        dateFormat: PropTypes.string,
         hideVanityNameSection: PropTypes.bool,
         isOpen: PropTypes.bool,
         onRequestClose: PropTypes.func,
@@ -89,8 +87,6 @@ class SharedLinkSettingsModal extends Component {
         /** Whether or not password is currently enabled */
         isPasswordEnabled: PropTypes.bool.isRequired,
         passwordError: PropTypes.string,
-        /** Information shown below password input box * */
-        passwordInformationText: PropTypes.string,
 
         // Expiration props
         /** Whether or not user has permission to enable/disable/change expiration */
@@ -147,7 +143,6 @@ class SharedLinkSettingsModal extends Component {
         this.state = {
             expirationDate: props.expirationTimestamp ? new Date(props.expirationTimestamp) : null,
             expirationError: props.expirationError,
-            expirationFormattedDate: props.expirationTimestamp ? new Date(props.expirationTimestamp) : null,
             isVanityEnabled: !!props.vanityName,
             isDownloadEnabled: props.isDownloadEnabled,
             isExpirationEnabled: !!props.expirationTimestamp,
@@ -179,7 +174,7 @@ class SharedLinkSettingsModal extends Component {
         event.preventDefault();
 
         const {
-            expirationFormattedDate,
+            expirationDate,
             isDownloadEnabled,
             isExpirationEnabled,
             isPasswordEnabled,
@@ -188,7 +183,7 @@ class SharedLinkSettingsModal extends Component {
         } = this.state;
 
         this.props.onSubmit({
-            expirationTimestamp: expirationFormattedDate || undefined,
+            expirationTimestamp: expirationDate ? expirationDate.getTime() : undefined,
             isDownloadEnabled,
             isExpirationEnabled,
             isPasswordEnabled,
@@ -215,8 +210,8 @@ class SharedLinkSettingsModal extends Component {
         this.setState({ isPasswordEnabled: event.target.checked });
     };
 
-    onExpirationDateChange = (date, formattedDate) => {
-        this.setState({ expirationDate: date, expirationFormattedDate: formattedDate, expirationError: undefined });
+    onExpirationDateChange = date => {
+        this.setState({ expirationDate: date, expirationError: undefined });
     };
 
     onExpirationCheckboxChange = event => {
@@ -264,13 +259,7 @@ class SharedLinkSettingsModal extends Component {
     }
 
     renderPasswordSection() {
-        const {
-            canChangePassword,
-            isPasswordAvailable,
-            passwordCheckboxProps,
-            passwordInformationText,
-            passwordInputProps,
-        } = this.props;
+        const { canChangePassword, isPasswordAvailable, passwordCheckboxProps, passwordInputProps } = this.props;
         const { isPasswordEnabled, password, passwordError } = this.state;
 
         return (
@@ -284,20 +273,18 @@ class SharedLinkSettingsModal extends Component {
                 onPasswordChange={this.onPasswordChange}
                 password={password}
                 passwordCheckboxProps={passwordCheckboxProps}
-                passwordInformationText={passwordInformationText}
                 passwordInputProps={passwordInputProps}
             />
         );
     }
 
     renderExpirationSection() {
-        const { canChangeExpiration, dateFormat, expirationCheckboxProps, expirationInputProps } = this.props;
+        const { canChangeExpiration, expirationCheckboxProps, expirationInputProps } = this.props;
         const { expirationDate, isExpirationEnabled, expirationError } = this.state;
 
         return (
             <ExpirationSection
                 canChangeExpiration={canChangeExpiration}
-                dateFormat={dateFormat}
                 error={expirationError}
                 expirationCheckboxProps={expirationCheckboxProps}
                 expirationDate={expirationDate}
@@ -319,7 +306,7 @@ class SharedLinkSettingsModal extends Component {
                 <div className="link-settings-modal-notice">
                     <FormattedMessage {...message} />{' '}
                     <Link
-                        href="https://support.box.com/hc/en-us/articles/360043697554-Configuring-Individual-Shared-Link-Settings"
+                        href="https://community.box.com/t5/Using-Shared-Links/Shared-Link-Settings/ta-p/50250"
                         target="_blank"
                     >
                         <FormattedMessage {...messages.sharedLinkSettingWarningLinkText} />
@@ -367,17 +354,15 @@ class SharedLinkSettingsModal extends Component {
     renderModalTitle() {
         const { item } = this.props;
         const { bannerPolicy, classification } = item;
-        const classificationColor = getClassificationLabelColor(bannerPolicy);
 
         return (
             <span className="bdl-SharedLinkSettingsModal-title">
                 <FormattedMessage {...messages.modalTitle} />
                 <Classification
-                    className="bdl-SharedLinkSettingsModal-classification"
-                    color={classificationColor}
                     definition={bannerPolicy ? bannerPolicy.body : undefined}
                     messageStyle="tooltip"
                     name={classification}
+                    className="bdl-SharedLinkSettingsModal-classification"
                 />
             </span>
         );
@@ -407,7 +392,7 @@ class SharedLinkSettingsModal extends Component {
         const disableSaveBtn = !(canChangeDownload || canChangeExpiration || canChangePassword || canChangeVanityName);
         return (
             <Modal
-                className="be-modal shared-link-settings-modal"
+                className="shared-link-settings-modal"
                 isOpen={isOpen}
                 onRequestClose={submitting ? undefined : onRequestClose}
                 title={this.renderModalTitle()}

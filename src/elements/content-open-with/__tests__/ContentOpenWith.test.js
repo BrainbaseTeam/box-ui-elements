@@ -8,7 +8,7 @@ import BoxToolsInstallMessage from '../BoxToolsInstallMessage';
 
 jest.mock('lodash/uniqueId', () => () => 'uniqueId');
 
-const ABCD_INTEGRATION_ID = '1234';
+const ADOBE_INTEGRATION_ID = '1234';
 const BLACKLISTED_ERROR_MESSAGE_KEY = 'boxToolsBlacklistedError';
 const BOX_TOOLS_INSTALL_ERROR_MESSAGE_KEY = 'boxToolsInstallErrorMessage';
 
@@ -51,7 +51,7 @@ describe('elements/content-open-with/ContentOpenWith', () => {
 
     describe('isBoxEditIntegration()', () => {
         test('should determine if the integration is a Box Edit integration', () => {
-            expect(instance.isBoxEditIntegration(ABCD_INTEGRATION_ID)).toBe(false);
+            expect(instance.isBoxEditIntegration(ADOBE_INTEGRATION_ID)).toBe(false);
             expect(instance.isBoxEditIntegration(BOX_EDIT_INTEGRATION_ID)).toBe(true);
             expect(instance.isBoxEditIntegration(BOX_EDIT_SFC_INTEGRATION_ID)).toBe(true);
         });
@@ -59,7 +59,7 @@ describe('elements/content-open-with/ContentOpenWith', () => {
 
     describe('isBoxEditSFCIntegration()', () => {
         test('should determine if the integration is a Box Edit SFC integration', () => {
-            expect(instance.isBoxEditSFCIntegration(ABCD_INTEGRATION_ID)).toBe(false);
+            expect(instance.isBoxEditSFCIntegration(ADOBE_INTEGRATION_ID)).toBe(false);
             expect(instance.isBoxEditSFCIntegration(BOX_EDIT_INTEGRATION_ID)).toBe(false);
             expect(instance.isBoxEditSFCIntegration(BOX_EDIT_SFC_INTEGRATION_ID)).toBe(true);
         });
@@ -100,7 +100,7 @@ describe('elements/content-open-with/ContentOpenWith', () => {
             mockIntegrations = [
                 {
                     isDisabled: false,
-                    name: 'ABCD',
+                    name: 'Adobe',
                     appIntegrationId: '2',
                     disabledReasons: [],
                 },
@@ -299,7 +299,7 @@ describe('elements/content-open-with/ContentOpenWith', () => {
 
             displayIntegration = {
                 appIntegrationId: '1',
-                displayName: 'Google Docs',
+                displayName: 'Adobe Sign',
             };
 
             instance.setState = jest.fn();
@@ -523,7 +523,7 @@ describe('elements/content-open-with/ContentOpenWith', () => {
             const result = instance.getDisplayIntegration();
             expect(result).toEqual(null);
 
-            instance.setState({ integrations: ['ABCD', 'Google'] });
+            instance.setState({ integrations: ['Adobe', 'Google'] });
             const multipleResult = instance.getDisplayIntegration();
             expect(multipleResult).toEqual(null);
 
@@ -534,9 +534,9 @@ describe('elements/content-open-with/ContentOpenWith', () => {
 
         test('should return the sole integration as the display integration', () => {
             instance = getWrapper({ fileId }).instance();
-            instance.setState({ integrations: ['ABCD'] });
+            instance.setState({ integrations: ['Adobe'] });
             const result = instance.getDisplayIntegration();
-            expect(result).toEqual('ABCD');
+            expect(result).toEqual('Adobe');
         });
     });
 
@@ -547,7 +547,7 @@ describe('elements/content-open-with/ContentOpenWith', () => {
 
         test('should render the Open With button if there is one or fewer integrations', () => {
             instance.setState({
-                integrations: ['ABCD'],
+                integrations: ['Adobe'],
                 isLoading: false,
             });
             expect(wrapper).toMatchSnapshot();
@@ -555,7 +555,7 @@ describe('elements/content-open-with/ContentOpenWith', () => {
 
         test('should render the Open With dropdown if there is more than one integration', () => {
             instance.setState({
-                integrations: ['ABCD', 'Google Suite'],
+                integrations: ['Adobe', 'Google Suite'],
                 isLoading: false,
             });
             expect(wrapper).toMatchSnapshot();
@@ -563,7 +563,7 @@ describe('elements/content-open-with/ContentOpenWith', () => {
 
         test('should render the PortalContainer if the integration is loading', () => {
             instance.setState({
-                integrations: ['ABCD', 'Google Suite'],
+                integrations: ['Adobe', 'Google Suite'],
                 shouldRenderLoadingIntegrationPortal: true,
             });
             expect(wrapper).toMatchSnapshot();
@@ -571,7 +571,7 @@ describe('elements/content-open-with/ContentOpenWith', () => {
 
         test('should render the PortalContainer if the integration is errored', () => {
             instance.setState({
-                integrations: ['ABCD', 'Google Suite'],
+                integrations: ['Adobe', 'Google Suite'],
                 shouldRenderErrorIntegrationPortal: true,
             });
             expect(wrapper).toMatchSnapshot();
@@ -579,7 +579,7 @@ describe('elements/content-open-with/ContentOpenWith', () => {
 
         test('should render the ExecuteForm if we have data to post', () => {
             instance.setState({
-                integrations: ['ABCD'],
+                integrations: ['Adobe'],
                 executePostData: {
                     url: 'foo.com',
                     params: [{ foo: 'bar' }],

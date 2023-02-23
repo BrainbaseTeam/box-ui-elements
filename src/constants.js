@@ -35,13 +35,6 @@ export const TYPE_FOLDER: 'folder' = 'folder';
 export const TYPE_FILE: 'file' = 'file';
 export const TYPE_WEBLINK: 'web_link' = 'web_link';
 
-/* ----------------------- Feed Items Types ---------------------------- */
-export const FEED_ITEM_TYPE_APP_ACTIVITY: 'app_activity' = 'app_activity';
-export const FEED_ITEM_TYPE_ANNOTATION: 'annotation' = 'annotation';
-export const FEED_ITEM_TYPE_COMMENT: 'comment' = 'comment';
-export const FEED_ITEM_TYPE_TASK: 'task' = 'task';
-export const FEED_ITEM_TYPE_VERSION: 'file_version' = 'file_version';
-
 /* -------------------- Typed Prefix-------------------------- */
 export const TYPED_ID_FOLDER_PREFIX = 'folder_';
 export const TYPED_ID_FILE_PREFIX = 'file_';
@@ -105,8 +98,6 @@ export const FIELD_RESTORED_FROM = 'restored_from';
 export const FIELD_CREATED_AT = 'created_at';
 export const FIELD_INTERACTED_AT: 'interacted_at' = 'interacted_at';
 export const FIELD_SHARED_LINK = 'shared_link';
-export const FIELD_SHARED_LINK_ACCESS_LEVELS_DISABLED_REASONS: 'allowed_shared_link_access_levels_disabled_reasons' =
-    'allowed_shared_link_access_levels_disabled_reasons';
 export const FIELD_SHARED_LINK_FEATURES: 'shared_link_features' = 'shared_link_features';
 export const FIELD_ALLOWED_INVITEE_ROLES: 'allowed_invitee_roles' = 'allowed_invitee_roles';
 export const FIELD_ALLOWED_SHARED_LINK_ACCESS_LEVELS = 'allowed_shared_link_access_levels';
@@ -151,7 +142,6 @@ export const FIELD_OCCURRED_AT: 'occurred_at' = 'occurred_at';
 export const FIELD_RENDERED_TEXT: 'rendered_text' = 'rendered_text';
 export const FIELD_RETENTION: 'retention' = 'retention';
 export const FIELD_UPLOADER_DISPLAY_NAME: 'uploader_display_name' = 'uploader_display_name';
-export const FIELD_CLASSIFICATION: 'classification' = 'classification';
 export const FIELD_ENTERPRISE: 'enterprise' = 'enterprise';
 export const FIELD_HOSTNAME: 'hostname' = 'hostname';
 
@@ -163,7 +153,6 @@ export const PERMISSION_CAN_DOWNLOAD = 'can_download';
 export const PERMISSION_CAN_EDIT = 'can_edit';
 export const PERMISSION_CAN_PREVIEW = 'can_preview';
 export const PERMISSION_CAN_RENAME = 'can_rename';
-export const PERMISSION_CAN_RESOLVE = 'can_resolve';
 export const PERMISSION_CAN_SET_SHARE_ACCESS = 'can_set_share_access';
 export const PERMISSION_CAN_SHARE = 'can_share';
 export const PERMISSION_CAN_UPLOAD = 'can_upload';
@@ -177,23 +166,19 @@ export const DELIMITER_SLASH: 'slash' = 'slash';
 export const DELIMITER_CARET: 'caret' = 'caret';
 
 /* ---------------------- Defaults -------------------------- */
-export const DEFAULT_PREVIEW_VERSION = '2.81.0';
+export const DEFAULT_PREVIEW_VERSION = '2.37.0';
 export const DEFAULT_LOCALE = 'en-US';
 export const DEFAULT_PATH_STATIC = 'platform/elements';
 export const DEFAULT_PATH_STATIC_PREVIEW = 'platform/preview';
 export const DEFAULT_HOSTNAME_API = 'https://api.box.com';
 export const DEFAULT_HOSTNAME_STATIC = 'https://cdn01.boxcdn.net';
 export const DEFAULT_HOSTNAME_UPLOAD = 'https://upload.box.com';
-export const DEFAULT_HOSTNAME_UPLOAD_APP = 'https://upload.app.box.com';
-export const DEFAULT_HOSTNAME_UPLOAD_GOV = 'https://upload.app.box-gov.com';
 export const DEFAULT_HOSTNAME_APP = 'https://app.box.com';
 export const DEFAULT_CONTAINER = 'body';
 export const DEFAULT_ROOT = '0';
 export const DEFAULT_SEARCH_DEBOUNCE = 500;
 export const DEFAULT_COLLAB_DEBOUNCE = 500;
-export const DEFAULT_FORMAT_DEBOUNCE = 1000;
 export const DEFAULT_MAX_COLLABORATORS = 25;
-export const DEFAULT_MAX_CONTACTS = 50;
 export const DEFAULT_PAGE_NUMBER = 1;
 export const DEFAULT_PAGE_SIZE = 50;
 export const DEFAULT_FETCH_START = 0;
@@ -218,7 +203,6 @@ export const STATUS_STAGED: 'staged' = 'staged';
 export const STATUS_COMPLETE: 'complete' = 'complete';
 export const STATUS_ERROR: 'error' = 'error';
 export const STATUS_ACCEPTED: 'accepted' = 'accepted';
-export const STATUS_INACTIVE: 'inactive' = 'inactive';
 
 /* ------------------- Styles ------------------------ */
 export const CLASS_MODAL_CONTENT = 'be-modal-dialog-content';
@@ -240,8 +224,6 @@ export const ERROR_CODE_UPLOAD_CHILD_FOLDER_FAILED = 'child_folder_failed_upload
 export const ERROR_CODE_UPLOAD_STORAGE_LIMIT_EXCEEDED = 'storage_limit_exceeded';
 export const ERROR_CODE_UPLOAD_FILE_SIZE_LIMIT_EXCEEDED = 'file_size_limit_exceeded';
 export const ERROR_CODE_UPLOAD_PENDING_APP_FOLDER_SIZE_LIMIT = 'pending_app_folder_size_limit';
-export const ERROR_CODE_UPLOAD_BAD_DIGEST = 'bad_digest';
-export const ERROR_CODE_UPLOAD_FAILED_PACKAGE = 'failed_package_upload';
 export const ERROR_CODE_FETCH_ACTIVITY = 'fetch_activity_error';
 export const ERROR_CODE_FETCH_ANNOTATION = 'fetch_annotation_error';
 export const ERROR_CODE_FETCH_ANNOTATIONS = 'fetch_annotations_error';
@@ -250,14 +232,11 @@ export const ERROR_CODE_FETCH_FILE_DUE_TO_POLICY = 'forbidden_by_policy';
 export const ERROR_CODE_FETCH_FOLDER = 'fetch_folder_error';
 export const ERROR_CODE_FETCH_WEBLINK = 'fetch_weblink_error';
 export const ERROR_CODE_FETCH_CLASSIFICATION = 'fetch_classification_error';
-export const ERROR_CODE_FETCH_COMMENT = 'fetch_comment_error';
 export const ERROR_CODE_FETCH_COMMENTS = 'fetch_comments_error';
-export const ERROR_CODE_FETCH_REPLIES = 'fetch_replies_error';
 export const ERROR_CODE_FETCH_VERSION = 'fetch_version_error';
 export const ERROR_CODE_FETCH_VERSIONS = 'fetch_versions_error';
 export const ERROR_CODE_FETCH_TASKS = 'fetch_tasks_error';
 export const ERROR_CODE_FETCH_CURRENT_USER = 'fetch_current_user_error';
-export const ERROR_CODE_FETCH_ENTERPRISE_GROUPS: 'fetch_enterprise_groups_error' = 'fetch_enterprise_groups_error';
 export const ERROR_CODE_FETCH_ENTERPRISE_USERS: 'fetch_enterprise_users_error' = 'fetch_enterprise_users_error';
 export const ERROR_CODE_FETCH_TASK_ASSIGNMENT = 'fetch_task_assignment_error';
 export const ERROR_CODE_FETCH_TASK_COLLABORATOR = 'fetch_task_collaborator_error';
@@ -270,7 +249,6 @@ export const ERROR_CODE_FETCH_RECENTS = 'fetch_recents_error';
 export const ERROR_CODE_EXECUTE_INTEGRATION = 'execute_integrations_error';
 export const ERROR_CODE_CREATE_ANNOTATION = 'create_annotation_error';
 export const ERROR_CODE_CREATE_COMMENT = 'create_comment_error';
-export const ERROR_CODE_CREATE_REPLY = 'create_reply_error';
 export const ERROR_CODE_CREATE_TASK = 'create_task_error';
 export const ERROR_CODE_CREATE_TASK_LINK = 'create_task_link_error';
 export const ERROR_CODE_CREATE_TASK_ASSIGNMENT = 'create_task_assignment_error';
@@ -279,7 +257,6 @@ export const ERROR_CODE_CREATE_FOLDER = 'create_folder_error';
 export const ERROR_CODE_CREATE_METADATA = 'create_metadata_error';
 export const ERROR_CODE_DELETE_APP_ACTIVITY = 'delete_app_activity_error';
 export const ERROR_CODE_DELETE_ANNOTATION = 'delete_annotation_error';
-export const ERROR_CODE_EDIT_ANNOTATION = 'edit_annotation_error';
 export const ERROR_CODE_DELETE_COMMENT = 'delete_comment_error';
 export const ERROR_CODE_DELETE_TASK = 'delete_task_error';
 export const ERROR_CODE_DELETE_TASK_ASSIGNMENT = 'delete_task_assignment_error';
@@ -315,7 +292,6 @@ export const ORIGIN_METADATA_SIDEBAR: 'metadata_sidebar' = 'metadata_sidebar';
 export const ORIGIN_SKILLS_SIDEBAR: 'skills_sidebar' = 'skills_sidebar';
 export const ORIGIN_VERSIONS_SIDEBAR: 'versions_sidebar' = 'versions_sidebar';
 export const ORIGIN_PREVIEW: 'preview' = 'preview';
-export const ORIGIN_PREVIEW_SIDEBAR: 'preview_sidebar' = 'preview_sidebar';
 export const ORIGIN_CONTENT_EXPLORER: 'content_explorer' = 'content_explorer';
 export const ORIGIN_OPEN_WITH: 'open_with' = 'open_with';
 
@@ -363,10 +339,6 @@ export const SKILLS_STATUS_INVOKED = 'skills_invoked_status';
 
 /* ------------------ File Extensions ---------------------- */
 export const FILE_EXTENSION_BOX_NOTE = 'boxnote';
-export const FILE_EXTENSION_GOOGLE_DOC = 'gdoc';
-export const FILE_EXTENSION_GOOGLE_SHEET = 'gsheet';
-export const FILE_EXTENSION_GOOGLE_SLIDE = 'gslides';
-export const FILE_EXTENSION_GOOGLE_SLIDE_LEGACY = 'gslide';
 
 /* ------------------ X-Rep-Hints ---------------------- */
 // available dimensions for JPG: "32x32", "94x94", "160x160", "320x320", "1024x1024", "2048x2048"
@@ -377,8 +349,7 @@ export const X_REP_HINT_PNG_DIMENSIONS_DEFAULT: '1024x1024' = '1024x1024';
 
 // If unable to fetch jpg thumbnail, grab png rep of first page. Certain file types do not have a thumbnail rep but do have a first page rep.
 // Get the PDF rep as well, which ensures that the Preview SDK loads linearized reps for customers with PDF optimization enabled.
-// Get the text rep as well, which ensures that large text files load in the Preview SDK.
-export const X_REP_HINT_HEADER_DIMENSIONS_DEFAULT = `[jpg?dimensions=${X_REP_HINT_JPG_DIMENSIONS_DEFAULT}&paged=false,png?dimensions=${X_REP_HINT_PNG_DIMENSIONS_DEFAULT}][pdf][text]`;
+export const X_REP_HINT_HEADER_DIMENSIONS_DEFAULT = `[jpg?dimensions=${X_REP_HINT_JPG_DIMENSIONS_DEFAULT}&paged=false,png?dimensions=${X_REP_HINT_PNG_DIMENSIONS_DEFAULT}][pdf]`;
 
 /* ------------------ Representations Response ---------- */
 export const REPRESENTATIONS_RESPONSE_ERROR: 'error' = 'error';
@@ -403,11 +374,10 @@ export const HTTP_OPTIONS: 'OPTIONS' = 'OPTIONS';
 export const HTTP_HEAD: 'HEAD' = 'HEAD';
 
 /* ------------------ HTTP Codes  ---------------------- */
-export const HTTP_STATUS_CODE_BAD_REQUEST: 400 = 400;
-export const HTTP_STATUS_CODE_UNAUTHORIZED: 401 = 401;
 export const HTTP_STATUS_CODE_FORBIDDEN: 403 = 403;
 export const HTTP_STATUS_CODE_NOT_FOUND: 404 = 404;
 export const HTTP_STATUS_CODE_CONFLICT: 409 = 409;
+export const HTTP_STATUS_CODE_UNAUTHORIZED: 401 = 401;
 export const HTTP_STATUS_CODE_RATE_LIMIT: 429 = 429;
 export const HTTP_STATUS_CODE_INTERNAL_SERVER_ERROR: 500 = 500;
 export const HTTP_STATUS_CODE_NOT_IMPLEMENTED: 501 = 501;
@@ -458,10 +428,6 @@ export const TASK_EDIT_MODE_EDIT: 'EDIT' = 'EDIT';
 
 /* ----------------- Task Validation ---------------- */
 export const TASK_MAX_GROUP_ASSIGNEES: 250 = 250;
-
-/* ------------------ Comment (and Annotation) Statuses ----------------- */
-export const COMMENT_STATUS_OPEN: 'open' = 'open';
-export const COMMENT_STATUS_RESOLVED: 'resolved' = 'resolved';
 
 /* ----------------- Theme ---------------------------*/
 export const THEME_VERY_DARK = 'vDark';

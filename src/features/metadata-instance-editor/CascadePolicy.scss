@@ -8,14 +8,14 @@ $cascade-policy-background: #f1e2fd;
     color: $bdl-gray;
     background-color: $cascade-policy-background;
     border: none;
-    border-radius: $bdl-border-radius-size;
+    border-radius: 4px;
 }
 
 .metadata-cascade-editor {
     color: $bdl-gray;
     background-color: $bdl-gray-05;
     border: none;
-    border-radius: $bdl-border-radius-size;
+    border-radius: 4px;
 
     hr {
         display: block;
@@ -42,7 +42,7 @@ $cascade-policy-background: #f1e2fd;
     padding: 14px 15px;
 }
 
-.toggle-container.metadata-cascade-toggle {
+.metadata-cascade-toggle {
     float: left;
     margin-right: 5px;
     margin-bottom: 5px;

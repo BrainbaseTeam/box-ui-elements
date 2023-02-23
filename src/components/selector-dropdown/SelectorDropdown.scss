@@ -1,5 +1,4 @@
 @import '../../styles/variables';
-@import '../../styles/mixins/overlay';
 
 /**************************************
  * Selector Dropdown
@@ -8,10 +7,6 @@
 .SelectorDropdown {
     position: relative;
     z-index: 3; /* increase z-index based on max-height of dropdown wrapper */
-
-    .overlay {
-        @include bdl-Overlay-container;
-    }
 
     .overlay-wrapper,
     .overlay {

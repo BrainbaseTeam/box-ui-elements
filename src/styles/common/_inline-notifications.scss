@@ -1,5 +1,3 @@
-@import '../variables';
-
 /**************************************
  * Inline Notifications
  **************************************/
@@ -9,7 +7,7 @@
     margin: 10px 0;
     padding: 14px 10px;
     color: $bdl-gray;
-    border-radius: $bdl-border-radius-size-med;
+    border-radius: 4px;
 
     &.inline-alert-visible {
         display: block;

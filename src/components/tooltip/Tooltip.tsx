@@ -1,13 +1,11 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import uniqueId from 'lodash/uniqueId';
-import getProp from 'lodash/get';
 import TetherComponent from 'react-tether';
 
 import TetherPosition from '../../common/tether-positions';
-// @ts-ignore flow import
-import FocusTrap from '../focus-trap';
-import CloseButton from './CloseButton';
+import IconClose from '../../icon/fill/X16';
+import PlainButton from '../plain-button';
 
 import './Tooltip.scss';
 
@@ -82,18 +80,12 @@ export type DefaultTooltipProps = {
 };
 
 export type TooltipProps = {
-    /** Sets aria-hidden attribute on tooltip */
-    ariaHidden?: boolean;
-    /** Sets aria-label attribute on tooltip */
-    ariaLabel?: string;
     /** An HTML element to append the tooltip container into (otherwise appends to body) */
     bodyElement?: HTMLElement;
     /** A React element to put the tooltip on */
     children: React.ReactChild;
     /** A CSS class for the tooltip */
     className?: string;
-    /** Allow the component to maintain focus until escaped */
-    isFocusTrapped?: boolean;
     /** Forces the tooltip to be shown or hidden (useful for errors) */
     isShown?: boolean;
     /** Whether to add tabindex=0.  Defaults to `true` */
@@ -106,8 +98,6 @@ export type TooltipProps = {
     showCloseButton?: boolean;
     /** stop click|keypress event bubbling */
     stopBubble?: boolean;
-    /** A CSS class for the tether element component */
-    tetherElementClassName?: string;
     /** Text to show in the tooltip */
     text?: React.ReactNode;
 } & Partial<DefaultTooltipProps>;
@@ -137,32 +127,6 @@ class Tooltip extends React.Component<TooltipProps, State> {
         this.setState({ hasRendered: true });
     }
 
-    componentDidUpdate(prevProps: TooltipProps, prevState: State) {
-        if (this.isControlled()) {
-            if (!prevProps.isShown && this.props.isShown) {
-                // Reset wasClosedByUser state when isShown transitions from false to true
-                this.setState({ wasClosedByUser: false });
-                document.addEventListener('keydown', this.handleKeyDown, true);
-            }
-            if (!prevState.wasClosedByUser && this.state.wasClosedByUser) {
-                document.removeEventListener('keydown', this.handleKeyDown, true);
-            }
-        } else {
-            if (!prevState.isShown && this.state.isShown) {
-                // capture event so that tooltip closes before any other floating components that can be closed by
-                // "Escape" key(e.g. Modal, Menu, etc.)
-                document.addEventListener('keydown', this.handleKeyDown, true);
-            }
-            if (prevState.isShown && !this.state.isShown) {
-                document.removeEventListener('keydown', this.handleKeyDown, true);
-            }
-        }
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('keydown', this.handleKeyDown, true);
-    }
-
     tooltipID = uniqueId('tooltip');
 
     tetherRef = React.createRef<TetherComponent>();
@@ -182,7 +146,7 @@ class Tooltip extends React.Component<TooltipProps, State> {
         }
     };
 
-    fireChildEvent = (type: string, event: React.SyntheticEvent<HTMLElement> | Event) => {
+    fireChildEvent = (type: string, event: React.SyntheticEvent<HTMLElement>) => {
         const { children } = this.props;
         const handler = (children as React.ReactElement).props[type];
         if (handler) {
@@ -215,21 +179,16 @@ class Tooltip extends React.Component<TooltipProps, State> {
         this.fireChildEvent('onBlur', event);
     };
 
+    handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+        if (event.key === 'Escape') {
+            this.setState({ isShown: false });
+        }
+        this.fireChildEvent('onKeyDown', event);
+    };
+
     isControlled = () => {
         const { isShown: isShownProp } = this.props;
         return typeof isShownProp !== 'undefined';
-    };
-
-    handleKeyDown = (event: KeyboardEvent) => {
-        if (event.key === 'Escape') {
-            event.stopPropagation();
-            if (this.isControlled()) {
-                this.setState({ isShown: false, wasClosedByUser: true });
-            } else {
-                this.setState({ isShown: false });
-            }
-        }
-        this.fireChildEvent('onKeyDown', event);
     };
 
     isShown = () => {
@@ -245,27 +204,20 @@ class Tooltip extends React.Component<TooltipProps, State> {
 
     render() {
         const {
-            ariaHidden,
-            ariaLabel,
             bodyElement,
             children,
             className,
             constrainToScrollParent,
             constrainToWindow,
             isDisabled,
-            isFocusTrapped,
             isTabbable = true,
             offset,
             position = TooltipPosition.TOP_CENTER,
             showCloseButton,
             stopBubble,
-            tetherElementClassName,
             text,
             theme,
         } = this.props;
-
-        const childAriaLabel = getProp(children, 'props.aria-label');
-        const isLabelMatchingTooltipText = !!childAriaLabel && childAriaLabel === text;
 
         // If the tooltip is disabled just render the children
         if (isDisabled) {
@@ -298,11 +250,8 @@ class Tooltip extends React.Component<TooltipProps, State> {
             });
         }
 
-        if (showTooltip && !ariaHidden) {
-            if (!isLabelMatchingTooltipText || childAriaLabel === undefined) {
-                componentProps['aria-describedby'] = this.tooltipID;
-            }
-
+        if (showTooltip) {
+            componentProps['aria-describedby'] = this.tooltipID;
             if (theme === TooltipTheme.ERROR) {
                 componentProps['aria-errormessage'] = this.tooltipID;
             }
@@ -310,6 +259,7 @@ class Tooltip extends React.Component<TooltipProps, State> {
         if (!isControlled) {
             componentProps.onBlur = this.handleBlur;
             componentProps.onFocus = this.handleFocus;
+            componentProps.onKeyDown = this.handleKeyDown;
             componentProps.onMouseEnter = this.handleMouseEnter;
             componentProps.onMouseLeave = this.handleMouseLeave;
 
@@ -334,7 +284,6 @@ class Tooltip extends React.Component<TooltipProps, State> {
             enabled: boolean | undefined;
             targetAttachment: TetherPosition;
             offset?: string;
-            className?: string;
         } = {
             attachment: tetherPosition.attachment,
             bodyElement: bodyEl,
@@ -344,10 +293,6 @@ class Tooltip extends React.Component<TooltipProps, State> {
             targetAttachment: tetherPosition.targetAttachment,
         };
 
-        if (tetherElementClassName) {
-            tetherProps.className = tetherElementClassName;
-        }
-
         if (offset) {
             tetherProps.offset = offset;
         }
@@ -355,49 +300,29 @@ class Tooltip extends React.Component<TooltipProps, State> {
         const tooltipInner = (
             <>
                 {text}
-                {withCloseButton && <CloseButton onClick={this.closeTooltip} />}
+                {withCloseButton && (
+                    <PlainButton className="tooltip-close-button" onClick={this.closeTooltip}>
+                        <IconClose className="bdl-Tooltip-iconClose" width={14} height={14} />
+                    </PlainButton>
+                )}
             </>
         );
-        let role;
-        if (isFocusTrapped) {
-            role = 'dialog';
-        } else if (theme !== TooltipTheme.ERROR) {
-            role = 'tooltip';
-        }
 
         const tooltip = stopBubble ? (
             <div
                 className={classes}
                 id={this.tooltipID}
+                role="presentation"
                 onClick={this.handleTooltipEvent}
                 onContextMenu={this.handleTooltipEvent}
                 onKeyPress={this.handleTooltipEvent}
-                onMouseEnter={this.handleMouseEnter}
-                onMouseLeave={this.handleMouseLeave}
-                role="presentation"
             >
-                <div
-                    role={role}
-                    aria-live="polite"
-                    aria-hidden={ariaHidden || isLabelMatchingTooltipText}
-                    aria-labelledby={ariaLabel}
-                    data-testid="bdl-Tooltip"
-                >
+                <div role="tooltip" aria-live="polite">
                     {tooltipInner}
                 </div>
             </div>
         ) : (
-            <div
-                aria-live="polite"
-                aria-hidden={ariaHidden || isLabelMatchingTooltipText}
-                aria-labelledby={ariaLabel}
-                className={classes}
-                data-testid="bdl-Tooltip"
-                id={this.tooltipID}
-                onMouseEnter={this.handleMouseEnter}
-                onMouseLeave={this.handleMouseLeave}
-                role={role}
-            >
+            <div className={classes} id={this.tooltipID} role="tooltip" aria-live="polite">
                 {tooltipInner}
             </div>
         );
@@ -405,14 +330,7 @@ class Tooltip extends React.Component<TooltipProps, State> {
         return (
             <TetherComponent ref={this.tetherRef} {...tetherProps}>
                 {React.cloneElement(React.Children.only(children) as React.ReactElement, componentProps)}
-                {showTooltip &&
-                    (isFocusTrapped ? (
-                        <FocusTrap aria-modal shouldDefaultFocus>
-                            {tooltip}
-                        </FocusTrap>
-                    ) : (
-                        tooltip
-                    ))}
+                {showTooltip && tooltip}
             </TetherComponent>
         );
     }

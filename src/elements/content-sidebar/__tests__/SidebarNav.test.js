@@ -4,22 +4,18 @@ import { mount } from 'enzyme';
 import AdditionalTabPlaceholder from '../additional-tabs/AdditionalTabPlaceholder';
 import AdditionalTabs from '../additional-tabs';
 import AdditionalTabsLoading from '../additional-tabs/AdditionalTabsLoading';
-import FeatureProvider from '../../common/feature-checking/FeatureProvider';
 import IconChatRound from '../../../icons/general/IconChatRound';
 import IconDocInfo from '../../../icons/general/IconDocInfo';
 import IconMagicWand from '../../../icons/general/IconMagicWand';
 import IconMetadataThick from '../../../icons/general/IconMetadataThick';
 import SidebarNav from '../SidebarNav';
 import SidebarNavButton from '../SidebarNavButton';
-import SidebarNavSignButton from '../SidebarNavSignButton';
 
 describe('elements/content-sidebar/SidebarNav', () => {
-    const getWrapper = (props = {}, active = '', features = {}) =>
+    const getWrapper = (props, active = '') =>
         mount(
             <MemoryRouter initialEntries={[`/${active}`]}>
-                <FeatureProvider features={features}>
-                    <SidebarNav {...props} />
-                </FeatureProvider>
+                <SidebarNav {...props} />
             </MemoryRouter>,
         )
             .find('SidebarNav')
@@ -92,21 +88,5 @@ describe('elements/content-sidebar/SidebarNav', () => {
         expect(wrapper.find(AdditionalTabs)).toHaveLength(1);
         expect(wrapper.find(AdditionalTabsLoading)).toHaveLength(1);
         expect(wrapper.find(AdditionalTabPlaceholder)).toHaveLength(5);
-    });
-
-    test('should render the Box Sign entry point if its feature is enabled', () => {
-        const features = {
-            boxSign: {
-                enabled: true,
-                onClick: () => {},
-            },
-        };
-        const wrapper = getWrapper({}, 'activity', features);
-        expect(wrapper.exists(SidebarNavSignButton)).toBe(true);
-    });
-
-    test('should not render the Box Sign entry point if its feature is not enabled', () => {
-        const wrapper = getWrapper();
-        expect(wrapper.exists(SidebarNavSignButton)).toBe(false);
     });
 });

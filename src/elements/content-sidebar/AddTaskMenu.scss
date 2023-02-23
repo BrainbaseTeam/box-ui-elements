@@ -1,23 +1,17 @@
 @import '../common/variables';
-@import '../../styles/mixins/overlay';
 
 $bcs-AddTaskMenu-width: 256px;
 
 .bcs-AddTaskMenu {
-    @include bdl-Overlay-container;
+    padding: 10px 0;
 }
 
 .bcs-AddTaskMenu-menuItem {
     display: flex;
     max-width: $bcs-AddTaskMenu-width;
     min-height: 80px;
+    padding: 10px 20px;
     white-space: normal;
-
-    &:focus {
-        outline: none !important; // Override needed until default menus are updated
-    }
-
-    @include bdl-Overlay-listItemContainer;
 }
 
 .bcs-AddTaskMenu-title {

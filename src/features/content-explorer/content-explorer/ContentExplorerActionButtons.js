@@ -31,14 +31,12 @@ const ContentExplorerActionButtons = ({
     isChooseButtonLoading = false,
     isCopyButtonLoading = false,
     isMoveButtonLoading = false,
-    isResponsive = false,
     onCancelClick,
     onChooseClick,
     onCopyClick,
     onMoveClick,
     onSelectedClick,
     selectedItems,
-    isNoSelectionAllowed,
 }) => {
     const handleChooseClick = () => {
         let chosenItems = getChosenItemsFromSelectedItems(selectedItems);
@@ -47,7 +45,7 @@ const ContentExplorerActionButtons = ({
             chosenItems = [currentFolder];
         }
 
-        if (onChooseClick && (chosenItems.length > 0 || isNoSelectionAllowed)) {
+        if (onChooseClick && chosenItems.length > 0) {
             onChooseClick(chosenItems);
         }
     };
@@ -88,12 +86,9 @@ const ContentExplorerActionButtons = ({
 
         return contentExplorerMode === ContentExplorerModes.MULTI_SELECT && statusElement;
     };
-    const contentExplorerActionButtonsStyle = isResponsive
-        ? 'modal-actions'
-        : 'content-explorer-action-buttons-container';
 
     return (
-        <div className={contentExplorerActionButtonsStyle} {...actionButtonsProps}>
+        <div className="content-explorer-action-buttons-container" {...actionButtonsProps}>
             {renderStatus()}
             <Button
                 className="content-explorer-cancel-button"
@@ -130,8 +125,7 @@ const ContentExplorerActionButtons = ({
                     <FormattedMessage {...messages.move} />
                 </PrimaryButton>
             )}
-            {(contentExplorerMode === ContentExplorerModes.MOVE_COPY ||
-                contentExplorerMode === ContentExplorerModes.COPY) && (
+            {contentExplorerMode === ContentExplorerModes.MOVE_COPY && (
                 <PrimaryButton
                     key="copy-btn"
                     type="button"
@@ -158,14 +152,12 @@ ContentExplorerActionButtons.propTypes = {
     isChooseButtonLoading: PropTypes.bool,
     isCopyButtonLoading: PropTypes.bool,
     isMoveButtonLoading: PropTypes.bool,
-    isResponsive: PropTypes.bool,
     onCancelClick: PropTypes.func,
     onChooseClick: PropTypes.func,
     onCopyClick: PropTypes.func,
     onMoveClick: PropTypes.func,
     onSelectedClick: PropTypes.func,
     selectedItems: ItemsMapPropType.isRequired,
-    isNoSelectionAllowed: PropTypes.bool,
 };
 
 export default ContentExplorerActionButtons;

@@ -1,14 +1,11 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import omit from 'lodash/omit';
-import debounce from 'lodash/debounce';
 
 import './SubmenuItem.scss';
-import Arrow16 from '../../icon/fill/Arrow16';
 
 const SUBMENU_LEFT_ALIGNED_CLASS = 'is-left-aligned';
 const SUBMENU_BOTTOM_ALIGNED_CLASS = 'is-bottom-aligned';
-const SUBMENU_RIGHT_BOTTOM_ALIGNED_CLASS = 'is-right-bottom-aligned';
 
 export interface SubmenuItemProps {
     /** 'aria-disabled' - ARIA attribute describing whether the submenu item is disabled */
@@ -83,12 +80,10 @@ class SubmenuItem extends React.Component<SubmenuItemProps, SubmenuItemState> {
             submenuTriggerElBounding.right + submenuElBounding.width > rightBoundaryElementBounding.right;
         const isBottomAligned =
             submenuTriggerElBounding.top + submenuElBounding.height > bottomBoundaryElementBounding.bottom;
-        const isRightBottomAligned =
-            submenuTriggerElBounding.bottom + submenuElBounding.height > bottomBoundaryElementBounding.bottom;
+
         return {
             [SUBMENU_LEFT_ALIGNED_CLASS]: isLeftAligned,
             [SUBMENU_BOTTOM_ALIGNED_CLASS]: isBottomAligned,
-            [SUBMENU_RIGHT_BOTTOM_ALIGNED_CLASS]: isRightBottomAligned, // Used only in medium-screen viewport sizes
         };
     };
 
@@ -105,12 +100,6 @@ class SubmenuItem extends React.Component<SubmenuItemProps, SubmenuItemState> {
 
         if (onClick) {
             onClick(event);
-        }
-
-        // If event target is triggering submenu element, do not propagate to close menu
-        if (this.submenuEl && !this.submenuEl.contains(event.target as Node)) {
-            event.stopPropagation();
-            event.preventDefault();
         }
     };
 
@@ -132,25 +121,26 @@ class SubmenuItem extends React.Component<SubmenuItemProps, SubmenuItemState> {
         }
     };
 
-    closeSubmenu = debounce(() => {
+    closeSubmenu = () => {
         this.setState({
             isSubmenuOpen: false,
         });
-    }, 50);
+    };
 
     closeSubmenuAndFocusTrigger = (isKeyboardEvent: boolean | null | undefined) => {
         this.closeSubmenu();
+
         if (this.submenuTriggerEl && isKeyboardEvent) {
             this.submenuTriggerEl.focus();
         }
     };
 
     openSubmenu = () => {
-        this.closeSubmenu.cancel();
         const { onOpen } = this.props;
         if (onOpen) {
             onOpen();
         }
+
         this.setState({
             isSubmenuOpen: true,
             submenuFocusIndex: null,
@@ -180,14 +170,11 @@ class SubmenuItem extends React.Component<SubmenuItemProps, SubmenuItemState> {
             throw new Error('SubmenuItem must have exactly two children, a trigger component and a <Menu>');
         }
 
-        const chevron = <Arrow16 className="menu-item-arrow" width={12} height={12} />;
-
         const menuItemProps: SubmenuItemProps = {
             ...omit(rest, ['bottomBoundaryElement', 'onClick', 'onOpen', 'rightBoundaryElement', 'role', 'tabIndex']),
             'aria-disabled': isDisabled ? 'true' : undefined,
             'aria-expanded': isSubmenuOpen ? 'true' : 'false',
             'aria-haspopup': 'true',
-
             className: classNames('menu-item', 'submenu-target', className),
             onClick: this.handleMenuItemClick,
             onMouseLeave: this.closeSubmenu,
@@ -215,7 +202,6 @@ class SubmenuItem extends React.Component<SubmenuItemProps, SubmenuItemState> {
         return (
             <li {...menuItemProps}>
                 {submenuTriggerContent}
-                {chevron}
                 {React.cloneElement(submenu, submenuProps)}
             </li>
         );

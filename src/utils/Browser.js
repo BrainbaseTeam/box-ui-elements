@@ -18,18 +18,13 @@ class Browser {
     }
 
     /**
-     * Returns whether browser is mobile, including tablets.
-     *
-     * We rely on user agent (UA) to avoid matching desktops with touchscreens.
-     * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Browser_detection_using_the_user_agent#mobile_tablet_or_desktop
+     * Returns whether browser is mobile.
      *
      * @return {boolean} Whether browser is mobile
      */
     static isMobile(): boolean {
-        const userAgent = Browser.getUserAgent();
-        return (
-            /iphone|ipad|ipod|android|blackberry|bb10|mini|windows\sce|palm/i.test(userAgent) || /Mobi/i.test(userAgent)
-        );
+        // Relying on the user agent to avoid desktop browsers on machines with touch screens.
+        return /iphone|ipad|ipod|android|blackberry|bb10|mini|windows\sce|palm/i.test(Browser.getUserAgent());
     }
 
     /**
@@ -39,47 +34,6 @@ class Browser {
      */
     static isIE() {
         return /Trident/i.test(Browser.getUserAgent());
-    }
-
-    /**
-     * Returns whether browser is Firefox.
-     *
-     * @return {boolean} Whether browser is Firefox
-     */
-    static isFirefox() {
-        const userAgent = Browser.getUserAgent();
-        return /Firefox/i.test(userAgent) && !/Seamonkey\//i.test(userAgent);
-    }
-
-    /**
-     * Returns whether browser is Safari.
-     *
-     * @return {boolean} Whether browser is Safari
-     */
-    static isSafari() {
-        const userAgent = Browser.getUserAgent();
-        return /AppleWebKit/i.test(userAgent) && !/Chrome\//i.test(userAgent);
-    }
-
-    /**
-     * Returns whether browser is Mobile Safari.
-     *
-     * @see https://developer.chrome.com/docs/multidevice/user-agent/
-     * @return {boolean} Whether browser is Mobile Safari
-     */
-    static isMobileSafari() {
-        return Browser.isMobile() && Browser.isSafari() && !Browser.isMobileChromeOniOS();
-    }
-
-    /**
-     * Returns whether browser is Mobile Chrome on iOS.
-     *
-     * @see https://developer.chrome.com/docs/multidevice/user-agent/
-     * @return {boolean} Whether browser is Mobile Chrome on iOS
-     */
-    static isMobileChromeOniOS() {
-        const userAgent = Browser.getUserAgent();
-        return Browser.isMobile() && /AppleWebKit/i.test(userAgent) && /CriOS\//i.test(userAgent);
     }
 
     /**

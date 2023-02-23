@@ -1,6 +1,5 @@
 /* eslint-disable import/no-unresolved,  no-shadow, import/no-extraneous-dependencies, no-console */
 const SimpleGit = require('simple-git/promise');
-const path = require('path');
 const colors = require('colors/safe');
 const ora = require('ora');
 const rimraf = require('rimraf');
@@ -92,7 +91,6 @@ module.exports = async cliOptions => {
 
     const git = new SimpleGit(config.workingDir);
     const sourcePath = `${config.workingDir}/${uniqid('design-assets-')}`;
-    const assetPath = path.join(sourcePath, config.assetPath);
 
     rimraf(sourcePath, async () => {
         try {
@@ -106,8 +104,8 @@ module.exports = async cliOptions => {
                 await git.checkout(config.branch);
                 progress.succeed();
 
-                progress.start(colors.cyan(`Parse contents of ${assetPath}. . .`));
-                util.parseContentsOf(assetPath, assetPath, config.destinationDir, parser);
+                progress.start(colors.cyan(`Parse contents of ${sourcePath}. . .`));
+                util.parseContentsOf(sourcePath, sourcePath, config.destinationDir, parser);
                 progress.succeed(colors.cyan('Parsing completed successfully.'));
 
                 progress.start('Cleaning up. . .');

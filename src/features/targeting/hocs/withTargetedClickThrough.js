@@ -32,26 +32,25 @@ function withTargetedClickThrough<Config>(
 
         useOnClickBody(onClose, !!(shouldShow && closeOnClickOutside));
 
-        React.useEffect(() => {
-            if (shouldShow) {
-                onShow();
-            }
-        }, [shouldShow, onShow]);
+        if (shouldShow) {
+            onShow();
+            return (
+                <WrappedComponent showCloseButton stopBubble {...rest} isShown onDismiss={onClose}>
+                    <span
+                        data-targeting="click-through"
+                        data-testid="with-targeted-click-span"
+                        onClickCapture={handleOnComplete}
+                        onKeyPressCapture={handleOnComplete}
+                        role="button"
+                        tabIndex={-1}
+                    >
+                        {children}
+                    </span>
+                </WrappedComponent>
+            );
+        }
 
-        return (
-            <WrappedComponent showCloseButton stopBubble {...rest} isShown={shouldShow} onDismiss={onClose}>
-                <span
-                    className="bdl-targeted-click-through"
-                    data-targeting="click-through"
-                    data-testid="with-targeted-click-span"
-                    onClickCapture={handleOnComplete}
-                    onKeyPressCapture={handleOnComplete}
-                    tabIndex={-1}
-                >
-                    {children}
-                </span>
-            </WrappedComponent>
-        );
+        return children;
     };
 
     WrapperComponent.displayName = `withTargetedClickThrough(${WrappedComponent.displayName ||

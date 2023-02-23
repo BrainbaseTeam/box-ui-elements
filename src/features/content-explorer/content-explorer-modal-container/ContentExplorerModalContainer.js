@@ -2,25 +2,14 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classNames from 'classnames';
 
-import { BreadcrumbPropType, ContentExplorerModePropType, FoldersPathPropType, ItemsPropType } from '../prop-types';
+import { ContentExplorerModePropType, FoldersPathPropType, ItemsPropType } from '../prop-types';
 import ContentExplorerModal from '../content-explorer-modal';
 import NewFolderModal from '../new-folder-modal';
 
 class ContentExplorerModalContainer extends Component {
     static propTypes = {
-        /**
-         * Extra columns displayed in the folders table after folder name column
-         * Each column has to be a Column element
-         */
-        additionalColumns: PropTypes.arrayOf(PropTypes.element),
-        /**  Allow users to choose no selections in MULTI_SELECT mode, defaults to false */
-        isNoSelectionAllowed: PropTypes.bool,
-        /** Breadcrumb component options */
-        breadcrumbProps: BreadcrumbPropType,
         /** Adds class name. */
         className: PropTypes.string,
-        /** Whether the user can see the breadcrumbs represented with the folder tree button */
-        hasFolderTreeBreadcrumbs: PropTypes.bool,
         /** Any extra items in the header to the right of the search input (and new folder button) */
         headerActionsAccessory: PropTypes.node,
         /** Title shown in the ContentExplorerModal. */
@@ -56,18 +45,12 @@ class ContentExplorerModalContainer extends Component {
         onSelectItem: PropTypes.func,
         /** Folder is in the process of being created. */
         isCreatingFolder: PropTypes.bool,
-        /** Whether the user can see select all checkbox */
-        isSelectAllAllowed: PropTypes.bool,
         /** Message that will be shown when there was an error creating the folder. */
         createFolderError: PropTypes.string,
         /** Configures the content explorer based on the user's intended action (ex. select file or move/copy) */
         contentExplorerMode: ContentExplorerModePropType.isRequired,
-        /** Props for the include subfolders toggle */
-        includeSubfoldersProps: PropTypes.object,
         /** Initial path of folders. The last folder in the array is the current folder. */
         initialFoldersPath: FoldersPathPropType.isRequired,
-        /** Initial items that will show up as selected */
-        initialSelectedItems: PropTypes.object,
         /**
          * Called when the current folder changes
          *
@@ -75,16 +58,6 @@ class ContentExplorerModalContainer extends Component {
          * @param {Array} newFoldersPath
          */
         onEnterFolder: PropTypes.func.isRequired,
-        /** Called when the folders path is updated
-         *
-         * @param {Array} newFoldersPath
-         */
-        onFoldersPathUpdate: PropTypes.func,
-        /** Called whenever the selected items list changes
-         *
-         * @param {Object} selectedItems
-         */
-        onSelectedItemsUpdate: PropTypes.func,
         /**
          * Called when items are chosen.
          *
@@ -131,14 +104,6 @@ class ContentExplorerModalContainer extends Component {
         itemNameLinkRenderer: PropTypes.func,
         /** Used to render item buttons in the list. Overrides the default buttons. */
         itemButtonRenderer: PropTypes.func,
-        /** Height of an item row */
-        itemRowHeight: PropTypes.number,
-        /** Used to render the row element for items on the list */
-        itemRowRenderer: PropTypes.func,
-        /** Height of the item list header, defaults to 0, which makes header not visible */
-        listHeaderHeight: PropTypes.number,
-        /** Used to render the header row on the item list */
-        listHeaderRenderer: PropTypes.func,
         /** Whether the new folder button should be shown */
         showCreateNewFolderButton: PropTypes.bool,
         /** Props for the search input */
@@ -193,14 +158,34 @@ class ContentExplorerModalContainer extends Component {
     render() {
         const {
             className,
+            headerActionsAccessory,
             modalTitle,
             modalDescription,
+            onRequestClose,
             onCreateFolderSubmit,
             onCreateFolderInput,
             isCreatingFolder,
             createFolderError,
+            contentExplorerMode,
             initialFoldersPath,
-            ...rest
+            onChooseItems,
+            onMoveItem,
+            onCopyItem,
+            isCreateNewFolderAllowed,
+            onSearchSubmit,
+            onExitSearch,
+            onSelectedClick,
+            onSelectItem,
+            items,
+            numItemsPerPage,
+            numTotalItems,
+            onLoadMoreItems,
+            itemIconRenderer,
+            itemNameLinkRenderer,
+            itemButtonRenderer,
+            showCreateNewFolderButton,
+            searchInputProps,
+            chooseButtonText,
         } = this.props;
         const { foldersPath, isNewFolderModalOpen } = this.state;
         const currentFolder = foldersPath[foldersPath.length - 1];
@@ -209,13 +194,33 @@ class ContentExplorerModalContainer extends Component {
             <div className={classNames('content-explorer-modal-container', className)}>
                 <ContentExplorerModal
                     className={isNewFolderModalOpen ? 'hidden' : ''}
+                    headerActionsAccessory={headerActionsAccessory}
                     title={modalTitle}
                     description={modalDescription}
-                    initialFoldersPath={initialFoldersPath}
                     isOpen
+                    onRequestClose={onRequestClose}
+                    contentExplorerMode={contentExplorerMode}
+                    initialFoldersPath={initialFoldersPath}
                     onEnterFolder={this.handleEnterFolder}
+                    onChooseItems={onChooseItems}
+                    onMoveItem={onMoveItem}
+                    onCopyItem={onCopyItem}
+                    onSelectedClick={onSelectedClick}
+                    onSelectItem={onSelectItem}
                     onCreateNewFolderButtonClick={this.handleCreateNewFolderButtonClick}
-                    {...rest}
+                    isCreateNewFolderAllowed={isCreateNewFolderAllowed}
+                    onSearchSubmit={onSearchSubmit}
+                    onExitSearch={onExitSearch}
+                    items={items}
+                    numItemsPerPage={numItemsPerPage}
+                    numTotalItems={numTotalItems}
+                    onLoadMoreItems={onLoadMoreItems}
+                    itemIconRenderer={itemIconRenderer}
+                    itemNameLinkRenderer={itemNameLinkRenderer}
+                    itemButtonRenderer={itemButtonRenderer}
+                    showCreateNewFolderButton={showCreateNewFolderButton}
+                    searchInputProps={searchInputProps}
+                    chooseButtonText={chooseButtonText}
                 />
                 {isNewFolderModalOpen && (
                     <NewFolderModal

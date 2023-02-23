@@ -14,8 +14,6 @@ import messages from '../common/messages';
 import { CLASS_MODAL_CONTENT, CLASS_MODAL_OVERLAY, CLASS_MODAL, TYPE_FOLDER } from '../../constants';
 import type { BoxItem } from '../../common/types/core';
 
-import './DeleteConfirmationDialog.scss';
-
 type Props = {
     appElement: HTMLElement,
     isLoading: boolean,
@@ -46,7 +44,7 @@ const DeleteConfirmationDialog = ({
             onRequestClose={onCancel}
             overlayClassName={CLASS_MODAL_OVERLAY}
             parentSelector={() => parentElement}
-            portalClassName={`${CLASS_MODAL} be-modal-delete`}
+            portalClassName={CLASS_MODAL}
         >
             <FormattedMessage {...message} values={{ name: item.name }} />
             <div className="be-modal-btns">

@@ -8,13 +8,13 @@
     @include common-typography;
     @include box-sizing;
 
+    position: relative;
     z-index: 9999;
     display: block;
     color: $bdl-gray-80;
     background: $white;
     border: 1px solid $bdl-gray-30;
     border-bottom-color: $bdl-gray-50;
-    border-radius: $bdl-border-radius-size-med;
 
     &.is-hidden {
         display: none;
@@ -22,15 +22,8 @@
 
     &.is-bound {
         position: absolute;
+        margin-top: 5px;
         box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .1);
-
-        &.bottom-aligned {
-            margin-top: 5px;
-        }
-
-        &.top-aligned {
-            margin-top: -5px;
-        }
     }
 }
 
@@ -101,6 +94,7 @@
     &.bdl-is-disabled,
     &.is-disabled {
         cursor: default;
+        opacity: .2;
     }
 }
 
@@ -116,13 +110,6 @@
         border-bottom: 4px solid transparent;
         content: '';
     }
-
-    &.bdl-is-disabled,
-    &.is-disabled {
-        &::before {
-            opacity: .2;
-        }
-    }
 }
 
 .pika-next {
@@ -137,13 +124,6 @@
         border-left: 4px solid $bdl-gray-80;
         border-radius: 2px;
         content: '';
-    }
-
-    &.bdl-is-disabled,
-    &.is-disabled {
-        &::after {
-            opacity: .2;
-        }
     }
 }
 
@@ -195,7 +175,7 @@
     color: $white;
     font-weight: bold;
     background-color: $primary-color;
-    border-radius: $bdl-border-radius-size-med;
+    border-radius: 3px;
     cursor: pointer;
 }
 

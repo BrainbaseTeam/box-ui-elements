@@ -17,7 +17,6 @@ Object.keys(colors).forEach(colorKey => {
     colorKey.startsWith('bdl') &&
     !colorKey.includes('Neutral') &&
     colorKey !== 'bdlSecondaryBlue' &&
-    !Array.isArray(colors[colorKey]) &&
     colors[colorKey].startsWith('#')
   ) {
     const colorNameBreakDown = colorKey

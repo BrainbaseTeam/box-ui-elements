@@ -3,34 +3,35 @@ import classNames from 'classnames';
 
 import './ImageTooltipContent.scss';
 
-type OnImageLoad = () => void;
-
 export type ImageTooltipContentProps = {
     /** A React component representing the image used in the visual tooltip */
     children: React.ReactElement;
     /** A string to be used in the tooltip's paragraph content */
     content: string;
-    /** A callback triggered onLoad for the image element */
-    onImageLoad: OnImageLoad;
     /** A string to be used in the tooltip's title heading */
     title: string;
 };
 
-function cloneTooltipChildWithNewProps(child: React.ReactElement, onImageLoad: OnImageLoad): React.ReactElement {
-    const {
-        props: { className: existingClasses },
-    } = child;
-    const className = classNames(existingClasses, 'bdl-ImageTooltipContent-imageChild');
+function appendTooltipImageChildClass(child: React.ReactElement): React.ReactElement | null {
+    if (child) {
+        const {
+            props: { className: existingClasses },
+        } = child;
+        const className = classNames(existingClasses, 'bdl-ImageTooltipContent-imageChild');
 
-    return React.cloneElement(child, {
-        className,
-        onLoad: onImageLoad,
-    });
+        return React.cloneElement(child, {
+            className,
+        });
+    }
+
+    return null;
 }
 
-const ImageTooltipContent = ({ children, content, onImageLoad, title }: ImageTooltipContentProps) => (
+const ImageTooltipContent = ({ children, content, title }: ImageTooltipContentProps) => (
     <div className="bdl-ImageTooltipContent">
-        <div className="bdl-ImageTooltipContent-image">{cloneTooltipChildWithNewProps(children, onImageLoad)}</div>
+        <div className="bdl-ImageTooltipContent-image">
+            {React.Children.map(children, child => appendTooltipImageChildClass(child))}
+        </div>
         <div className="bdl-ImageTooltipContent-contentWrapper">
             <h4 className="bdl-ImageTooltipContent-title">{title}</h4>
             <p className="bdl-ImageTooltipContent-content">{content}</p>

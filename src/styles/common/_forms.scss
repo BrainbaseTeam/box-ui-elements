@@ -7,7 +7,6 @@
 /* Inputs */
 
 input[type='text'],
-input[type='date'],
 input[type='password'],
 input[type='search'],
 input[type='email'],
@@ -22,7 +21,6 @@ textarea {
 }
 
 input[type='text']:hover,
-input[type='date']:hover,
 input[type='password']:hover,
 input[type='search']:hover,
 input[type='email']:hover,
@@ -35,7 +33,6 @@ textarea:hover {
 }
 
 input[type='text']:focus,
-input[type='date']:focus,
 input[type='password']:focus,
 input[type='search']:focus,
 input[type='email']:focus,
@@ -47,8 +44,6 @@ textarea:focus {
     @include box-inputs-focus;
 }
 
-// NOTE: This does not work because vendor prefixes cannot be combined. Need
-// to work with the design team to update the color or remove this ruleset.
 input::-webkit-input-placeholder,
 input::-moz-placeholder,
 input:-ms-input-placeholder {
@@ -56,7 +51,6 @@ input:-ms-input-placeholder {
 }
 
 input[type='text'].is-invalid,
-input[type='date'].is-invalid,
 input[type='password'].is-invalid,
 input[type='search'].is-invalid,
 input[type='email'].is-invalid,
@@ -69,7 +63,6 @@ textarea.is-invalid {
 }
 
 input[type='text'].is-invalid:focus,
-input[type='date'].is-invalid:focus,
 input[type='password'].is-invalid:focus,
 input[type='search'].is-invalid:focus,
 input[type='email'].is-invalid:focus,
@@ -82,7 +75,6 @@ textarea.is-invalid:focus {
 }
 
 input[type='text']:disabled,
-input[type='date']:disabled,
 input[type='password']:disabled,
 input[type='search']:disabled,
 input[type='email']:disabled,
@@ -218,7 +210,7 @@ textarea {
 .select-container .select-button {
     background-color: $white;
     border: 1px solid $bdl-gray-20;
-    border-radius: $bdl-border-radius-size-med;
+    border-radius: 2px;
     box-shadow: 0 1px 1px 1px rgba(0, 0, 0, .05);
     -webkit-transition: border-color linear .15s, box-shadow linear .1s;
     transition: border-color linear .15s, box-shadow linear .1s;

@@ -1,13 +1,9 @@
 import * as React from 'react';
 
-import { CollaboratorAvatarItemBase as CollaboratorAvatarItem } from '../CollaboratorAvatarItem';
-
-const intl = {
-    formatMessage: message => message.defaultMessage,
-};
+import CollaboratorAvatarItem from '../CollaboratorAvatarItem';
 
 describe('features/collaborator-avatars/CollaboratorAvatarItem', () => {
-    const getWrapper = (props = {}) => shallow(<CollaboratorAvatarItem id={1} intl={intl} name="foo bar" {...props} />);
+    const getWrapper = (props = {}) => shallow(<CollaboratorAvatarItem id={1} name="foo bar" {...props} />);
 
     describe('render()', () => {
         test('should render default component', () => {

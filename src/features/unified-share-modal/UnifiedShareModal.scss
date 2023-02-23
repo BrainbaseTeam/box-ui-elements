@@ -1,83 +1,5 @@
 @import '../../styles/variables';
-@import '../../styles/mixins/buttons';
-@import '../../styles/mixins/overlay';
 @import '../../components/pill-selector-dropdown/mixins';
-
-.is-responsive-web {
-    .collaborator-list {
-        min-width: 0;
-    }
-
-    @include breakpoint($small-screen) {
-        .shared-link-access-row {
-            display: flex;
-            justify-content: space-between;
-
-            .btn-plain {
-                margin-right: 0;
-            }
-        }
-    }
-
-    @include breakpoint($medium-screen) {
-        .usm-menu-description {
-            white-space: normal;
-        }
-
-        .usm-share-access-menu {
-            //can't use just 'min' b/c SASS compiler error
-            width: #{'min(400px, 90%)'};
-        }
-    }
-
-    @include breakpoint($small-medium-screen) {
-        .collaborator-list {
-            height: auto;
-            border: 0;
-            border-radius: 0;
-            box-shadow: none;
-        }
-
-        .shared-link-field-container {
-            height: $bdl-btn-height;
-
-            .btn {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 60px;
-                min-width: 0;
-                height: $bdl-btn-height;
-            }
-        }
-
-        .email-shared-link-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: $bdl-btn-height;
-            height: $bdl-btn-height;
-        }
-
-        .unified-share-modal {
-            .modal-content {
-                padding-top: $bdl-grid-unit * 3;
-            }
-
-            .shared-link-field-row .email-shared-link-btn {
-                margin-left: $bdl-grid-unit * 4;
-            }
-        }
-
-        .text-input-container {
-            height: $bdl-btn-height;
-
-            input {
-                height: 100%;
-            }
-        }
-    }
-}
 
 // Menus are rendered at the root of the DOM, so this style is not nested
 .usm-menu-description {
@@ -130,12 +52,13 @@
 
 .unified-share-modal {
     /** title and classifiction label */
-    .bdl-UnifiedShareModalTitle-classification {
-        display: inline;
-    }
-
     .bdl-UnifiedShareModalTitle {
-        margin-right: 6px;
+        display: flex;
+        flex-flow: row wrap;
+
+        .bdl-UnifiedShareModalTitle-classification {
+            margin-left: 6px;
+        }
     }
 
     /** overrides for USM sub-components */
@@ -156,12 +79,6 @@
     /*** Invite collaborators section ***/
     .invite-collaborator-container {
         position: relative;
-
-        .text-area-container {
-            textarea {
-                width: 100%;
-            }
-        }
     }
 
     .invitee-menu-wrap {
@@ -188,24 +105,17 @@
     .bdl-PillSelectorDropdown.scrollable {
         // In the USM, the wrapper acts as a container
         .overlay-wrapper {
-            @include bdl-Overlay-container;
-
             position: absolute;
             height: 280px;
-            padding: 0;
             overflow-y: scroll;
+
+            @include bdl-PillSelectorDropdown-container;
         }
 
         .overlay {
             margin-top: 0;
             border: none;
             box-shadow: none;
-        }
-    }
-
-    .bdl-RoundPill {
-        &.is-waived {
-            @include bdl-RoundPill($border-color: $bdl-watermelon-red-50, $selected-border-color: $bdl-watermelon-red-50);
         }
     }
 
@@ -216,7 +126,7 @@
         }
 
         .text-area-container textarea::placeholder {
-            color: $bdl-gray-62;
+            color: $bdl-gray-50;
         }
 
         .bdl-PillSelector {
@@ -224,12 +134,12 @@
         }
     }
 
-    .bdl-PillSelectorDropdown .bdl-PillSelector {
+    .bdl-PillSelector {
         margin-top: 10px;
-        border: 1px solid $bdl-gray-50;
+        border: 1px solid $bdl-gray-20;
 
         .bdl-PillSelector-input::placeholder {
-            color: $bdl-gray-62;
+            color: $bdl-gray-50;
         }
 
         &.bdl-is-disabled,
@@ -239,7 +149,7 @@
             box-shadow: none;
 
             .bdl-PillSelector-input::placeholder {
-                color: $bdl-gray-62;
+                color: $bdl-gray-50;
             }
 
             &:hover {
@@ -255,10 +165,14 @@
         justify-content: space-between;
         margin-top: 10px;
 
-        .toggle-container {
+        .share-toggle-container {
             flex: 0 1 80%;
             margin-bottom: 0;
             overflow-y: hidden;
+
+            .toggle-container {
+                margin-bottom: 0;
+            }
 
             .toggle-simple-label {
                 color: $bdl-gray;
@@ -295,10 +209,7 @@
             flex: 1;
 
             input {
-                width: 100%;
                 margin-top: 0;
-                border-top-right-radius: 0;
-                border-bottom-right-radius: 0;
             }
         }
 
@@ -338,9 +249,6 @@
 
     .upgrade-badge {
         margin-right: 5px;
-        padding: $bdl-grid-unit ($bdl-grid-unit * 2);
-        background-color: $bdl-grimace-20;
-        border-radius: 10px;
     }
 
     .upgrade-link {
@@ -362,15 +270,10 @@
     }
 
     .manage-all-btn {
-        @include bdl-Button-margins(-5px 0 10px 0);
-
         float: right;
+        margin: -5px 0 10px 0;
         color: $bdl-box-blue;
     }
-}
-
-.bdl-UnifiedShareForm-container {
-    width: 400px;
 }
 
 .bdl-UnifiedShareForm {
@@ -382,22 +285,8 @@
     padding: 2em;
 }
 
-.bdl-SharedLinkSection-separator,
-.bdl-UnifiedShareForm-separator {
+.bdl-SharedLinkSection-separator {
     margin: ($bdl-grid-unit * 5) 0;
     border: none;
     border-top: 1px solid $bdl-gray-20;
-}
-
-.bdl-UnifiedShareForm-row {
-    margin-top: 10px;
-
-    .AdvancedContentInsightsToggle {
-        flex: 0 1 80%;
-        overflow-y: hidden;
-
-        .toggle-simple-label {
-            cursor: pointer;
-        }
-    }
 }

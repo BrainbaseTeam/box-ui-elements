@@ -11,7 +11,6 @@ import SelectButton from '../select-button';
 import DatalistItem from '../datalist-item';
 import PopperComponent from '../popper';
 import SelectFieldDropdown from './SelectFieldDropdown';
-import type { Position } from '../tooltip';
 import type { SelectOptionValueProp, SelectOptionProp } from './props';
 import { PLACEMENT_BOTTOM_END, PLACEMENT_BOTTOM_START } from '../popper/constants';
 import SearchForm from '../search-form/SearchForm';
@@ -38,8 +37,6 @@ function toggleOption(options, value) {
 }
 
 type Props = {
-    /** List of classnames of the relatedTarget that should prevent handleBlur from firing */
-    blurExceptionClassNames?: Array<string>,
     /** Props to add to the button element */
     buttonProps?: Object,
     /** CSS class for the select container */
@@ -48,8 +45,6 @@ type Props = {
     defaultValue?: SelectOptionValueProp,
     /** An optional error to show within a tooltip. */
     error?: React.Node,
-    /** Position of error message tooltip */
-    errorTooltipPosition?: Position,
     /* Intl object */
     intl: Object,
     /** The select button is disabled if true */
@@ -226,17 +221,12 @@ class BaseSelectField extends React.Component<Props, State> {
 
     handleBlur = (event?: SyntheticFocusEvent<>) => {
         const { isOpen } = this.state;
-        const { blurExceptionClassNames = [] } = this.props;
-
-        const exceptionClasses = ['search-input', 'select-button', ...blurExceptionClassNames];
-
         if (
             isOpen &&
             event &&
             event.relatedTarget &&
-            exceptionClasses.every(
-                className => event && !(event.relatedTarget: window.HTMLInputElement).classList.contains(className),
-            )
+            !(event.relatedTarget: window.HTMLInputElement).classList.contains('search-input') &&
+            !(event.relatedTarget: window.HTMLInputElement).classList.contains('select-button')
         ) {
             this.closeDropdown();
         }
@@ -456,7 +446,7 @@ class BaseSelectField extends React.Component<Props, State> {
 
     renderSelectButton = () => {
         const { activeItemID, isOpen } = this.state;
-        const { buttonProps: buttonElProps, isDisabled, className, error, errorTooltipPosition } = this.props;
+        const { buttonProps: buttonElProps, isDisabled, className, error } = this.props;
         const buttonText = this.renderButtonText();
         const buttonProps = {
             ...buttonElProps,
@@ -469,14 +459,14 @@ class BaseSelectField extends React.Component<Props, State> {
             onClick: this.handleButtonClick,
             onKeyDown: this.handleButtonKeyDown,
             // @NOTE: Technically, only text inputs should be combo-boxes but ARIA specs do not cover custom select dropdowns
-            role: 'listbox',
+            role: 'combobox',
             title: buttonText,
         };
 
         return (
             // Need to store the select button reference so we can calculate the button width
             // in order to set it as the min width of the dropdown list
-            <SelectButton {...buttonProps} error={error} errorTooltipPosition={errorTooltipPosition}>
+            <SelectButton {...buttonProps} error={error}>
                 {buttonText}
             </SelectButton>
         );
@@ -524,8 +514,6 @@ class BaseSelectField extends React.Component<Props, State> {
             if (index === activeItemIndex) {
                 itemProps.isActive = true;
             }
-
-            itemProps.isSelected = isSelected;
 
             // The below actually does have a key, but eslint can't catch that
             /* eslint-disable react/jsx-key */

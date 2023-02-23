@@ -17,12 +17,6 @@ export interface AvatarProps {
      * Required if "name" is not specified.
      */
     avatarUrl?: string | null;
-    /**
-     * Icon React Element that will be shown as a badge in bottom right corner of Avatar.
-     *
-     * Will not be used if `shouldShowExternal` and `isExternal` is true, then GlobalBadge will be shown.
-     */
-    badgeIcon?: React.ReactElement;
     /** classname to add to the container element. */
     className?: string;
     /** Users id */
@@ -41,27 +35,14 @@ export interface AvatarProps {
     size?: keyof typeof SIZES | '';
 }
 
-function Avatar({
-    avatarUrl,
-    badgeIcon,
-    className,
-    name,
-    id,
-    isExternal,
-    shouldShowExternal = false,
-    size = '',
-}: AvatarProps) {
+function Avatar({ avatarUrl, className, name, id, isExternal, shouldShowExternal = false, size = '' }: AvatarProps) {
     const [hasImageErrored, setHasImageErrored] = React.useState<boolean>(false);
     const [prevAvatarUrl, setPrevAvatarUrl] = React.useState<AvatarProps['avatarUrl']>(null);
 
     const classes = classNames([
         'avatar',
         className,
-        {
-            [`avatar--${size}`]: size && SIZES[size],
-            'avatar--isExternal': shouldShowExternal && isExternal,
-            'avatar--iconBadge': !!badgeIcon,
-        },
+        { [`avatar--${size}`]: size && SIZES[size], 'avatar--isExternal': shouldShowExternal && isExternal },
     ]);
 
     // Reset hasImageErrored state when avatarUrl changes
@@ -86,16 +67,14 @@ function Avatar({
         avatar = <UnknownUserAvatar className="avatar-icon" />;
     }
 
-    let badge = null;
-    if (shouldShowExternal && isExternal) {
-        badge = <GlobeBadge16 className="bdl-Avatar-externalBadge" />;
-    } else if (badgeIcon) {
-        badge = <div className="bdl-Avatar-badge bdl-Avatar-iconBadge">{badgeIcon}</div>;
-    }
-
     return (
-        <Badgeable className={classes} bottomRight={badge}>
-            <span>{avatar}</span>
+        <Badgeable
+            className={classes}
+            bottomRight={
+                shouldShowExternal && isExternal ? <GlobeBadge16 className="bdl-Avatar-externalBadge" /> : undefined
+            }
+        >
+            <span role="presentation">{avatar}</span>
         </Badgeable>
     );
 }

@@ -1,13 +1,10 @@
 // @flow
 
 import * as React from 'react';
-import noop from 'lodash/noop';
-import { FormattedMessage, injectIntl } from 'react-intl';
-import type { IntlShape } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import PlainButton from '../../components/plain-button';
 import Button from '../../components/button';
-import GuideTooltip from '../../components/guide-tooltip';
 import TextInputWithCopyButton from '../../components/text-input-with-copy-button';
 import Toggle from '../../components/toggle/Toggle';
 import Tooltip from '../../components/tooltip';
@@ -17,7 +14,6 @@ import IconClock from '../../icons/general/IconClock';
 import IconGlobe from '../../icons/general/IconGlobe';
 import { bdlWatermelonRed } from '../../styles/variables';
 import type { ItemType } from '../../common/types/core';
-import type { TargetingApi } from '../targeting/types';
 import { isBoxNote } from '../../utils/file';
 import Browser from '../../utils/Browser';
 
@@ -32,16 +28,8 @@ import type {
     sharedLinkType,
     sharedLinkTrackingType,
     tooltipComponentIdentifierType,
-    USMConfig,
 } from './flowTypes';
-import {
-    ANYONE_IN_COMPANY,
-    ANYONE_WITH_LINK,
-    CAN_EDIT,
-    CAN_VIEW_DOWNLOAD,
-    CAN_VIEW_ONLY,
-    PEOPLE_IN_ITEM,
-} from './constants';
+import { PEOPLE_IN_ITEM, ANYONE_WITH_LINK, CAN_VIEW_DOWNLOAD, CAN_VIEW_ONLY } from './constants';
 
 type Props = {
     addSharedLink: () => void,
@@ -51,9 +39,7 @@ type Props = {
     changeSharedLinkPermissionLevel: (
         newPermissionLevel: permissionLevelType,
     ) => Promise<{ permissionLevel: permissionLevelType }>,
-    config?: USMConfig,
-    intl: IntlShape,
-    isAllowEditSharedLinkForFileEnabled: boolean,
+    intl: any,
     item: itemtype,
     itemType: ItemType,
     onCopyError?: () => void,
@@ -64,8 +50,6 @@ type Props = {
     onSettingsClick?: Function,
     onToggleSharedLink: Function,
     sharedLink: sharedLinkType,
-    sharedLinkEditTagTargetingApi?: TargetingApi,
-    sharedLinkEditTooltipTargetingApi?: TargetingApi,
     showSharedLinkSettingsCallout: boolean,
     submitting: boolean,
     tooltips: { [componentIdentifier: tooltipComponentIdentifierType]: React.Node },
@@ -76,7 +60,6 @@ type Props = {
 type State = {
     isAutoCreatingSharedLink: boolean,
     isCopySuccessful: ?boolean,
-    isSharedLinkEditTooltipShown: boolean,
 };
 
 class SharedLinkSection extends React.Component<Props, State> {
@@ -85,15 +68,12 @@ class SharedLinkSection extends React.Component<Props, State> {
         autoCreateSharedLink: false,
     };
 
-    toggleRef: HTMLInputElement | null;
-
     constructor(props: Props) {
         super(props);
 
         this.state = {
             isAutoCreatingSharedLink: false,
             isCopySuccessful: null,
-            isSharedLinkEditTooltipShown: false,
         };
     }
 
@@ -126,7 +106,6 @@ class SharedLinkSection extends React.Component<Props, State> {
             sharedLink,
             autoCreateSharedLink,
             addSharedLink,
-            sharedLinkEditTooltipTargetingApi,
             submitting,
             triggerCopyOnLoad,
             onCopyError = () => {},
@@ -134,7 +113,7 @@ class SharedLinkSection extends React.Component<Props, State> {
             onCopyInit = () => {},
         } = this.props;
 
-        const { isAutoCreatingSharedLink, isCopySuccessful, isSharedLinkEditTooltipShown } = this.state;
+        const { isAutoCreatingSharedLink, isCopySuccessful } = this.state;
 
         if (
             autoCreateSharedLink &&
@@ -149,9 +128,6 @@ class SharedLinkSection extends React.Component<Props, State> {
 
         if (!prevProps.sharedLink.url && sharedLink.url) {
             this.setState({ isAutoCreatingSharedLink: false });
-            if (this.toggleRef) {
-                this.toggleRef.focus();
-            }
         }
 
         if (
@@ -173,20 +149,6 @@ class SharedLinkSection extends React.Component<Props, State> {
                     onCopyError();
                 });
         }
-
-        // if ESL ftux tooltip is showing on initial mount, we call onShow
-        const allowedPermissionLevels = this.getAllowedPermissionLevels();
-
-        if (
-            allowedPermissionLevels.includes(CAN_EDIT) &&
-            sharedLinkEditTooltipTargetingApi &&
-            sharedLinkEditTooltipTargetingApi.canShow &&
-            !isSharedLinkEditTooltipShown
-        ) {
-            const { onShow } = sharedLinkEditTooltipTargetingApi;
-            onShow();
-            this.setState({ isSharedLinkEditTooltipShown: true });
-        }
     }
 
     canAddSharedLink = (isSharedLinkEnabled: boolean, canAddLink: boolean) => {
@@ -197,17 +159,52 @@ class SharedLinkSection extends React.Component<Props, State> {
         return isSharedLinkEnabled && canRemoveLink;
     };
 
-    getAllowedPermissionLevels = (): Array<permissionLevelType> => {
-        const { isAllowEditSharedLinkForFileEnabled, sharedLink } = this.props;
+    renderSharedLink() {
+        const {
+            autofocusSharedLink,
+            changeSharedLinkAccessLevel,
+            changeSharedLinkPermissionLevel,
+            item,
+            itemType,
+            intl,
+            onDismissTooltip,
+            onEmailSharedLinkClick,
+            sharedLink,
+            submitting,
+            trackingProps,
+            triggerCopyOnLoad,
+            tooltips,
+        } = this.props;
+
+        const { isCopySuccessful } = this.state;
 
         const {
+            accessLevel,
+            accessLevelsDisabledReason,
+            allowedAccessLevels,
             canChangeAccessLevel,
-            isEditSettingAvailable,
+            enterpriseName,
+            isEditAllowed,
             isDownloadSettingAvailable,
             permissionLevel,
+            url,
         } = sharedLink;
 
-        let allowedPermissionLevels = [CAN_EDIT, CAN_VIEW_DOWNLOAD, CAN_VIEW_ONLY];
+        const {
+            copyButtonProps,
+            onChangeSharedLinkAccessLevel,
+            onChangeSharedLinkPermissionLevel,
+            onSharedLinkAccessMenuOpen,
+            onSharedLinkCopy,
+            sendSharedLinkButtonProps,
+            sharedLinkAccessMenuButtonProps,
+            sharedLinkPermissionsMenuButtonProps,
+        } = trackingProps;
+
+        const shouldTriggerCopyOnLoad = !!triggerCopyOnLoad && !!isCopySuccessful;
+
+        const isEditableBoxNote = isBoxNote(convertToBoxItem(item)) && isEditAllowed;
+        let allowedPermissionLevels = [CAN_VIEW_DOWNLOAD, CAN_VIEW_ONLY];
 
         if (!canChangeAccessLevel) {
             // remove all but current level
@@ -218,69 +215,6 @@ class SharedLinkSection extends React.Component<Props, State> {
         if (!isDownloadSettingAvailable) {
             allowedPermissionLevels = allowedPermissionLevels.filter(level => level !== CAN_VIEW_DOWNLOAD);
         }
-
-        // if the user cannot edit, we remove this option from the dropdown
-        if (!isEditSettingAvailable || !isAllowEditSharedLinkForFileEnabled) {
-            allowedPermissionLevels = allowedPermissionLevels.filter(level => level !== CAN_EDIT);
-        }
-
-        return allowedPermissionLevels;
-    };
-
-    renderSharedLink() {
-        const {
-            autofocusSharedLink,
-            changeSharedLinkAccessLevel,
-            changeSharedLinkPermissionLevel,
-            config,
-            item,
-            itemType,
-            intl,
-            onDismissTooltip,
-            onEmailSharedLinkClick,
-            sharedLink,
-            sharedLinkEditTagTargetingApi,
-            sharedLinkEditTooltipTargetingApi,
-            submitting,
-            trackingProps,
-            triggerCopyOnLoad,
-            tooltips,
-        } = this.props;
-
-        const { isCopySuccessful, isSharedLinkEditTooltipShown } = this.state;
-
-        const {
-            accessLevel,
-            accessLevelsDisabledReason,
-            allowedAccessLevels,
-            canChangeAccessLevel,
-            enterpriseName,
-            isEditAllowed,
-            permissionLevel,
-            url,
-        } = sharedLink;
-
-        const {
-            copyButtonProps,
-            onChangeSharedLinkAccessLevel,
-            onChangeSharedLinkPermissionLevel,
-            onSharedLinkAccessMenuOpen,
-            onSharedLinkCopy = noop,
-            sendSharedLinkButtonProps,
-            sharedLinkAccessMenuButtonProps,
-            sharedLinkPermissionsMenuButtonProps,
-        } = trackingProps;
-
-        const shouldTriggerCopyOnLoad = !!triggerCopyOnLoad && !!isCopySuccessful;
-
-        /**
-         * The email button should be rendered by default.
-         * Only hide the button if there is a config prop that declares showEmailSharedLinkForm to be false.
-         */
-        const hideEmailButton = config && config.showEmailSharedLinkForm === false;
-
-        const isEditableBoxNote = isBoxNote(convertToBoxItem(item)) && isEditAllowed;
-        const allowedPermissionLevels = this.getAllowedPermissionLevels();
 
         return (
             <>
@@ -301,26 +235,23 @@ class SharedLinkSection extends React.Component<Props, State> {
                             className="shared-link-field-container"
                             disabled={submitting}
                             label=""
-                            onCopySuccess={() => onSharedLinkCopy(permissionLevel)}
+                            onCopySuccess={onSharedLinkCopy}
                             triggerCopyOnLoad={shouldTriggerCopyOnLoad}
                             type="url"
                             value={url}
                         />
                     </Tooltip>
-                    {!hideEmailButton && (
-                        <Tooltip position="top-left" text={intl.formatMessage(messages.sendSharedLink)}>
-                            <Button
-                                aria-label={intl.formatMessage(messages.sendSharedLink)}
-                                className="email-shared-link-btn"
-                                isDisabled={submitting}
-                                onClick={onEmailSharedLinkClick}
-                                type="button"
-                                {...sendSharedLinkButtonProps}
-                            >
-                                <IconMail />
-                            </Button>
-                        </Tooltip>
-                    )}
+                    <Tooltip position="top-left" text={<FormattedMessage {...messages.sendSharedLink} />}>
+                        <Button
+                            className="email-shared-link-btn"
+                            isDisabled={submitting}
+                            onClick={onEmailSharedLinkClick}
+                            type="button"
+                            {...sendSharedLinkButtonProps}
+                        >
+                            <IconMail />
+                        </Button>
+                    </Tooltip>
                 </div>
 
                 <div className="shared-link-access-row">
@@ -341,38 +272,20 @@ class SharedLinkSection extends React.Component<Props, State> {
                         }}
                     />
                     {!isEditableBoxNote && accessLevel !== PEOPLE_IN_ITEM && (
-                        <GuideTooltip
-                            isShown={
-                                allowedPermissionLevels.includes(CAN_EDIT) && sharedLinkEditTooltipTargetingApi?.canShow
-                            }
-                            title={intl.formatMessage(messages.ftuxEditPermissionTooltipTitle)}
-                            body={intl.formatMessage(messages.ftuxEditPermissionTooltipBody)}
-                            onDismiss={() => {
-                                if (sharedLinkEditTooltipTargetingApi) {
-                                    const { onClose } = sharedLinkEditTooltipTargetingApi;
-                                    onClose();
-                                }
+                        <SharedLinkPermissionMenu
+                            allowedPermissionLevels={allowedPermissionLevels}
+                            canChangePermissionLevel={canChangeAccessLevel}
+                            changePermissionLevel={changeSharedLinkPermissionLevel}
+                            permissionLevel={permissionLevel}
+                            submitting={submitting}
+                            trackingProps={{
+                                onChangeSharedLinkPermissionLevel,
+                                sharedLinkPermissionsMenuButtonProps,
                             }}
-                            position="bottom-center"
-                        >
-                            <SharedLinkPermissionMenu
-                                allowedPermissionLevels={allowedPermissionLevels}
-                                canChangePermissionLevel={canChangeAccessLevel}
-                                changePermissionLevel={changeSharedLinkPermissionLevel}
-                                isSharedLinkEditTooltipShown={isSharedLinkEditTooltipShown}
-                                permissionLevel={permissionLevel}
-                                sharedLinkEditTagTargetingApi={sharedLinkEditTagTargetingApi}
-                                sharedLinkEditTooltipTargetingApi={sharedLinkEditTooltipTargetingApi}
-                                submitting={submitting}
-                                trackingProps={{
-                                    onChangeSharedLinkPermissionLevel,
-                                    sharedLinkPermissionsMenuButtonProps,
-                                }}
-                            />
-                        </GuideTooltip>
+                        />
                     )}
                     {isEditableBoxNote && (
-                        <Tooltip text={intl.formatMessage(messages.sharedLinkPermissionsEditTooltip)}>
+                        <Tooltip text={<FormattedMessage {...messages.sharedLinkPermissionsEditTooltip} />}>
                             <PlainButton isDisabled className="can-edit-btn">
                                 <FormattedMessage {...messages.sharedLinkPermissionsEdit} />
                             </PlainButton>
@@ -384,28 +297,7 @@ class SharedLinkSection extends React.Component<Props, State> {
                         <span className="security-indicator-icon-globe">
                             <IconGlobe height={12} width={12} />
                         </span>
-                        {permissionLevel === CAN_EDIT ? (
-                            <FormattedMessage
-                                data-testid="shared-link-editable-publicly-available-message"
-                                {...messages.sharedLinkEditablePubliclyAvailable}
-                            />
-                        ) : (
-                            <FormattedMessage
-                                data-testid="shared-link-publicly-available-message"
-                                {...messages.sharedLinkPubliclyAvailable}
-                            />
-                        )}
-                    </div>
-                )}
-                {accessLevel === ANYONE_IN_COMPANY && permissionLevel === CAN_EDIT && (
-                    <div className="security-indicator-note">
-                        <span className="security-indicator-icon-globe">
-                            <IconGlobe height={12} width={12} />
-                        </span>
-                        <FormattedMessage
-                            data-testid="shared-link-elevated-editable-company-available-message"
-                            {...messages.sharedLinkElevatedEditableCompanyAvailable}
-                        />
+                        <FormattedMessage {...messages.sharedLinkPubliclyAvailable} />
                     </div>
                 )}
             </>
@@ -432,7 +324,9 @@ class SharedLinkSection extends React.Component<Props, State> {
                     position="middle-right"
                     showCloseButton
                     text={
-                        tooltips['shared-link-settings'] || intl.formatMessage(messages.sharedLinkSettingsCalloutText)
+                        tooltips['shared-link-settings'] || (
+                            <FormattedMessage {...messages.sharedLinkSettingsCalloutText} />
+                        )
                     }
                     theme="callout"
                 >
@@ -451,7 +345,7 @@ class SharedLinkSection extends React.Component<Props, State> {
     }
 
     renderToggle() {
-        const { intl, item, onDismissTooltip, onToggleSharedLink, sharedLink, submitting, tooltips } = this.props;
+        const { item, onDismissTooltip, onToggleSharedLink, sharedLink, submitting, tooltips } = this.props;
         const { canChangeAccessLevel, expirationTimestamp, url } = sharedLink;
         const isSharedLinkEnabled = !!url;
         const canAddSharedLink = this.canAddSharedLink(isSharedLinkEnabled, item.grantedPermissions.itemShare);
@@ -459,6 +353,7 @@ class SharedLinkSection extends React.Component<Props, State> {
         const isToggleEnabled = (canAddSharedLink || canRemoveSharedLink) && !submitting;
 
         let linkText;
+
         if (isSharedLinkEnabled) {
             linkText = <FormattedMessage {...messages.linkShareOn} />;
             if (expirationTimestamp && expirationTimestamp !== 0) {
@@ -467,15 +362,16 @@ class SharedLinkSection extends React.Component<Props, State> {
                         <FormattedMessage {...messages.linkShareOn} />
                         <Tooltip
                             position="top-center"
-                            text={intl.formatMessage(messages.sharedLinkExpirationTooltip, {
-                                expiration: convertToMs(expirationTimestamp),
-                            })}
+                            text={
+                                <FormattedMessage
+                                    {...messages.sharedLinkExpirationTooltip}
+                                    values={{
+                                        expiration: convertToMs(expirationTimestamp),
+                                    }}
+                                />
+                            }
                         >
-                            <span
-                                aria-label={intl.formatMessage(messages.expiresMessage)}
-                                className="shared-link-expiration-badge"
-                                role="img"
-                            >
+                            <span className="shared-link-expiration-badge">
                                 <IconClock color={bdlWatermelonRed} />
                             </span>
                         </Tooltip>
@@ -487,16 +383,15 @@ class SharedLinkSection extends React.Component<Props, State> {
         }
 
         const toggleComponent = (
-            <Toggle
-                isDisabled={!isToggleEnabled}
-                isOn={isSharedLinkEnabled}
-                label={linkText}
-                name="toggle"
-                onChange={onToggleSharedLink}
-                ref={ref => {
-                    this.toggleRef = ref;
-                }}
-            />
+            <div className="share-toggle-container">
+                <Toggle
+                    isDisabled={!isToggleEnabled}
+                    isOn={isSharedLinkEnabled}
+                    label={linkText}
+                    name="toggle"
+                    onChange={onToggleSharedLink}
+                />
+            </div>
         );
 
         if (!submitting) {
@@ -518,7 +413,10 @@ class SharedLinkSection extends React.Component<Props, State> {
                     );
                 }
                 return (
-                    <Tooltip position="top-right" text={intl.formatMessage(messages.sharedLinkDisabledTooltipCopy)}>
+                    <Tooltip
+                        position="top-right"
+                        text={<FormattedMessage {...messages.sharedLinkDisabledTooltipCopy} />}
+                    >
                         {toggleComponent}
                     </Tooltip>
                 );
@@ -533,7 +431,7 @@ class SharedLinkSection extends React.Component<Props, State> {
                     <Tooltip
                         className="usm-disabled-message-tooltip"
                         position="top-right"
-                        text={intl.formatMessage(tooltipDisabledMessage)}
+                        text={<FormattedMessage {...tooltipDisabledMessage} />}
                     >
                         {toggleComponent}
                     </Tooltip>
@@ -549,7 +447,7 @@ class SharedLinkSection extends React.Component<Props, State> {
         const isSharedLinkEnabled = !!sharedLink.url;
 
         return (
-            <div className="be">
+            <div>
                 <hr className="bdl-SharedLinkSection-separator" />
                 {/* eslint-disable-next-line jsx-a11y/label-has-for */}
                 <label>
@@ -566,5 +464,5 @@ class SharedLinkSection extends React.Component<Props, State> {
         );
     }
 }
-export { SharedLinkSection as SharedLinkSectionBase };
-export default injectIntl(SharedLinkSection);
+
+export default SharedLinkSection;

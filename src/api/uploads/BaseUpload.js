@@ -5,17 +5,9 @@
  */
 
 import Base from '../Base';
-import {
-    DEFAULT_RETRY_DELAY_MS,
-    MS_IN_S,
-    DEFAULT_HOSTNAME_UPLOAD,
-    DEFAULT_HOSTNAME_UPLOAD_APP,
-    DEFAULT_HOSTNAME_UPLOAD_GOV,
-} from '../../constants';
+import { DEFAULT_RETRY_DELAY_MS, MS_IN_S } from '../../constants';
 
 const MAX_RETRY = 5;
-// Note: We may have to change this number if we add a lot more fast upload hosts.
-const MAX_REACHABILITY_RETRY = 10;
 
 class BaseUpload extends Base {
     errorCallback: Function;
@@ -38,11 +30,7 @@ class BaseUpload extends Base {
 
     retryCount: number = 0;
 
-    reachabilityRetryCount: number = 0;
-
     retryTimeout: TimeoutID;
-
-    isUploadFallbackLogicEnabled: boolean = false;
 
     /**
      * Sends an upload pre-flight request. If a file ID is available,
@@ -61,14 +49,6 @@ class BaseUpload extends Base {
             url = url.replace('content', `${this.fileId}/content`);
         }
 
-        if (this.isUploadFallbackLogicEnabled) {
-            // Add unreachable hosts to url
-            const unreachableHostUrls = this.uploadsReachability.getUnreachableHostsUrls();
-            if (unreachableHostUrls.length !== 0) {
-                url += `?unreachable_hosts=${unreachableHostUrls.join(',')}`;
-            }
-        }
-
         const { size, name } = this.file;
         const attributes = {
             name: this.fileName || name,
@@ -80,59 +60,9 @@ class BaseUpload extends Base {
         this.xhr.options({
             url,
             data: attributes,
-            successHandler: response => {
-                if (this.isUploadFallbackLogicEnabled) {
-                    this.preflightSuccessReachabilityHandler(response);
-                } else {
-                    this.preflightSuccessHandler(response);
-                }
-            },
+            successHandler: this.preflightSuccessHandler,
             errorHandler: this.preflightErrorHandler,
         });
-    };
-
-    /**
-     * Handles successful preflight response.
-     * Performs a upload reachability test before calling preflightSuccessHandler.
-     *
-     * @param {Object} - Request options
-     * @return {Promise} Async function promise
-     */
-    preflightSuccessReachabilityHandler = async ({ data }: { data: { upload_url?: string } }): Promise<any> => {
-        if (this.isDestroyed()) {
-            return;
-        }
-
-        const { upload_url } = data;
-        // If upload_url is not available, don't make reachability test
-        if (!upload_url) {
-            this.preflightSuccessHandler({ data });
-            return;
-        }
-
-        const uploadHost = this.getUploadHostFromUrl(upload_url);
-        // The default upload host should always be reachable
-        // DEFAULT_HOSTNAME_UPLOAD is the original default upload host, while DEFAULT_HOSTNAME_UPLOAD_APP is recent.
-        // Both of these hosts will resolve to the same IP so they are interchangeable.
-        if (
-            uploadHost === `${DEFAULT_HOSTNAME_UPLOAD}/` ||
-            uploadHost === `${DEFAULT_HOSTNAME_UPLOAD_APP}/` ||
-            uploadHost === `${DEFAULT_HOSTNAME_UPLOAD_GOV}/`
-        ) {
-            this.preflightSuccessHandler({ data });
-            return;
-        }
-
-        // If upload host reachable upload file, else make a new preflight request
-        const isHostReachable = await this.uploadsReachability.isReachable(uploadHost);
-        if (isHostReachable) {
-            this.preflightSuccessHandler({ data });
-        } else if (this.reachabilityRetryCount >= MAX_REACHABILITY_RETRY) {
-            this.preflightSuccessHandler({ data: {} });
-        } else {
-            this.reachabilityRetryCount += 1;
-            this.makePreflightRequest();
-        }
     };
 
     /**
@@ -228,18 +158,6 @@ class BaseUpload extends Base {
 
             reader.onerror = reject;
         });
-    }
-
-    /**
-     * Parse uploadHost from uploadUrl
-     *
-     * @param uploadUrl - uploadUrl from preflight response
-     * @return {string}
-     */
-    getUploadHostFromUrl(uploadUrl: string): string {
-        const splitUrl = uploadUrl.split('/');
-        const uploadHost = `${splitUrl[0]}//${splitUrl[2]}/`;
-        return uploadHost;
     }
 }
 

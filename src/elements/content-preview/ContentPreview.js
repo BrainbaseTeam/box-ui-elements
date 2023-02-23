@@ -7,15 +7,14 @@
 import 'regenerator-runtime/runtime';
 import * as React from 'react';
 import classNames from 'classnames';
-import cloneDeep from 'lodash/cloneDeep';
-import flow from 'lodash/flow';
-import getProp from 'lodash/get';
-import isEqual from 'lodash/isEqual';
-import noop from 'lodash/noop';
-import omit from 'lodash/omit';
-import setProp from 'lodash/set';
-import throttle from 'lodash/throttle';
 import uniqueid from 'lodash/uniqueId';
+import throttle from 'lodash/throttle';
+import cloneDeep from 'lodash/cloneDeep';
+import omit from 'lodash/omit';
+import getProp from 'lodash/get';
+import flow from 'lodash/flow';
+import noop from 'lodash/noop';
+import setProp from 'lodash/set';
 import Measure from 'react-measure';
 import { withRouter } from 'react-router-dom';
 import type { ContextRouter } from 'react-router-dom';
@@ -36,8 +35,8 @@ import { EVENT_JS_READY } from '../common/logger/constants';
 import ReloadNotification from './ReloadNotification';
 import API from '../../api';
 import PreviewHeader from './preview-header';
-import PreviewMask from './PreviewMask';
 import PreviewNavigation from './PreviewNavigation';
+import PreviewLoading from './PreviewLoading';
 import {
     withAnnotations,
     WithAnnotationsProps,
@@ -57,7 +56,6 @@ import {
     ERROR_CODE_UNKNOWN,
 } from '../../constants';
 import type { Annotation } from '../../common/types/feed';
-import type { TargetingApi } from '../../features/targeting/types';
 import type { ErrorType, AdditionalVersionInfo } from '../common/flowTypes';
 import type { WithLoggerProps } from '../../common/types/logging';
 import type { RequestOptions, ErrorContextProps, ElementsXhrError } from '../../common/types/api';
@@ -76,11 +74,6 @@ type StartAt = {
 };
 
 type Props = {
-    advancedContentInsights: {
-        isActive: boolean,
-        ownerEId: number,
-        userId: number,
-    },
     apiHost: string,
     appHost: string,
     autoFocus: boolean,
@@ -106,14 +99,10 @@ type Props = {
     onAnnotator: Function,
     onAnnotatorEvent: Function,
     onClose?: Function,
-    onContentInsightsEventReport: Function,
     onDownload: Function,
     onLoad: Function,
     onNavigate: Function,
     onVersionChange: VersionChangeCallback,
-    previewExperiences?: {
-        [name: string]: TargetingApi,
-    },
     previewLibraryVersion: string,
     requestInterceptor?: Function,
     responseInterceptor?: Function,
@@ -136,7 +125,6 @@ type State = {
     currentFileId?: string,
     error?: ErrorType,
     file?: BoxItem,
-    isLoading: boolean,
     isReloadNotificationVisible: boolean,
     isThumbnailSidebarOpen: boolean,
     prevFileIdProp?: string, // the previous value of the "fileId" prop. Needed to implement getDerivedStateFromProps
@@ -217,7 +205,6 @@ class ContentPreview extends React.PureComponent<Props, State> {
     initialState: State = {
         canPrint: false,
         error: undefined,
-        isLoading: true,
         isReloadNotificationVisible: false,
         isThumbnailSidebarOpen: false,
     };
@@ -236,7 +223,6 @@ class ContentPreview extends React.PureComponent<Props, State> {
         language: DEFAULT_LOCALE,
         onAnnotator: noop,
         onAnnotatorEvent: noop,
-        onContentInsightsEventReport: noop,
         onDownload: noop,
         onError: noop,
         onLoad: noop,
@@ -370,36 +356,21 @@ class ContentPreview extends React.PureComponent<Props, State> {
      * @return {void}
      */
     componentDidUpdate(prevProps: Props, prevState: State): void {
-        const { advancedContentInsights, previewExperiences, token } = this.props;
-        const {
-            advancedContentInsights: prevContentInsightsOptions,
-            previewExperiences: prevPreviewExperiences,
-            token: prevToken,
-        } = prevProps;
+        const { token } = this.props;
+        const { token: prevToken } = prevProps;
         const { currentFileId } = this.state;
         const hasFileIdChanged = prevState.currentFileId !== currentFileId;
         const hasTokenChanged = prevToken !== token;
-        const haveContentInsightsChanged = !isEqual(prevContentInsightsOptions, advancedContentInsights);
-        const haveExperiencesChanged = prevPreviewExperiences !== previewExperiences;
 
         if (hasFileIdChanged) {
             this.destroyPreview();
-            this.setState({ isLoading: true, selectedVersion: undefined });
+            this.setState({ selectedVersion: undefined });
             this.fetchFile(currentFileId);
         } else if (this.shouldLoadPreview(prevState)) {
             this.destroyPreview(false);
-            this.setState({ isLoading: true });
             this.loadPreview();
         } else if (hasTokenChanged) {
             this.updatePreviewToken();
-        }
-
-        if (haveExperiencesChanged && this.preview && this.preview.updateExperiences) {
-            this.preview.updateExperiences(previewExperiences);
-        }
-
-        if (advancedContentInsights && haveContentInsightsChanged && this.preview?.updateContentInsightsOptions) {
-            this.preview.updateContentInsightsOptions(advancedContentInsights);
         }
     }
 
@@ -598,7 +569,7 @@ class ContentPreview extends React.PureComponent<Props, State> {
         const { onError } = this.props;
 
         // In case of error, there should be no thumbnail sidebar to account for
-        this.setState({ isLoading: false, isThumbnailSidebarOpen: false });
+        this.setState({ isThumbnailSidebarOpen: false });
 
         onError(
             error,
@@ -706,10 +677,7 @@ class ContentPreview extends React.PureComponent<Props, State> {
         }
 
         onLoad(loadData);
-
-        this.setState({ isLoading: false });
         this.focusPreview();
-
         if (this.preview && filesToPrefetch.length) {
             this.prefetch(filesToPrefetch);
         }
@@ -767,14 +735,11 @@ class ContentPreview extends React.PureComponent<Props, State> {
      */
     loadPreview = async (): Promise<void> => {
         const {
-            advancedContentInsights,
             annotatorState: { activeAnnotationId } = {},
             enableThumbnailsSidebar,
             fileOptions,
             onAnnotatorEvent,
             onAnnotator,
-            onContentInsightsEventReport,
-            previewExperiences,
             showAnnotationsControls,
             token: tokenOrTokenFunction,
             ...rest
@@ -808,18 +773,14 @@ class ContentPreview extends React.PureComponent<Props, State> {
         }
 
         const previewOptions = {
-            advancedContentInsights,
             container: `#${this.id} .bcpr-content`,
             enableThumbnailsSidebar,
             fileOptions: fileOpts,
             header: 'none',
             headerElement: `#${this.id} .bcpr-PreviewHeader`,
-            experiences: previewExperiences,
             showAnnotations: this.canViewAnnotations(),
             showAnnotationsControls,
             showDownload: this.canDownload(),
-            showLoading: false,
-            showProgress: false,
             skipServerUpdate: true,
             useHotkeys: false,
         };
@@ -840,9 +801,6 @@ class ContentPreview extends React.PureComponent<Props, State> {
             ...previewOptions,
             ...omit(rest, Object.keys(previewOptions)),
         });
-        if (advancedContentInsights) {
-            this.preview.addListener('advanced_insights_report', onContentInsightsEventReport);
-        }
     };
 
     /**
@@ -919,7 +877,7 @@ class ContentPreview extends React.PureComponent<Props, State> {
             code: errorCode,
             message: fileError.message,
         };
-        this.setState({ error, file: undefined, isLoading: false });
+        this.setState({ error, file: undefined });
         onError(fileError, errorCode, {
             error: fileError,
         });
@@ -1234,20 +1192,6 @@ class ContentPreview extends React.PureComponent<Props, State> {
     }
 
     /**
-     * Fetches a thumbnail for the page given
-     *
-     * @return {Promise|null} - promise resolves with the image HTMLElement or null if generation is in progress
-     */
-    getThumbnail = (pageNumber: ?number): Promise<HTMLElement> | null => {
-        const preview = this.getPreview();
-        if (preview && preview.viewer) {
-            return preview.viewer.getThumbnail(pageNumber);
-        }
-
-        return null;
-    };
-
-    /**
      * Renders the file preview
      *
      * @inheritdoc
@@ -1278,11 +1222,10 @@ class ContentPreview extends React.PureComponent<Props, State> {
 
         const {
             canPrint,
-            currentFileId,
             error,
             file,
-            isLoading,
             isReloadNotificationVisible,
+            currentFileId,
             isThumbnailSidebarOpen,
             selectedVersion,
         }: State = this.state;
@@ -1300,7 +1243,6 @@ class ContentPreview extends React.PureComponent<Props, State> {
         }
 
         const errorCode = getProp(error, 'code');
-        const currentExtension = getProp(file, 'id') === currentFileId ? getProp(file, 'extension') : '';
         const currentVersionId = getProp(file, 'file_version.id');
         const selectedVersionId = getProp(selectedVersion, 'id', currentVersionId);
         const onHeaderClose = currentVersionId === selectedVersionId ? onClose : this.updateVersionToCurrent;
@@ -1327,12 +1269,21 @@ class ContentPreview extends React.PureComponent<Props, State> {
                     )}
                     <div className="bcpr-body">
                         <div className="bcpr-container" onMouseMove={this.onMouseMove} ref={this.containerRef}>
-                            {file && (
+                            {file ? (
                                 <Measure bounds onResize={this.onResize}>
                                     {({ measureRef: previewRef }) => <div ref={previewRef} className="bcpr-content" />}
                                 </Measure>
+                            ) : (
+                                <div className="bcpr-loading-wrapper">
+                                    <PreviewLoading
+                                        errorCode={errorCode}
+                                        isLoading={!errorCode}
+                                        loadingIndicatorProps={{
+                                            size: 'large',
+                                        }}
+                                    />
+                                </div>
                             )}
-                            <PreviewMask errorCode={errorCode} extension={currentExtension} isLoading={isLoading} />
                             <PreviewNavigation
                                 collection={collection}
                                 currentIndex={this.getFileIndex()}

@@ -5,8 +5,6 @@
  */
 import getProp from 'lodash/get';
 
-import Browser from './Browser';
-
 import type {
     UploadFile,
     UploadFileWithAPIOptions,
@@ -205,19 +203,6 @@ function isDataTransferItemAFolder(itemData: UploadDataTransferItemWithAPIOption
 }
 
 /**
- * Check if a dataTransfer item is a macOS "package file"
- * @see https://en.wikipedia.org/wiki/Package_(macOS)
- *
- * @returns {boolean}
- */
-function isDataTransferItemAPackage(itemData: UploadDataTransferItemWithAPIOptions | DataTransferItem): boolean {
-    const item = getDataTransferItem(itemData);
-    const isDirectory = isDataTransferItemAFolder(item);
-
-    return isDirectory && item.type === 'application/zip' && item.kind === 'file';
-}
-
-/**
  * Get file from FileSystemFileEntry
  *
  * @param {FileSystemFileEntry} entry
@@ -259,35 +244,6 @@ async function getFileFromDataTransferItem(
 }
 
 /**
- * Get file from DataTransferItem or UploadDataTransferItemWithAPIOptions
- * Uses `entry`'s `getAsFile` method for retrieving package information as a single file.
- * @see https://en.wikipedia.org/wiki/Package_(macOS)
- *
- * @param {UploadDataTransferItemWithAPIOptions | DataTransferItem} itemData
- * @returns {?UploadFile | ?UploadFileWithAPIOptions | null}
- */
-function getPackageFileFromDataTransferItem(
-    itemData: UploadDataTransferItemWithAPIOptions | DataTransferItem,
-): ?UploadFile | ?UploadFileWithAPIOptions | null {
-    const item = getDataTransferItem(itemData);
-    const entry = getEntryFromDataTransferItem(((item: any): DataTransferItem));
-    if (!entry) {
-        return null;
-    }
-
-    const itemFile = item.getAsFile();
-
-    if (doesDataTransferItemContainAPIOptions(itemData)) {
-        return {
-            file: ((itemFile: any): UploadFile),
-            options: getDataTransferItemAPIOptions(itemData),
-        };
-    }
-
-    return itemFile;
-}
-
-/**
  * Generates file id based on file properties
  *
  * When folderId or uploadInitTimestamp is missing from file options, file name is returned as file id.
@@ -312,9 +268,6 @@ function getFileId(file: UploadFileWithAPIOptions | UploadFile, rootFolderId: st
 
 /**
  * Generates item id based on item properties
- *
- * When item options including folderId or uploadInitTimestamp are missing, item name is returned as item id.
- * Otherwise, item properties are used as item id.
  * E.g., folder1_0_123124124
  *
  * @param {DataTransferItem | UploadDataTransferItemWithAPIOptions} itemData
@@ -327,26 +280,16 @@ function getDataTransferItemId(
 ): string {
     const item = getDataTransferItem(itemData);
     const { name } = getEntryFromDataTransferItem(item);
-    if (!doesDataTransferItemContainAPIOptions(itemData)) {
-        return name;
-    }
-
     const { folderId = rootFolderId, uploadInitTimestamp = Date.now() } = getDataTransferItemAPIOptions(itemData);
 
     return `${name}_${folderId}_${uploadInitTimestamp}`;
 }
 
 /**
- * Multiput uploads require the use of crypto, which is only supported in secure contexts.
- * Multiput uploads is not supported on mobile iOS Safari.
+ * Multiput uploads require the use of crypto, which is only supported in secure contexts
  */
 function isMultiputSupported(): boolean {
     const cryptoObj = window.crypto || window.msCrypto;
-
-    if (Browser.isMobileSafari()) {
-        return false;
-    }
-
     return window.location.protocol === 'https:' && cryptoObj && cryptoObj.subtle;
 }
 
@@ -362,12 +305,10 @@ export {
     getFile,
     getFileAPIOptions,
     getFileFromDataTransferItem,
-    getPackageFileFromDataTransferItem,
     getFileFromEntry,
     getFileId,
     getFileLastModifiedAsISONoMSIfPossible,
     isDataTransferItemAFolder,
-    isDataTransferItemAPackage,
     isMultiputSupported,
     toISOStringNoMS,
     tryParseJson,

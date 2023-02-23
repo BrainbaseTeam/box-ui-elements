@@ -3,7 +3,6 @@ import * as React from 'react';
 import { SVGProps } from '../../components/accessible-svg/AccessibleSVG';
 
 import IconFileAudio from '../../icon/content/FileAudio32';
-import IconFileBoxCanvas from '../../icon/content/FileCanvas32';
 import IconFileBoxNote from '../../icon/content/FileBoxNote32';
 import IconFileCode from '../../icon/content/FileCode32';
 import IconFileDefault from '../../icon/content/FileDefault32';
@@ -28,13 +27,10 @@ import IconFileThreeD from '../../icon/content/FileThreeD32';
 import IconFileVector from '../../icon/content/FileVector32';
 import IconFileVideo from '../../icon/content/FileVideo32';
 import IconFileWordDocument from '../../icon/content/FileWord32';
-import IconFileXbd from '../../icon/content/FileXbd32';
-import IconFileXdw from '../../icon/content/FileXdw32';
 import IconFileZip from '../../icon/content/FileZip32';
 
 const Components: { [key: string]: (props: SVGProps) => JSX.Element } = {
     IconFileAudio,
-    IconFileBoxCanvas,
     IconFileBoxNote,
     IconFileCode,
     IconFileDefault,
@@ -60,8 +56,6 @@ const Components: { [key: string]: (props: SVGProps) => JSX.Element } = {
     IconFileVector,
     IconFileVideo,
     IconFileWordDocument,
-    IconFileXbd,
-    IconFileXdw,
     IconFileZip,
 };
 
@@ -89,7 +83,6 @@ const EXTENSIONS: { [key: string]: { [key: string]: string } } = {
         'wma',
         'wpl',
     ]),
-    IconFileBoxCanvas: mirror(['boxcanvas']),
     IconFileBoxNote: mirror(['boxnote']),
     IconFileCode: mirror([
         'as',
@@ -138,7 +131,7 @@ const EXTENSIONS: { [key: string]: { [key: string]: string } } = {
         'wabba',
         'yaml',
     ]),
-    IconFileDocument: mirror(['dot', 'dotx', 'msg', 'odt', 'rtf', 'wpd', 'xhtml', 'xml', 'xsd', 'xsl']),
+    IconFileDocument: mirror(['csv', 'dot', 'dotx', 'msg', 'odt', 'rtf', 'tsv', 'wpd', 'xhtml', 'xml', 'xsd', 'xsl']),
     IconFileDwg: mirror(['dwg', 'dwgzip']),
     IconFileExcelSpreadsheet: mirror(['xls', 'xlsx', 'xlsm', 'xlsb']),
     IconFileGoogleDocs: mirror(['gdoc']),
@@ -146,7 +139,7 @@ const EXTENSIONS: { [key: string]: { [key: string]: string } } = {
     IconFileGoogleSlides: mirror(['gslide', 'gslides']),
     IconFileVector: mirror(['eps']),
     IconFileIllustrator: mirror(['ai']),
-    IconFileIndesign: mirror(['idml', 'indd', 'indt', 'inx']),
+    IconFileIndesign: mirror(['indd']),
     IconFileKeynote: mirror(['key']),
     IconFileNumbers: mirror(['numbers']),
     IconFilePages: mirror(['pages']),
@@ -169,7 +162,7 @@ const EXTENSIONS: { [key: string]: { [key: string]: string } } = {
     IconFilePresentation: mirror(['odp', 'otp', 'pot', 'potx']),
     IconFilePowerpointPresentation: mirror(['ppt', 'pptx', 'pptm']),
     IconFilePhotoshop: mirror(['psd']),
-    IconFileSpreadsheet: mirror(['csv', 'ods', 'tsv', 'xlt', 'xltx']),
+    IconFileSpreadsheet: mirror(['ods', 'xlt', 'xltx']),
     IconFileText: mirror(['txt', 'vi', 'vim', 'webdoc']),
     IconFileThreeD: mirror(['3ds', 'dae', 'fbx', 'obj', 'ply', 'stl']),
     IconFileVideo: mirror([
@@ -191,8 +184,6 @@ const EXTENSIONS: { [key: string]: { [key: string]: string } } = {
         'wmv',
     ]),
     IconFileWordDocument: mirror(['docx', 'doc', 'docm']),
-    IconFileXbd: mirror(['xbd']),
-    IconFileXdw: mirror(['xdw']),
     IconFileZip: mirror(['rar', 'tgz', 'zip']),
 };
 

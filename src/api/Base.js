@@ -7,7 +7,6 @@
 import noop from 'lodash/noop';
 import Xhr from '../utils/Xhr';
 import Cache from '../utils/Cache';
-import UploadsReachability from './uploads/UploadsReachability';
 import { getTypedFileId } from '../utils/file';
 import { getBadItemError, getBadPermissionsError } from '../utils/error';
 import {
@@ -78,11 +77,6 @@ class Base {
     errorCallback: ElementsErrorCallback;
 
     /**
-     * @property {UploadsReachability}
-     */
-    uploadsReachability: UploadsReachability;
-
-    /**
      * [constructor]
      *
      * @param {Object} [options]
@@ -103,7 +97,6 @@ class Base {
         this.destroyed = false;
         this.consoleLog = !!options.consoleLog && !!window.console ? window.console.log || noop : noop;
         this.consoleError = !!options.consoleError && !!window.console ? window.console.error || noop : noop;
-        this.uploadsReachability = new UploadsReachability();
     }
 
     /**

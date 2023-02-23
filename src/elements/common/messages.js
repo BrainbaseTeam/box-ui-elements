@@ -40,7 +40,7 @@ const messages = defineMessages({
     previewErrorBlockedByPolicy: {
         id: 'be.previewErrorBlockedByPolicy',
         description: 'Error message when Preview fails due to the files call which is blocked by an access policy.',
-        defaultMessage: 'Your access to this content is restricted due to a security policy.',
+        defaultMessage: 'Your access is restricted due to the classification applied to this content.',
     },
     boxEditErrorBlockedByPolicy: {
         id: 'be.boxEditErrorBlockedByPolicy',
@@ -146,11 +146,6 @@ const messages = defineMessages({
         id: 'be.gridView',
         description: 'Label for switching to grid view',
         defaultMessage: 'Switch to Grid View',
-    },
-    gridViewColumnSize: {
-        id: 'be.gridView.columnSize',
-        description: 'Label for the size of columns in grid view',
-        defaultMessage: 'Column size',
     },
     gridViewIncreaseColumnSize: {
         id: 'be.gridView.increaseColumnSize',
@@ -366,11 +361,6 @@ const messages = defineMessages({
         id: 'be.sidebarAccessStats',
         description: 'Title for the sidebar access stats.',
         defaultMessage: 'Access Stats',
-    },
-    sidebarContentInsights: {
-        id: 'be.sidebarContentInsights',
-        description: 'Title for the sidebar content insights.',
-        defaultMessage: 'Content Insights',
     },
     sidebarShow: {
         id: 'be.sidebarShow',
@@ -697,16 +687,6 @@ const messages = defineMessages({
         description: 'Error message shown when file size exceeds the limit',
         defaultMessage: 'File size exceeds the folder owner’s file size limit',
     },
-    uploadsFileSizeLimitExceededErrorMessageForUpgradeCta: {
-        id: 'be.uploadsFileSizeLimitExceededErrorMessageForUpgradeCta',
-        description: 'Error message shown when file size exceeds the limit',
-        defaultMessage: 'This file exceeds your plan’s upload limit. Upgrade now to store larger files.',
-    },
-    uploadsFileSizeLimitExceededUpgradeMessageForUpgradeCta: {
-        id: 'be.uploadsFileSizeLimitExceededUpgradeMessageForUpgradeCta',
-        description: 'Upgrade message shown when file size exceeds the limit',
-        defaultMessage: 'Upgrade',
-    },
     uploadsStorageLimitErrorMessage: {
         id: 'be.uploadsStorageLimitErrorMessage',
         description: 'Error message shown when account storage limit has been reached',
@@ -731,11 +711,6 @@ const messages = defineMessages({
         id: 'be.uploadsOneOrMoreChildFoldersFailedToUploadMessage',
         description: 'Error message shown when one or more child folders failed to upload',
         defaultMessage: 'One or more child folders failed to upload.',
-    },
-    uploadsPackageUploadErrorMessage: {
-        id: 'be.uploadsPackageUploadErrorMessage',
-        description: 'Error message to display when a macOS package failed to upload',
-        defaultMessage: 'Failed to upload package file. Please retry by saving as a single file.',
     },
     uploadsDefaultErrorMessage: {
         id: 'be.uploadsDefaultErrorMessage',
@@ -974,36 +949,6 @@ const messages = defineMessages({
         description:
             'If a user has been deleted, we call the user "a prior collaborator" - meaning someone who used to be able to collaborate on the content.',
         defaultMessage: 'A Prior Collaborator',
-    },
-    moreOptions: {
-        id: 'be.moreOptions',
-        description: 'Label for a button that displays more options',
-        defaultMessage: 'More options',
-    },
-    bookmark: {
-        id: 'be.bookmark',
-        description: 'Icon title for a Box item of type bookmark or web-link',
-        defaultMessage: 'Bookmark',
-    },
-    collaboratedFolder: {
-        id: 'be.collaboratedFolder',
-        description: 'Icon title for a Box item of type folder that has collaborators',
-        defaultMessage: 'Collaborated Folder',
-    },
-    externalFolder: {
-        id: 'be.externalFolder',
-        description: "Icon title for a Box item of type folder that has collaborators outside of the user's enterprise",
-        defaultMessage: 'External Folder',
-    },
-    file: {
-        id: 'be.file',
-        description: 'Icon title for a Box item of type file',
-        defaultMessage: 'File',
-    },
-    personalFolder: {
-        id: 'be.personalFolder',
-        description: 'Icon title for a Box item of type folder that is private and has no collaborators',
-        defaultMessage: 'Personal Folder',
     },
 });
 

@@ -8,7 +8,6 @@ exports[`features/presence/PresenceLink render() should change the flyoutPositio
   closeOnWindowBlur={false}
   constrainToScrollParent={true}
   constrainToWindow={false}
-  isResponsive={false}
   isVisibleByDefault={false}
   openOnHover={false}
   openOnHoverDelayTimeout={300}
@@ -26,7 +25,8 @@ exports[`features/presence/PresenceLink render() should change the flyoutPositio
   <Overlay
     shouldDefaultFocus={false}
   >
-    <PresenceCollaboratorsList
+    <PresenceDropdown
+      className="presence-dropdown"
       collaborators={
         Array [
           Object {
@@ -34,7 +34,7 @@ exports[`features/presence/PresenceLink render() should change the flyoutPositio
             "id": "1",
             "interactedAt": 999,
             "interactionType": "user.item_preview",
-            "isActive": false,
+            "isActive": true,
             "name": "e",
           },
           Object {
@@ -68,14 +68,6 @@ exports[`features/presence/PresenceLink render() should change the flyoutPositio
             "interactionType": "user.item_upload",
             "isActive": false,
             "name": "a",
-          },
-          Object {
-            "avatarUrl": "",
-            "id": "6",
-            "interactedAt": 999,
-            "interactionType": "user.item_preview",
-            "isActive": true,
-            "name": "f",
           },
         ]
       }
@@ -92,7 +84,6 @@ exports[`features/presence/PresenceLink render() should correctly render collabo
   closeOnWindowBlur={false}
   constrainToScrollParent={true}
   constrainToWindow={false}
-  isResponsive={false}
   isVisibleByDefault={false}
   openOnHover={false}
   openOnHoverDelayTimeout={300}
@@ -109,7 +100,8 @@ exports[`features/presence/PresenceLink render() should correctly render collabo
   <Overlay
     shouldDefaultFocus={false}
   >
-    <PresenceCollaboratorsList
+    <PresenceDropdown
+      className="presence-dropdown"
       collaborators={
         Array [
           Object {
@@ -117,7 +109,7 @@ exports[`features/presence/PresenceLink render() should correctly render collabo
             "id": "1",
             "interactedAt": 999,
             "interactionType": "user.item_preview",
-            "isActive": false,
+            "isActive": true,
             "name": "e",
           },
           Object {
@@ -151,14 +143,6 @@ exports[`features/presence/PresenceLink render() should correctly render collabo
             "interactionType": "user.item_upload",
             "isActive": false,
             "name": "a",
-          },
-          Object {
-            "avatarUrl": "",
-            "id": "6",
-            "interactedAt": 999,
-            "interactionType": "user.item_preview",
-            "isActive": true,
-            "name": "f",
           },
         ]
       }
@@ -177,7 +161,6 @@ exports[`features/presence/PresenceLink render() should pass through additional 
   closeOnWindowBlur={false}
   constrainToScrollParent={true}
   constrainToWindow={false}
-  isResponsive={false}
   isVisibleByDefault={false}
   openOnHover={false}
   openOnHoverDelayTimeout={300}
@@ -195,7 +178,8 @@ exports[`features/presence/PresenceLink render() should pass through additional 
   <Overlay
     shouldDefaultFocus={false}
   >
-    <PresenceCollaboratorsList
+    <PresenceDropdown
+      className="presence-dropdown"
       collaborators={
         Array [
           Object {
@@ -203,7 +187,7 @@ exports[`features/presence/PresenceLink render() should pass through additional 
             "id": "1",
             "interactedAt": 999,
             "interactionType": "user.item_preview",
-            "isActive": false,
+            "isActive": true,
             "name": "e",
           },
           Object {
@@ -237,14 +221,6 @@ exports[`features/presence/PresenceLink render() should pass through additional 
             "interactionType": "user.item_upload",
             "isActive": false,
             "name": "a",
-          },
-          Object {
-            "avatarUrl": "",
-            "id": "6",
-            "interactedAt": 999,
-            "interactionType": "user.item_preview",
-            "isActive": true,
-            "name": "f",
           },
         ]
       }

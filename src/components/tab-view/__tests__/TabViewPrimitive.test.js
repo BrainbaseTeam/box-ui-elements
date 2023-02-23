@@ -248,7 +248,7 @@ describe('components/tab-view/TabViewPrimitive', () => {
                     </TabViewPrimitive>,
                 );
                 component.setState({ tabsContainerOffsetLeft });
-                const tab = component.find('.tabs');
+                const tab = component.find('nav');
 
                 expect(tab.prop('style')).toEqual(style);
             });

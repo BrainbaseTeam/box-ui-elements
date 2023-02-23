@@ -2,12 +2,11 @@
 
 exports[`features/unified-share-modal/InviteePermissionsMenu render() it should render correct menu 1`] = `
 <div
-  className="be invitee-menu-wrap"
+  className="invitee-menu-wrap"
 >
   <DropdownMenu
     constrainToScrollParent={false}
     constrainToWindow={false}
-    isResponsive={false}
     isRightAligned={false}
   >
     <Tooltip
@@ -128,12 +127,11 @@ exports[`features/unified-share-modal/InviteePermissionsMenu render() it should 
 
 exports[`features/unified-share-modal/InviteePermissionsMenu render() it should render correct menu 2`] = `
 <div
-  className="be invitee-menu-wrap"
+  className="invitee-menu-wrap"
 >
   <DropdownMenu
     constrainToScrollParent={false}
     constrainToWindow={false}
-    isResponsive={false}
     isRightAligned={false}
   >
     <PlainButton
@@ -236,12 +234,11 @@ exports[`features/unified-share-modal/InviteePermissionsMenu render() it should 
 
 exports[`features/unified-share-modal/InviteePermissionsMenu render() it should render correct menu 3`] = `
 <div
-  className="be invitee-menu-wrap"
+  className="invitee-menu-wrap"
 >
   <DropdownMenu
     constrainToScrollParent={false}
     constrainToWindow={false}
-    isResponsive={false}
     isRightAligned={false}
   >
     <Tooltip
@@ -362,12 +359,11 @@ exports[`features/unified-share-modal/InviteePermissionsMenu render() it should 
 
 exports[`features/unified-share-modal/InviteePermissionsMenu render() it should render correct menu 4`] = `
 <div
-  className="be invitee-menu-wrap"
+  className="invitee-menu-wrap"
 >
   <DropdownMenu
     constrainToScrollParent={false}
     constrainToWindow={false}
-    isResponsive={false}
     isRightAligned={false}
   >
     <PlainButton
@@ -470,12 +466,11 @@ exports[`features/unified-share-modal/InviteePermissionsMenu render() it should 
 
 exports[`features/unified-share-modal/InviteePermissionsMenu render() it should render correct menu 5`] = `
 <div
-  className="be invitee-menu-wrap"
+  className="invitee-menu-wrap"
 >
   <DropdownMenu
     constrainToScrollParent={false}
     constrainToWindow={false}
-    isResponsive={false}
     isRightAligned={false}
   >
     <Tooltip
@@ -596,12 +591,11 @@ exports[`features/unified-share-modal/InviteePermissionsMenu render() it should 
 
 exports[`features/unified-share-modal/InviteePermissionsMenu render() it should render correct menu 6`] = `
 <div
-  className="be invitee-menu-wrap"
+  className="invitee-menu-wrap"
 >
   <DropdownMenu
     constrainToScrollParent={false}
     constrainToWindow={false}
-    isResponsive={false}
     isRightAligned={false}
   >
     <PlainButton
@@ -704,12 +698,11 @@ exports[`features/unified-share-modal/InviteePermissionsMenu render() it should 
 
 exports[`features/unified-share-modal/InviteePermissionsMenu render() it should render correct menu 7`] = `
 <div
-  className="be invitee-menu-wrap"
+  className="invitee-menu-wrap"
 >
   <DropdownMenu
     constrainToScrollParent={false}
     constrainToWindow={false}
-    isResponsive={false}
     isRightAligned={false}
   >
     <Tooltip
@@ -830,12 +823,11 @@ exports[`features/unified-share-modal/InviteePermissionsMenu render() it should 
 
 exports[`features/unified-share-modal/InviteePermissionsMenu render() it should render correct menu 8`] = `
 <div
-  className="be invitee-menu-wrap"
+  className="invitee-menu-wrap"
 >
   <DropdownMenu
     constrainToScrollParent={false}
     constrainToWindow={false}
-    isResponsive={false}
     isRightAligned={false}
   >
     <PlainButton
@@ -938,12 +930,11 @@ exports[`features/unified-share-modal/InviteePermissionsMenu render() it should 
 
 exports[`features/unified-share-modal/InviteePermissionsMenu render() it should render correct menu 9`] = `
 <div
-  className="be invitee-menu-wrap"
+  className="invitee-menu-wrap"
 >
   <DropdownMenu
     constrainToScrollParent={false}
     constrainToWindow={false}
-    isResponsive={false}
     isRightAligned={false}
   >
     <Tooltip
@@ -1064,12 +1055,11 @@ exports[`features/unified-share-modal/InviteePermissionsMenu render() it should 
 
 exports[`features/unified-share-modal/InviteePermissionsMenu render() it should render correct menu 10`] = `
 <div
-  className="be invitee-menu-wrap"
+  className="invitee-menu-wrap"
 >
   <DropdownMenu
     constrainToScrollParent={false}
     constrainToWindow={false}
-    isResponsive={false}
     isRightAligned={false}
   >
     <PlainButton
@@ -1172,12 +1162,11 @@ exports[`features/unified-share-modal/InviteePermissionsMenu render() it should 
 
 exports[`features/unified-share-modal/InviteePermissionsMenu render() it should render correct menu 11`] = `
 <div
-  className="be invitee-menu-wrap"
+  className="invitee-menu-wrap"
 >
   <DropdownMenu
     constrainToScrollParent={false}
     constrainToWindow={false}
-    isResponsive={false}
     isRightAligned={false}
   >
     <Tooltip
@@ -1298,12 +1287,11 @@ exports[`features/unified-share-modal/InviteePermissionsMenu render() it should 
 
 exports[`features/unified-share-modal/InviteePermissionsMenu render() it should render correct menu 12`] = `
 <div
-  className="be invitee-menu-wrap"
+  className="invitee-menu-wrap"
 >
   <DropdownMenu
     constrainToScrollParent={false}
     constrainToWindow={false}
-    isResponsive={false}
     isRightAligned={false}
   >
     <PlainButton
@@ -1406,12 +1394,11 @@ exports[`features/unified-share-modal/InviteePermissionsMenu render() it should 
 
 exports[`features/unified-share-modal/InviteePermissionsMenu render() it should render correct menu 13`] = `
 <div
-  className="be invitee-menu-wrap"
+  className="invitee-menu-wrap"
 >
   <DropdownMenu
     constrainToScrollParent={false}
     constrainToWindow={false}
-    isResponsive={false}
     isRightAligned={false}
   >
     <PlainButton
@@ -1514,12 +1501,11 @@ exports[`features/unified-share-modal/InviteePermissionsMenu render() it should 
 
 exports[`features/unified-share-modal/InviteePermissionsMenu render() it should render correct menu 14`] = `
 <div
-  className="be invitee-menu-wrap"
+  className="invitee-menu-wrap"
 >
   <DropdownMenu
     constrainToScrollParent={false}
     constrainToWindow={false}
-    isResponsive={false}
     isRightAligned={false}
   >
     <Tooltip

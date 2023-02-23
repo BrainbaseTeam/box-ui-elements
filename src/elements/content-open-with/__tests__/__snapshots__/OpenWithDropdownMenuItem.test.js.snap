@@ -118,8 +118,7 @@ exports[`elements/content-open-with/OpenWithDropdownMenuItem should render the d
   className=""
   onClick={[Function]}
 >
-  <IconGoogleDocs
-    className=""
+  <IconAdobeSign
     dimension={30}
     height={30}
     width={30}
@@ -128,12 +127,12 @@ exports[`elements/content-open-with/OpenWithDropdownMenuItem should render the d
     <p
       className="bcow-menu-item-title"
     >
-      Google Docs
+      Adobe Sign
     </p>
     <p
       className="bcow-menu-item-description"
     >
-      Open With Google Docs
+      Open With Adobe
     </p>
   </span>
 </MenuItem>

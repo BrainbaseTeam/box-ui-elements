@@ -78,46 +78,6 @@ describe('features/content-explorer/content-explorer/ContentExplorer', () => {
             expect(wrapper.find('ContentExplorerActionButtons').prop('onSelectedClick')).toEqual(onSelectedClick);
         });
 
-        test('should render ContentExplorerSelectAll with isSelectAllAllowed = true', () => {
-            const isSelectAllAllowed = true;
-            const wrapper = renderComponent({ isSelectAllAllowed });
-
-            expect(wrapper.exists('ContentExplorerSelectAll')).toBeTruthy();
-        });
-
-        test('should not render ContentExplorerSelectAll with isSelectAllAllowed = false', () => {
-            const isSelectAllAllowed = false;
-            const wrapper = renderComponent({ isSelectAllAllowed });
-
-            expect(wrapper.find('ContentExplorerSelectAll').length).toBe(0);
-        });
-
-        test('should pass numTotalItems to ContentExplorerSelectAll', () => {
-            const numTotalItems = 12345;
-            const wrapper = renderComponent({ isSelectAllAllowed: true, numTotalItems });
-            expect(wrapper.find('ContentExplorerSelectAll').prop('numTotalItems')).toEqual(numTotalItems);
-        });
-
-        test('should pass isSelectAllChecked to ContentExplorerSelectAll', () => {
-            const isSelectAllChecked = true;
-            const wrapper = renderComponent({ isSelectAllAllowed: true });
-            wrapper.setState({ isSelectAllChecked });
-
-            expect(wrapper.find('ContentExplorerSelectAll').prop('isSelectAllChecked')).toEqual(isSelectAllChecked);
-        });
-
-        test('should render ContentExplorerIncludeSubfolders when passed includeSubfoldersProps', () => {
-            const wrapper = renderComponent({ includeSubfoldersProps: {} });
-
-            expect(wrapper.exists('ContentExplorerIncludeSubfolders')).toBe(true);
-        });
-
-        test('should not render ContentExplorerIncludeSubfolders without includeSubfoldersProps', () => {
-            const wrapper = renderComponent();
-
-            expect(wrapper.exists('ContentExplorerIncludeSubfolders')).toBe(false);
-        });
-
         test("customInput should be false if the props isn't passed down", () => {
             const wrapper = renderComponent();
             expect(wrapper.find('ContentExplorerHeaderActions').prop('customInput')).toBe(undefined);
@@ -252,22 +212,6 @@ describe('features/content-explorer/content-explorer/ContentExplorer', () => {
                 expect(wrapper.find('ContentExplorerActionButtons').prop('areButtonsDisabled')).toBe(true);
             });
         });
-
-        test('should render with action buttons enabled in MULTI_SELECT mode if there is no selection made when isNoSelectionAllowed is true', () => {
-            const items = [
-                { id: '1', name: 'item1' },
-                { id: '2', name: 'item2' },
-                { id: '3', name: 'item3' },
-            ];
-
-            const wrapper = renderComponent({
-                contentExplorerMode: ContentExplorerModes.MULTI_SELECT,
-                items,
-                isNoSelectionAllowed: true,
-            });
-
-            expect(wrapper.find('ContentExplorerActionButtons').prop('areButtonsDisabled')).toBe(false);
-        });
     });
 
     describe('onEnterFolder', () => {
@@ -321,29 +265,6 @@ describe('features/content-explorer/content-explorer/ContentExplorer', () => {
                 .simulate('doubleClick');
 
             expect(onEnterFolderSpy.withArgs(clickedFolder, newFoldersPath).calledOnce).toBe(true);
-        });
-
-        test('should not call onEnterFolder when clicking disabled folder name', () => {
-            const disabledItems = [{ id: '123', name: 'item1', type: 'folder', isDisabled: true }];
-            wrapper = renderComponent(
-                {
-                    items: disabledItems,
-                    initialFoldersPath,
-                    onEnterFolder: onEnterFolderSpy,
-                },
-                true,
-            );
-
-            const clickedFolderIndex = 0;
-            const clickedFolder = items[clickedFolderIndex];
-            const newFoldersPath = initialFoldersPath.concat([clickedFolder]);
-
-            wrapper
-                .find('.item-list-name')
-                .first()
-                .simulate('click');
-
-            expect(onEnterFolderSpy.withArgs(clickedFolder, newFoldersPath).calledOnce).toBe(false);
         });
     });
 
@@ -637,88 +558,6 @@ describe('features/content-explorer/content-explorer/ContentExplorer', () => {
                 const result = wrapper.instance().toggleSelectedItem(selectedItems, item);
                 expect(Object.keys(result).length).toEqual(expectedLength);
             });
-            test('should set initialSelectedItems', () => {
-                const wrapper = renderComponent(
-                    {
-                        initialSelectedItems: selectedItems,
-                        contentExplorerMode: ContentExplorerModes.SELECT_FILE,
-                    },
-                    false,
-                );
-                const actionButtons = wrapper.find('ContentExplorerActionButtons');
-                expect(actionButtons.prop('selectedItems')).toEqual(selectedItems);
-            });
-        });
-    });
-
-    describe('handleSelectAllClick()', () => {
-        const items = [
-            { id: 'item1', name: 'name1' },
-            { id: 'item2', name: 'name2' },
-        ];
-        const selectedItems = { item1: { id: 'item1', name: 'name1' }, item2: { id: 'item2', name: 'name2' } };
-
-        test('should add items to selectedItems when selectAll is called', () => {
-            const wrapper = renderComponent({ items });
-            const result = wrapper.instance().selectAll();
-
-            expect(result).toStrictEqual(selectedItems);
-        });
-
-        test('should remove items from selectedItems when unselectAll is called', () => {
-            const wrapper = renderComponent({ items });
-            wrapper.setState({ selectedItems });
-            const result = wrapper.instance().unselectAll();
-
-            expect(result).toStrictEqual({});
-        });
-
-        test('should call selectAll when handleSelectAllClick and checkbox is not selected', () => {
-            const wrapper = renderComponent({ items });
-            const instance = wrapper.instance();
-            wrapper.setState({ isSelectAllChecked: false });
-
-            instance.selectAll = jest.fn();
-
-            instance.unselectAll = jest.fn();
-
-            instance.handleSelectAllClick();
-
-            expect(wrapper.state('isSelectAllChecked')).toBeTruthy();
-            expect(instance.selectAll).toHaveBeenCalledTimes(1);
-            expect(instance.unselectAll).toHaveBeenCalledTimes(0);
-        });
-
-        test('should call unselectAll when handleSelectAllClick and checkbox is selected', () => {
-            const wrapper = renderComponent({ items });
-            wrapper.setState({ isSelectAllChecked: true });
-            const instance = wrapper.instance();
-
-            instance.selectAll = jest.fn();
-
-            instance.unselectAll = jest.fn();
-
-            instance.handleSelectAllClick();
-
-            expect(wrapper.state('isSelectAllChecked')).toBeFalsy();
-            expect(instance.selectAll).toHaveBeenCalledTimes(0);
-            expect(instance.unselectAll).toHaveBeenCalledTimes(1);
-        });
-
-        test('should not call selectAll or unselectAll when handleSelectAllClick and checkbox is not selected but items are still loading', () => {
-            const wrapper = renderComponent({ items: [{ isLoading: true }] });
-            wrapper.setState({ isSelectAllChecked: true });
-            const instance = wrapper.instance();
-
-            instance.selectAll = jest.fn();
-
-            instance.unselectAll = jest.fn();
-
-            instance.handleSelectAllClick();
-
-            expect(wrapper.state('isSelectAllChecked')).toBeTruthy();
-            expect(instance.selectAll).toHaveBeenCalledTimes(0);
-            expect(instance.unselectAll).toHaveBeenCalledTimes(0);
         });
     });
 });

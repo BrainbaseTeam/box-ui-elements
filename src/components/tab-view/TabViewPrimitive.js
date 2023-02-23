@@ -205,10 +205,9 @@ class TabViewPrimitive extends React.Component<Props, State> {
         const style = isDynamic ? { left: `${tabsContainerOffsetLeft}px` } : {};
 
         return (
-            <div
+            <nav
                 className="tabs"
                 role="tablist"
-                tabIndex="0"
                 ref={ref => {
                     this.tabsContainer = ref;
                 }}
@@ -269,7 +268,7 @@ class TabViewPrimitive extends React.Component<Props, State> {
                         </button>
                     );
                 })}
-            </div>
+            </nav>
         );
     }
 

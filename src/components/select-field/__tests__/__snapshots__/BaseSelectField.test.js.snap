@@ -10,7 +10,7 @@ exports[`components/select-field/BaseSelectField renderSelectButton() should sen
   isDisabled={false}
   onClick={[Function]}
   onKeyDown={[Function]}
-  role="listbox"
+  role="combobox"
   title=""
 />
 `;
@@ -19,7 +19,6 @@ exports[`components/select-field/BaseSelectField renderSelectOptions() should re
 Array [
   <DatalistItem
     className="select-option"
-    isSelected={false}
     key="0"
     onClick={[Function]}
     onMouseEnter={[Function]}
@@ -35,7 +34,6 @@ Array [
   </DatalistItem>,
   <DatalistItem
     className="select-option"
-    isSelected={false}
     key="1"
     onClick={[Function]}
     onMouseEnter={[Function]}
@@ -52,7 +50,6 @@ Array [
   </DatalistItem>,
   <DatalistItem
     className="select-option"
-    isSelected={false}
     key="2"
     onClick={[Function]}
     onMouseEnter={[Function]}
@@ -69,7 +66,6 @@ Array [
   </DatalistItem>,
   <DatalistItem
     className="select-option"
-    isSelected={false}
     key="3"
     onClick={[Function]}
     onMouseEnter={[Function]}

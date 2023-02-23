@@ -26,11 +26,8 @@ class UnifiedShareModal extends React.Component<USMProps, State> {
     static defaultProps = {
         displayInModal: true,
         initiallySelectedContacts: [],
-        isAllowEditSharedLinkForFileEnabled: false,
         createSharedLinkOnLoad: false,
         focusSharedLinkOnLoad: false,
-        restrictedCollabEmails: [],
-        restrictedGroups: [],
         trackingProps: {
             inviteCollabsEmailTracking: {},
             sharedLinkEmailTracking: {},
@@ -77,10 +74,8 @@ class UnifiedShareModal extends React.Component<USMProps, State> {
     }
 
     componentDidUpdate(prevProps: USMProps) {
-        const { item, sharedLink, trackingProps } = this.props;
+        const { item, sharedLink } = this.props;
         const { type, typedID } = item;
-        const { modalTracking } = trackingProps;
-        const { onLoadSharedLink } = modalTracking;
         const prevSharedLink = prevProps.sharedLink;
         const { getInitialDataCalled } = this.state;
 
@@ -88,12 +83,6 @@ class UnifiedShareModal extends React.Component<USMProps, State> {
         // hydrated before we fetch data
         if (!getInitialDataCalled && type && typedID) {
             this.getInitialData();
-        }
-
-        // this ensures that we obtain shared link information the first time data is returned
-        // so we can pass the corresponding permissions in the callback
-        if (!prevSharedLink.permissionLevel && sharedLink.permissionLevel && onLoadSharedLink) {
-            onLoadSharedLink(sharedLink.permissionLevel);
         }
 
         // we use state to override the default auto copy prop when a URL comes into view
@@ -137,17 +126,13 @@ class UnifiedShareModal extends React.Component<USMProps, State> {
     };
 
     renderUSF = () => {
-        const { sharedLinkEditTagTargetingApi, sharedLinkEditTooltipTargetingApi } = this.props;
         const { isFetching, sharedLinkLoaded, shouldRenderFTUXTooltip } = this.state;
-
         return (
             <UnifiedShareForm
                 {...this.props}
                 handleFtuxCloseClick={this.handleFtuxCloseClick}
                 isFetching={isFetching}
                 openConfirmModal={this.openConfirmModal}
-                sharedLinkEditTagTargetingApi={sharedLinkEditTagTargetingApi}
-                sharedLinkEditTooltipTargetingApi={sharedLinkEditTooltipTargetingApi}
                 sharedLinkLoaded={sharedLinkLoaded}
                 shouldRenderFTUXTooltip={shouldRenderFTUXTooltip}
             />
@@ -173,7 +158,7 @@ class UnifiedShareModal extends React.Component<USMProps, State> {
             <>
                 {displayInModal ? (
                     <Modal
-                        className="be-modal unified-share-modal"
+                        className="unified-share-modal"
                         isOpen={isConfirmModalOpen ? false : isOpen}
                         onRequestClose={submitting ? undefined : onRequestClose}
                         title={
@@ -188,7 +173,7 @@ class UnifiedShareModal extends React.Component<USMProps, State> {
                         {this.renderUSF()}
                     </Modal>
                 ) : (
-                    <div className="bdl-UnifiedShareForm-container">{this.renderUSF()}</div>
+                    this.renderUSF()
                 )}
                 {isConfirmModalOpen && (
                     <RemoveLinkConfirmModal

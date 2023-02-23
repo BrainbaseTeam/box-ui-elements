@@ -21,7 +21,6 @@ export const withModal = () => {
             <IntlProvider locale="en">
                 <ContentSharing
                     apiHost={apiHost}
-                    config={{ showEmailSharedLinkForm: false, showInviteCollaboratorMessageSection: false }}
                     displayInModal
                     itemID={itemID}
                     itemType={itemType}
@@ -49,7 +48,6 @@ export const withModalAndCustomButton = () => {
             <IntlProvider locale="en">
                 <ContentSharing
                     apiHost={apiHost}
-                    config={{ showEmailSharedLinkForm: false, showInviteCollaboratorMessageSection: false }}
                     customButton={customButton}
                     displayInModal
                     itemID={itemID}
@@ -76,7 +74,6 @@ export const withoutModal = () => {
             <IntlProvider locale="en">
                 <ContentSharing
                     apiHost={apiHost}
-                    config={{ showEmailSharedLinkForm: false, showInviteCollaboratorMessageSection: false }}
                     displayInModal={false}
                     itemID={itemID}
                     itemType={itemType}

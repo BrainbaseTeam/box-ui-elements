@@ -27,16 +27,6 @@ const messages = defineMessages({
         defaultMessage: '{time, date, full} at {time, time, short}',
         description: 'Comment posted full date time for title',
     },
-    commentResolveMenuItem: {
-        id: 'be.contentSidebar.activityFeed.comment.commentResolveMenuItem',
-        defaultMessage: 'Resolve',
-        description: 'Text to show on menu item to resolve the comment',
-    },
-    commentUnresolveMenuItem: {
-        id: 'be.contentSidebar.activityFeed.comment.commentUnresolveMenuItem',
-        defaultMessage: 'Unresolve',
-        description: 'Text to show on menu item to unresolve the comment',
-    },
 });
 
 export default messages;

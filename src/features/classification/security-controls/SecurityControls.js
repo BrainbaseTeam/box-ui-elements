@@ -67,7 +67,8 @@ class SecurityControls extends React.Component<Props, State> {
         if (controlsFormat === FULL) {
             items = getFullSecurityControlsMessages(controls, maxAppCount);
         } else {
-            items = getShortSecurityControlsMessage(controls);
+            const shortMessage = getShortSecurityControlsMessage(controls);
+            items = shortMessage ? [shortMessage] : [];
 
             if (items.length && controlsFormat === SHORT_WITH_BTN) {
                 modalItems = getFullSecurityControlsMessages(controls, maxAppCount);
@@ -84,8 +85,8 @@ class SecurityControls extends React.Component<Props, State> {
 
         let itemsList = (
             <ul className="bdl-SecurityControls">
-                {items.map(({ message, tooltipMessage }, index) => (
-                    <SecurityControlsItem key={index} message={message} tooltipMessage={tooltipMessage} />
+                {items.map(({ message, tooltipMessage }) => (
+                    <SecurityControlsItem key={message.id} message={message} tooltipMessage={tooltipMessage} />
                 ))}
             </ul>
         );

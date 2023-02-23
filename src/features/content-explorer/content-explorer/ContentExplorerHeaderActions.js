@@ -5,9 +5,8 @@ import { injectIntl } from 'react-intl';
 import ContentExplorerSearch from './ContentExplorerSearch';
 import ContentExplorerNewFolderButton from './ContentExplorerNewFolderButton';
 import ContentExplorerBreadcrumbs from './ContentExplorerBreadcrumbs';
-import ContentExplorerFolderTreeBreadcrumbs from './ContentExplorerFolderTreeBreadcrumbs';
 
-import { BreadcrumbPropType, ContentExplorerModePropType, FoldersPathPropType } from '../prop-types';
+import { ContentExplorerModePropType, FoldersPathPropType } from '../prop-types';
 import messages from '../messages';
 
 const SEARCH_RESULTS_FOLDER_ID = 'search_results_id';
@@ -16,7 +15,6 @@ const isSearchResultsFolder = folder => folder && folder.id === SEARCH_RESULTS_F
 
 class ContentExplorerHeaderActions extends Component {
     static propTypes = {
-        breadcrumbProps: BreadcrumbPropType,
         children: PropTypes.node,
         contentExplorerMode: ContentExplorerModePropType.isRequired,
         customInput: PropTypes.func,
@@ -27,10 +25,8 @@ class ContentExplorerHeaderActions extends Component {
         onCreateNewFolderButtonClick: PropTypes.func,
         showCreateNewFolderButton: PropTypes.bool,
         isCreateNewFolderAllowed: PropTypes.bool,
-        hasFolderTreeBreadcrumbs: PropTypes.bool,
         onSearchSubmit: PropTypes.func.isRequired,
         onExitSearch: PropTypes.func.isRequired,
-        numTotalItems: PropTypes.number,
         searchInputProps: PropTypes.object,
     };
 
@@ -151,7 +147,6 @@ class ContentExplorerHeaderActions extends Component {
 
     render() {
         const {
-            breadcrumbProps,
             children,
             contentExplorerMode,
             customInput: CustomInput,
@@ -159,13 +154,10 @@ class ContentExplorerHeaderActions extends Component {
             onCreateNewFolderButtonClick,
             showCreateNewFolderButton,
             isCreateNewFolderAllowed,
-            hasFolderTreeBreadcrumbs,
-            numTotalItems,
             searchInputProps,
         } = this.props;
         const { searchInput } = this.state;
         const isInSearchMode = this.isInSearchMode();
-        const isBreadcrumbButtonDisabled = foldersPath.length <= 1 && !isInSearchMode;
 
         return (
             <div className="content-explorer-header-actions">
@@ -191,23 +183,12 @@ class ContentExplorerHeaderActions extends Component {
                     )}
                     {children}
                 </div>
-                {hasFolderTreeBreadcrumbs ? (
-                    <ContentExplorerFolderTreeBreadcrumbs
-                        foldersPath={foldersPath}
-                        isFolderTreeButtonHidden={this.isViewingSearchResults()}
-                        isFolderTreeButtonDisabled={isBreadcrumbButtonDisabled}
-                        numTotalItems={numTotalItems}
-                        onBreadcrumbClick={this.handleBreadcrumbClick}
-                    />
-                ) : (
-                    <ContentExplorerBreadcrumbs
-                        breadcrumbProps={breadcrumbProps}
-                        foldersPath={foldersPath}
-                        isUpButtonDisabled={isBreadcrumbButtonDisabled}
-                        onUpButtonClick={this.handleBreadcrumbsUpButtonClick}
-                        onBreadcrumbClick={this.handleBreadcrumbClick}
-                    />
-                )}
+                <ContentExplorerBreadcrumbs
+                    foldersPath={foldersPath}
+                    isUpButtonDisabled={foldersPath.length <= 1 && !isInSearchMode}
+                    onUpButtonClick={this.handleBreadcrumbsUpButtonClick}
+                    onBreadcrumbClick={this.handleBreadcrumbClick}
+                />
             </div>
         );
     }

@@ -16,12 +16,10 @@ exports[`features/unified-share-modal/SharedLinkAccessMenu render() should rende
   <DropdownMenu
     constrainToScrollParent={false}
     constrainToWindow={true}
-    isResponsive={false}
     isRightAligned={false}
   >
     <PlainButton
       className="lnk"
-      data-testid="usm-share-access-toggle"
       disabled={false}
     >
       <MenuToggle>
@@ -35,7 +33,6 @@ exports[`features/unified-share-modal/SharedLinkAccessMenu render() should rende
     </PlainButton>
     <Menu
       className="usm-share-access-menu"
-      data-testid="usm-share-access-menu"
       isHidden={false}
       isSubmenu={false}
     />
@@ -59,12 +56,10 @@ exports[`features/unified-share-modal/SharedLinkAccessMenu render() should rende
   <DropdownMenu
     constrainToScrollParent={false}
     constrainToWindow={true}
-    isResponsive={false}
     isRightAligned={false}
   >
     <PlainButton
       className="lnk is-disabled bdl-is-disabled"
-      data-testid="usm-share-access-toggle"
       disabled={true}
     >
       <MenuToggle>
@@ -78,7 +73,6 @@ exports[`features/unified-share-modal/SharedLinkAccessMenu render() should rende
     </PlainButton>
     <Menu
       className="usm-share-access-menu"
-      data-testid="usm-share-access-menu"
       isHidden={false}
       isSubmenu={false}
     />
@@ -102,12 +96,10 @@ exports[`features/unified-share-modal/SharedLinkAccessMenu render() should rende
   <DropdownMenu
     constrainToScrollParent={false}
     constrainToWindow={true}
-    isResponsive={false}
     isRightAligned={false}
   >
     <PlainButton
       className="lnk"
-      data-testid="usm-share-access-toggle"
       disabled={false}
     >
       <MenuToggle>
@@ -121,7 +113,6 @@ exports[`features/unified-share-modal/SharedLinkAccessMenu render() should rende
     </PlainButton>
     <Menu
       className="usm-share-access-menu"
-      data-testid="usm-share-access-menu"
       isHidden={false}
       isSubmenu={false}
     >
@@ -133,7 +124,7 @@ exports[`features/unified-share-modal/SharedLinkAccessMenu render() should rende
         position="top-center"
         text={
           <FormattedMessage
-            defaultMessage="This option is not available due to a security policy."
+            defaultMessage="This option isn’t available for this item due to a security restriction or classification."
             id="boxui.unifiedShare.disabledShareLinkPermission"
           />
         }
@@ -174,12 +165,10 @@ exports[`features/unified-share-modal/SharedLinkAccessMenu render() should rende
   <DropdownMenu
     constrainToScrollParent={false}
     constrainToWindow={true}
-    isResponsive={false}
     isRightAligned={false}
   >
     <PlainButton
       className="lnk"
-      data-testid="usm-share-access-toggle"
       disabled={false}
     >
       <MenuToggle>
@@ -193,7 +182,6 @@ exports[`features/unified-share-modal/SharedLinkAccessMenu render() should rende
     </PlainButton>
     <Menu
       className="usm-share-access-menu"
-      data-testid="usm-share-access-menu"
       isHidden={false}
       isSubmenu={false}
     />
@@ -217,12 +205,10 @@ exports[`features/unified-share-modal/SharedLinkAccessMenu render() should rende
   <DropdownMenu
     constrainToScrollParent={false}
     constrainToWindow={true}
-    isResponsive={false}
     isRightAligned={false}
   >
     <PlainButton
       className="lnk"
-      data-testid="usm-share-access-toggle"
       disabled={false}
     >
       <MenuToggle>
@@ -236,7 +222,6 @@ exports[`features/unified-share-modal/SharedLinkAccessMenu render() should rende
     </PlainButton>
     <Menu
       className="usm-share-access-menu"
-      data-testid="usm-share-access-menu"
       isHidden={false}
       isSubmenu={false}
     >
@@ -248,7 +233,7 @@ exports[`features/unified-share-modal/SharedLinkAccessMenu render() should rende
         position="top-center"
         text={
           <FormattedMessage
-            defaultMessage="This option is not available due to a security policy."
+            defaultMessage="This option isn’t available for this item due to a security restriction or classification."
             id="boxui.unifiedShare.disabledShareLinkPermission"
           />
         }
@@ -276,7 +261,7 @@ exports[`features/unified-share-modal/SharedLinkAccessMenu render() should rende
         position="top-center"
         text={
           <FormattedMessage
-            defaultMessage="This option is not available due to a security policy."
+            defaultMessage="This option isn’t available for this item due to a security restriction or classification."
             id="boxui.unifiedShare.disabledShareLinkPermission"
           />
         }
@@ -304,7 +289,7 @@ exports[`features/unified-share-modal/SharedLinkAccessMenu render() should rende
         position="top-center"
         text={
           <FormattedMessage
-            defaultMessage="This option is not available due to a security policy."
+            defaultMessage="This option isn’t available for this item due to a security restriction or classification."
             id="boxui.unifiedShare.disabledShareLinkPermission"
           />
         }
@@ -345,12 +330,10 @@ exports[`features/unified-share-modal/SharedLinkAccessMenu render() should rende
   <DropdownMenu
     constrainToScrollParent={false}
     constrainToWindow={true}
-    isResponsive={false}
     isRightAligned={false}
   >
     <PlainButton
       className="lnk"
-      data-testid="usm-share-access-toggle"
       disabled={false}
     >
       <MenuToggle>
@@ -364,7 +347,6 @@ exports[`features/unified-share-modal/SharedLinkAccessMenu render() should rende
     </PlainButton>
     <Menu
       className="usm-share-access-menu"
-      data-testid="usm-share-access-menu"
       isHidden={false}
       isSubmenu={false}
     >
@@ -432,7 +414,7 @@ exports[`features/unified-share-modal/SharedLinkAccessMenu render() should rende
         position="top-center"
         text={
           <FormattedMessage
-            defaultMessage="This option is not available due to a security policy."
+            defaultMessage="This option isn’t available for this item due to a security restriction or classification."
             id="boxui.unifiedShare.disabledShareLinkPermission"
           />
         }

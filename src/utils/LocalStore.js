@@ -24,12 +24,8 @@ class LocalStore {
      */
     constructor() {
         this.memoryStore = new Cache();
-        try {
-            this.localStorage = window.localStorage;
-            this.isLocalStorageAvailable = this.canUseLocalStorage();
-        } catch (e) {
-            this.isLocalStorageAvailable = false;
-        }
+        this.localStorage = window.localStorage;
+        this.isLocalStorageAvailable = this.canUseLocalStorage();
     }
 
     /**

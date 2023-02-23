@@ -9,7 +9,6 @@ import './LabelPill.scss';
 export enum LabelPillStatus {
     DEFAULT = 'default',
     INFO = 'info',
-    FTUX = 'ftux',
     HIGHLIGHT = 'highlight',
     SUCCESS = 'success',
     WARNING = 'warning',

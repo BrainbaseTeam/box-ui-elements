@@ -7,14 +7,14 @@
 .badge {
     display: inline-block;
     padding: 2px 4px 3px;
-    color: $bdl-gray;
+    color: $bdl-gray-62;
     font-weight: bold;
     font-size: 10px;
     line-height: 12px;
     text-align: center;
     text-decoration: none;
     background: $bdl-gray-10;
-    border-radius: $bdl-border-radius-size;
+    border-radius: 3px;
 }
 
 .badge-info {

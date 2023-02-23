@@ -1,6 +1,5 @@
 // @flow
 import * as React from 'react';
-import classNames from 'classnames';
 import TetherComponent from 'react-tether';
 
 import PlainButton from '../../components/plain-button';
@@ -16,8 +15,6 @@ type Props = {
     attachmentPosition?: TetherPosition,
     callout: Callout,
     children: React.Node,
-    isShown?: boolean,
-    navLinkClassName?: string,
     targetAttachmentPosition?: TetherPosition,
 };
 
@@ -39,41 +36,25 @@ class LeftSidebarLinkCallout extends React.Component<Props, State> {
         this.setState({ isShown: false });
     };
 
-    isControlled = () => {
-        const { isShown: isShownProp } = this.props;
-        return typeof isShownProp !== 'undefined';
-    };
-
-    isShown = () => {
-        const { isShown: isShownProp } = this.props;
-        const isControlled = this.isControlled();
-
-        const showTooltip = isControlled ? isShownProp : this.state.isShown;
-
-        return showTooltip;
-    };
-
     render() {
         const {
             attachmentPosition = TETHER_POSITIONS.MIDDLE_LEFT,
             children,
             callout: { content },
-            navLinkClassName,
             targetAttachmentPosition = TETHER_POSITIONS.MIDDLE_RIGHT,
         } = this.props;
 
-        const showTooltip = this.isShown();
+        const { isShown } = this.state;
 
         return (
             <TetherComponent
                 attachment={attachmentPosition}
                 classPrefix="nav-link-callout"
-                enabled={showTooltip}
                 targetAttachment={targetAttachmentPosition}
             >
                 {React.Children.only(children)}
-                {showTooltip && (
-                    <div className={classNames('nav-link-callout', navLinkClassName)}>
+                {isShown && (
+                    <div className="nav-link-callout">
                         <PlainButton className="nav-link-callout-close-button" onClick={this.hideCallout}>
                             <IconClose color="#fff" height={16} width={16} />
                         </PlainButton>

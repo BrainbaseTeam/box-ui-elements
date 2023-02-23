@@ -2,10 +2,10 @@ import React from 'react';
 import noop from 'lodash/noop';
 import { shallow } from 'enzyme';
 import * as TokenService from '../../../utils/TokenService';
-import PreviewMask from '../PreviewMask';
-import SidebarUtils from '../../content-sidebar/SidebarUtils';
-import { ContentPreviewComponent as ContentPreview } from '../ContentPreview';
 import { PREVIEW_FIELDS_TO_FETCH } from '../../../utils/fields';
+import { ContentPreviewComponent as ContentPreview } from '../ContentPreview';
+import PreviewLoading from '../PreviewLoading';
+import SidebarUtils from '../../content-sidebar/SidebarUtils';
 
 jest.mock('../../common/Internationalize', () => 'mock-internationalize');
 
@@ -24,9 +24,6 @@ describe('elements/content-preview/ContentPreview', () => {
             this.show = jest.fn();
             this.updateToken = jest.fn();
             this.addListener = jest.fn();
-            this.updateExperiences = jest.fn();
-            this.getThumbnail = jest.fn();
-            this.updateContentInsightsOptions = jest.fn();
         };
         global.performance = {
             now: jest.fn().mockReturnValue(PERFORMANCE_TIME),
@@ -103,30 +100,6 @@ describe('elements/content-preview/ContentPreview', () => {
             expect(instance.destroyPreview).toHaveBeenCalledWith();
             expect(wrapper.state('selectedVersion')).toBe(undefined);
             expect(instance.fetchFile).toHaveBeenCalledWith('456');
-        });
-
-        test('should update content insights options if the isActive prop changed', () => {
-            file = { id: '123' };
-
-            props = {
-                advancedContentInsights: {
-                    enabled: true,
-                    isActive: false,
-                },
-            };
-
-            const wrapper = getWrapper(props);
-            const instance = wrapper.instance();
-            instance.preview = new global.Box.Preview();
-
-            instance.destroyPreview = jest.fn();
-            instance.fetchFile = jest.fn();
-
-            const updatedContentInsightsOptions = { enabled: true, isActive: true };
-
-            wrapper.setProps({ advancedContentInsights: updatedContentInsightsOptions });
-
-            expect(instance.preview.updateContentInsightsOptions).toHaveBeenCalledWith(updatedContentInsightsOptions);
         });
     });
 
@@ -274,9 +247,6 @@ describe('elements/content-preview/ContentPreview', () => {
                 this.show = jest.fn();
                 this.removeAllListeners = jest.fn();
                 this.destroy = jest.fn();
-                this.pageTracker = {
-                    addListener: jest.fn(),
-                };
             };
 
             file = { id: '123' };
@@ -322,13 +292,11 @@ describe('elements/content-preview/ContentPreview', () => {
                 file.id,
                 expect.any(Function),
                 expect.objectContaining({
-                    container: expect.stringContaining('.bcpr-content'),
-                    header: 'none',
                     showDownload: false,
-                    showLoading: false,
-                    showProgress: false,
                     skipServerUpdate: true,
+                    header: 'none',
                     useHotkeys: false,
+                    container: expect.stringContaining('.bcpr-content'),
                 }),
             );
         });
@@ -348,18 +316,16 @@ describe('elements/content-preview/ContentPreview', () => {
                 expect.any(Function),
                 expect.objectContaining({
                     container: expect.stringContaining('.bcpr-content'),
+                    header: 'none',
+                    showDownload: false,
+                    skipServerUpdate: true,
+                    useHotkeys: false,
                     fileOptions: {
                         [file.id]: {
                             fileVersionId: '12345',
                             currentFileVersionId: '67890',
                         },
                     },
-                    header: 'none',
-                    showDownload: false,
-                    showLoading: false,
-                    showProgress: false,
-                    skipServerUpdate: true,
-                    useHotkeys: false,
                 }),
             );
         });
@@ -455,40 +421,6 @@ describe('elements/content-preview/ContentPreview', () => {
                     expect(instance.preview.addListener).toHaveBeenCalledWith('annotator_create', onAnnotator);
                 } else {
                     expect(instance.preview.addListener).not.toHaveBeenCalledWith('annotator_create', onAnnotator);
-                }
-            },
-        );
-
-        test.each`
-            called   | advancedContentInsights
-            ${true}  | ${{}}
-            ${false} | ${undefined}
-        `(
-            'should call onContentInsightsEventReport $called if advancedContentInsights is $advancedContentInsights',
-            async ({ called, advancedContentInsights }) => {
-                const onContentInsightsEventReport = jest.fn();
-                const wrapper = getWrapper({
-                    ...props,
-                    advancedContentInsights,
-                    onContentInsightsEventReport,
-                });
-
-                wrapper.setState({ file });
-
-                const instance = wrapper.instance();
-
-                await instance.loadPreview();
-
-                if (called) {
-                    expect(instance.preview.addListener).toHaveBeenCalledWith(
-                        'advanced_insights_report',
-                        onContentInsightsEventReport,
-                    );
-                } else {
-                    expect(instance.preview.addListener).not.toHaveBeenCalledWith(
-                        'advanced_insights_report',
-                        onContentInsightsEventReport,
-                    );
                 }
             },
         );
@@ -655,12 +587,6 @@ describe('elements/content-preview/ContentPreview', () => {
             expect(instance.file).toBeUndefined();
             expect(onError).toHaveBeenCalled();
         });
-
-        test('should set isLoading to false', () => {
-            instance.setState({ isLoading: true });
-            instance.fetchFileErrorCallback({ code: 'specialCode', message: 'specialMessage' }, 'code');
-            expect(instance.state.isLoading).toBe(false);
-        });
     });
 
     describe('getTotalFileFetchTime()', () => {
@@ -817,11 +743,6 @@ describe('elements/content-preview/ContentPreview', () => {
             instance.onPreviewLoad(data);
             expect(instance.prefetch).toBeCalled();
         });
-
-        test('should set isLoading to false', () => {
-            instance.onPreviewLoad(data);
-            expect(instance.state.isLoading).toBe(false);
-        });
     });
 
     describe('onPreviewMetric()', () => {
@@ -869,28 +790,9 @@ describe('elements/content-preview/ContentPreview', () => {
     });
 
     describe('render()', () => {
-        test('should render PreviewMask', () => {
+        test('should render PreviewLoading if there is no file', () => {
             const wrapper = getWrapper(props);
-            expect(wrapper.find(PreviewMask).exists()).toBe(true);
-        });
-
-        test('should render PreviewMask with the current file extension if available', () => {
-            const fileId = '123';
-            const wrapper = getWrapper({ fileId });
-
-            wrapper.setState({ file: { extension: 'pdf', id: fileId } });
-
-            expect(wrapper.find(PreviewMask).prop('extension')).toBe('pdf');
-        });
-
-        test('should render PreviewMask with no extension if the file id recently changed', () => {
-            const fileId = '123';
-            const wrapper = getWrapper({ fileId });
-
-            wrapper.setState({ file: { extension: 'pdf', id: fileId } });
-            wrapper.setProps({ fileId: '456' }); // New file id means the internal file state is stale
-
-            expect(wrapper.find(PreviewMask).prop('extension')).toBe('');
+            expect(wrapper.find(PreviewLoading).exists()).toBe(true);
         });
 
         test('should render nothing if there is no fileId', () => {
@@ -988,7 +890,9 @@ describe('elements/content-preview/ContentPreview', () => {
             instance.loadPreview = jest.fn();
         });
 
-        test('should destroy preview and load the file if fileId changed', () => {
+        // Test fails in enzyme@3.9.0 due to regression
+        // https://github.com/airbnb/enzyme/issues/2020
+        test('should destroy preview and load the file if file id changed', () => {
             wrapper.setProps({
                 fileId: 'bar',
             });
@@ -996,14 +900,7 @@ describe('elements/content-preview/ContentPreview', () => {
             expect(instance.fetchFile).toBeCalledTimes(1);
         });
 
-        test('should update the loading state if fileId changes', () => {
-            wrapper.setState({ isLoading: false }); // Simulate existing preview
-            wrapper.setProps({ fileId: 'bar' });
-
-            expect(wrapper.state('isLoading')).toBe(true);
-        });
-
-        test("should load preview if fileId hasn't changed and shouldLoadPreview returns true", () => {
+        test('should load preview if fileId hasnt changed and shouldLoadPreview returns ture', () => {
             instance.shouldLoadPreview = jest.fn().mockReturnValue(true);
             wrapper.setProps({
                 foo: 'bar',
@@ -1011,28 +908,11 @@ describe('elements/content-preview/ContentPreview', () => {
             expect(instance.loadPreview).toBeCalledTimes(1);
         });
 
-        test("should update the loading state if fileId hasn't changed and shouldLoadPreview returns true", () => {
-            instance.shouldLoadPreview = jest.fn().mockReturnValue(true);
-            wrapper.setState({ isLoading: false }); // Simulate existing preview
-            wrapper.setProps({ fileId: 'bar' });
-
-            expect(wrapper.state('isLoading')).toBe(true);
-        });
-
         test('should update the preview with the new token if it changes', () => {
             wrapper.setProps({
                 token: 'bar',
             });
             expect(instance.updatePreviewToken).toBeCalledTimes(1);
-        });
-
-        test('should update experiences in preview when previewExperiences changes', async () => {
-            instance.preview = new global.Box.Preview();
-            wrapper.setProps({
-                previewExperiences: {},
-            });
-
-            expect(instance.preview.updateExperiences).toBeCalledTimes(1);
         });
     });
 
@@ -1315,38 +1195,5 @@ describe('elements/content-preview/ContentPreview', () => {
                 expect(emit).toBeCalledWith('scrolltoannotation', { id: annotation.id, target: annotation.target });
             },
         );
-    });
-
-    describe('getThumbnail()', () => {
-        let instance;
-        let wrapper;
-        const pageNumber = 1;
-
-        beforeEach(() => {
-            wrapper = getWrapper();
-            instance = wrapper.instance();
-            file = {
-                id: '123',
-            };
-        });
-
-        test('should call the preview getThumbnail function', () => {
-            const getThumbnailStub = jest.fn();
-            wrapper.setState({ file });
-            instance.preview = new global.Box.Preview();
-            instance.preview.viewer = {
-                getThumbnail: getThumbnailStub,
-            };
-            const pageThumbnail = instance.getThumbnail(pageNumber);
-            expect(pageThumbnail).not.toBeNull();
-            expect(getThumbnailStub).toBeCalledWith(pageNumber);
-        });
-
-        test('should return null if the preview viewer does not exists', () => {
-            wrapper.setState({ file });
-            const pageThumbnail = instance.getThumbnail(pageNumber);
-
-            expect(pageThumbnail).toBeNull();
-        });
     });
 });

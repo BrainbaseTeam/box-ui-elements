@@ -49,7 +49,6 @@ type ClassComponent<P, S> = Class<React$Component<P, S>>;
 // }
 type StringMap = { [string]: string };
 type StringAnyMap = { [string]: any };
-type StringMixedMap = { [string]: mixed };
 type StringBooleanMap = { [string]: boolean };
 type NumberBooleanMap = { [number]: boolean };
 
@@ -109,11 +108,13 @@ type UserMini = {
     id: string,
     login?: string,
     name: string,
-    status?: string,
     type: 'user',
 };
 
-type ContactCollection = {
+type User = UserMini;
+
+type UserCollection = {
+    entries?: Array<User>,
     isLoaded?: boolean,
     limit?: number,
     next_marker?: string,
@@ -123,23 +124,10 @@ type ContactCollection = {
     total_count?: number,
 };
 
-type User = UserMini;
-
-type UserCollection = ContactCollection & {
-    entries?: Array<User>,
-};
-
 type GroupMini = {
     id: string,
     name: string,
-    permissions?: {
-        can_invite_as_collaborator: boolean,
-    },
     type: 'group',
-};
-
-type GroupCollection = ContactCollection & {
-    entries?: Array<GroupMini>,
 };
 
 type ISODate = string;
@@ -163,12 +151,6 @@ type SelectorItems<T: any = any> = Array<SelectorItem<T>>;
 
 type Crumb = {
     id?: string,
-    name: string,
-};
-
-type BoxItemClassification = {
-    color: string,
-    definition: string,
     name: string,
 };
 
@@ -471,7 +453,6 @@ export type {
     ClassComponent,
     StringMap,
     StringAnyMap,
-    StringMixedMap,
     StringBooleanMap,
     NumberBooleanMap,
     Access,
@@ -491,13 +472,11 @@ export type {
     User,
     UserCollection,
     GroupMini,
-    GroupCollection,
     ISODate,
     MarkerPaginatedCollection,
     SelectorItem,
     SelectorItems,
     Crumb,
-    BoxItemClassification,
     BoxItemPermission,
     BoxItemVersionPermission,
     BoxItemVersionRetention,

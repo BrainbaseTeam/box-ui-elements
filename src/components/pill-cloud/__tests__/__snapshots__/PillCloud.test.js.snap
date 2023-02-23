@@ -6,7 +6,6 @@ exports[`components/pill-cloud/PillCloud should render pills 1`] = `
 >
   <Button
     className="bdl-Pill bdl-PillCloud-button pill pill-cloud-button"
-    data-resin-target={1}
     isLoading={false}
     key="1"
     showRadar={false}
@@ -16,7 +15,6 @@ exports[`components/pill-cloud/PillCloud should render pills 1`] = `
   </Button>
   <Button
     className="bdl-Pill bdl-PillCloud-button pill pill-cloud-button"
-    data-resin-target={2}
     isLoading={false}
     key="2"
     showRadar={false}
@@ -26,7 +24,6 @@ exports[`components/pill-cloud/PillCloud should render pills 1`] = `
   </Button>
   <Button
     className="bdl-Pill bdl-PillCloud-button pill pill-cloud-button"
-    data-resin-target={3}
     isLoading={false}
     key="3"
     showRadar={false}

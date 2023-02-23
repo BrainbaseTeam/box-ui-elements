@@ -1,5 +1,4 @@
 // @flow
-import type { MessageDescriptor } from 'react-intl';
 import {
     VIEW_MODE_GRID,
     VIEW_MODE_LIST,
@@ -55,31 +54,14 @@ type ModalOptions = {
     overlayClassName: string,
 };
 
-type MaskError = {
-    errorHeader: MessageDescriptor,
-    errorSubHeader?: MessageDescriptor,
-};
-
-type InlineError = {
-    content: MessageDescriptor,
-    title: MessageDescriptor,
-};
-
-type Errors = {
-    error?: MessageDescriptor,
-    inlineError?: InlineError,
-    maskError?: MaskError,
-};
-
 export type {
-    AdditionalVersionInfo,
-    Alignment,
-    ElementOrigin,
+    ViewMode,
     ErrorType,
-    Errors,
     GetAvatarUrlCallback,
     GetProfileUrlCallback,
+    AdditionalVersionInfo,
+    ElementOrigin,
+    Alignment,
     ModalOptions,
     Page,
-    ViewMode,
 };

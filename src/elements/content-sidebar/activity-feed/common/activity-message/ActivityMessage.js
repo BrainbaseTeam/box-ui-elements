@@ -1,25 +1,16 @@
 // @flow
 import * as React from 'react';
 import noop from 'lodash/noop';
-import { FormattedMessage } from 'react-intl';
-import CollapsableMessage from './CollapsableMessage';
-import formatTaggedMessage from '../../utils/formatTaggedMessage';
 import LoadingIndicator from '../../../../../components/loading-indicator';
-import messages from './messages';
+import formatTaggedMessage from '../../utils/formatTaggedMessage';
 import ShowOriginalButton from './ShowOriginalButton';
 import TranslateButton from './TranslateButton';
-import { withFeatureConsumer, isFeatureEnabled } from '../../../../common/feature-checking';
-
 import type { GetProfileUrlCallback } from '../../../../common/flowTypes';
-import type { FeatureConfig } from '../../../../common/feature-checking';
-
 import './ActivityMessage.scss';
 
 type Props = {
-    features: FeatureConfig,
     getUserProfileUrl?: GetProfileUrlCallback,
     id: string,
-    isEdited?: boolean,
     onTranslate?: Function,
     tagged_message: string,
     translatedTaggedMessage?: string,
@@ -34,7 +25,6 @@ type State = {
 
 class ActivityMessage extends React.Component<Props, State> {
     static defaultProps = {
-        isEdited: false,
         translationEnabled: false,
     };
 
@@ -84,41 +74,21 @@ class ActivityMessage extends React.Component<Props, State> {
     };
 
     render(): React.Node {
-        const {
-            features,
-            getUserProfileUrl,
-            id,
-            isEdited,
-            tagged_message,
-            translatedTaggedMessage,
-            translationEnabled,
-        } = this.props;
+        const { id, tagged_message, translatedTaggedMessage, translationEnabled, getUserProfileUrl } = this.props;
         const { isLoading, isTranslation } = this.state;
         const commentToDisplay =
             translationEnabled && isTranslation && translatedTaggedMessage ? translatedTaggedMessage : tagged_message;
-        const MessageWrapper = isFeatureEnabled(features, 'activityFeed.collapsableMessages.enabled')
-            ? CollapsableMessage
-            : React.Fragment;
-
         return isLoading ? (
             <div className="bcs-ActivityMessageLoading">
                 <LoadingIndicator size="small" />
             </div>
         ) : (
             <div className="bcs-ActivityMessage">
-                <MessageWrapper>
-                    {formatTaggedMessage(commentToDisplay, id, false, getUserProfileUrl)}
-                    {isEdited && (
-                        <span className="bcs-ActivityMessage-edited">
-                            <FormattedMessage {...messages.activityMessageEdited} />
-                        </span>
-                    )}
-                </MessageWrapper>
+                {formatTaggedMessage(commentToDisplay, id, false, getUserProfileUrl)}
                 {translationEnabled ? this.getButton(isTranslation) : null}
             </div>
         );
     }
 }
 
-export { ActivityMessage };
-export default withFeatureConsumer(ActivityMessage);
+export default ActivityMessage;

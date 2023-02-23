@@ -1,7 +1,6 @@
 import React from 'react';
 import sinon from 'sinon';
 
-import ContentExplorerModes from '../../modes';
 import { ContentExplorerNewFolderButtonBase as ContentExplorerNewFolderButton } from '../ContentExplorerNewFolderButton';
 
 describe('features/content-explorer/content-explorer/ContentExplorerNewFolderButton', () => {
@@ -15,14 +14,9 @@ describe('features/content-explorer/content-explorer/ContentExplorerNewFolderBut
     });
 
     describe('render()', () => {
-        test.each([
-            ContentExplorerModes.COPY,
-            ContentExplorerModes.MOVE_COPY,
-            ContentExplorerModes.MULTI_SELECT,
-            ContentExplorerModes.SELECT_FOLDER,
-        ])('should render the default component when mode is %s', contentExplorerMode => {
+        test('should render the default component', () => {
             const wrapper = renderComponent({
-                contentExplorerMode,
+                contentExplorerMode: 'moveCopy',
             });
 
             expect(wrapper.hasClass('content-explorer-new-folder-button')).toBe(true);

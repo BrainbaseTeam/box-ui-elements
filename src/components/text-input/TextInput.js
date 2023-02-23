@@ -23,8 +23,6 @@ type Props = {
     hideLabel?: boolean,
     /** Hides (optional) text from the label */
     hideOptionalLabel?: boolean,
-    /** Icon to display in the input field */
-    icon?: React.Node,
     inputRef?: Function, // @TODO: eventually rename to innerRef for consistancy across all form elements
     /** Renders a loading indicator within the component when true */
     isLoading?: boolean,
@@ -35,8 +33,6 @@ type Props = {
     /** Label displayed for the text input */
     label: React.Node,
     labelTooltip?: React.Node,
-    /** A CSS class for the tooltip's tether element component */
-    tooltipTetherClassName?: string,
 };
 
 const TextInput = ({
@@ -46,14 +42,12 @@ const TextInput = ({
     errorPosition,
     hideLabel,
     hideOptionalLabel,
-    icon,
     inputRef,
     isLoading,
     isRequired,
     isValid,
     label,
     labelTooltip,
-    tooltipTetherClassName,
     ...rest
 }: Props) => {
     const hasError = !!error;
@@ -82,18 +76,11 @@ const TextInput = ({
                         {description}
                     </div>
                 )}
-                <Tooltip
-                    isShown={hasError}
-                    position={errorPosition || 'middle-right'}
-                    tetherElementClassName={tooltipTetherClassName}
-                    text={error || ''}
-                    theme="error"
-                >
+                <Tooltip isShown={hasError} position={errorPosition || 'middle-right'} text={error || ''} theme="error">
                     <input ref={inputRef} required={isRequired} {...ariaAttrs} {...rest} />
                 </Tooltip>
                 {isLoading && !isValid && <LoadingIndicator className="text-input-loading" />}
                 {isValid && !isLoading && <IconVerified className="text-input-verified" />}
-                {!isLoading && !isValid && icon ? icon : null}
             </Label>
         </div>
     );

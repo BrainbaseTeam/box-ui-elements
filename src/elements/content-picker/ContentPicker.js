@@ -6,7 +6,6 @@
 
 import 'regenerator-runtime/runtime';
 import React, { Component } from 'react';
-import type { Node } from 'react';
 import classNames from 'classnames';
 import debounce from 'lodash/debounce';
 import getProp from 'lodash/get';
@@ -79,7 +78,6 @@ type Props = {
     cancelButtonLabel?: string,
     chooseButtonLabel?: string,
     className: string,
-    clearSelectedItemsOnNavigation: boolean,
     clientName: string,
     contentUploaderProps: ContentUploaderProps,
     currentFolderId?: string,
@@ -87,9 +85,7 @@ type Props = {
     extensions: string[],
     initialPage: number,
     initialPageSize: number,
-    isHeaderLogoVisible?: boolean,
     isLarge: boolean,
-    isPaginationVisible?: boolean,
     isSmall: boolean,
     isTouch: boolean,
     language?: string,
@@ -99,18 +95,11 @@ type Props = {
     messages?: StringMap,
     onCancel: Function,
     onChoose: Function,
-    renderCustomActionButtons?: ({
-        onCancel: Function,
-        onChoose: Function,
-        selectedCount: number,
-        selectedItems: BoxItem[],
-    }) => Node,
     requestInterceptor?: Function,
     responseInterceptor?: Function,
     rootFolderId: string,
     sharedLink?: string,
     sharedLinkPassword?: string,
-    showSelectedButton: boolean,
     sortBy: SortBy,
     sortDirection: SortDirection,
     token: Token,
@@ -177,10 +166,6 @@ class ContentPicker extends Component<Props, State> {
         clientName: CLIENT_NAME_CONTENT_PICKER,
         defaultView: DEFAULT_VIEW_FILES,
         contentUploaderProps: {},
-        showSelectedButton: true,
-        clearSelectedItemsOnNavigation: false,
-        isHeaderLogoVisible: true,
-        isPaginationVisible: true,
     };
 
     /**
@@ -306,48 +291,25 @@ class ContentPicker extends Component<Props, State> {
     }
 
     /**
-     * Gets selected items from state.
+     * Choose button action.
      * Clones values before returning so that
      * object references are broken. Also cleans
      * up the selected attribute since it was
      * added by the file picker.
      *
      * @private
-     * @return {BoxItem[]}
-     */
-    getSelectedItems = (): BoxItem[] => {
-        const { selected }: State = this.state;
-        return Object.keys(selected).map(key => {
-            const clone: BoxItem = { ...selected[key] };
-            delete clone.selected;
-            return clone;
-        });
-    };
-
-    /**
-     * Choose button action.
-     *
-     * @private
      * @fires choose
      * @return {void}
      */
     choose = (): void => {
-        const { onChoose }: Props = this.props;
-        const results = this.getSelectedItems();
-        onChoose(results);
-    };
-
-    /**
-     * Deletes selected keys off of selected items in state.
-     *
-     * @private
-     * @return {void}
-     */
-    deleteSelectedKeys = (): void => {
         const { selected }: State = this.state;
-
-        // Clear out the selected field
-        Object.keys(selected).forEach(key => delete selected[key].selected);
+        const { onChoose }: Props = this.props;
+        const results: BoxItem[] = Object.keys(selected).map(key => {
+            const clone: BoxItem = { ...selected[key] };
+            delete clone.selected;
+            return clone;
+        });
+        onChoose(results);
     };
 
     /**
@@ -359,8 +321,10 @@ class ContentPicker extends Component<Props, State> {
      */
     cancel = (): void => {
         const { onCancel }: Props = this.props;
+        const { selected }: State = this.state;
 
-        this.deleteSelectedKeys();
+        // Clear out the selected field
+        Object.keys(selected).forEach(key => delete selected[key].selected);
 
         // Reset the selected state
         this.setState({ selected: {} }, () => onCancel());
@@ -478,24 +442,17 @@ class ContentPicker extends Component<Props, State> {
      * @return {void}
      */
     fetchFolderSuccessCallback(collection: Collection, triggerNavigationEvent: boolean): void {
-        const { clearSelectedItemsOnNavigation, rootFolderId }: Props = this.props;
+        const { rootFolderId }: Props = this.props;
         const { id, name }: Collection = collection;
 
-        const commonState = {
+        // New folder state
+        const newState = {
             currentCollection: collection,
             rootName: id === rootFolderId ? name : '',
         };
 
-        // New folder state
-        const newState = clearSelectedItemsOnNavigation ? { ...commonState, selected: {} } : commonState;
-
         // Close any open modals
         this.closeModals();
-
-        // Deletes selected keys
-        if (clearSelectedItemsOnNavigation) {
-            this.deleteSelectedKeys();
-        }
 
         if (triggerNavigationEvent) {
             // Fire folder navigation event
@@ -1192,8 +1149,6 @@ class ContentPicker extends Component<Props, State> {
             sharedLinkPassword,
             apiHost,
             uploadHost,
-            isHeaderLogoVisible,
-            isPaginationVisible,
             isSmall,
             className,
             measureRef,
@@ -1201,8 +1156,6 @@ class ContentPicker extends Component<Props, State> {
             cancelButtonLabel,
             requestInterceptor,
             responseInterceptor,
-            renderCustomActionButtons,
-            showSelectedButton,
         }: Props = this.props;
         const {
             view,
@@ -1234,7 +1187,6 @@ class ContentPicker extends Component<Props, State> {
                     <div className="be-app-element" onKeyDown={this.onKeyDown} tabIndex={0}>
                         <Header
                             view={view}
-                            isHeaderLogoVisible={isHeaderLogoVisible}
                             isSmall={isSmall}
                             searchQuery={searchQuery}
                             logoUrl={logoUrl}
@@ -1272,10 +1224,7 @@ class ContentPicker extends Component<Props, State> {
                             onShareAccessChange={this.changeShareAccess}
                         />
                         <Footer
-                            currentCollection={currentCollection}
                             selectedCount={selectedCount}
-                            selectedItems={this.getSelectedItems()}
-                            showSelectedButton={showSelectedButton}
                             hasHitSelectionLimit={hasHitSelectionLimit}
                             isSingleSelect={isSingleSelect}
                             onSelectedClick={this.showSelected}
@@ -1283,16 +1232,13 @@ class ContentPicker extends Component<Props, State> {
                             onCancel={this.cancel}
                             chooseButtonLabel={chooseButtonLabel}
                             cancelButtonLabel={cancelButtonLabel}
-                            renderCustomActionButtons={renderCustomActionButtons}
                         >
-                            {isPaginationVisible ? (
-                                <OffsetBasedPagination
-                                    offset={offset}
-                                    onOffsetChange={this.paginate}
-                                    pageSize={currentPageSize}
-                                    totalCount={totalCount}
-                                />
-                            ) : null}
+                            <OffsetBasedPagination
+                                offset={offset}
+                                onOffsetChange={this.paginate}
+                                pageSize={currentPageSize}
+                                totalCount={totalCount}
+                            />
                         </Footer>
                     </div>
                     {allowUpload && !!this.appElement ? (

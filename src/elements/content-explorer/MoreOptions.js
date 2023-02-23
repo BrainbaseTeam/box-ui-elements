@@ -1,16 +1,13 @@
 // @flow
 import React from 'react';
-import { FormattedMessage, injectIntl } from 'react-intl';
-import type { IntlShape } from 'react-intl';
-
+import { FormattedMessage } from 'react-intl';
 import Button from '../../components/button/Button';
 import DropdownMenu from '../../components/dropdown-menu/DropdownMenu';
 import Menu from '../../components/menu/Menu';
 import MenuItem from '../../components/menu/MenuItem';
 import Browser from '../../utils/Browser';
 import IconEllipsis from '../../icons/general/IconEllipsis';
-import { bdlGray } from '../../styles/variables';
-
+import { bdlGray50 } from '../../styles/variables';
 import messages from '../common/messages';
 import {
     PERMISSION_CAN_DOWNLOAD,
@@ -24,7 +21,6 @@ import {
 
 import type { CommonGridViewFunctions } from './flowTypes';
 import type { BoxItem } from '../../common/types/core';
-
 import './MoreOptionsCell.scss';
 
 type Props = {
@@ -33,7 +29,6 @@ type Props = {
     canPreview: boolean,
     canRename: boolean,
     canShare: boolean,
-    intl: IntlShape,
     isSmall: boolean,
     item: BoxItem,
     ...$Exact<CommonGridViewFunctions>,
@@ -51,7 +46,6 @@ const MoreOptions = ({
     onItemRename,
     onItemShare,
     onItemPreview,
-    intl,
     isSmall,
     item,
 }: Props) => {
@@ -84,13 +78,12 @@ const MoreOptions = ({
         <div className="bce-more-options">
             <DropdownMenu constrainToScrollParent isRightAligned>
                 <Button
-                    aria-label={intl.formatMessage(messages.moreOptions)}
                     className="bce-btn-more-options"
                     data-testid="bce-btn-more-options"
                     onFocus={onFocus}
                     type="button"
                 >
-                    <IconEllipsis color={bdlGray} height={10} width={16} />
+                    <IconEllipsis color={bdlGray50} height={10} width={16} />
                 </Button>
                 <Menu>
                     {allowPreview && (
@@ -134,4 +127,4 @@ const MoreOptions = ({
     );
 };
 
-export default injectIntl(MoreOptions);
+export default MoreOptions;

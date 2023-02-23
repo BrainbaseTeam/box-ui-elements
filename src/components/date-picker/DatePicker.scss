@@ -23,16 +23,10 @@
     }
 
     .date-picker-input {
-        min-width: 160px;
-        height: 32px;
         margin-top: 5px;
         margin-bottom: 0;
-        padding-right: 6px;
+        padding-right: 30px;
         text-overflow: ellipsis;
-
-        &::-webkit-calendar-picker-indicator {
-            display: none;
-        }
     }
 
     .date-picker-input:focus ~ .tooltip,
@@ -44,31 +38,37 @@
     .date-picker-open-btn {
         position: absolute;
         right: 7px;
-        bottom: 8px;
-        display: inline-flex;
-        background-color: $white;
-    }
-
-    .date-picker-open-btn:hover {
-        cursor: pointer;
+        bottom: 10px;
+        display: inline-block;
+        height: 17px;
     }
 
     .date-picker-clear-btn,
     .date-picker-icon-alert {
         position: absolute;
         right: 30px;
-        bottom: 8px;
-        display: inline-flex;
+        bottom: 10px;
+        display: inline-block;
 
         span {
             display: inline-block;
         }
     }
 
+    .date-picker-clear-btn,
+    .date-picker-clear-btn:active,
+    .date-picker-clear-btn:focus,
+    .date-picker-clear-btn:hover,
+    .date-picker-clear-btn:active:focus,
+    .date-picker-clear-btn:active:hover,
+    .date-picker-clear-btn span {
+        height: 14px;
+    }
+
     .date-picker-clear-btn {
         path {
             transition: fill linear .1s;
-            fill: $bdl-gray-50;
+            fill: $bdl-gray-40;
         }
     }
 
@@ -76,6 +76,7 @@
     > .date-picker-clear-btn:focus {
         path {
             fill: $bdl-gray-80;
+            path: $bdl-gray-80;
         }
     }
 
@@ -90,32 +91,21 @@
         }
     }
 
-    .date-picker-clear-btn:focus,
-    .date-picker-open-btn:focus {
-        margin: -1px;
-        border: 1px solid $bdl-box-blue;
-        border-radius: $bdl-border-radius-size;
-    }
-
     .date-picker-icon-alert {
         path {
             fill: $bdl-watermelon-red;
         }
     }
 
-    &.show-error {
-        .date-picker-input {
-            border-color: $bdl-watermelon-red;
-        }
-    }
-
     &.show-clear-btn.show-error {
-        .date-picker-clear-btn {
+        .date-picker-clear-btn,
+        .date-picker-clear-btn:hover,
+        .date-picker-clear-btn:active {
             right: 25px;
         }
 
-        .date-picker-icon-alert {
-            right: 42px;
+        .date-picker-input {
+            padding-right: 50px;
         }
     }
 }

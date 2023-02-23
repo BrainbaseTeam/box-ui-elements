@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { emailValidator } from '../../../utils/validators';
-
 import { ContactsFieldBase as ContactsField } from '../ContactsField';
 import messages from '../messages';
 
@@ -294,26 +292,6 @@ describe('features/unified-share-modal/ContactsField', () => {
             expect(wrapper.state('contacts')).toEqual([]);
             expect(onInput).toHaveBeenCalled();
         });
-    });
-
-    describe('parseItems()', () => {
-        test.each`
-            inputValue                                                    | expectedItems
-            ${'a@example.com'}                                            | ${['a@example.com']}
-            ${'Foo Bar <fbar@example.com>; Test User <test@example.com>'} | ${['fbar@example.com', 'test@example.com']}
-            ${'not_an_email; Test User <test@example.com>'}               | ${['test@example.com']}
-            ${'malformed,emailtest@example.com'}                          | ${[]}
-            ${'123'}                                                      | ${[]}
-            ${'not_an_email'}                                             | ${[]}
-        `(
-            'should correctly parse pill selector input "$inputValue" and return $expectedItems',
-            ({ inputValue, expectedItems }) => {
-                const wrapper = getWrapper({ validator: emailValidator });
-                const { parseItems } = wrapper.find('PillSelectorDropdown').props();
-
-                expect(parseItems(inputValue)).toEqual(expectedItems);
-            },
-        );
     });
 
     describe('render', () => {

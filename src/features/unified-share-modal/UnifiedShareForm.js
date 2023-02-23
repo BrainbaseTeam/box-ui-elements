@@ -1,39 +1,23 @@
 // @flow
 
 import * as React from 'react';
-import isEmpty from 'lodash/isEmpty';
-import isEqual from 'lodash/isEqual';
-import uniqueId from 'lodash/uniqueId';
 import { FormattedMessage, injectIntl } from 'react-intl';
 
-import FormattedCompMessage from '../../components/i18n/FormattedCompMessage';
 import LoadingIndicatorWrapper from '../../components/loading-indicator/LoadingIndicatorWrapper';
 import { Link } from '../../components/link';
 import Button from '../../components/button';
 import { UpgradeBadge } from '../../components/badge';
-import InlineNotice from '../../components/inline-notice';
-import PlainButton from '../../components/plain-button';
-import { ITEM_TYPE_FILE, ITEM_TYPE_WEBLINK } from '../../common/constants';
+import { ITEM_TYPE_WEBLINK } from '../../common/constants';
 import Tooltip from '../../components/tooltip';
 import { CollaboratorAvatars, CollaboratorList } from '../collaborator-avatars';
 
-import AdvancedContentInsightsToggle from '../advanced-content-insights/AdvancedContentInsightsToggle';
 import InviteePermissionsMenu from './InviteePermissionsMenu';
 import messages from './messages';
 import SharedLinkSection from './SharedLinkSection';
 import EmailForm from './EmailForm';
 import getDefaultPermissionLevel from './utils/defaultPermissionLevel';
-import hasRestrictedContacts from './utils/hasRestrictedContacts';
 import mergeContacts from './utils/mergeContacts';
-import { JUSTIFICATION_CHECKPOINT_EXTERNAL_COLLAB } from './constants';
-
-import type {
-    contactType as Contact,
-    getJustificationReasonsResponseType as GetJustificationReasonsResponse,
-    item as Item,
-    justificationCheckpointType as JustificationCheckpoint,
-    USFProps,
-} from './flowTypes';
+import type { contactType as Contact, USFProps } from './flowTypes';
 import type { SelectOptionProp } from '../../components/select-field/props';
 
 const SHARED_LINKS_COMMUNITY_URL = 'https://community.box.com/t5/Using-Shared-Links/Creating-Shared-Links/ta-p/19523';
@@ -41,14 +25,11 @@ const INVITE_COLLABS_CONTACTS_TYPE = 'inviteCollabsContacts';
 const EMAIL_SHARED_LINK_CONTACTS_TYPE = 'emailSharedLinkContacts';
 
 type State = {
-    classificationLabelId: string,
     emailSharedLinkContacts: Array<Contact>,
     inviteCollabsContacts: Array<Contact>,
     inviteePermissionLevel: string,
     isEmailLinkSectionExpanded: boolean,
-    isFetchingJustificationReasons: boolean,
     isInviteSectionExpanded: boolean,
-    justificationReasons: Array<SelectOptionProp>,
     showCollaboratorList: boolean,
 };
 
@@ -58,8 +39,6 @@ class UnifiedShareForm extends React.Component<USFProps, State> {
         initiallySelectedContacts: [],
         createSharedLinkOnLoad: false,
         focusSharedLinkOnLoad: false,
-        restrictedCollabEmails: [],
-        retrictedGroups: [],
         trackingProps: {
             collaboratorListTracking: {},
             inviteCollabsEmailTracking: {},
@@ -75,72 +54,14 @@ class UnifiedShareForm extends React.Component<USFProps, State> {
         super(props);
 
         this.state = {
-            classificationLabelId: '',
             emailSharedLinkContacts: [],
             inviteCollabsContacts: props.initiallySelectedContacts,
             inviteePermissionLevel: '',
             isEmailLinkSectionExpanded: false,
-            isFetchingJustificationReasons: false,
             isInviteSectionExpanded: !!props.initiallySelectedContacts.length,
-            justificationReasons: [],
             showCollaboratorList: false,
         };
     }
-
-    componentDidUpdate(prevProps: USFProps) {
-        const { isCollabRestrictionJustificationAllowed, item, restrictedCollabEmails, restrictedGroups } = this.props;
-        const {
-            restrictedGroups: prevRestrictedGroups,
-            restrictedCollabEmails: prevRestrictedCollabEmails,
-            isCollabRestrictionJustificationAllowed: prevIsCollabRestrictionJustificationAllowed,
-        } = prevProps;
-
-        const didCollabRestrictionsChange =
-            !isEqual(restrictedGroups, prevRestrictedGroups) ||
-            !isEqual(restrictedCollabEmails, prevRestrictedCollabEmails) ||
-            isCollabRestrictionJustificationAllowed !== prevIsCollabRestrictionJustificationAllowed;
-
-        if (didCollabRestrictionsChange && this.shouldRequireCollabJustification()) {
-            this.fetchJustificationReasons(item, JUSTIFICATION_CHECKPOINT_EXTERNAL_COLLAB);
-        }
-    }
-
-    fetchJustificationReasons = (item: Item, checkpoint: JustificationCheckpoint) => {
-        const { justificationReasons } = this.state;
-        const { getJustificationReasons } = this.props;
-        const hasJustificationReasons = !!justificationReasons.length;
-
-        if (!getJustificationReasons || hasJustificationReasons) {
-            return Promise.resolve();
-        }
-        this.setState({ isFetchingJustificationReasons: true });
-
-        return getJustificationReasons(item.typedID, checkpoint)
-            .then(({ classificationLabelId, options }: GetJustificationReasonsResponse) => {
-                this.setState({
-                    classificationLabelId,
-                    justificationReasons: options.map(({ id, title }) => ({
-                        displayText: title,
-                        value: id,
-                    })),
-                });
-            })
-            .finally(() => {
-                this.setState({ isFetchingJustificationReasons: false });
-            });
-    };
-
-    shouldRequireCollabJustification = () => {
-        const { inviteCollabsContacts } = this.state;
-        const { isCollabRestrictionJustificationAllowed, restrictedCollabEmails, restrictedGroups } = this.props;
-
-        const hasRestrictedCollabs = hasRestrictedContacts(
-            inviteCollabsContacts,
-            restrictedCollabEmails,
-            restrictedGroups,
-        );
-        return hasRestrictedCollabs && isCollabRestrictionJustificationAllowed;
-    };
 
     handleInviteCollabPillCreate = (pills: Array<SelectOptionProp | Contact>) => {
         return this.onPillCreate(INVITE_COLLABS_CONTACTS_TYPE, pills);
@@ -188,15 +109,14 @@ class UnifiedShareForm extends React.Component<USFProps, State> {
     };
 
     handleSendInvites = (data: Object) => {
-        const { inviteePermissions, isCollabRestrictionJustificationAllowed, sendInvites, trackingProps } = this.props;
+        const { inviteePermissions, sendInvites, trackingProps } = this.props;
         const { inviteCollabsEmailTracking } = trackingProps;
         const { onSendClick } = inviteCollabsEmailTracking;
-        const { classificationLabelId, inviteePermissionLevel } = this.state;
+        const { inviteePermissionLevel } = this.state;
         const defaultPermissionLevel = getDefaultPermissionLevel(inviteePermissions);
         const selectedPermissionLevel = inviteePermissionLevel || defaultPermissionLevel;
-        const { emails, groupIDs, justificationReason, message, restrictedEmails, restrictedGroups } = data;
-
-        let params = {
+        const { emails, groupIDs, message } = data;
+        const params = {
             emails: emails.join(','),
             groupIDs: groupIDs.join(','),
             emailMessage: message,
@@ -204,22 +124,6 @@ class UnifiedShareForm extends React.Component<USFProps, State> {
             numsOfInvitees: emails.length,
             numOfInviteeGroups: groupIDs.length,
         };
-
-        const hasJustificationReason = !!justificationReason;
-        const hasRestrictedInvitees = !isEmpty(restrictedEmails) || !isEmpty(restrictedGroups);
-        const shouldSubmitJustificationReason =
-            hasJustificationReason && hasRestrictedInvitees && isCollabRestrictionJustificationAllowed;
-
-        if (shouldSubmitJustificationReason) {
-            params = {
-                ...params,
-                classificationLabelId,
-                justificationReason: {
-                    id: justificationReason.value,
-                    title: justificationReason.displayText,
-                },
-            };
-        }
 
         if (onSendClick) {
             onSendClick(params);
@@ -229,9 +133,8 @@ class UnifiedShareForm extends React.Component<USFProps, State> {
     };
 
     handleSendSharedLink = (data: Object) => {
-        const { sendSharedLink, sharedLink, trackingProps } = this.props;
+        const { sendSharedLink, trackingProps } = this.props;
         const { sharedLinkEmailTracking } = trackingProps;
-        const { permissionLevel } = sharedLink;
         const { onSendClick } = sharedLinkEmailTracking;
 
         const { emails, groupIDs } = data;
@@ -241,7 +144,6 @@ class UnifiedShareForm extends React.Component<USFProps, State> {
                 ...data,
                 numsOfRecipients: emails.length,
                 numOfRecipientGroups: groupIDs.length,
-                permissionLevel,
             };
             onSendClick(params);
         }
@@ -353,44 +255,13 @@ class UnifiedShareForm extends React.Component<USFProps, State> {
         return false;
     };
 
-    isRemovingAllRestrictedCollabs = (
-        currentInviteCollabsContacts: Array<Contact>,
-        newInviteCollabsContacts: Array<Contact>,
-    ) => {
-        const { restrictedCollabEmails, restrictedGroups } = this.props;
-
-        const hasRestrictedCollabs = hasRestrictedContacts(
-            currentInviteCollabsContacts,
-            restrictedCollabEmails,
-            restrictedGroups,
-        );
-        const hasRestrictedCollabsAfterUpdate = hasRestrictedContacts(
-            newInviteCollabsContacts,
-            restrictedCollabEmails,
-            restrictedGroups,
-        );
-
-        return hasRestrictedCollabs && !hasRestrictedCollabsAfterUpdate;
-    };
-
     updateInviteCollabsContacts = (inviteCollabsContacts: Array<Contact>) => {
-        const { inviteCollabsContacts: currentInviteCollabsContacts } = this.state;
-        const { onRemoveAllRestrictedCollabs, setUpdatedContacts } = this.props;
-
-        const isRemovingAllRestrictedCollabs = this.isRemovingAllRestrictedCollabs(
-            currentInviteCollabsContacts,
-            inviteCollabsContacts,
-        );
-
+        const { setUpdatedContacts } = this.props;
         this.setState({
             inviteCollabsContacts,
         });
-
         if (setUpdatedContacts) {
             setUpdatedContacts(inviteCollabsContacts);
-        }
-        if (onRemoveAllRestrictedCollabs && isRemovingAllRestrictedCollabs) {
-            onRemoveAllRestrictedCollabs();
         }
     };
 
@@ -401,11 +272,7 @@ class UnifiedShareForm extends React.Component<USFProps, State> {
     };
 
     shouldAutoFocusSharedLink = () => {
-        const { focusSharedLinkOnLoad, sharedLink, sharedLinkLoaded, createSharedLinkOnLoad } = this.props;
-
-        if (!createSharedLinkOnLoad && !focusSharedLinkOnLoad) {
-            return false;
-        }
+        const { focusSharedLinkOnLoad, sharedLink, sharedLinkLoaded } = this.props;
         // if not forcing focus or not a newly added shared link, return false
         if (!(focusSharedLinkOnLoad || sharedLink.isNewSharedLink)) {
             return false;
@@ -420,29 +287,24 @@ class UnifiedShareForm extends React.Component<USFProps, State> {
     renderInviteSection() {
         const {
             canInvite,
-            collabRestrictionType,
             collaborationRestrictionWarning,
-            config,
             contactLimit,
             getCollaboratorContacts,
             getContactAvatarUrl,
             handleFtuxCloseClick,
             item,
             recommendedSharingTooltipCalloutName = null,
-            restrictedCollabEmails,
-            restrictedGroups,
             sendInvitesError,
             shouldRenderFTUXTooltip,
             showEnterEmailsCallout = false,
             showCalloutForUser = false,
-            showUpgradeInlineNotice = false,
             showUpgradeOptions,
             submitting,
             suggestedCollaborators,
             trackingProps,
         } = this.props;
         const { type } = item;
-        const { isFetchingJustificationReasons, isInviteSectionExpanded, justificationReasons } = this.state;
+        const { isInviteSectionExpanded } = this.state;
         const { inviteCollabsEmailTracking, modalTracking } = trackingProps;
         const contactsFieldDisabledTooltip =
             type === ITEM_TYPE_WEBLINK ? (
@@ -461,10 +323,9 @@ class UnifiedShareForm extends React.Component<USFProps, State> {
               };
         const avatars = this.renderCollaboratorAvatars();
         const { ftuxConfirmButtonProps } = modalTracking;
-        const dialogLabelId = uniqueId('usm-ftux-dialog-label');
         const ftuxTooltipText = (
             <div>
-                <h4 id={dialogLabelId} className="ftux-tooltip-title">
+                <h4 className="ftux-tooltip-title">
                     <FormattedMessage {...messages.ftuxNewUSMUserTitle} />
                 </h4>
                 <p className="ftux-tooltip-body">
@@ -481,9 +342,7 @@ class UnifiedShareForm extends React.Component<USFProps, State> {
             </div>
         );
         const ftuxTooltipProps = {
-            ariaLabel: dialogLabelId,
             className: 'usm-ftux-tooltip',
-            isFocusTrapped: true,
             // don't want ftux tooltip to show if the recommended sharing tooltip callout is showing
             isShown: !recommendedSharingTooltipCalloutName && shouldRenderFTUXTooltip && showCalloutForUser,
             position: 'middle-left',
@@ -495,11 +354,9 @@ class UnifiedShareForm extends React.Component<USFProps, State> {
         return (
             <>
                 <Tooltip {...ftuxTooltipProps}>
-                    <div className="invite-collaborator-container" data-testid="invite-collaborator-container">
+                    <div className="invite-collaborator-container">
                         <EmailForm
-                            config={config}
                             contactLimit={contactLimit}
-                            collabRestrictionType={collabRestrictionType}
                             contactsFieldAvatars={avatars}
                             contactsFieldDisabledTooltip={contactsFieldDisabledTooltip}
                             contactsFieldLabel={<FormattedMessage {...messages.inviteFieldLabel} />}
@@ -508,18 +365,13 @@ class UnifiedShareForm extends React.Component<USFProps, State> {
                             inlineNotice={inlineNotice}
                             isContactsFieldEnabled={canInvite}
                             isExpanded={isInviteSectionExpanded}
-                            isFetchingJustificationReasons={isFetchingJustificationReasons}
                             isExternalUserSelected={this.hasExternalContact(INVITE_COLLABS_CONTACTS_TYPE)}
-                            isRestrictionJustificationEnabled={this.shouldRequireCollabJustification()}
-                            justificationReasons={justificationReasons}
                             onContactInput={this.openInviteCollaborators}
                             onPillCreate={this.handleInviteCollabPillCreate}
                             onRequestClose={this.closeInviteCollaborators}
                             onSubmit={this.handleSendInvites}
                             openInviteCollaboratorsSection={this.openInviteCollaboratorsSection}
                             recommendedSharingTooltipCalloutName={recommendedSharingTooltipCalloutName}
-                            restrictedEmails={restrictedCollabEmails}
-                            restrictedGroups={restrictedGroups}
                             showEnterEmailsCallout={showEnterEmailsCallout}
                             submitting={submitting}
                             selectedContacts={this.state.inviteCollabsContacts}
@@ -528,7 +380,7 @@ class UnifiedShareForm extends React.Component<USFProps, State> {
                             {...inviteCollabsEmailTracking}
                         >
                             {this.renderInviteePermissionsDropdown()}
-                            {showUpgradeOptions && !showUpgradeInlineNotice && this.renderUpgradeLinkDescription()}
+                            {isInviteSectionExpanded && showUpgradeOptions && this.renderUpgradeLinkDescription()}
                         </EmailForm>
                     </div>
                 </Tooltip>
@@ -559,68 +411,25 @@ class UnifiedShareForm extends React.Component<USFProps, State> {
         return avatarsContent;
     }
 
-    renderCollaboratorMessage(resinTarget: string) {
-        const { openUpgradePlanModal = () => {} } = this.props;
-        return (
-            <>
-                <FormattedCompMessage
-                    id="boxui.unifiedShare.upgradeCollaboratorAccessDescription"
-                    description="Description for cta to upgrade to get collaborator access controls"
-                >
-                    Set the level of{' '}
-                    <Link
-                        className="upgrade-link"
-                        href="https://support.box.com/hc/en-us/articles/360044196413-Understanding-Collaborator-Permission-Levels"
-                        target="_blank"
-                    >
-                        collaborator access
-                    </Link>{' '}
-                    and increase security through one of our paid plans.{' '}
-                </FormattedCompMessage>
-                <PlainButton
-                    className="upgrade-link"
-                    data-resin-target={resinTarget}
-                    onClick={openUpgradePlanModal}
-                    type="button"
-                >
-                    <FormattedMessage {...messages.upgradeLink} />
-                </PlainButton>
-            </>
-        );
-    }
-
     renderUpgradeLinkDescription() {
-        const { openUpgradePlanModal = () => {}, trackingProps = {} } = this.props;
+        const { trackingProps = {} } = this.props;
         const { inviteCollabsEmailTracking = {} } = trackingProps;
         const { upgradeLinkProps = {} } = inviteCollabsEmailTracking;
 
         return (
             <div className="upgrade-description">
-                <UpgradeBadge />
+                <UpgradeBadge type="warning" />
                 <FormattedMessage
                     values={{
                         upgradeGetMoreAccessControlsLink: (
-                            <PlainButton
-                                className="upgrade-link"
-                                onClick={openUpgradePlanModal}
-                                type="button"
-                                {...upgradeLinkProps}
-                            >
+                            <Link className="upgrade-link" href="/upgrade" {...upgradeLinkProps}>
                                 <FormattedMessage {...messages.upgradeGetMoreAccessControlsLink} />
-                            </PlainButton>
+                            </Link>
                         ),
                     }}
                     {...messages.upgradeGetMoreAccessControlsDescription}
                 />
             </div>
-        );
-    }
-
-    renderUpgradeInlineNotice() {
-        return (
-            <InlineNotice title={<FormattedMessage {...messages.upgradeInlineNoticeTitle} />} type="info">
-                {this.renderCollaboratorMessage('external_collab_top_message_upgrade_cta')}
-            </InlineNotice>
         );
     }
 
@@ -672,20 +481,16 @@ class UnifiedShareForm extends React.Component<USFProps, State> {
         const {
             allShareRestrictionWarning,
             changeSharedLinkAccessLevel,
-            changeSharedLinkPermissionLevel,
-            config,
             createSharedLinkOnLoad,
+            changeSharedLinkPermissionLevel,
             displayInModal,
             focusSharedLinkOnLoad,
             getSharedLinkContacts,
             getContactAvatarUrl,
             intl,
-            isAdvancedContentInsightsChecked,
-            isAllowEditSharedLinkForFileEnabled,
             isFetching,
             item,
             onAddLink,
-            onAdvancedContentInsightsToggle,
             onCopyError,
             onCopyInit,
             onCopySuccess,
@@ -693,12 +498,8 @@ class UnifiedShareForm extends React.Component<USFProps, State> {
             onSettingsClick,
             sendSharedLinkError,
             sharedLink,
-            sharedLinkEditTagTargetingApi,
-            sharedLinkEditTooltipTargetingApi,
             showEnterEmailsCallout = false,
             showSharedLinkSettingsCallout = false,
-            showUpgradeInlineNotice = false,
-            showUpgradeOptions,
             submitting,
             tooltips = {},
             trackingProps,
@@ -706,30 +507,29 @@ class UnifiedShareForm extends React.Component<USFProps, State> {
         const { sharedLinkTracking, sharedLinkEmailTracking } = trackingProps;
         const { isEmailLinkSectionExpanded, isInviteSectionExpanded, showCollaboratorList } = this.state;
 
-        const hasExpandedSections = isEmailLinkSectionExpanded || isInviteSectionExpanded || showCollaboratorList;
-
-        const showContentInsightsToggle =
-            onAdvancedContentInsightsToggle && !hasExpandedSections && item?.type === ITEM_TYPE_FILE;
+        // Only show the restriction warning on the main page of the USM where the email and share link option is available
+        const showShareRestrictionWarning =
+            !isEmailLinkSectionExpanded &&
+            !isInviteSectionExpanded &&
+            !showCollaboratorList &&
+            allShareRestrictionWarning;
 
         return (
-            <div className={displayInModal ? '' : 'be bdl-UnifiedShareForm'}>
+            <div className={displayInModal ? '' : 'bdl-UnifiedShareForm'}>
                 <LoadingIndicatorWrapper isLoading={isFetching} hideContent>
-                    {!hasExpandedSections && allShareRestrictionWarning}
-                    {showUpgradeOptions && showUpgradeInlineNotice && this.renderUpgradeInlineNotice()}
+                    {showShareRestrictionWarning && allShareRestrictionWarning}
 
                     {!isEmailLinkSectionExpanded && !showCollaboratorList && this.renderInviteSection()}
 
-                    {!hasExpandedSections && (
+                    {!isEmailLinkSectionExpanded && !isInviteSectionExpanded && !showCollaboratorList && (
                         <SharedLinkSection
                             addSharedLink={onAddLink}
                             autofocusSharedLink={this.shouldAutoFocusSharedLink()}
                             autoCreateSharedLink={createSharedLinkOnLoad}
-                            config={config}
                             triggerCopyOnLoad={createSharedLinkOnLoad && focusSharedLinkOnLoad}
                             changeSharedLinkAccessLevel={changeSharedLinkAccessLevel}
                             changeSharedLinkPermissionLevel={changeSharedLinkPermissionLevel}
                             intl={intl}
-                            isAllowEditSharedLinkForFileEnabled={isAllowEditSharedLinkForFileEnabled}
                             item={item}
                             itemType={item.type}
                             onDismissTooltip={onDismissTooltip}
@@ -740,26 +540,11 @@ class UnifiedShareForm extends React.Component<USFProps, State> {
                             onCopySuccess={onCopySuccess}
                             onCopyError={onCopyError}
                             sharedLink={sharedLink}
-                            sharedLinkEditTagTargetingApi={sharedLinkEditTagTargetingApi}
-                            sharedLinkEditTooltipTargetingApi={sharedLinkEditTooltipTargetingApi}
                             showSharedLinkSettingsCallout={showSharedLinkSettingsCallout}
                             submitting={submitting || isFetching}
                             trackingProps={sharedLinkTracking}
                             tooltips={tooltips}
                         />
-                    )}
-
-                    {showContentInsightsToggle && (
-                        <>
-                            <hr className="bdl-UnifiedShareForm-separator" />
-                            <div className="bdl-UnifiedShareForm-row">
-                                <AdvancedContentInsightsToggle
-                                    isChecked={isAdvancedContentInsightsChecked}
-                                    isDisabled={submitting || isFetching}
-                                    onChange={onAdvancedContentInsightsToggle}
-                                />
-                            </div>
-                        </>
                     )}
 
                     {isEmailLinkSectionExpanded && !showCollaboratorList && (

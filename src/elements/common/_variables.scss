@@ -4,12 +4,7 @@
 $font: Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
 $minimumWidth: 300px;
-$sidebarHeaderHeight: 60px;
 $sidebarContentWidth: 340px;
-$sidebarActivityFeedSpacingHorizontal: 20px;
-$sidebarActivityFeedSpacingVertical: 20px;
-$sidebarActivityFeedSelectedItemSpacing: 10px;
-$sidebarTabResponsiveSize: 48px;
 
 @mixin rendering {
     -webkit-font-smoothing: antialiased;
@@ -45,10 +40,7 @@ $sidebarTabResponsiveSize: 48px;
 }
 
 @mixin placeholder {
-    color: $bdl-gray-62;
     font-weight: normal;
     font-family: $font;
-    // Firefox sets opacity for placeholder to less than 100%
-    // See https://developer.mozilla.org/en-US/docs/Web/CSS/::placeholder#opaque_text
-    opacity: 1;
+    opacity: .6;
 }

@@ -7,7 +7,6 @@ exports[`components/RoundPill-selector-dropdown/RoundPill should render avatar i
 >
   <LabelPillIcon
     Component={[Function]}
-    className="bdl-RoundPill-avatar"
     name="box"
     shouldShowExternal={true}
     size="small"
@@ -20,7 +19,7 @@ exports[`components/RoundPill-selector-dropdown/RoundPill should render avatar i
   <LabelPillIcon
     Component={[Function]}
     className="bdl-RoundPill-closeBtn"
-    onClick={[Function]}
+    onClick={[MockFunction]}
   />
 </LabelPill>
 `;
@@ -38,7 +37,7 @@ exports[`components/RoundPill-selector-dropdown/RoundPill should render default 
   <LabelPillIcon
     Component={[Function]}
     className="bdl-RoundPill-closeBtn"
-    onClick={[Function]}
+    onClick={[MockFunction]}
   />
 </LabelPill>
 `;

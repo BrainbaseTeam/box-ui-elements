@@ -7,11 +7,10 @@ import { RecordOf } from 'immutable';
 import type { ItemType } from '../../common/types/core';
 import { convertToMs, isToday, isYesterday } from '../../utils/datetime';
 import DatalistItem from '../../components/datalist-item';
-import Folder16 from '../../icon/fill/Folder16';
+import IconSmallFolder from '../../icons/folder/IconSmallFolder';
 import ItemIcon from '../../icons/item-icon';
 import { Link } from '../../components/link';
 
-import { TYPE_FILE, TYPE_FOLDER, TYPE_WEBLINK } from '../../constants';
 import messages from './messages';
 
 import './QuickSearchItem.scss';
@@ -76,13 +75,13 @@ const QuickSearchItem = ({
 
     let itemIconTitle;
     switch (type) {
-        case TYPE_WEBLINK:
+        case 'web_link':
             itemIconTitle = <FormattedMessage {...messages.bookmark} />;
             break;
-        case TYPE_FILE:
+        case 'file':
             itemIconTitle = <FormattedMessage {...messages.file} />;
             break;
-        case TYPE_FOLDER:
+        case 'folder':
             if (iconType === 'folder-collab') {
                 itemIconTitle = <FormattedMessage {...messages.collaboratedFolder} />;
             } else if (iconType === 'folder-external') {
@@ -158,7 +157,7 @@ const QuickSearchItem = ({
                 <span className="item-subtext">
                     {(parentName || parentFolderRenderer) && (
                         <>
-                            <Folder16 title={<FormattedMessage {...messages.parentFolder} />} height={12} width={12} />
+                            <IconSmallFolder title={<FormattedMessage {...messages.parentFolder} />} />
 
                             {parentFolderRenderer ? (
                                 parentFolderRenderer(itemData, closeDropdown)

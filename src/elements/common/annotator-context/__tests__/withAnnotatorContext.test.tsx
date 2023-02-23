@@ -13,8 +13,7 @@ describe('elements/common/annotator-context/withAnnotatorContext', () => {
         className?: string | undefined;
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    type WrappedComponentProps<T> = ComponentProps & WithAnnotatorContextProps; // T is supposed to be allowed component props
+    type WrappedComponentProps<T> = ComponentProps & WithAnnotatorContextProps;
 
     const Component = (props: WrappedComponentProps<HTMLDivElement>) => <div {...props} />;
 
@@ -29,23 +28,15 @@ describe('elements/common/annotator-context/withAnnotatorContext', () => {
             annotation: { foo: 'bar' },
             action: Action.CREATE_START,
         };
-        const mockEmitActiveAnnotationChangeEvent = jest.fn();
-        const mockEmitAnnotationRemoveEvent = jest.fn();
-        const mockEmitAnnotationReplyCreateEvent = jest.fn();
-        const mockEmitAnnotationReplyDeleteEvent = jest.fn();
-        const mockMmitAnnotationReplyUpdateEvent = jest.fn();
-        const mockEmitAnnotationUpdateEvent = jest.fn();
+        const mockEmitAnnotatorChangeEvent = jest.fn();
+        const mockEmitRemoveEvent = jest.fn();
         const mockGetAnnotationsMatchPath = jest.fn();
         const mockGetAnnotationsPath = jest.fn();
 
         mockContext.mockReturnValue({
             state: annotatorState,
-            emitActiveAnnotationChangeEvent: mockEmitActiveAnnotationChangeEvent,
-            emitAnnotationRemoveEvent: mockEmitAnnotationRemoveEvent,
-            emitAnnotationReplyCreateEvent: mockEmitAnnotationReplyCreateEvent,
-            emitAnnotationReplyDeleteEvent: mockEmitAnnotationReplyDeleteEvent,
-            emitAnnotationReplyUpdateEvent: mockMmitAnnotationReplyUpdateEvent,
-            emitAnnotationUpdateEvent: mockEmitAnnotationUpdateEvent,
+            emitActiveChangeEvent: mockEmitAnnotatorChangeEvent,
+            emitRemoveEvent: mockEmitRemoveEvent,
             getAnnotationsMatchPath: mockGetAnnotationsMatchPath,
             getAnnotationsPath: mockGetAnnotationsPath,
         });
@@ -59,12 +50,8 @@ describe('elements/common/annotator-context/withAnnotatorContext', () => {
             annotation: { foo: 'bar' },
             action: Action.CREATE_START,
         });
-        expect(props.emitActiveAnnotationChangeEvent).toEqual(mockEmitActiveAnnotationChangeEvent);
-        expect(props.emitAnnotationRemoveEvent).toEqual(mockEmitAnnotationRemoveEvent);
-        expect(props.emitAnnotationReplyCreateEvent).toEqual(mockEmitAnnotationReplyCreateEvent);
-        expect(props.emitAnnotationReplyDeleteEvent).toEqual(mockEmitAnnotationReplyDeleteEvent);
-        expect(props.emitAnnotationReplyUpdateEvent).toEqual(mockMmitAnnotationReplyUpdateEvent);
-        expect(props.emitAnnotationUpdateEvent).toEqual(mockEmitAnnotationUpdateEvent);
+        expect(props.emitAnnotatorActiveChangeEvent).toEqual(mockEmitAnnotatorChangeEvent);
+        expect(props.emitRemoveEvent).toEqual(mockEmitRemoveEvent);
         expect(props.getAnnotationsMatchPath).toEqual(mockGetAnnotationsMatchPath);
         expect(props.getAnnotationsPath).toEqual(mockGetAnnotationsPath);
     });

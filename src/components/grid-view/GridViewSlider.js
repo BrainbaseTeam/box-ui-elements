@@ -18,7 +18,6 @@ type Props = {
 } & InjectIntlProvidedProps;
 
 const GridViewSlider = ({ columnCount, gridMaxColumns, gridMinColumns, intl, maxColumnCount, onChange }: Props) => {
-    const { formatMessage } = intl;
     const RANGE_STEP = 1;
 
     // This math is necessary since the highest value of the slider should result in
@@ -36,12 +35,11 @@ const GridViewSlider = ({ columnCount, gridMaxColumns, gridMinColumns, intl, max
                         onChange(Math.max(RANGE_MIN, sliderValue - RANGE_STEP));
                     }}
                     type="button"
-                    aria-label={formatMessage(messages.gridViewDecreaseColumnSize)}
+                    aria-label={intl.formatMessage(messages.gridViewDecreaseColumnSize)}
                 >
                     <IconMinusThin color={bdlGray50} width={14} height={14} />
                 </PlainButton>
                 <input
-                    aria-label={formatMessage(messages.gridViewColumnSize)}
                     className="bdl-GridViewSlider-range"
                     max={RANGE_MAX}
                     min={RANGE_MIN}
@@ -58,7 +56,7 @@ const GridViewSlider = ({ columnCount, gridMaxColumns, gridMinColumns, intl, max
                         onChange(Math.min(RANGE_MAX, sliderValue + RANGE_STEP));
                     }}
                     type="button"
-                    aria-label={formatMessage(messages.gridViewIncreaseColumnSize)}
+                    aria-label={intl.formatMessage(messages.gridViewIncreaseColumnSize)}
                 >
                     <IconPlusThin color={bdlGray50} width={14} height={14} />
                 </PlainButton>
@@ -67,5 +65,4 @@ const GridViewSlider = ({ columnCount, gridMaxColumns, gridMinColumns, intl, max
     );
 };
 
-export { GridViewSlider as GridViewSliderBase };
 export default injectIntl(GridViewSlider);

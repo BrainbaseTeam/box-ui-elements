@@ -1,34 +1,23 @@
 import * as React from 'react';
-import classNames from 'classnames';
 import noop from 'lodash/noop';
-import { injectIntl, MessageDescriptor, WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, MessageDescriptor } from 'react-intl';
 import PlainButton from '../../../../components/plain-button';
 import { ButtonType } from '../../../../components/button';
-import './AnnotationActivityLink.scss';
 
-type MessageDescriptorWithValues = {
-    values?: Record<string, number>;
-} & MessageDescriptor;
-export interface AnnotationActivityLinkProps extends WrappedComponentProps {
-    className?: string;
+export interface AnnotationActivityLinkProps {
     id: string;
     isDisabled: boolean;
-    message: MessageDescriptorWithValues;
+    message: MessageDescriptor;
     onClick: (id: string) => void;
 }
 
 const AnnotationActivityLink = ({
-    className,
     id,
-    intl,
     isDisabled = false,
     message,
     onClick = noop,
     ...rest
 }: AnnotationActivityLinkProps): JSX.Element => {
-    const { values, ...messageDescriptor } = message;
-    const translatedMessage = intl.formatMessage(messageDescriptor, values);
-
     const handleClick = (event: React.SyntheticEvent<HTMLButtonElement>) => {
         event.preventDefault();
         event.stopPropagation();
@@ -50,20 +39,16 @@ const AnnotationActivityLink = ({
 
     return (
         <PlainButton
-            className={classNames('bcs-AnnotationActivityLink', className)}
-            data-testid="bcs-AnnotationActivity-link"
+            className="bcs-AnnotationActivity-link"
             isDisabled={isDisabled}
             onClick={handleClick}
             onMouseDown={handleMouseDown}
-            title={translatedMessage}
             type={ButtonType.BUTTON}
             {...rest}
         >
-            <span className="bcs-AnnotationActivityLink-message">{translatedMessage}</span>
+            <FormattedMessage {...message} />
         </PlainButton>
     );
 };
 
-export { AnnotationActivityLink as AnnotationActivityLinkBase };
-
-export default injectIntl(AnnotationActivityLink);
+export default AnnotationActivityLink;

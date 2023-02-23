@@ -21,7 +21,6 @@ type Props = {|
     ...$Exact<TooltipProps>,
     body: React.Node,
     icon?: React.Node,
-    image?: React.Node,
     primaryButtonProps?: React.ElementConfig<typeof Button>,
     secondaryButtonProps?: React.ElementConfig<typeof Button>,
     steps?: [number, number],
@@ -33,7 +32,6 @@ function GuideTooltip({
     children,
     className = '',
     icon,
-    image,
     isShown = true,
     primaryButtonProps,
     steps,
@@ -53,7 +51,6 @@ function GuideTooltip({
                     {icon && <div className="bdl-GuideTooltip-icon">{icon}</div>}
                     <div className="bdl-GuideTooltip-right">
                         {title && <div className="bdl-GuideTooltip-title">{title}</div>}
-                        {!icon && image && <div className="bdl-GuideTooltip-image">{image}</div>}
                         <div className="bdl-GuideTooltip-body">{body}</div>
                         {(secondaryButtonProps || primaryButtonProps || steps) && (
                             <div className="bdl-GuideTooltip-bottom">

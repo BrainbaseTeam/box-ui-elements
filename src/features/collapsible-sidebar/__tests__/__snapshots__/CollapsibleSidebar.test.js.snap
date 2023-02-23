@@ -1,9 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`components/core/collapsible-sidebar/CollapsibleSidebar render 1`] = `
-<div
+<aside
   className="bdl-CollapsibleSidebar-wrapper"
-  data-testid="CollapsibleSidebar-wrapper"
 >
   <CollapsibleSidebar__StyledNav
     className="is-expanded bdl-CollapsibleSidebar foo"
@@ -20,5 +19,5 @@ exports[`components/core/collapsible-sidebar/CollapsibleSidebar render 1`] = `
       def
     </span>
   </CollapsibleSidebar__StyledNav>
-</div>
+</aside>
 `;

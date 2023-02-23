@@ -9,10 +9,6 @@
     background-color: $almost-white;
     border-top: 1px solid $bdl-gray-10;
 
-    .btn {
-        @include bdl-Button--large;
-    }
-
     .bcu-footer-message {
         padding: 0 10px;
         text-align: center;

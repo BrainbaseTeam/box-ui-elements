@@ -17,10 +17,15 @@ exports[`features/metadata-instance-editor/fields/Instance collapsible isOpen pr
         constrainToWindow={true}
         isDisabled={false}
         position="top-left"
+        text={
+          <FormattedMessage
+            defaultMessage="Edit Metadata"
+            id="boxui.metadataInstanceEditor.editTooltip"
+          />
+        }
         theme="default"
       >
         <PlainButton
-          aria-pressed={false}
           className="metadata-instance-editor-instance-edit"
           data-resin-target="metadata-instanceedit"
           onClick={[Function]}
@@ -744,10 +749,15 @@ exports[`features/metadata-instance-editor/fields/Instance should correctly rend
         constrainToWindow={true}
         isDisabled={false}
         position="top-left"
+        text={
+          <FormattedMessage
+            defaultMessage="Edit Metadata"
+            id="boxui.metadataInstanceEditor.editTooltip"
+          />
+        }
         theme="default"
       >
         <PlainButton
-          aria-pressed={true}
           className="metadata-instance-editor-instance-edit metadata-instance-editor-instance-is-editing"
           data-resin-target="metadata-instanceedit"
           onClick={[Function]}
@@ -939,10 +949,15 @@ exports[`features/metadata-instance-editor/fields/Instance should correctly rend
         constrainToWindow={true}
         isDisabled={false}
         position="top-left"
+        text={
+          <FormattedMessage
+            defaultMessage="Edit Metadata"
+            id="boxui.metadataInstanceEditor.editTooltip"
+          />
+        }
         theme="default"
       >
         <PlainButton
-          aria-pressed={true}
           className="metadata-instance-editor-instance-edit metadata-instance-editor-instance-is-editing"
           data-resin-target="metadata-instanceedit"
           onClick={[Function]}
@@ -1043,10 +1058,15 @@ exports[`features/metadata-instance-editor/fields/Instance should correctly rend
         constrainToWindow={true}
         isDisabled={false}
         position="top-left"
+        text={
+          <FormattedMessage
+            defaultMessage="Edit Metadata"
+            id="boxui.metadataInstanceEditor.editTooltip"
+          />
+        }
         theme="default"
       >
         <PlainButton
-          aria-pressed={true}
           className="metadata-instance-editor-instance-edit metadata-instance-editor-instance-is-editing"
           data-resin-target="metadata-instanceedit"
           onClick={[Function]}

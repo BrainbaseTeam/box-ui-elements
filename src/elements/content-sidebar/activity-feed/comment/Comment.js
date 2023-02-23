@@ -4,28 +4,25 @@ import classNames from 'classnames';
 import noop from 'lodash/noop';
 import { FormattedMessage } from 'react-intl';
 import TetherComponent from 'react-tether';
-import Checkmark16 from '../../../../icon/line/Checkmark16';
-import Trash16 from '../../../../icon/line/Trash16';
-import Pencil16 from '../../../../icon/line/Pencil16';
-import X16 from '../../../../icon/fill/X16';
 import Avatar from '../Avatar';
 import Media from '../../../../components/media';
 import { MenuItem } from '../../../../components/menu';
+import IconTrash from '../../../../icons/general/IconTrash';
+import IconPencil from '../../../../icons/general/IconPencil';
 import { ACTIVITY_TARGETS } from '../../../common/interactionTargets';
 import DeleteConfirmation from '../common/delete-confirmation';
 import ActivityTimestamp from '../common/activity-timestamp';
 import UserLink from '../common/user-link';
-import ActivityCard from '../ActivityCard';
 import ActivityError from '../common/activity-error';
 import ActivityMessage from '../common/activity-message';
-import ActivityStatus from '../common/activity-status';
 import CommentForm from '../comment-form';
-import { COMMENT_STATUS_OPEN, COMMENT_STATUS_RESOLVED, PLACEHOLDER_USER } from '../../../../constants';
+import { bdlGray80 } from '../../../../styles/variables';
+import { PLACEHOLDER_USER } from '../../../../constants';
 import messages from './messages';
 import type { GetAvatarUrlCallback, GetProfileUrlCallback } from '../../../common/flowTypes';
 import type { Translations } from '../../flowTypes';
 import type { SelectorItems, User } from '../../../../common/types/core';
-import type { ActionItemError, BoxCommentPermission, FeedItemStatus } from '../../../../common/types/feed';
+import type { BoxCommentPermission, ActionItemError } from '../../../../common/types/feed';
 import './Comment.scss';
 
 type Props = {
@@ -42,18 +39,8 @@ type Props = {
     mentionSelectorContacts?: SelectorItems<>,
     modified_at?: string | number,
     onDelete: ({ id: string, permissions?: BoxCommentPermission }) => any,
-    onEdit: (
-        id: string,
-        text?: string,
-        status?: FeedItemStatus,
-        hasMention: boolean,
-        permissions: BoxCommentPermission,
-        onSuccess: ?Function,
-        onError: ?Function,
-    ) => void,
-    onSelect: (isSelected: boolean) => void,
-    permissions: BoxCommentPermission,
-    status?: FeedItemStatus,
+    onEdit: (id: string, text: string, hasMention: boolean, permissions?: BoxCommentPermission) => any,
+    permissions?: BoxCommentPermission,
     tagged_message: string,
     translatedTaggedMessage?: string,
     translations?: Translations,
@@ -77,69 +64,33 @@ class Comment extends React.Component<Props, State> {
         isInputOpen: false,
     };
 
-    selectComment = (isSelected: boolean = true) => {
-        const { onSelect } = this.props;
-        onSelect(isSelected);
-    };
-
     handleDeleteConfirm = (): void => {
         const { id, onDelete, permissions } = this.props;
         onDelete({ id, permissions });
-        this.selectComment(false);
     };
 
     handleDeleteCancel = (): void => {
         this.setState({ isConfirmingDelete: false });
-        this.selectComment(false);
     };
 
     handleDeleteClick = () => {
         this.setState({ isConfirmingDelete: true });
-        this.selectComment();
     };
 
     handleEditClick = (): void => {
         this.setState({ isEditing: true, isInputOpen: true });
-        this.selectComment();
     };
 
-    handleMenuClose = (): void => {
-        const { isConfirmingDelete, isEditing, isInputOpen } = this.state;
+    commentFormFocusHandler = (): void => this.setState({ isInputOpen: true });
 
-        if (isConfirmingDelete || isEditing || isInputOpen) {
-            return;
-        }
-        this.selectComment(false);
-    };
+    commentFormCancelHandler = (): void => this.setState({ isInputOpen: false, isEditing: false });
 
-    handleMenuOpen = (): void => {
-        this.selectComment();
-    };
+    commentFormSubmitHandler = (): void => this.setState({ isInputOpen: false, isEditing: false });
 
-    commentFormFocusHandler = (): void => {
-        this.setState({ isInputOpen: true });
-        this.selectComment();
-    };
-
-    commentFormCancelHandler = (): void => {
-        this.setState({ isInputOpen: false, isEditing: false });
-        this.selectComment(false);
-    };
-
-    commentFormSubmitHandler = (): void => {
-        this.setState({ isInputOpen: false, isEditing: false });
-        this.selectComment(false);
-    };
-
-    handleMessageUpdate = ({ id, text, hasMention }: { hasMention: boolean, id: string, text: string }): void => {
+    handleUpdate = ({ id, text, hasMention }: { hasMention: boolean, id: string, text: string }): void => {
         const { onEdit, permissions } = this.props;
-        onEdit(id, text, undefined, hasMention, permissions);
+        onEdit(id, text, hasMention, permissions);
         this.commentFormSubmitHandler();
-    };
-
-    handleStatusUpdate = (status: FeedItemStatus): void => {
-        const { id, onEdit, permissions } = this.props;
-        onEdit(id, undefined, status, false, permissions);
     };
 
     render(): React.Node {
@@ -159,22 +110,17 @@ class Comment extends React.Component<Props, State> {
             getUserProfileUrl,
             getMentionWithQuery,
             mentionSelectorContacts,
-            modified_at,
             onEdit,
-            status,
         } = this.props;
         const { isConfirmingDelete, isEditing, isInputOpen } = this.state;
-        const canDelete = permissions.can_delete;
-        const canEdit = onEdit !== noop && permissions.can_edit;
-        const canResolve = onEdit !== noop && permissions.can_resolve;
         const createdAtTimestamp = new Date(created_at).getTime();
         const createdByUser = created_by || PLACEHOLDER_USER;
-        const isEdited = modified_at !== undefined && modified_at !== created_at;
-        const isMenuVisible = (canDelete || canEdit || canResolve) && !isPending;
-        const isResolved = status === COMMENT_STATUS_RESOLVED;
+        const canEdit = onEdit !== noop && permissions.can_edit;
+        const canDelete = permissions.can_delete;
+        const isMenuVisible = (canDelete || canEdit) && !isPending;
 
         return (
-            <ActivityCard className="bcs-Comment">
+            <div className="bcs-Comment">
                 <Media
                     className={classNames('bcs-Comment-media', {
                         'bcs-is-pending': isPending || error,
@@ -194,42 +140,17 @@ class Comment extends React.Component<Props, State> {
                                 <Media.Menu
                                     isDisabled={isConfirmingDelete}
                                     data-testid="comment-actions-menu"
-                                    dropdownProps={{
-                                        onMenuOpen: this.handleMenuOpen,
-                                        onMenuClose: this.handleMenuClose,
-                                    }}
                                     menuProps={{
                                         'data-resin-component': ACTIVITY_TARGETS.COMMENT_OPTIONS,
                                     }}
                                 >
-                                    {canResolve && isResolved && (
-                                        <MenuItem
-                                            className="bcs-Comment-unresolveComment"
-                                            data-resin-target={ACTIVITY_TARGETS.COMMENT_OPTIONS_EDIT}
-                                            data-testid="unresolve-comment"
-                                            onClick={() => this.handleStatusUpdate(COMMENT_STATUS_OPEN)}
-                                        >
-                                            <X16 />
-                                            <FormattedMessage {...messages.commentUnresolveMenuItem} />
-                                        </MenuItem>
-                                    )}
-                                    {canResolve && !isResolved && (
-                                        <MenuItem
-                                            data-resin-target={ACTIVITY_TARGETS.COMMENT_OPTIONS_EDIT}
-                                            data-testid="resolve-comment"
-                                            onClick={() => this.handleStatusUpdate(COMMENT_STATUS_RESOLVED)}
-                                        >
-                                            <Checkmark16 />
-                                            <FormattedMessage {...messages.commentResolveMenuItem} />
-                                        </MenuItem>
-                                    )}
                                     {canEdit && (
                                         <MenuItem
                                             data-resin-target={ACTIVITY_TARGETS.COMMENT_OPTIONS_EDIT}
                                             data-testid="edit-comment"
                                             onClick={this.handleEditClick}
                                         >
-                                            <Pencil16 />
+                                            <IconPencil color={bdlGray80} />
                                             <FormattedMessage {...messages.commentEditMenuItem} />
                                         </MenuItem>
                                     )}
@@ -239,7 +160,7 @@ class Comment extends React.Component<Props, State> {
                                             data-testid="delete-comment"
                                             onClick={this.handleDeleteClick}
                                         >
-                                            <Trash16 />
+                                            <IconTrash color={bdlGray80} />
                                             <FormattedMessage {...messages.commentDeleteMenuItem} />
                                         </MenuItem>
                                     )}
@@ -263,17 +184,16 @@ class Comment extends React.Component<Props, State> {
                                 getUserProfileUrl={getUserProfileUrl}
                             />
                         </div>
-                        <div className="bcs-Comment-timestamp">
+                        <div>
                             <ActivityTimestamp date={createdAtTimestamp} />
                         </div>
-                        <ActivityStatus status={status} />
                         {isEditing ? (
                             <CommentForm
                                 isDisabled={isDisabled}
                                 className={classNames('bcs-Comment-editor', {
                                     'bcs-is-disabled': isDisabled,
                                 })}
-                                updateComment={this.handleMessageUpdate}
+                                updateComment={this.handleUpdate}
                                 isOpen={isInputOpen}
                                 // $FlowFixMe
                                 user={currentUser}
@@ -289,7 +209,6 @@ class Comment extends React.Component<Props, State> {
                         ) : (
                             <ActivityMessage
                                 id={id}
-                                isEdited={isEdited && !isResolved}
                                 tagged_message={tagged_message}
                                 translatedTaggedMessage={translatedTaggedMessage}
                                 {...translations}
@@ -301,7 +220,7 @@ class Comment extends React.Component<Props, State> {
                 </Media>
                 {/* $FlowFixMe */}
                 {error ? <ActivityError {...error} /> : null}
-            </ActivityCard>
+            </div>
         );
     }
 }

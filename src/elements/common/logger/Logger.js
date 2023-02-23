@@ -1,9 +1,9 @@
 // @flow
 import * as React from 'react';
 import noop from 'lodash/noop';
-import { v4 as uuidv4 } from 'uuid';
+import uuidv4 from 'uuid/v4';
 import { isMarkSupported } from '../../../utils/performance';
-import { EVENT_DATA_READY, EVENT_JS_READY } from './constants';
+import { EVENT_JS_READY } from './constants';
 import { METRIC_TYPE_PREVIEW, METRIC_TYPE_ELEMENTS_LOAD_METRIC } from '../../../constants';
 import type { ElementOrigin } from '../flowTypes';
 import type { MetricType, ElementsLoadMetricData, LoggerProps } from '../../../common/types/logging';
@@ -35,7 +35,6 @@ class Logger extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.loggerProps = {
-            onDataReadyMetric: this.handleDataReadyMetric,
             onPreviewMetric: this.handlePreviewMetric,
             onReadyMetric: this.handleReadyMetric,
         };
@@ -55,13 +54,11 @@ class Logger extends React.Component<Props> {
      * Creates an event name meant for use with an event which is unique and meant to be logged only once
      *
      * @param {string} name - The event name
-     * @param {string} [uniqueId] - an optional unique id
-     * @returns {string} A string containing the component and event name and optional unique id
+     * @returns {string} A string containing the component and event name
      */
-    createEventName(name: string, uniqueId?: string): string {
+    createEventName(name: string): string {
         const { source } = this.props;
-        const eventName = `${source}::${name}`;
-        return uniqueId ? `${eventName}::${uniqueId}` : eventName;
+        return `${source}::${name}`;
     }
 
     /**
@@ -102,11 +99,9 @@ class Logger extends React.Component<Props> {
      * @param {string} type - the type of the event
      * @param {string} name - the name of the event
      * @param {Object} data  - the event data
-     * @param {string} [uniqueId] - an optional unique id
-     * @returns {void}
      */
-    logUniqueMetric(type: MetricType, name: string, data: Object, uniqueId?: string): void {
-        const eventName = this.createEventName(name, uniqueId);
+    logUniqueMetric(type: MetricType, name: string, data: Object): void {
+        const eventName = this.createEventName(name);
         if (this.hasLoggedEvent(eventName)) {
             return;
         }
@@ -127,20 +122,6 @@ class Logger extends React.Component<Props> {
             ...data,
             type: METRIC_TYPE_PREVIEW,
         });
-    };
-
-    /**
-     * Data ready metric handler
-     *
-     * @param {Object} data - the metric data
-     * @returns {void}
-     */
-    handleDataReadyMetric = (data: ElementsLoadMetricData, uniqueId?: string) => {
-        if (!isMarkSupported) {
-            return;
-        }
-
-        this.logUniqueMetric(METRIC_TYPE_ELEMENTS_LOAD_METRIC, EVENT_DATA_READY, data, uniqueId);
     };
 
     /**

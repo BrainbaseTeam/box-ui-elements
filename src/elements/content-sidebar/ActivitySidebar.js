@@ -5,36 +5,29 @@
  */
 
 import * as React from 'react';
-import classNames from 'classnames';
 import debounce from 'lodash/debounce';
 import flow from 'lodash/flow';
 import getProp from 'lodash/get';
 import noop from 'lodash/noop';
-import uniqueId from 'lodash/uniqueId';
 import { FormattedMessage } from 'react-intl';
-import { generatePath, type ContextRouter } from 'react-router-dom';
+import { type ContextRouter } from 'react-router-dom';
 import ActivityFeed from './activity-feed';
 import AddTaskButton from './AddTaskButton';
 import API from '../../api';
 import messages from '../common/messages';
 import SidebarContent from './SidebarContent';
 import { WithAnnotatorContextProps, withAnnotatorContext } from '../common/annotator-context';
-import { EVENT_DATA_READY, EVENT_JS_READY } from '../common/logger/constants';
-import { getBadUserError } from '../../utils/error';
+import { EVENT_JS_READY } from '../common/logger/constants';
+import { getBadUserError, getBadItemError } from '../../utils/error';
 import { mark } from '../../utils/performance';
 import { withAPIContext } from '../common/api-context';
 import { withErrorBoundary } from '../common/error-boundary';
 import { withFeatureConsumer, isFeatureEnabled } from '../common/feature-checking';
 import { withLogger } from '../common/logger';
 import { withRouterAndRef } from '../common/routing';
-import ActivitySidebarFilter from './ActivitySidebarFilter';
 import {
     DEFAULT_COLLAB_DEBOUNCE,
     ERROR_CODE_FETCH_ACTIVITY,
-    FEED_ITEM_TYPE_ANNOTATION,
-    FEED_ITEM_TYPE_COMMENT,
-    FEED_ITEM_TYPE_TASK,
-    FEED_ITEM_TYPE_VERSION,
     ORIGIN_ACTIVITY_SIDEBAR,
     SIDEBAR_VIEW_ACTIVITY,
     TASK_COMPLETION_RULE_ALL,
@@ -46,24 +39,12 @@ import type {
     TaskUpdatePayload,
     TaskCollabStatus,
 } from '../../common/types/tasks';
-import type {
-    Annotation,
-    AnnotationPermission,
-    BoxCommentPermission,
-    Comment,
-    CommentFeedItemType,
-    FocusableFeedItem,
-    FocusableFeedItemType,
-    FeedItem,
-    FeedItems,
-    FeedItemStatus,
-    FeedItemType,
-} from '../../common/types/feed';
-import type { ErrorContextProps, ElementsXhrError } from '../../common/types/api';
+import type { Annotation, AnnotationPermission, FocusableFeedItemType, FeedItems } from '../../common/types/feed';
+import type { ElementsErrorCallback, ErrorContextProps, ElementsXhrError } from '../../common/types/api';
 import type { WithLoggerProps } from '../../common/types/logging';
-import type { SelectorItems, User, UserMini, GroupMini, BoxItem } from '../../common/types/core';
-import type { Errors, GetProfileUrlCallback } from '../common/flowTypes';
-import type { Translations } from './flowTypes';
+import type { SelectorItems, User, UserMini, GroupMini, BoxItem, BoxItemPermission } from '../../common/types/core';
+import type { GetProfileUrlCallback } from '../common/flowTypes';
+import type { Translations, Collaborators, Errors } from './flowTypes';
 import type { FeatureConfig } from '../common/feature-checking';
 import './ActivitySidebar.scss';
 
@@ -71,11 +52,7 @@ type ExternalProps = {
     activeFeedEntryId?: string,
     activeFeedEntryType?: FocusableFeedItemType,
     currentUser?: User,
-    currentUserError?: Errors,
     getUserProfileUrl?: GetProfileUrlCallback,
-    hasReplies?: boolean,
-    hasTasks?: boolean,
-    hasVersions?: boolean,
     onCommentCreate: Function,
     onCommentDelete: (comment: Comment) => any,
     onCommentUpdate: () => any,
@@ -93,7 +70,6 @@ type PropsWithoutContext = {
     hasSidebarInitialized?: boolean,
     isDisabled: boolean,
     onAnnotationSelect: Function,
-    onFilterChange: (status?: FeedItemStatus) => void,
     onVersionChange: Function,
     onVersionHistoryClick?: Function,
     translations?: Translations,
@@ -109,9 +85,9 @@ type Props = {
 type State = {
     activityFeedError?: Errors,
     approverSelectorContacts: SelectorItems<UserMini | GroupMini>,
-    contactsLoaded?: boolean,
+    currentUser?: User,
+    currentUserError?: Errors,
     feedItems?: FeedItems,
-    feedItemsStatusFilter?: FeedItemStatus,
     mentionSelectorContacts?: SelectorItems<UserMini>,
 };
 
@@ -122,8 +98,6 @@ export const activityFeedInlineError: Errors = {
     },
 };
 
-const MARK_NAME_DATA_LOADING = `${ORIGIN_ACTIVITY_SIDEBAR}_data_loading`;
-const MARK_NAME_DATA_READY = `${ORIGIN_ACTIVITY_SIDEBAR}_${EVENT_DATA_READY}`;
 const MARK_NAME_JS_READY = `${ORIGIN_ACTIVITY_SIDEBAR}_${EVENT_JS_READY}`;
 
 mark(MARK_NAME_JS_READY);
@@ -131,23 +105,14 @@ mark(MARK_NAME_JS_READY);
 class ActivitySidebar extends React.PureComponent<Props, State> {
     static defaultProps = {
         annotatorState: {},
-        emitActiveAnnotationChangeEvent: noop,
-        emitAnnotationRemoveEvent: noop,
-        emitAnnotationReplyCreateEvent: noop,
-        emitAnnotationReplyDeleteEvent: noop,
-        emitAnnotationReplyUpdateEvent: noop,
-        emitAnnotationUpdateEvent: noop,
+        emitAnnotatorActiveChangeEvent: noop,
         getAnnotationsMatchPath: noop,
         getAnnotationsPath: noop,
-        hasReplies: false,
-        hasTasks: true,
-        hasVersions: true,
         isDisabled: false,
         onAnnotationSelect: noop,
         onCommentCreate: noop,
         onCommentDelete: noop,
         onCommentUpdate: noop,
-        onFilterChange: noop,
         onTaskAssignmentUpdate: noop,
         onTaskCreate: noop,
         onTaskDelete: noop,
@@ -161,8 +126,6 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
         // eslint-disable-next-line react/prop-types
         const { logger } = this.props;
 
-        mark(MARK_NAME_DATA_LOADING);
-
         logger.onReadyMetric({
             endMarkName: MARK_NAME_JS_READY,
         });
@@ -170,13 +133,14 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
     }
 
     componentDidMount() {
+        const { currentUser } = this.props;
         this.fetchFeedItems(true);
+        this.fetchCurrentUser(currentUser);
     }
 
     handleAnnotationDelete = ({ id, permissions }: { id: string, permissions: AnnotationPermission }) => {
-        const { api, emitAnnotationRemoveEvent, file } = this.props;
+        const { api, file } = this.props;
 
-        emitAnnotationRemoveEvent(id, true);
         api.getFeedAPI(false).deleteAnnotation(
             file,
             id,
@@ -188,59 +152,37 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
         this.fetchFeedItems();
     };
 
-    handleAnnotationEdit = (id: string, text: string, permissions: AnnotationPermission) => {
-        const { api, emitAnnotationUpdateEvent, file } = this.props;
-
-        emitAnnotationUpdateEvent(
-            {
-                id,
-                description: {
-                    message: text,
-                },
-            },
-            true,
-        );
-        api.getFeedAPI(false).updateAnnotation(
-            file,
-            id,
-            text,
-            undefined,
-            permissions,
-            (annotation: Annotation) => {
-                emitAnnotationUpdateEvent(annotation);
-                this.feedSuccessCallback();
-            },
-            this.feedErrorCallback,
-        );
-
-        this.fetchFeedItems();
-    };
-
-    handleAnnotationStatusChange = (id: string, status: FeedItemStatus, permissions: AnnotationPermission) => {
-        const { api, emitAnnotationUpdateEvent, file } = this.props;
-
-        emitAnnotationUpdateEvent({ id, status }, true);
-        api.getFeedAPI(false).updateAnnotation(
-            file,
-            id,
-            undefined,
-            status,
-            permissions,
-            (annotation: Annotation) => {
-                emitAnnotationUpdateEvent(annotation);
-                this.feedSuccessCallback();
-            },
-            this.feedErrorCallback,
-        );
-
-        this.fetchFeedItems();
-    };
-
     deleteAnnotationSuccess(id: string) {
-        const { emitAnnotationRemoveEvent } = this.props;
+        const { emitRemoveEvent } = this.props;
 
         this.feedSuccessCallback();
-        emitAnnotationRemoveEvent(id);
+        emitRemoveEvent(id);
+    }
+
+    /**
+     * Fetches a Users info
+     *
+     * @private
+     * @param {User} [user] - Box User. If missing, gets user that the current token was generated for.
+     * @param {boolean} shouldDestroy
+     * @return {void}
+     */
+    fetchCurrentUser(user?: User, shouldDestroy?: boolean = false): void {
+        const { api, file } = this.props;
+
+        if (!file) {
+            throw getBadItemError();
+        }
+
+        if (typeof user === 'undefined') {
+            api.getUsersAPI(shouldDestroy).getUser(
+                file.id,
+                this.fetchCurrentUserSuccessCallback,
+                this.fetchCurrentUserErrorCallback,
+            );
+        } else {
+            this.setState({ currentUser: user, currentUserError: undefined });
+        }
     }
 
     /**
@@ -271,7 +213,8 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
         onSuccess: ?Function,
         onError: ?Function,
     ): void => {
-        const { api, currentUser, file } = this.props;
+        const { currentUser } = this.state;
+        const { file, api } = this.props;
 
         if (!currentUser) {
             throw getBadUserError();
@@ -322,7 +265,7 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
     };
 
     updateTask = (task: TaskUpdatePayload, onSuccess: ?Function, onError: ?Function): void => {
-        const { api, file, onTaskUpdate } = this.props;
+        const { file, api, onTaskUpdate } = this.props;
         const errorCallback = (e, code) => {
             if (onError) {
                 onError(e, code);
@@ -346,19 +289,14 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
     };
 
     updateTaskAssignment = (taskId: string, taskAssignmentId: string, status: TaskCollabStatus): void => {
-        const { api, currentUser = {}, file, onTaskAssignmentUpdate } = this.props;
-
-        const successCallback = () => {
-            this.feedSuccessCallback();
-            onTaskAssignmentUpdate(taskId, taskAssignmentId, status, currentUser.id);
-        };
+        const { file, api } = this.props;
 
         api.getFeedAPI(false).updateTaskCollaborator(
             file,
             taskId,
             taskAssignmentId,
             status,
-            successCallback,
+            this.feedSuccessCallback,
             this.feedErrorCallback,
         );
 
@@ -372,48 +310,17 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
      * @param {Object} args - A subset of the comment
      * @return void
      */
-    deleteComment = ({ id, permissions }: { id: string, permissions: BoxCommentPermission }): void => {
-        const { api, file, hasReplies, onCommentDelete } = this.props;
+    deleteComment = ({ id, permissions }: { id: string, permissions: BoxItemPermission }): void => {
+        const { file, api, onCommentDelete } = this.props;
 
-        const successCallback = (comment: Comment) => {
-            this.feedSuccessCallback();
-            onCommentDelete(comment);
-        };
-
-        if (hasReplies) {
-            api.getFeedAPI(false).deleteThreadedComment(file, id, permissions, successCallback, this.feedErrorCallback);
-        } else {
-            api.getFeedAPI(false).deleteComment(file, id, permissions, successCallback, this.feedErrorCallback);
-        }
-
-        // need to load the pending item
-        this.fetchFeedItems();
-    };
-
-    /**
-     * Deletes a reply via the API.
-     *
-     * @param {Object} args - A subset of the comment
-     * @return void
-     */
-    deleteReply = ({
-        id,
-        parentId,
-        permissions,
-    }: {
-        id: string,
-        parentId: string,
-        permissions: BoxCommentPermission,
-    }): void => {
-        const { api, emitAnnotationReplyDeleteEvent, file } = this.props;
-
-        emitAnnotationReplyDeleteEvent(id, parentId, true);
-        api.getFeedAPI(false).deleteReply(
+        api.getFeedAPI(false).deleteComment(
             file,
             id,
-            parentId,
             permissions,
-            this.deleteReplySuccessCallback.bind(this, id, parentId),
+            (comment: Comment) => {
+                this.feedSuccessCallback();
+                onCommentDelete(comment);
+            },
             this.feedErrorCallback,
         );
 
@@ -421,31 +328,15 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
         this.fetchFeedItems();
     };
 
-    /**
-     * Handles a successful deletion of a reply
-     *
-     * @private
-     * @param {string} id - The id of the reply
-     * @param {string} parentId - The id of the reply's parent item
-     * @return {void}
-     */
-    deleteReplySuccessCallback = (id: string, parentId: string) => {
-        const { emitAnnotationReplyDeleteEvent } = this.props;
-
-        this.feedSuccessCallback();
-        emitAnnotationReplyDeleteEvent(id, parentId);
-    };
-
     updateComment = (
         id: string,
-        text?: string,
-        status?: FeedItemStatus,
+        text: string,
         hasMention: boolean,
-        permissions: BoxCommentPermission,
+        permissions: BoxItemPermission,
         onSuccess: ?Function,
         onError: ?Function,
     ): void => {
-        const { api, file, hasReplies, onCommentUpdate } = this.props;
+        const { file, api, onCommentUpdate } = this.props;
 
         const errorCallback = (e, code) => {
             if (onError) {
@@ -462,126 +353,10 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
             onCommentUpdate();
         };
 
-        if (hasReplies) {
-            api.getFeedAPI(false).updateThreadedComment(
-                file,
-                id,
-                text,
-                status,
-                permissions,
-                successCallback,
-                errorCallback,
-            );
-        } else {
-            api.getFeedAPI(false).updateComment(
-                file,
-                id,
-                text || '',
-                hasMention,
-                permissions,
-                successCallback,
-                errorCallback,
-            );
-        }
+        api.getFeedAPI(false).updateComment(file, id, text, hasMention, permissions, successCallback, errorCallback);
 
         // need to load the pending item
         this.fetchFeedItems();
-    };
-
-    /**
-     * Updates a reply
-     *
-     * @param {string} id - id of the reply
-     * @param {string} parentId - id of the parent item
-     * @param {string} text - the reply updated text
-     * @param {BoxCommentPermission} permissions - permissions associated with the reply
-     * @param {Function} onSuccess - the success callback
-     * @param {Function} onError - the error callback
-     * @return {void}
-     */
-    updateReply = (
-        id: string,
-        parentId: string,
-        text: string,
-        permissions: BoxCommentPermission,
-        onSuccess: ?Function,
-        onError: ?Function,
-    ): void => {
-        const { api, emitAnnotationReplyUpdateEvent, file } = this.props;
-
-        emitAnnotationReplyUpdateEvent({ id, tagged_message: text }, parentId, true);
-        api.getFeedAPI(false).updateReply(
-            file,
-            id,
-            parentId,
-            text,
-            permissions,
-            this.updateReplySuccessCallback.bind(this, parentId, onSuccess),
-            (error, code) => {
-                if (onError) {
-                    onError(error, code);
-                }
-                this.feedErrorCallback(error, code);
-            },
-        );
-
-        // need to load the pending item
-        this.fetchFeedItems();
-    };
-
-    /**
-     * Updates replies of a comment or annotation in the Feed
-     *
-     * @param {string} id - id of the feed item
-     * @param {Array<Comment>} replies - replies
-     * @return {void}
-     */
-    updateReplies = (id: string, replies: Array<Comment>) => {
-        const { activeFeedEntryId, api, file, history } = this.props;
-        const { feedItems } = this.state;
-
-        if (!feedItems) {
-            return;
-        }
-
-        const feedAPI = api.getFeedAPI(false);
-        feedAPI.file = file;
-
-        // Detect if replies are being hidden and activeFeedEntryId belongs to a reply
-        // that is in currently being updated parent, in order to disable active item
-        if (
-            activeFeedEntryId &&
-            replies.length === 1 &&
-            feedItems.some(
-                (item: FeedItem) =>
-                    item.id === id && item === this.getCommentFeedItemByReplyId(feedItems, activeFeedEntryId),
-            )
-        ) {
-            history.replace(this.getActiveCommentPath());
-        }
-
-        feedAPI.updateFeedItem({ replies }, id);
-
-        this.fetchFeedItems();
-    };
-
-    /**
-     * Handles a successful update of a reply
-     *
-     * @private
-     * @param {string} parentId - The id of the reply's parent item
-     * @param {Function} onSuccess - the success callback
-     * @param {Comment} reply - The reply comment object
-     * @return {void}
-     */
-    updateReplySuccessCallback = (parentId: string, onSuccess: ?Function, reply: Comment) => {
-        const { emitAnnotationReplyUpdateEvent } = this.props;
-
-        this.feedSuccessCallback();
-        emitAnnotationReplyUpdateEvent(reply, parentId);
-        if (onSuccess) {
-            onSuccess();
-        }
     };
 
     /**
@@ -592,85 +367,27 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
      * @return {void}
      */
     createComment = (text: string, hasMention: boolean): void => {
-        const { api, currentUser, file, hasReplies, onCommentCreate } = this.props;
+        const { file, api, onCommentCreate } = this.props;
+        const { currentUser } = this.state;
 
         if (!currentUser) {
             throw getBadUserError();
         }
 
-        const successCallback = (comment: Comment) => {
-            onCommentCreate(comment);
-            this.feedSuccessCallback();
-        };
-
-        if (hasReplies) {
-            api.getFeedAPI(false).createThreadedComment(
-                file,
-                currentUser,
-                text,
-                successCallback,
-                this.feedErrorCallback,
-            );
-        } else {
-            api.getFeedAPI(false).createComment(
-                file,
-                currentUser,
-                text,
-                hasMention,
-                successCallback,
-                this.feedErrorCallback,
-            );
-        }
-
-        // need to load the pending item
-        this.fetchFeedItems();
-    };
-
-    /**
-     * Posts a new reply to the API
-     *
-     * @param {string} parentId - The id of the parent item
-     * @param {CommentFeedItemType} parentType - The type of the parent item
-     * @param {string} text - The text of reply
-     * @return {void}
-     */
-    createReply = (parentId: string, parentType: CommentFeedItemType, text: string): void => {
-        const { api, currentUser, emitAnnotationReplyCreateEvent, file } = this.props;
-
-        if (!currentUser) {
-            throw getBadUserError();
-        }
-
-        const eventRequestId = uniqueId('comment_');
-        emitAnnotationReplyCreateEvent({ tagged_message: text }, eventRequestId, parentId, true);
-        api.getFeedAPI(false).createReply(
+        api.getFeedAPI(false).createComment(
             file,
             currentUser,
-            parentId,
-            parentType,
             text,
-            this.createReplySuccessCallback.bind(this, eventRequestId, parentId),
+            hasMention,
+            (comment: Comment) => {
+                onCommentCreate(comment);
+                this.feedSuccessCallback();
+            },
             this.feedErrorCallback,
         );
 
         // need to load the pending item
         this.fetchFeedItems();
-    };
-
-    /**
-     * Handles a successful creation of a reply
-     *
-     * @private
-     * @param {string} eventRequestId - The id of the parent item
-     * @param {string} parentId - The id of the reply's parent item
-     * @param {Comment} reply - The reply comment object
-     * @return {void}
-     */
-    createReplySuccessCallback = (eventRequestId: string, parentId: string, reply: Comment) => {
-        const { emitAnnotationReplyCreateEvent } = this.props;
-
-        this.feedSuccessCallback();
-        emitAnnotationReplyCreateEvent(reply, eventRequestId, parentId);
     };
 
     /**
@@ -680,7 +397,7 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
      * @return void
      */
     deleteAppActivity = ({ id }: { id: string }): void => {
-        const { api, file } = this.props;
+        const { file, api } = this.props;
 
         api.getFeedAPI(false).deleteAppActivity(file, id, this.feedSuccessCallback, this.feedErrorCallback);
 
@@ -691,64 +408,22 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
     /**
      * Fetches the feed items for the sidebar
      *
-     * @param {boolean} shouldRefreshCache true if the cache should be refreshed
      * @param {boolean} shouldDestroy true if the api factory should be destroyed
      */
     fetchFeedItems(shouldRefreshCache: boolean = false, shouldDestroy: boolean = false) {
-        const {
-            activeFeedEntryId,
-            activeFeedEntryType,
-            api,
-            file,
-            features,
-            hasReplies: shouldShowReplies,
-            hasTasks: shouldShowTasks,
-            hasVersions: shouldShowVersions,
-        } = this.props;
-        const shouldFetchReplies =
-            shouldRefreshCache &&
-            shouldShowReplies &&
-            activeFeedEntryId &&
-            activeFeedEntryType === FEED_ITEM_TYPE_COMMENT;
+        const { file, api, features } = this.props;
         const shouldShowAppActivity = isFeatureEnabled(features, 'activityFeed.appActivity.enabled');
         const shouldShowAnnotations = isFeatureEnabled(features, 'activityFeed.annotations.enabled');
 
         api.getFeedAPI(shouldDestroy).feedItems(
             file,
             shouldRefreshCache,
-            shouldFetchReplies ? this.fetchRepliesForFeedItems : this.fetchFeedItemsSuccessCallback,
+            this.fetchFeedItemsSuccessCallback,
             this.fetchFeedItemsErrorCallback,
             this.errorCallback,
-            { shouldShowAnnotations, shouldShowAppActivity, shouldShowReplies, shouldShowTasks, shouldShowVersions },
+            { shouldShowAnnotations, shouldShowAppActivity },
         );
     }
-
-    fetchRepliesForFeedItems = (feedItems: FeedItems) => {
-        const { activeFeedEntryId } = this.props;
-
-        if (!activeFeedEntryId) {
-            return;
-        }
-
-        this.getActiveFeedEntryData(feedItems)
-            .then(({ id, type }) => {
-                if (
-                    !id ||
-                    !type ||
-                    this.isActiveEntryInFeed(feedItems, activeFeedEntryId) ||
-                    !this.isItemTypeComment(type)
-                ) {
-                    return Promise.resolve(feedItems);
-                }
-
-                const parentType: CommentFeedItemType =
-                    type === FEED_ITEM_TYPE_COMMENT ? FEED_ITEM_TYPE_COMMENT : FEED_ITEM_TYPE_ANNOTATION;
-
-                return this.getFeedItemsWithReplies(feedItems, id, parentType);
-            })
-            .then(updatedItems => this.fetchFeedItemsSuccessCallback(updatedItems))
-            .catch(error => this.fetchFeedItemsErrorCallback(feedItems, [error]));
-    };
 
     /**
      * Handles a successful feed API fetch
@@ -758,24 +433,6 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
      * @return {void}
      */
     fetchFeedItemsSuccessCallback = (feedItems: FeedItems): void => {
-        const {
-            file: { id: fileId },
-            logger,
-        } = this.props;
-
-        mark(MARK_NAME_DATA_READY);
-
-        // Only emit metric if has >1 activity feed items (there should always at least be the current version)
-        if (feedItems.length > 1) {
-            logger.onDataReadyMetric(
-                {
-                    endMarkName: MARK_NAME_DATA_READY,
-                    startMarkName: MARK_NAME_DATA_LOADING,
-                },
-                fileId,
-            );
-        }
-
         this.setState({ feedItems, activityFeedError: undefined });
     };
 
@@ -802,44 +459,6 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
         }
     };
 
-    getCommentFeedItemWithReplies = <T: { replies?: Array<Comment> }>(feedItem: T, replies: Array<Comment>): T => ({
-        ...feedItem,
-        replies,
-    });
-
-    getFeedItemsWithReplies = (feedItems: FeedItems, id?: string, type?: CommentFeedItemType): Promise<FeedItems> => {
-        const { api, file } = this.props;
-
-        return new Promise((resolve, reject) => {
-            if (!id || !type) {
-                resolve(feedItems);
-                return;
-            }
-            api.getFeedAPI(false).fetchReplies(
-                file,
-                id,
-                type,
-                replies => {
-                    const updatedFeedItems = feedItems.map(item => {
-                        if (item.id === id && this.isItemTypeComment(item.type)) {
-                            if (item.type === FEED_ITEM_TYPE_ANNOTATION) {
-                                return this.getCommentFeedItemWithReplies<Annotation>(item, replies);
-                            }
-                            if (item.type === FEED_ITEM_TYPE_COMMENT) {
-                                return this.getCommentFeedItemWithReplies<Comment>(item, replies);
-                            }
-                        }
-                        return item;
-                    });
-                    resolve(updatedFeedItems);
-                },
-                error => {
-                    reject(error);
-                },
-            );
-        });
-    };
-
     /**
      * Network error callback
      *
@@ -856,6 +475,17 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
 
         // eslint-disable-next-line react/prop-types
         this.props.onError(error, code, contextInfo);
+    };
+
+    /**
+     * User fetch success callback
+     *
+     * @private
+     * @param {Object} currentUser - User info object
+     * @return {void}
+     */
+    fetchCurrentUserSuccessCallback = (currentUser: User): void => {
+        this.setState({ currentUser, currentUserError: undefined });
     };
 
     /**
@@ -879,33 +509,23 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
      */
     getMentionContactsSuccessCallback = (collaborators: { entries: SelectorItems<> }): void => {
         const { entries } = collaborators;
-        this.setState({ contactsLoaded: false }, () =>
-            this.setState({
-                contactsLoaded: true,
-                mentionSelectorContacts: entries,
-            }),
-        );
+        this.setState({ mentionSelectorContacts: entries });
     };
 
     /**
-     * Fetches file @mention's with groups
+     * File @mention contacts fetch success callback
      *
      * @private
      * @param {string} searchStr - Search string to filter file collaborators by
      * @return {void}
      */
-    getApprover = debounce((searchStr: string) => {
-        const { file, api } = this.props;
-        api.getFileCollaboratorsAPI(false).getCollaboratorsWithQuery(
-            file.id,
-            this.getApproverContactsSuccessCallback,
-            this.errorCallback,
-            searchStr,
-            {
+    getApproverWithQuery = debounce(
+        (searchStr: string) =>
+            this.getCollaborators(this.getApproverContactsSuccessCallback, this.errorCallback, searchStr, {
                 includeGroups: true,
-            },
-        );
-    }, DEFAULT_COLLAB_DEBOUNCE);
+            }),
+        DEFAULT_COLLAB_DEBOUNCE,
+    );
 
     /**
      * Fetches file @mention's
@@ -914,142 +534,62 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
      * @param {string} searchStr - Search string to filter file collaborators by
      * @return {void}
      */
-    getMention = debounce((searchStr: string) => {
+    getMentionWithQuery = debounce(
+        (searchStr: string) =>
+            this.getCollaborators(this.getMentionContactsSuccessCallback, this.errorCallback, searchStr),
+        DEFAULT_COLLAB_DEBOUNCE,
+    );
+
+    /**
+     * Fetches file collaborators
+     *
+     * @param {Function} successCallback - the success callback
+     * @param {Function} errorCallback - the error callback
+     * @param {string} searchStr - the search string
+     * @param {Object} [options]
+     * @param {boolean} [options.includeGroups] - return groups as well as users
+     * @return {void}
+     */
+    getCollaborators(
+        successCallback: Collaborators => void,
+        errorCallback: ElementsErrorCallback,
+        searchStr: string,
+        { includeGroups = false }: { includeGroups: boolean } = {},
+    ): void {
+        // Do not fetch without filter
         const { file, api } = this.props;
-        api.getFileCollaboratorsAPI(false).getCollaboratorsWithQuery(
-            file.id,
-            this.getMentionContactsSuccessCallback,
-            this.errorCallback,
-            searchStr,
-        );
-    }, DEFAULT_COLLAB_DEBOUNCE);
-
-    /**
-     * Returns feed item based on the item id
-     *
-     * @param {FeedItems} feedItems - the feed items
-     * @param {string} itemId - feed item id
-     * @return {FeedItem | undefined}
-     */
-    getFocusableFeedItemById = (feedItems: FeedItems, itemId?: string): FeedItem | typeof undefined => {
-        if (!itemId) {
-            return undefined;
-        }
-        return feedItems.find(({ id, type }) => id === itemId && this.isItemTypeFocusable(type));
-    };
-
-    /**
-     * Returns parent feed item based on the reply id
-     *
-     * @param {FeedItems} feedItems - the feed items
-     * @param {string} replyId - feed item's reply id
-     * @return {FeedItem | undefined}
-     */
-    getCommentFeedItemByReplyId = (feedItems: FeedItems, replyId?: string): FeedItem | typeof undefined => {
-        if (!replyId) {
-            return undefined;
-        }
-        return feedItems.find(item => {
-            if ((item.type !== FEED_ITEM_TYPE_ANNOTATION && item.type !== FEED_ITEM_TYPE_COMMENT) || !item.replies) {
-                return false;
-            }
-            return item.replies.some(({ id }) => id === replyId);
-        });
-    };
-
-    /**
-     * Returns true if item (based on given item id) is found within feed items or its replies and it, or its parent, can be active (focusable)
-     *
-     * @param {FeedItems} feedItems - the feed items
-     * @param {string} itemId - feed item id
-     * @return {boolean}
-     */
-    isActiveEntryInFeed = (feedItems: FeedItems, itemId: string): boolean =>
-        !!(this.getFocusableFeedItemById(feedItems, itemId) || this.getCommentFeedItemByReplyId(feedItems, itemId));
-
-    isItemTypeFocusable = (type?: FeedItemType | FocusableFeedItem | CommentFeedItemType): boolean =>
-        type === FEED_ITEM_TYPE_ANNOTATION || type === FEED_ITEM_TYPE_COMMENT || type === FEED_ITEM_TYPE_TASK;
-
-    isItemTypeComment = (type?: FeedItemType | FocusableFeedItem | CommentFeedItemType): boolean =>
-        type === FEED_ITEM_TYPE_ANNOTATION || type === FEED_ITEM_TYPE_COMMENT;
-
-    /**
-     * Returns active entry data (id, type) based on the activeFeedEntryId and activeFeedEntryType values
-     * (it can be existing item or parent if the active entry id belongs to a reply)
-     *
-     * @param {FeedItems} feedItems - the feed items
-     * @return {Promise<{ id: string, type?: FocusableFeedItemType }>}
-     */
-    getActiveFeedEntryData = (feedItems: FeedItems): Promise<{ id?: string, type?: FeedItemType }> => {
-        const { activeFeedEntryId, activeFeedEntryType, api, file } = this.props;
-        return new Promise((resolve, reject) => {
-            if (!activeFeedEntryId || !activeFeedEntryType || !this.isItemTypeFocusable(activeFeedEntryType)) {
-                resolve({});
-                return;
-            }
-
-            // Check if the active entry is a first level Feed item
-            const firstLevelItem = this.getFocusableFeedItemById(feedItems, activeFeedEntryId);
-            if (firstLevelItem) {
-                const { id, type } = firstLevelItem;
-                resolve({ id, type });
-                return;
-            }
-
-            // Check if the active entry is within replies of any first level Feed items
-            const firstLevelItemWithActiveReply = this.getCommentFeedItemByReplyId(feedItems, activeFeedEntryId);
-            if (firstLevelItemWithActiveReply) {
-                const { id, type } = firstLevelItemWithActiveReply;
-                resolve({ id, type });
-                return;
-            }
-
-            // If the active entry could not be found within feed items, it's most likely a reply that
-            // is not yet visible in feed and we need to fetch its data in order to find parent
-            api.getFeedAPI(false).fetchThreadedComment(
-                file,
-                activeFeedEntryId,
-                ({ parent }) => {
-                    const parentItem = this.getFocusableFeedItemById(feedItems, parent?.id);
-                    const { id, type } = parentItem || {};
-                    resolve({ id, type });
-                },
-                (error: ElementsXhrError) => {
-                    if (error.status === 404) {
-                        resolve({});
-                    } else {
-                        reject(error);
-                    }
-                },
-            );
-        });
-    };
-
-    getActiveCommentPath(commentId?: string): string {
-        if (!commentId) {
-            return '/activity';
+        if (!searchStr || searchStr.trim() === '') {
+            return;
         }
 
-        return generatePath('/:sidebar/comments/:commentId?', {
-            sidebar: 'activity',
-            commentId,
+        api.getFileCollaboratorsAPI(true).getFileCollaborators(file.id, successCallback, errorCallback, {
+            filter_term: searchStr,
+            include_groups: includeGroups,
+            include_uploader_collabs: false,
         });
     }
 
     /**
-     * Fetches replies (comments) of a comment or annotation
+     * Handles a failed file user info fetch
      *
-     * @param {string} id - id of the feed item
-     * @param {CommentFeedItemType} type - type of the feed item
+     * @private
+     * @param {ElementsXhrError} e - API error
      * @return {void}
      */
-    getReplies = (id: string, type: CommentFeedItemType): void => {
-        const { api, file } = this.props;
+    fetchCurrentUserErrorCallback = (e: ElementsXhrError, code: string) => {
+        this.setState({
+            currentUser: undefined,
+            currentUserError: {
+                maskError: {
+                    errorHeader: messages.currentUserErrorHeaderMessage,
+                    errorSubHeader: messages.defaultErrorMaskSubHeaderMessage,
+                },
+            },
+        });
 
-        api.getFeedAPI(false).fetchReplies(file, id, type, this.feedSuccessCallback, this.feedErrorCallback);
-
-        // need to load the pending item
-        this.fetchFeedItems();
+        this.errorCallback(e, code, {
+            error: e,
+        });
     };
 
     /**
@@ -1068,7 +608,7 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
     handleAnnotationSelect = (annotation: Annotation): void => {
         const { file_version, id: nextActiveAnnotationId } = annotation;
         const {
-            emitActiveAnnotationChangeEvent,
+            emitAnnotatorActiveChangeEvent,
             file,
             getAnnotationsMatchPath,
             getAnnotationsPath,
@@ -1081,30 +621,13 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
         const match = getAnnotationsMatchPath(location);
         const selectedFileVersionId = getProp(match, 'params.fileVersionId', currentFileVersionId);
 
-        emitActiveAnnotationChangeEvent(nextActiveAnnotationId);
+        emitAnnotatorActiveChangeEvent(nextActiveAnnotationId);
 
         if (annotationFileVersionId && annotationFileVersionId !== selectedFileVersionId) {
             history.push(getAnnotationsPath(annotationFileVersionId, nextActiveAnnotationId));
         }
 
         onAnnotationSelect(annotation);
-    };
-
-    handleItemsFiltered = (status?: FeedItemStatus) => {
-        const { onFilterChange } = this.props;
-
-        this.setState({ feedItemsStatusFilter: status });
-        onFilterChange(status);
-    };
-
-    getFilteredFeedItems = (): FeedItems | typeof undefined => {
-        const { feedItems, feedItemsStatusFilter } = this.state;
-        if (!feedItems || !feedItemsStatusFilter) {
-            return feedItems;
-        }
-        return feedItems.filter(item => {
-            return item.status === feedItemsStatusFilter || item.type === FEED_ITEM_TYPE_VERSION;
-        });
     };
 
     onTaskModalClose = () => {
@@ -1118,89 +641,51 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
     }
 
     renderAddTaskButton = () => {
-        const { isDisabled, hasTasks } = this.props;
+        const { isDisabled } = this.props;
         const { approverSelectorContacts } = this.state;
-        const { getApprover, getAvatarUrl, createTask, onTaskModalClose } = this;
-
-        if (!hasTasks) {
-            return null;
-        }
-
+        const { getApproverWithQuery, getAvatarUrl, createTask, onTaskModalClose } = this;
+        const taskFormProps = {
+            approverSelectorContacts,
+            completionRule: TASK_COMPLETION_RULE_ALL,
+            createTask,
+            getApproverWithQuery,
+            getAvatarUrl,
+            id: '',
+            message: '',
+            approvers: [],
+        };
         return (
-            <AddTaskButton
-                isDisabled={isDisabled}
-                onTaskModalClose={onTaskModalClose}
-                taskFormProps={{
-                    approvers: [],
-                    approverSelectorContacts,
-                    completionRule: TASK_COMPLETION_RULE_ALL,
-                    createTask,
-                    getApproverWithQuery: getApprover,
-                    getAvatarUrl,
-                    id: '',
-                    message: '',
-                }}
-            />
+            <AddTaskButton isDisabled={isDisabled} onTaskModalClose={onTaskModalClose} taskFormProps={taskFormProps} />
         );
-    };
-
-    renderActivitySidebarFilter = () => {
-        const { features } = this.props;
-        const { feedItemsStatusFilter } = this.state;
-        const shouldShowActivityFeedFilter = isFeatureEnabled(features, 'activityFeed.filter.enabled');
-
-        if (!shouldShowActivityFeedFilter) {
-            return null;
-        }
-        return (
-            <ActivitySidebarFilter
-                feedItemStatus={feedItemsStatusFilter}
-                onFeedItemStatusClick={selectedStatus => {
-                    this.handleItemsFiltered(selectedStatus);
-                }}
-            />
-        );
-    };
-
-    renderActions = () => (
-        <>
-            {this.renderActivitySidebarFilter()}
-            {this.renderAddTaskButton()}
-        </>
-    );
-
-    renderTitle = () => {
-        const { features } = this.props;
-        if (isFeatureEnabled(features, 'activityFeed.filter.enabled')) {
-            return undefined;
-        }
-        return <FormattedMessage {...messages.sidebarActivityTitle} />;
     };
 
     render() {
         const {
-            activeFeedEntryId,
-            activeFeedEntryType,
-            currentUser,
-            currentUserError,
             elementId,
             file,
-            hasReplies,
-            hasVersions,
             isDisabled = false,
             onVersionHistoryClick,
             getUserProfileUrl,
+            activeFeedEntryId,
+            activeFeedEntryType,
             onTaskView,
         } = this.props;
-        const { activityFeedError, approverSelectorContacts, contactsLoaded, mentionSelectorContacts } = this.state;
+        const {
+            currentUser,
+            approverSelectorContacts,
+            mentionSelectorContacts,
+            feedItems,
+            activityFeedError,
+            currentUserError,
+        } = this.state;
 
         return (
             <SidebarContent
-                actions={this.renderActions()}
-                className={classNames('bcs-activity', { 'bcs-activity--full': hasReplies })}
+                actions={this.renderAddTaskButton()}
+                className="bcs-activity"
                 elementId={elementId}
                 sidebarView={SIDEBAR_VIEW_ACTIVITY}
-                title={this.renderTitle()}
+                title={<FormattedMessage {...messages.sidebarActivityTitle} />}
             >
                 <ActivityFeed
                     activeFeedEntryId={activeFeedEntryId}
@@ -1209,30 +694,20 @@ class ActivitySidebar extends React.PureComponent<Props, State> {
                     approverSelectorContacts={approverSelectorContacts}
                     currentUser={currentUser}
                     currentUserError={currentUserError}
-                    feedItems={this.getFilteredFeedItems()}
+                    feedItems={feedItems}
                     file={file}
-                    getApproverWithQuery={this.getApprover}
+                    getApproverWithQuery={this.getApproverWithQuery}
                     getAvatarUrl={this.getAvatarUrl}
-                    getMentionWithQuery={this.getMention}
+                    getMentionWithQuery={this.getMentionWithQuery}
                     getUserProfileUrl={getUserProfileUrl}
-                    hasReplies={hasReplies}
-                    hasVersions={hasVersions}
                     isDisabled={isDisabled}
                     mentionSelectorContacts={mentionSelectorContacts}
-                    contactsLoaded={contactsLoaded}
                     onAnnotationDelete={this.handleAnnotationDelete}
-                    onAnnotationEdit={this.handleAnnotationEdit}
                     onAnnotationSelect={this.handleAnnotationSelect}
-                    onAnnotationStatusChange={this.handleAnnotationStatusChange}
                     onAppActivityDelete={this.deleteAppActivity}
                     onCommentCreate={this.createComment}
                     onCommentDelete={this.deleteComment}
                     onCommentUpdate={this.updateComment}
-                    onHideReplies={this.updateReplies}
-                    onReplyCreate={this.createReply}
-                    onReplyDelete={this.deleteReply}
-                    onReplyUpdate={this.updateReply}
-                    onShowReplies={this.getReplies}
                     onTaskAssignmentUpdate={this.updateTaskAssignment}
                     onTaskCreate={this.createTask}
                     onTaskDelete={this.deleteTask}

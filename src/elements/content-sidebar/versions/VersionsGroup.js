@@ -20,7 +20,7 @@ type Props = {
 const VersionsGroup = ({ heading, ...rest }: Props) => {
     return (
         <section className="bcs-VersionsGroup">
-            <h4 className="bcs-VersionsGroup-heading">{heading}</h4>
+            <h1 className="bcs-VersionsGroup-heading">{heading}</h1>
             <VersionsList {...rest} />
         </section>
     );

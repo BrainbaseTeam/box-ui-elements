@@ -1,24 +1,13 @@
 import React from 'react';
 
-import { CAN_EDIT, CAN_VIEW_DOWNLOAD, CAN_VIEW_ONLY } from '../constants';
-import { SharedLinkPermissionMenuBase as SharedLinkPermissionMenu } from '../SharedLinkPermissionMenu';
+import { CAN_VIEW_DOWNLOAD, CAN_VIEW_ONLY } from '../constants';
+import SharedLinkPermissionMenu from '../SharedLinkPermissionMenu';
 
 describe('features/unified-share-modal/SharedLinkPermissionMenu', () => {
-    const allowedPermissionLevels = [CAN_EDIT, CAN_VIEW_DOWNLOAD, CAN_VIEW_ONLY];
-    const defaultSharedLinkEditTagTargetingApi = {
-        canShow: false,
-    };
+    const allowedPermissionLevels = [CAN_VIEW_DOWNLOAD, CAN_VIEW_ONLY];
 
     describe('render()', () => {
         [
-            {
-                submitting: true,
-                permissionLevel: CAN_EDIT,
-            },
-            {
-                submitting: false,
-                permissionLevel: CAN_EDIT,
-            },
             {
                 submitting: true,
                 permissionLevel: CAN_VIEW_DOWNLOAD,
@@ -43,7 +32,6 @@ describe('features/unified-share-modal/SharedLinkPermissionMenu', () => {
                         canChangePermissionLevel
                         changePermissionLevel={() => {}}
                         permissionLevel={permissionLevel}
-                        sharedLinkEditTagTargetingApi={defaultSharedLinkEditTagTargetingApi}
                         submitting={submitting}
                     />,
                 );
@@ -59,30 +47,11 @@ describe('features/unified-share-modal/SharedLinkPermissionMenu', () => {
                     canChangePermissionLevel
                     changePermissionLevel={() => {}}
                     permissionLevel=""
-                    sharedLinkEditTagTargetingApi={defaultSharedLinkEditTagTargetingApi}
                     submitting={false}
                 />,
             );
 
             expect(emptySharedLinkPermissionMenu).toMatchSnapshot();
-        });
-
-        test.each`
-            canShow  | length | should
-            ${true}  | ${1}   | ${'should render LabelPillText if canShow is true'}
-            ${false} | ${0}   | ${'should not render LabelPillText if canShow is false'}
-        `('$should ', ({ canShow, length }) => {
-            const wrapper = shallow(
-                <SharedLinkPermissionMenu
-                    allowedPermissionLevels={allowedPermissionLevels}
-                    changePermissionLevel={() => {}}
-                    permissionLevel={CAN_EDIT}
-                    sharedLinkEditTagTargetingApi={{ canShow }}
-                    submitting={false}
-                />,
-            );
-
-            expect(wrapper.find('LabelPillText')).toHaveLength(length);
         });
     });
 
@@ -96,7 +65,6 @@ describe('features/unified-share-modal/SharedLinkPermissionMenu', () => {
                     canChangePermissionLevel={false}
                     changePermissionLevel={permissionLevelSpy}
                     permissionLevel={CAN_VIEW_DOWNLOAD}
-                    sharedLinkEditTagTargetingApi={defaultSharedLinkEditTagTargetingApi}
                     submitting={false}
                     trackingProps={{
                         onChangeSharedLinkPermissionLevel: changeMenuMock,
@@ -119,7 +87,6 @@ describe('features/unified-share-modal/SharedLinkPermissionMenu', () => {
                     canChangePermissionLevel={false}
                     changePermissionLevel={permissionLevelSpy}
                     permissionLevel={CAN_VIEW_ONLY}
-                    sharedLinkEditTagTargetingApi={defaultSharedLinkEditTagTargetingApi}
                     submitting={false}
                     trackingProps={{
                         onChangeSharedLinkPermissionLevel: changeMenuMock,

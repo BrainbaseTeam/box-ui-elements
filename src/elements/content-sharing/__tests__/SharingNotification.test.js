@@ -1,11 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import { FormattedMessage } from 'react-intl';
 import SharingNotification from '../SharingNotification';
 import { TYPE_FILE, TYPE_FOLDER } from '../../../constants';
 import {
-    MOCK_AVATAR_URL_MAP,
     MOCK_COLLABS_API_RESPONSE,
     MOCK_COLLABS_CONVERTED_RESPONSE,
     MOCK_ITEM_ID,
@@ -15,7 +14,6 @@ import {
     MOCK_SHARED_LINK,
 } from '../../../features/unified-share-modal/utils/__mocks__/USMMocks';
 import Notification from '../../../components/notification/Notification';
-import { DURATION_SHORT } from '../../../components/notification/constants';
 import NotificationsWrapper from '../../../components/notification/NotificationsWrapper';
 import { convertCollabsResponse } from '../../../features/unified-share-modal/utils/convertData';
 
@@ -33,9 +31,6 @@ describe('elements/content-sharing/SharingNotification', () => {
     const setCollaboratorsListStub = jest.fn();
     const setOnSubmitSettingsStub = jest.fn();
     const setSendInvitesStub = jest.fn();
-    const getAvatarUrlWithAccessTokenStub = jest.fn(
-        userID => `https://api.box.com/2.0/users/${userID}/avatar?access_token=foo&pic_type=large`,
-    );
     const createAPIInstance = getCollabStub => ({
         getCollaborationsAPI: jest.fn().mockReturnValue({
             addCollaboration: jest.fn(),
@@ -54,9 +49,6 @@ describe('elements/content-sharing/SharingNotification', () => {
         getFolderCollaborationsAPI: jest.fn().mockReturnValue({
             getCollaborations: getCollabStub,
         }),
-        getUsersAPI: jest.fn().mockReturnValue({
-            getAvatarUrlWithAccessToken: getAvatarUrlWithAccessTokenStub,
-        }),
     });
 
     const getWrapper = props =>
@@ -65,7 +57,6 @@ describe('elements/content-sharing/SharingNotification', () => {
                 collaboratorsList={null}
                 currentUserID={MOCK_OWNER_ID}
                 getContacts={null}
-                isDownloadAvailable
                 itemID={MOCK_ITEM_ID}
                 itemType={TYPE_FOLDER}
                 ownerEmail={MOCK_OWNER_EMAIL}
@@ -135,14 +126,8 @@ describe('elements/content-sharing/SharingNotification', () => {
             });
             wrapper.update();
             expect(getCollaborations).toHaveBeenCalledWith(MOCK_ITEM_ID, expect.anything(), expect.anything());
-            expect(convertCollabsResponse).toHaveBeenCalledWith(
-                MOCK_COLLABS_API_RESPONSE,
-                MOCK_AVATAR_URL_MAP,
-                MOCK_OWNER_EMAIL,
-                true,
-            );
+            expect(convertCollabsResponse).toHaveBeenCalledWith(MOCK_COLLABS_API_RESPONSE, MOCK_OWNER_EMAIL, true);
             expect(setCollaboratorsListStub).toHaveBeenCalledWith(MOCK_COLLABS_CONVERTED_RESPONSE);
-            expect(getAvatarUrlWithAccessTokenStub).toHaveBeenCalled();
             expect(wrapper.exists(Notification)).toBe(false);
         });
     });
@@ -180,7 +165,6 @@ describe('elements/content-sharing/SharingNotification', () => {
                     .at(0)
                     .prop('id'),
             ).toBe('be.contentSharing.collaboratorsLoadingError');
-            expect(notification.prop('duration')).toBe(DURATION_SHORT);
         });
     });
 });

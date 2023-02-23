@@ -17,7 +17,6 @@ type Props = {
     hideLabel?: boolean,
     /** Unique `id` for the input */
     id?: string,
-    inputClassName?: string,
     /** Checkbox checked state */
     isChecked?: boolean, // @TODO: eventually call this `checked`
     /** Checkbox disabled state */
@@ -30,8 +29,6 @@ type Props = {
     onBlur?: (e: SyntheticInputEvent<HTMLInputElement>) => any,
     /** change callback function called with event as the argument */
     onChange?: (e: SyntheticInputEvent<HTMLInputElement>) => any,
-    /** onFocus - focus callback function that takes the event as the argument  */
-    onFocus?: (e: SyntheticFocusEvent<HTMLInputElement>) => void,
     /** Subsection below the checkbox */
     subsection?: React.Node,
     /** Info tooltip text next to the checkbox label */
@@ -46,12 +43,10 @@ const Checkbox = ({
     fieldLabel,
     hideLabel,
     id,
-    inputClassName,
     isChecked,
     isDisabled,
     label,
     name,
-    onFocus,
     onChange,
     subsection,
     tooltip,
@@ -65,11 +60,9 @@ const Checkbox = ({
         <span className="checkbox-label">
             <input
                 checked={isChecked}
-                className={classNames(inputClassName)}
                 disabled={isDisabled}
                 id={inputID}
                 name={name}
-                onFocus={onFocus}
                 onChange={onChange}
                 type="checkbox"
                 {...rest}

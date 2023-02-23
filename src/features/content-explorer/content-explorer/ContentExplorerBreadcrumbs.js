@@ -3,16 +3,15 @@ import React from 'react';
 import { injectIntl } from 'react-intl';
 
 import Button from '../../../components/button';
+import PlainButton from '../../../components/plain-button';
 import Breadcrumb from '../../../components/breadcrumb';
 import IconChevron from '../../../icons/general/IconChevron';
 import IconAllFiles from '../../../icons/general/IconAllFiles';
-import PlainButton from '../../../components/plain-button';
 
 import { FoldersPathPropType } from '../prop-types';
 import messages from '../messages';
 
 const ContentExplorerBreadcrumbs = ({
-    breadcrumbProps,
     foldersPath,
     intl: { formatMessage },
     isUpButtonDisabled = false,
@@ -29,25 +28,23 @@ const ContentExplorerBreadcrumbs = ({
         >
             <IconChevron direction="left" size="6px" color="#333" />
         </Button>
-        <Breadcrumb label={formatMessage(messages.breadcrumb)} {...breadcrumbProps}>
+        <Breadcrumb label={formatMessage(messages.breadcrumb)}>
             {foldersPath.map((folder, i) => (
-                <div key={folder.id} className="lnk">
-                    <PlainButton
-                        data-testid="breadcrumb-lnk"
-                        onClick={event => onBreadcrumbClick(i, event)}
-                        title={folder.name}
-                    >
-                        {i === 0 && <IconAllFiles />}
-                        <span>{folder.name}</span>
-                    </PlainButton>
-                </div>
+                <PlainButton
+                    className="lnk"
+                    key={folder.id}
+                    title={folder.name}
+                    onClick={event => onBreadcrumbClick(i, event)}
+                >
+                    {i === 0 && <IconAllFiles />}
+                    <span>{folder.name}</span>
+                </PlainButton>
             ))}
         </Breadcrumb>
     </div>
 );
 
 ContentExplorerBreadcrumbs.propTypes = {
-    breadcrumbProps: PropTypes.object,
     foldersPath: FoldersPathPropType.isRequired,
     intl: PropTypes.any,
     isUpButtonDisabled: PropTypes.bool,

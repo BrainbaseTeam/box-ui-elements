@@ -4,7 +4,6 @@ import uniqueId from 'lodash/uniqueId';
 import { SVGProps } from '../../components/accessible-svg/AccessibleSVG';
 
 export interface AccessibleSVGIconProps extends SVGProps {
-    'aria-hidden'?: boolean | 'false' | 'true' | undefined;
     'aria-labelledby'?: string;
     focusable?: boolean | 'false' | 'true' | 'auto' | undefined;
     opacity?: number;
@@ -27,7 +26,6 @@ class AccessibleSVG extends React.Component<AccessibleSVGIconProps> {
             svgProps['aria-labelledby'] = titleID;
             svgProps.role = 'img';
         } else {
-            svgProps['aria-hidden'] = 'true';
             svgProps.role = 'presentation';
         }
 

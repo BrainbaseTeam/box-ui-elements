@@ -9,13 +9,9 @@ describe('features/content-explorer/item-list/ItemListIcon', () => {
         test('should render default component', () => {
             const wrapper = renderComponent();
 
-            expect(wrapper.find('IconCell').length).toBe(1);
-            expect(wrapper.prop('rowData')).toEqual({
-                type: undefined,
-                extension: undefined,
-                has_collaborations: false,
-                is_externally_owned: false,
-            });
+            expect(wrapper.find('FileIcon').length).toBe(1);
+            expect(wrapper.prop('extension')).toEqual(undefined);
+            expect(wrapper.prop('title')).toBeTruthy();
         });
 
         [
@@ -37,35 +33,33 @@ describe('features/content-explorer/item-list/ItemListIcon', () => {
                 hasCollaborations: true,
                 isExternallyOwned: true,
             },
-            // externalFolder
-            {
-                type: 'folder',
-                hasCollaborations: false,
-                isExternallyOwned: true,
-            },
-        ].forEach(rowData => {
+        ].forEach(props => {
             test('should render correct folder icon', () => {
-                const wrapper = renderComponent(rowData);
+                const wrapper = renderComponent(props);
 
-                expect(wrapper.find('IconCell').length).toBe(1);
+                expect(wrapper.find('FolderIcon').length).toBe(1);
+                expect(wrapper.prop('isCollab')).toEqual(props.hasCollaborations);
+                expect(wrapper.prop('isExternal')).toEqual(props.isExternallyOwned);
+                expect(wrapper.prop('title')).toBeTruthy();
+
                 expect(wrapper).toMatchSnapshot();
             });
         });
 
         test('should render correct file icon', () => {
-            const rowData = { type: 'file', extension: 'boxnote' };
-            const wrapper = renderComponent(rowData);
+            const extension = 'boxnote';
+            const wrapper = renderComponent({ type: 'file', extension });
 
-            expect(wrapper.find('IconCell').length).toBe(1);
-            expect(wrapper.prop('rowData')).toEqual(expect.objectContaining(rowData));
+            expect(wrapper.find('FileIcon').length).toBe(1);
+            expect(wrapper.prop('extension')).toEqual(extension);
+            expect(wrapper.prop('title')).toBeTruthy();
         });
 
         test('should render correct bookmark icon', () => {
-            const rowData = { type: 'web_link' };
-            const wrapper = renderComponent(rowData);
+            const wrapper = renderComponent({ type: 'web_link' });
 
-            expect(wrapper.find('IconCell').length).toBe(1);
-            expect(wrapper.prop('rowData')).toEqual(expect.objectContaining(rowData));
+            expect(wrapper.find('BookmarkIcon').length).toBe(1);
+            expect(wrapper.prop('title')).toBeTruthy();
         });
     });
 });

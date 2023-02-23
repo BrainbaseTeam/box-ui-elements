@@ -1,7 +1,7 @@
 import React from 'react';
 
 import TEMPLATE_CUSTOM_PROPERTIES from '../constants';
-import { InstanceBase as Instance } from '../Instance';
+import Instance from '../Instance';
 import { isValidValue } from '../../metadata-instance-fields/validateMetadataField';
 
 jest.mock('../../metadata-instance-fields/validateMetadataField');
