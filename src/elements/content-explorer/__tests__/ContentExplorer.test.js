@@ -5,7 +5,7 @@ import noop from 'lodash/noop';
 import * as utils from '../utils';
 import { ContentExplorerComponent as ContentExplorer } from '../ContentExplorer';
 import UploadDialog from '../../common/upload-dialog';
-import { FOLDER_FIELDS_TO_FETCH } from '../../../utils/fields';
+import CONTENT_EXPLORER_FOLDER_FIELDS_TO_FETCH from '../constants';
 import { VIEW_MODE_GRID } from '../../../constants';
 
 jest.mock('../../common/header/Header', () => 'mock-header');
@@ -83,7 +83,7 @@ describe('elements/content-explorer/ContentExplorer', () => {
                 'ASC',
                 expect.any(Function),
                 expect.any(Function),
-                { forceFetch: true, fields: FOLDER_FIELDS_TO_FETCH },
+                { forceFetch: true, fields: CONTENT_EXPLORER_FOLDER_FIELDS_TO_FETCH },
             );
         });
     });
@@ -488,7 +488,7 @@ describe('elements/content-explorer/ContentExplorer', () => {
         test('should correctly update the current collection and set the state', () => {
             const boxItem = { id: 2 };
             const field = 'amount';
-            const newVaue = 111.22;
+            const newValue = 111.22;
             const collectionItem1 = {
                 id: 1,
                 metadata: {
@@ -496,11 +496,13 @@ describe('elements/content-explorer/ContentExplorer', () => {
                         fields: [
                             {
                                 name: 'name',
+                                key: 'name',
                                 value: 'abc',
                                 type: 'string',
                             },
                             {
                                 name: 'amount',
+                                key: 'amount',
                                 value: 100.34,
                                 type: 'float',
                             },
@@ -515,11 +517,13 @@ describe('elements/content-explorer/ContentExplorer', () => {
                         fields: [
                             {
                                 name: 'name',
+                                key: 'name',
                                 value: 'pqr',
                                 type: 'string',
                             },
                             {
                                 name: 'amount',
+                                key: 'amount',
                                 value: 354.23,
                                 type: 'float',
                             },
@@ -536,7 +540,7 @@ describe('elements/content-explorer/ContentExplorer', () => {
             const wrapper = getWrapper();
 
             // update the metadata
-            clonedCollectionItem2.metadata.enterprise.fields.find(item => item.name === field).value = newVaue;
+            clonedCollectionItem2.metadata.enterprise.fields.find(item => item.key === field).value = newValue;
 
             const updatedItems = [collectionItem1, clonedCollectionItem2];
 
@@ -544,7 +548,7 @@ describe('elements/content-explorer/ContentExplorer', () => {
             const instance = wrapper.instance();
             instance.setState = jest.fn();
 
-            instance.updateMetadataSuccessCallback(boxItem, field, newVaue);
+            instance.updateMetadataSuccessCallback(boxItem, field, newValue);
             expect(instance.setState).toHaveBeenCalledWith({
                 currentCollection: {
                     items: updatedItems,
@@ -552,6 +556,50 @@ describe('elements/content-explorer/ContentExplorer', () => {
                     percentLoaded: 100,
                 },
             });
+        });
+    });
+
+    describe('handleSharedLinkSuccess()', () => {
+        const getApiShareMock = jest.fn().mockImplementation((newItem, access, callback) => callback());
+        const getApiMock = jest.fn().mockReturnValue({ share: getApiShareMock });
+        const updateCollectionMock = jest.fn();
+
+        const boxItem = {
+            shared_link: 'not null',
+            permissions: 'not null',
+            type: 'not null',
+        };
+
+        let wrapper;
+        let instance;
+
+        beforeEach(() => {
+            wrapper = getWrapper({ canShare: true, canSetShareAccess: true });
+            instance = wrapper.instance();
+            instance.api = { getAPI: getApiMock };
+            instance.updateCollection = updateCollectionMock;
+        });
+
+        afterEach(() => {
+            getApiShareMock.mockClear();
+            getApiMock.mockClear();
+            updateCollectionMock.mockClear();
+        });
+
+        test('should create shared link when it doesnt exist yet', () => {
+            instance.handleSharedLinkSuccess({ ...boxItem, shared_link: null });
+
+            expect(getApiMock).toBeCalledTimes(1);
+            expect(getApiShareMock).toBeCalledTimes(1);
+            expect(updateCollectionMock).toBeCalledTimes(1);
+        });
+
+        test('should not create shared link when one already exists', () => {
+            instance.handleSharedLinkSuccess(boxItem);
+
+            expect(getApiMock).not.toBeCalled();
+            expect(getApiShareMock).not.toBeCalled();
+            expect(updateCollectionMock).toBeCalledTimes(1);
         });
     });
 

@@ -82,7 +82,6 @@ describe('components/flyout/Flyout', () => {
 
             expect(button.prop('id')).toEqual(instance.overlayButtonID);
             expect(button.key()).toEqual(instance.overlayButtonID);
-            expect(button.prop('role')).toEqual('button');
             expect(button.prop('aria-haspopup')).toEqual('true');
             expect(button.prop('aria-expanded')).toEqual('false');
             expect(button.prop('aria-controls')).toBeFalsy();
@@ -937,6 +936,21 @@ describe('components/flyout/Flyout', () => {
             sandbox.mock(instance).expects('closeOverlay');
 
             instance.handleOverlayClose();
+        });
+    });
+
+    describe('isResponsive', () => {
+        test('should have correct className when isResponsive is true', () => {
+            const wrapper = shallow(
+                <Flyout isResponsive>
+                    <FakeButton />
+                    <FakeOverlay />
+                </Flyout>,
+            );
+
+            expect(wrapper.prop('classes')).toEqual({
+                element: `flyout-overlay bdl-Flyout--responsive`,
+            });
         });
     });
 });

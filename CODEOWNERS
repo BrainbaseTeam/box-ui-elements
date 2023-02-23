@@ -2,12 +2,9 @@
 *                                           @box/webapp
 
 # Root
-/*                                          @box/foundation
+/*                                          @box/ui-elements
 /LICENSE                                    @box/ui-elements
 /THIRD_PARTY_LICENSES                       @box/ui-elements
-
-# Build
-/scripts/                                   @box/foundation
 
 # Source
 /src/                                       @box/webapp
@@ -15,18 +12,19 @@
 /src/api/                                   @box/preview @box/ui-elements
 /src/api/box-edit/                          @box/partners
 /src/api/Feed.js                            @box/preview
-/src/api/tasks/                             @box/collab
 /src/api/uploads/                           @box/create-communicate
 /src/elements/                              @box/preview @box/ui-elements
 /src/elements/content-explorer/             @box/ui-elements
 /src/elements/content-open-with/            @box/partners
 /src/elements/content-picker/               @box/ui-elements
 /src/elements/content-preview/              @box/preview
+/src/elements/content-sharing/              @box/partners
 /src/elements/content-sidebar/              @box/preview
 /src/elements/content-uploader/             @box/create-communicate
 /src/elements/wrappers/                     @box/ui-elements
 /src/features/                              @box/webapp
 /src/features/access-stats/                 @box/preview
+/src/features/content-insights/             @box/preview
 /src/features/item-details/                 @box/preview
 /src/features/metadata-based-view/          @box/ui-elements
 /src/features/metadata-instance-editor/     @box/ui-elements
@@ -40,9 +38,3 @@
 /test/integration/content-preview/          @box/preview
 /test/integration/content-sidebar/          @box/preview
 /test/integration/content-uploader/         @box/create-communicate
-
-# Features
-/src/elements/content-sidebar/activity-feed/comment/    @box/collab @box/preview
-/src/elements/content-sidebar/activity-feed/task/       @box/collab @box/preview
-/src/elements/content-sidebar/activity-feed/task-form/  @box/collab @box/preview
-/src/elements/content-sidebar/activity-feed/task-new/   @box/collab @box/preview

@@ -10,11 +10,10 @@ exports[`elements/content-sidebar/ActivityFeed/Avatar should render the avatar w
 
 exports[`elements/content-sidebar/ActivityFeed/Avatar should set the avatarUrl state from user prop 1`] = `
 <Badgeable
+  bottomRight={null}
   className="avatar"
 >
-  <span
-    role="presentation"
-  >
+  <span>
     <AvatarInitials
       id="foo"
       name="foo bar"

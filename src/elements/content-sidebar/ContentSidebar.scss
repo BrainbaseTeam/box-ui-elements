@@ -9,7 +9,7 @@ $sidebarWidth: $sidebarTabsWidth + $sidebarContentWidth;
         width: auto;
         min-width: $sidebarTabsWidth;
         max-width: $sidebarWidth;
-        background-color: $bdl-gray-02;
+        background-color: $white;
     }
 
     .bcs-loading {
@@ -25,6 +25,27 @@ $sidebarWidth: $sidebarTabsWidth + $sidebarContentWidth;
     &.bcs-is-open {
         .bcs-loading {
             width: $sidebarWidth;
+        }
+    }
+}
+
+.is-responsive-web {
+    @include breakpoint($medium-screen) {
+        .be.bcs {
+            flex-basis: 100%;
+            flex-direction: column;
+            width: 100%;
+            min-width: 0;
+            max-width: none;
+            max-height: 48px;
+            transition: max-height .5s ease-in-out 0s;
+
+            &.bcs-is-open {
+                position: absolute;
+                bottom: 0;
+                z-index: 2;
+                max-height: 100%;
+            }
         }
     }
 }

@@ -4,13 +4,14 @@ import React from 'react';
 import PlainButton from '../../../components/plain-button';
 import IconChevron from '../../../icons/general/IconChevron';
 
-import ItemTypes from '../item-types';
 import { ItemTypePropType } from '../prop-types';
+
+import { TYPE_FOLDER } from '../../../constants';
 
 const ITEM_LIST_NAME_CLASS = 'item-list-name';
 
-const ItemListName = ({ type, name, label = '', isSelected = false, onClick, linkRenderer }) => {
-    const isFolder = type === ItemTypes.FOLDER;
+const ItemListName = ({ itemId = '', type, name, label = '', isSelected = false, onClick, linkRenderer }) => {
+    const isFolder = type === TYPE_FOLDER;
 
     const linkProps = {
         className: `lnk ${ITEM_LIST_NAME_CLASS}`,
@@ -26,7 +27,7 @@ const ItemListName = ({ type, name, label = '', isSelected = false, onClick, lin
             />,
         ],
     };
-    const renderLink = () => (linkRenderer ? linkRenderer(linkProps) : <PlainButton {...linkProps} />);
+    const renderLink = () => (linkRenderer ? linkRenderer({ ...linkProps, itemId }) : <PlainButton {...linkProps} />);
 
     return (
         <div className="item-list-name-container">
@@ -37,6 +38,7 @@ const ItemListName = ({ type, name, label = '', isSelected = false, onClick, lin
 };
 
 ItemListName.propTypes = {
+    itemId: PropTypes.string,
     type: ItemTypePropType,
     name: PropTypes.string.isRequired,
     label: PropTypes.string,

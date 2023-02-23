@@ -21,11 +21,13 @@ describe('components/search-form/SearchForm', () => {
     });
 
     test('should correctly render default component', () => {
-        const wrapper = mount(<SearchForm placeholder="search" />);
+        const onSubmitSpy = sinon.spy();
+        const wrapper = mount(<SearchForm onSubmit={onSubmitSpy} placeholder="search" value="cheese" />);
         expect(wrapper.find('form').length === 1).toBeTruthy();
         expect(wrapper.find('input').length === 1).toBeTruthy();
         expect(wrapper.find('button').length === 2).toBeTruthy();
         expect(wrapper.find('form').prop('method')).toEqual('get');
+        expect(wrapper.find('.search-button').type()).toEqual('button');
         expect(wrapper.find('input').prop('name')).toEqual('search');
         expect(wrapper.find('form').hasClass('search-form')).toBeTruthy();
         expect(wrapper.find('input').hasClass('search-input')).toBeTruthy();
@@ -43,8 +45,12 @@ describe('components/search-form/SearchForm', () => {
         ).toBeTruthy();
     });
 
-    test('should call onsubmit on search icon click', () => {
-        const onSubmitSpy = sinon.spy();
+    test('should render search-button as a div when onSubmit is not present', () => {
+        const wrapper = mount(<SearchForm placeholder="search" value="cheese" />);
+        expect(wrapper.find('.search-button').type()).toEqual('div');
+    });
+
+    describe('onSubmitHandler()', () => {
         const event = {
             target: {
                 elements: [
@@ -54,10 +60,30 @@ describe('components/search-form/SearchForm', () => {
                 ],
             },
         };
-        const wrapper = mount(<SearchForm onSubmit={onSubmitSpy} placeholder="search" value="cheese" />);
-        const form = wrapper.find('form');
-        form.simulate('submit', event);
-        sinon.assert.calledWithMatch(onSubmitSpy, 'cheese', event);
+        const onSubmitMock = jest.fn();
+
+        afterEach(() => {
+            onSubmitMock.mockReset();
+        });
+
+        test('should call onsubmit on form submit event', () => {
+            const wrapper = mount(<SearchForm onSubmit={onSubmitMock} placeholder="search" value="cheese" />);
+            const form = wrapper.find('form');
+
+            form.simulate('submit', event);
+            expect(onSubmitMock).toBeCalledTimes(1);
+            expect(onSubmitMock).toBeCalledWith('cheese', expect.objectContaining(event));
+        });
+
+        test('should call onsubmit on search icon button submit event', () => {
+            const wrapper = mount(<SearchForm onSubmit={onSubmitMock} placeholder="search" value="cheese" />);
+            const searchButton = wrapper.find('.search-button');
+            expect(searchButton.prop('type')).toEqual('submit');
+
+            searchButton.simulate('submit', event);
+            expect(onSubmitMock).toBeCalledTimes(1);
+            expect(onSubmitMock).toBeCalledWith('cheese', expect.objectContaining(event));
+        });
     });
 
     test('should call onchange on form change', () => {

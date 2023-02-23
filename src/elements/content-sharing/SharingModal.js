@@ -6,27 +6,41 @@
  * @author Box
  */
 import * as React from 'react';
+import isEmpty from 'lodash/isEmpty';
+import noop from 'lodash/noop';
 import { FormattedMessage } from 'react-intl';
 import type { $AxiosError } from 'axios';
 import API from '../../api';
 import Internationalize from '../common/Internationalize';
-import ErrorMask from '../../components/error-mask/ErrorMask';
+import NotificationsWrapper from '../../components/notification/NotificationsWrapper';
+import Notification from '../../components/notification/Notification';
+import { DURATION_SHORT, TYPE_ERROR } from '../../components/notification/constants';
+import LoadingIndicator from '../../components/loading-indicator/LoadingIndicator';
 import UnifiedShareModal from '../../features/unified-share-modal';
 import SharedLinkSettingsModal from '../../features/shared-link-settings-modal';
 import SharingNotification from './SharingNotification';
-import usmMessages from '../../features/unified-share-modal/messages';
-import { convertItemResponse, convertUserResponse } from '../../features/unified-share-modal/utils/convertData';
+import {
+    convertItemResponse,
+    convertUserContactsByEmailResponse,
+    convertUserResponse,
+} from '../../features/unified-share-modal/utils/convertData';
+import useContactsByEmail from './hooks/useContactsByEmail';
 import { FIELD_ENTERPRISE, FIELD_HOSTNAME, TYPE_FILE, TYPE_FOLDER } from '../../constants';
 import { CONTENT_SHARING_ERRORS, CONTENT_SHARING_ITEM_FIELDS, CONTENT_SHARING_VIEWS } from './constants';
-import { INVITEE_PERMISSIONS } from '../../features/unified-share-modal/constants';
+import { INVITEE_PERMISSIONS_FOLDER, INVITEE_PERMISSIONS_FILE } from '../../features/unified-share-modal/constants';
 import contentSharingMessages from './messages';
 import type { ErrorResponseData } from '../../common/types/api';
-import type { ItemType } from '../../common/types/core';
-import type { collaboratorsListType, item as itemFlowType } from '../../features/unified-share-modal/flowTypes';
+import type { ItemType, StringMap } from '../../common/types/core';
+import type {
+    collaboratorsListType,
+    item as itemFlowType,
+    USMConfig,
+} from '../../features/unified-share-modal/flowTypes';
 import type {
     ContentSharingItemAPIResponse,
     ContentSharingSharedLinkType,
     GetContactsFnType,
+    GetContactsByEmailFnType,
     SendInvitesFnType,
     SharedLinkUpdateLevelFnType,
     SharedLinkUpdateSettingsFnType,
@@ -34,18 +48,35 @@ import type {
 
 type SharingModalProps = {
     api: API,
+    config?: USMConfig,
     displayInModal: boolean,
+    isVisible: boolean,
     itemID: string,
     itemType: ItemType,
     language: string,
-    onRequestClose?: () => void,
+    messages?: StringMap,
+    setIsVisible: (arg: boolean) => void,
+    uuid?: string,
 };
 
-function SharingModal({ api, displayInModal, itemID, itemType, language, onRequestClose }: SharingModalProps) {
+function SharingModal({
+    api,
+    config,
+    displayInModal,
+    isVisible,
+    itemID,
+    itemType,
+    language,
+    messages,
+    setIsVisible,
+    uuid,
+}: SharingModalProps) {
     const [item, setItem] = React.useState<itemFlowType | null>(null);
     const [sharedLink, setSharedLink] = React.useState<ContentSharingSharedLinkType | null>(null);
+    const [currentUserEnterpriseName, setCurrentUserEnterpriseName] = React.useState<string | null>(null);
     const [currentUserID, setCurrentUserID] = React.useState<string | null>(null);
-    const [componentErrorMessage, setComponentErrorMessage] = React.useState<Object | null>(null);
+    const [initialDataErrorMessage, setInitialDataErrorMessage] = React.useState<Object | null>(null);
+    const [isInitialDataErrorVisible, setIsInitialDataErrorVisible] = React.useState<boolean>(false);
     const [collaboratorsList, setCollaboratorsList] = React.useState<collaboratorsListType | null>(null);
     const [onAddLink, setOnAddLink] = React.useState<null | SharedLinkUpdateLevelFnType>(null);
     const [onRemoveLink, setOnRemoveLink] = React.useState<null | SharedLinkUpdateLevelFnType>(null);
@@ -60,19 +91,26 @@ function SharingModal({ api, displayInModal, itemID, itemType, language, onReque
     const [onSubmitSettings, setOnSubmitSettings] = React.useState<null | SharedLinkUpdateSettingsFnType>(null);
     const [currentView, setCurrentView] = React.useState<string>(CONTENT_SHARING_VIEWS.UNIFIED_SHARE_MODAL);
     const [getContacts, setGetContacts] = React.useState<null | GetContactsFnType>(null);
+    const [getContactsByEmail, setGetContactsByEmail] = React.useState<null | GetContactsByEmailFnType>(null);
     const [sendInvites, setSendInvites] = React.useState<null | SendInvitesFnType>(null);
+    const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
     // Handle successful GET requests to /files or /folders
     const handleGetItemSuccess = React.useCallback((itemData: ContentSharingItemAPIResponse) => {
         const { item: itemFromAPI, sharedLink: sharedLinkFromAPI } = convertItemResponse(itemData);
-        setComponentErrorMessage(null);
         setItem(itemFromAPI);
         setSharedLink(sharedLinkFromAPI);
+        setIsLoading(false);
     }, []);
 
-    // Handle component-level errors
+    // Handle initial data retrieval errors
     const getError = React.useCallback(
         (error: $AxiosError<Object> | ErrorResponseData) => {
+            if (isInitialDataErrorVisible) return; // display only one component-level notification at a time
+
+            setIsInitialDataErrorVisible(true);
+            setIsLoading(false);
+
             let errorObject;
             if (error.status) {
                 errorObject = contentSharingMessages[CONTENT_SHARING_ERRORS[error.status]];
@@ -81,10 +119,9 @@ function SharingModal({ api, displayInModal, itemID, itemType, language, onReque
             } else {
                 errorObject = contentSharingMessages.loadingError;
             }
-
-            setComponentErrorMessage(errorObject);
+            setInitialDataErrorMessage(errorObject);
         },
-        [setComponentErrorMessage],
+        [isInitialDataErrorVisible],
     );
 
     // Reset state if the API has changed
@@ -92,12 +129,22 @@ function SharingModal({ api, displayInModal, itemID, itemType, language, onReque
         setChangeSharedLinkAccessLevel(null);
         setChangeSharedLinkPermissionLevel(null);
         setCollaboratorsList(null);
+        setInitialDataErrorMessage(null);
         setCurrentUserID(null);
+        setCurrentUserEnterpriseName(null);
+        setIsInitialDataErrorVisible(false);
+        setIsLoading(true);
         setItem(null);
         setOnAddLink(null);
         setOnRemoveLink(null);
         setSharedLink(null);
-    }, []);
+    }, [api]);
+
+    // Refresh error state if the uuid has changed
+    React.useEffect(() => {
+        setInitialDataErrorMessage(null);
+        setIsInitialDataErrorVisible(false);
+    }, [uuid]);
 
     // Get initial data for the item
     React.useEffect(() => {
@@ -113,18 +160,20 @@ function SharingModal({ api, displayInModal, itemID, itemType, language, onReque
             }
         };
 
-        if (!item && !sharedLink) {
+        if (api && !isEmpty(api) && !initialDataErrorMessage && isVisible && !item && !sharedLink) {
             getItem();
         }
-    }, [api, getError, handleGetItemSuccess, item, itemID, itemType, sharedLink]);
+    }, [api, initialDataErrorMessage, getError, handleGetItemSuccess, isVisible, item, itemID, itemType, sharedLink]);
 
     // Get initial data for the user
     React.useEffect(() => {
         const getUserSuccess = userData => {
             const { id, userEnterpriseData } = convertUserResponse(userData);
             setCurrentUserID(id);
+            setCurrentUserEnterpriseName(userEnterpriseData.enterpriseName || null);
             setSharedLink(prevSharedLink => ({ ...prevSharedLink, ...userEnterpriseData }));
-            setComponentErrorMessage(null);
+            setInitialDataErrorMessage(null);
+            setIsLoading(false);
         };
 
         const getUserData = () => {
@@ -135,35 +184,68 @@ function SharingModal({ api, displayInModal, itemID, itemType, language, onReque
             });
         };
 
-        if (item && sharedLink && !currentUserID) {
+        if (api && !isEmpty(api) && !initialDataErrorMessage && item && sharedLink && !currentUserID) {
             getUserData();
         }
-    }, [getError, item, itemID, itemType, sharedLink, currentUserID, api]);
+    }, [getError, item, itemID, itemType, sharedLink, currentUserID, api, initialDataErrorMessage]);
 
-    if (componentErrorMessage) {
-        return <ErrorMask errorHeader={<FormattedMessage {...componentErrorMessage} />} />;
+    // Set the getContactsByEmail function. This call is not associated with a banner notification,
+    // which is why it exists at this level and not in SharingNotification
+    const getContactsByEmailFn: GetContactsByEmailFnType | null = useContactsByEmail(api, itemID, {
+        transformUsers: data => convertUserContactsByEmailResponse(data),
+    });
+    if (getContactsByEmailFn && !getContactsByEmail) {
+        setGetContactsByEmail((): GetContactsByEmailFnType => getContactsByEmailFn);
     }
 
-    // Ensure that all necessary data has been received before rendering child components
-    // "serverURL" is added to sharedLink after the call to the Users API
+    // Display a notification if there is an error in retrieving initial data
+    if (initialDataErrorMessage) {
+        return isInitialDataErrorVisible ? (
+            <Internationalize language={language} messages={messages}>
+                <NotificationsWrapper>
+                    <Notification
+                        onClose={() => setIsInitialDataErrorVisible(false)}
+                        type={TYPE_ERROR}
+                        duration={DURATION_SHORT}
+                    >
+                        <span>
+                            <FormattedMessage {...initialDataErrorMessage} />
+                        </span>
+                    </Notification>
+                </NotificationsWrapper>
+            </Internationalize>
+        ) : null;
+    }
+
+    // Ensure that all necessary data has been received before rendering child components.
+    // If the USM is visible, show the LoadingIndicator; otherwise, show nothing.
+    // "serverURL" is added to sharedLink after the call to the Users API, so it needs to be checked separately.
     if (!item || !sharedLink || !currentUserID || !sharedLink.serverURL) {
-        return null;
+        return isVisible ? <LoadingIndicator /> : null;
     }
 
     const { ownerEmail, ownerID, permissions } = item;
-    const { accessLevel = '', serverURL } = sharedLink;
+    const {
+        accessLevel = '',
+        canChangeExpiration = false,
+        expirationTimestamp,
+        isDownloadAvailable = false,
+        serverURL,
+    } = sharedLink;
     return (
-        <Internationalize language={language} messages={usmMessages}>
+        <Internationalize language={language} messages={messages}>
             <>
                 <SharingNotification
                     accessLevel={accessLevel}
                     api={api}
+                    closeComponent={displayInModal ? () => setIsVisible(false) : noop}
+                    closeSettings={() => setCurrentView(CONTENT_SHARING_VIEWS.UNIFIED_SHARE_MODAL)}
                     collaboratorsList={collaboratorsList}
                     currentUserID={currentUserID}
                     getContacts={getContacts}
+                    isDownloadAvailable={isDownloadAvailable}
                     itemID={itemID}
                     itemType={itemType}
-                    onRequestClose={() => setCurrentView(CONTENT_SHARING_VIEWS.UNIFIED_SHARE_MODAL)}
                     onSubmitSettings={onSubmitSettings}
                     ownerEmail={ownerEmail}
                     ownerID={ownerID}
@@ -174,6 +256,7 @@ function SharingModal({ api, displayInModal, itemID, itemType, language, onReque
                     setChangeSharedLinkPermissionLevel={setChangeSharedLinkPermissionLevel}
                     setGetContacts={setGetContacts}
                     setCollaboratorsList={setCollaboratorsList}
+                    setIsLoading={setIsLoading}
                     setItem={setItem}
                     setOnAddLink={setOnAddLink}
                     setOnRemoveLink={setOnRemoveLink}
@@ -181,37 +264,47 @@ function SharingModal({ api, displayInModal, itemID, itemType, language, onReque
                     setSendInvites={setSendInvites}
                     setSharedLink={setSharedLink}
                 />
-                {currentView === CONTENT_SHARING_VIEWS.SHARED_LINK_SETTINGS && (
+                {isVisible && currentView === CONTENT_SHARING_VIEWS.SHARED_LINK_SETTINGS && (
                     <SharedLinkSettingsModal
                         isDirectLinkUnavailableDueToDownloadSettings={false}
                         isDirectLinkUnavailableDueToAccessPolicy={false}
                         isDirectLinkUnavailableDueToMaliciousContent={false}
-                        isOpen
+                        isOpen={isVisible}
                         item={item}
                         onRequestClose={() => setCurrentView(CONTENT_SHARING_VIEWS.UNIFIED_SHARE_MODAL)}
                         onSubmit={onSubmitSettings}
+                        submitting={isLoading}
                         {...sharedLink}
+                        canChangeExpiration={canChangeExpiration && !!currentUserEnterpriseName}
                     />
                 )}
-                {currentView === CONTENT_SHARING_VIEWS.UNIFIED_SHARE_MODAL && (
+                {isVisible && currentView === CONTENT_SHARING_VIEWS.UNIFIED_SHARE_MODAL && (
                     <UnifiedShareModal
                         canInvite={sharedLink.canInvite}
+                        config={config}
                         changeSharedLinkAccessLevel={changeSharedLinkAccessLevel}
                         changeSharedLinkPermissionLevel={changeSharedLinkPermissionLevel}
                         collaboratorsList={collaboratorsList}
                         currentUserID={currentUserID}
                         displayInModal={displayInModal}
                         getCollaboratorContacts={getContacts}
+                        getContactsByEmail={getContactsByEmail}
                         initialDataReceived
-                        inviteePermissions={INVITEE_PERMISSIONS}
-                        isOpen
+                        inviteePermissions={
+                            itemType === TYPE_FOLDER ? INVITEE_PERMISSIONS_FOLDER : INVITEE_PERMISSIONS_FILE
+                        }
+                        isOpen={isVisible}
                         item={item}
                         onAddLink={onAddLink}
-                        onRequestClose={onRequestClose}
+                        onRequestClose={displayInModal ? () => setIsVisible(false) : noop}
                         onRemoveLink={onRemoveLink}
                         onSettingsClick={() => setCurrentView(CONTENT_SHARING_VIEWS.SHARED_LINK_SETTINGS)}
                         sendInvites={sendInvites}
-                        sharedLink={sharedLink}
+                        sharedLink={{
+                            ...sharedLink,
+                            expirationTimestamp: expirationTimestamp ? expirationTimestamp / 1000 : null,
+                        }} // the USM expects this value in seconds, while the SLSM expects this value in milliseconds
+                        submitting={isLoading}
                     />
                 )}
             </>

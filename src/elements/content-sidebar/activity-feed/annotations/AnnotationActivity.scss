@@ -1,4 +1,5 @@
 @import '../../../common/variables';
+@import '../../mixins';
 
 .bcs-AnnotationActivity {
     position: relative;
@@ -16,13 +17,14 @@
     }
 }
 
-// Need to be more specific to override btn-plain margin:0
-.bcs-AnnotationActivity-link.btn-plain {
-    display: inline-block;
-    margin-top: 8px;
+.bcs-AnnotationActivity-avatar {
+    position: relative;
 }
 
 .bcs-AnnotationActivity-headline {
+    // Because the annotation menu is absolutely positioned,
+    // this padding reserves that space so long headlines won't overlap with the menu
+    margin-right: 26px;
     // target only Edge because this breaks other browsers
     // but fixes Edge
     @supports (-ms-ime-align: auto) {
@@ -35,6 +37,25 @@
     z-index: $overlay-z-index;
 }
 
+.bcs-AnnotationActivity-menu {
+    position: absolute;
+    top: $sidebarActivityFeedSpacingVertical;
+    right: $sidebarActivityFeedSpacingHorizontal;
+    z-index: 1;
+}
+
+.bcs-AnnotationActivity-timestamp {
+    display: flex;
+    white-space: nowrap;
+}
+
+.bcs-AnnotationActivity-link::before {
+    margin-right: 2 * $bdl-grid-unit;
+    margin-left: 2 * $bdl-grid-unit;
+    color: $bdl-gray-50;
+    content: '\2022';
+}
+
 // override for activity feed defaults
 .be {
     .bcs-AnnotationActivity-editor.bcs-CommentForm {
@@ -44,11 +65,8 @@
     }
 
     .bcs-AnnotationActivity-link {
-        color: $bdl-box-blue;
+        display: flex;
         font-weight: bold;
-
-        &[aria-disabled='true'] {
-            color: $bdl-gray-62;
-        }
+        font-size: 12px;
     }
 }

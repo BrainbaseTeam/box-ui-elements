@@ -24,6 +24,7 @@ import './CommentForm.scss';
 
 type Props = {
     className: string,
+    contactsLoaded?: boolean,
     createComment?: Function,
     entityId?: string,
     getAvatarUrl: GetAvatarUrlCallback,
@@ -33,8 +34,9 @@ type Props = {
     isOpen: boolean,
     mentionSelectorContacts?: SelectorItems<>,
     onCancel: Function,
-    onFocus: Function,
+    onFocus?: Function,
     onSubmit?: Function,
+    placeholder?: string,
     showTip?: boolean,
     tagged_message?: string,
     updateComment?: Function,
@@ -110,6 +112,7 @@ class CommentForm extends React.Component<Props, State> {
             isDisabled,
             isOpen,
             mentionSelectorContacts = [],
+            contactsLoaded,
             onCancel,
             onFocus,
             user,
@@ -117,6 +120,7 @@ class CommentForm extends React.Component<Props, State> {
             tagged_message,
             getAvatarUrl,
             showTip = true,
+            placeholder = formatMessage(messages.commentWrite),
         } = this.props;
         const { commentEditorState } = this.state;
         const inputContainerClassNames = classNames('bcs-CommentForm', className, {
@@ -136,22 +140,24 @@ class CommentForm extends React.Component<Props, State> {
                         <DraftJSMentionSelector
                             className="bcs-CommentForm-input"
                             contacts={isOpen ? mentionSelectorContacts : []}
+                            contactsLoaded={contactsLoaded}
                             editorState={commentEditorState}
                             hideLabel
                             isDisabled={isDisabled}
                             isRequired={isOpen}
                             name="commentText"
                             label={formatMessage(messages.commentLabel)}
+                            description={formatMessage(messages.atMentionTipDescription)}
                             onChange={this.onMentionSelectorChangeHandler}
                             onFocus={onFocus}
                             onMention={getMentionWithQuery}
-                            placeholder={tagged_message ? undefined : formatMessage(messages.commentWrite)}
+                            placeholder={tagged_message ? undefined : placeholder}
                             validateOnBlur={false}
                         />
                         {showTip && (
-                            <aside className="bcs-CommentForm-tip">
+                            <div className="bcs-CommentForm-tip">
                                 <FormattedMessage {...messages.atMentionTip} />
-                            </aside>
+                            </div>
                         )}
 
                         {isOpen && <CommentFormControls onCancel={onCancel} />}

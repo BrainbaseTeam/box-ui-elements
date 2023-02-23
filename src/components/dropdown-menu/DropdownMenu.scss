@@ -1,39 +1,11 @@
 @import '../../styles/variables';
 
-@keyframes dropdown_menu {
-    0% {
-        opacity: 0;
+.dropdown-menu-element-attached-left,
+.dropdown-menu-element-attached-right,
+.dropdown-menu-element-attached-center {
+    .aria-menu {
+        @include bdl-openComponentAnimation($bdl-transitionDurationBase);
     }
-
-    60% {
-        opacity: 1;
-    }
-
-    100% {
-        transform: rotateY(0) rotateX(0);
-    }
-}
-
-@keyframes dropdown_menu_right_aligned {
-    0% {
-        transform: rotateY(-10deg) rotateX(-10deg);
-    }
-}
-
-@keyframes dropdown_menu_left_aligned {
-    0% {
-        transform: rotateY(10deg) rotateX(-10deg);
-    }
-}
-
-.dropdown-menu-element-attached-right .aria-menu {
-    transform-origin: right top;
-    animation: dropdown_menu .125s, dropdown_menu_right_aligned .125s;
-}
-
-.dropdown-menu-element-attached-left .aria-menu {
-    transform-origin: left top;
-    animation: dropdown_menu .125s, dropdown_menu_left_aligned .125s;
 }
 
 // Drop down menu is a tethered element and as such attached to body
@@ -41,10 +13,58 @@
 // menu needs to manually inherit few of the body styles to look correct.
 .dropdown-menu-element {
     @include box-sizing;
-    @include common-typography;
+    @include bdl-commonTypography-dejaBlue;
 
     z-index: $menu-z-index;
     margin-top: 5px;
-    perspective: 500px;
-    perspective-origin: center top;
+}
+
+@include breakpoint($medium-screen) {
+    .bdl-DropdownMenu--responsive {
+        &.dropdown-menu-enabled {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin-top: 0;
+            margin-bottom: $bdl-header-height;
+            // cancels out the tether inline styling without having to set enabled=false
+            transform: none !important;
+        }
+
+        .aria-menu:not(.submenu) {
+            height: 100%;
+            margin-top: $bdl-header-height;
+            overflow-x: auto;
+            background-color: $bdl-gray-02;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+
+            .bdl-MenuHeader {
+                position: absolute;
+                top: 0;
+                right: 0;
+                left: 0;
+                display: flex;
+                height: $bdl-header-height;
+                padding: ($bdl-grid-unit * 3) ($bdl-grid-unit * 3);
+                background-color: $white;
+                box-shadow: $bdl-header-box-shadow;
+            }
+
+            .submenu:not(.is-hidden) {
+                top: 100%;
+                right: 0;
+                bottom: auto;
+                left: auto;
+
+                &.is-right-bottom-aligned {
+                    top: auto;
+                    bottom: 100%;
+                }
+            }
+        }
+    }
 }

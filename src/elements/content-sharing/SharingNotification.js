@@ -3,18 +3,22 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import type { MessageDescriptor } from 'react-intl';
 import API from '../../api';
-import Notification, { TYPE_ERROR, TYPE_INFO } from '../../components/notification/Notification';
+import Notification from '../../components/notification/Notification';
+import { DURATION_SHORT, TYPE_ERROR, TYPE_INFO } from '../../components/notification/constants';
 import NotificationsWrapper from '../../components/notification/NotificationsWrapper';
 import useSharedLink from './hooks/useSharedLink';
 import {
+    convertCollab,
     convertCollabsRequest,
     convertCollabsResponse,
-    convertContactsResponse,
+    convertGroupContactsResponse,
     convertItemResponse,
     convertSharedLinkPermissions,
     convertSharedLinkSettings,
+    convertUserContactsResponse,
     USM_TO_API_ACCESS_LEVEL_MAP,
 } from '../../features/unified-share-modal/utils/convertData';
+import useAvatars from './hooks/useAvatars';
 import useCollaborators from './hooks/useCollaborators';
 import useContacts from './hooks/useContacts';
 import useInvites from './hooks/useInvites';
@@ -33,12 +37,14 @@ import type {
 type SharingNotificationProps = {
     accessLevel: string,
     api: API,
+    closeComponent: () => void,
+    closeSettings: () => void,
     collaboratorsList: collaboratorsListType | null,
     currentUserID: string | null,
     getContacts: GetContactsFnType | null,
+    isDownloadAvailable: boolean,
     itemID: string,
     itemType: ItemType,
-    onRequestClose: Function,
     ownerEmail: ?string,
     ownerID: ?string,
     permissions: ?BoxItemPermission,
@@ -48,8 +54,14 @@ type SharingNotificationProps = {
     setChangeSharedLinkPermissionLevel: (
         changeSharedLinkPermissionLevel: () => SharedLinkUpdateLevelFnType | null,
     ) => void,
-    setCollaboratorsList: (collaboratorsList: collaboratorsListType | null) => void,
+    setCollaboratorsList: (
+        collaboratorsList:
+            | collaboratorsListType
+            | null
+            | ((prevList: collaboratorsListType | null) => collaboratorsListType),
+    ) => void,
     setGetContacts: (getContacts: () => GetContactsFnType | null) => void,
+    setIsLoading: boolean => void,
     setItem: ((item: itemFlowType | null) => itemFlowType) => void,
     setOnAddLink: (addLink: () => SharedLinkUpdateLevelFnType | null) => void,
     setOnRemoveLink: (removeLink: () => SharedLinkUpdateLevelFnType | null) => void,
@@ -61,12 +73,14 @@ type SharingNotificationProps = {
 function SharingNotification({
     accessLevel,
     api,
+    closeComponent,
+    closeSettings,
     collaboratorsList,
     currentUserID,
     getContacts,
+    isDownloadAvailable,
     itemID,
     itemType,
-    onRequestClose,
     ownerEmail,
     ownerID,
     permissions,
@@ -76,6 +90,7 @@ function SharingNotification({
     setChangeSharedLinkPermissionLevel,
     setGetContacts,
     setCollaboratorsList,
+    setIsLoading,
     setItem,
     setOnAddLink,
     setOnRemoveLink,
@@ -105,8 +120,8 @@ function SharingNotification({
             }
             updatedNotifications[notificationID] = (
                 <Notification
-                    duration="short"
                     key={notificationID}
+                    duration={DURATION_SHORT}
                     onClose={() => handleNotificationClose(notificationID)}
                     type={notificationType}
                 >
@@ -133,11 +148,25 @@ function SharingNotification({
         }); // merge new shared link data with current shared link data
     };
 
-    // Handle a successful shared link deletion request
+    /**
+     * Handle a successful shared link removal request.
+     *
+     * Most of the data for the shared link will be removed, with the exception of the "canInvite", "serverURL"
+     * and "enterpriseName" properties, both of which are still necessary for rendering the form-only version of ContentSharing.
+     * We retain "serverURL" and "enterpriseName" from the previous shared link, to avoid having to make another call to the Users API.
+     *
+     * @param {ContentSharingItemAPIResponse} itemData
+     */
     const handleRemoveSharedLinkSuccess = (itemData: ContentSharingItemAPIResponse) => {
         const { item: updatedItem, sharedLink: updatedSharedLink } = convertItemResponse(itemData);
         setItem((prevItem: itemFlowType | null) => ({ ...prevItem, ...updatedItem }));
-        setSharedLink(() => updatedSharedLink); // replace shared link data completely
+        setSharedLink((prevSharedLink: ContentSharingSharedLinkType | null) => {
+            return {
+                ...updatedSharedLink,
+                serverURL: prevSharedLink ? prevSharedLink.serverURL : '',
+                enterpriseName: prevSharedLink && prevSharedLink.enterpriseName ? prevSharedLink.enterpriseName : '',
+            };
+        });
     };
 
     // Generate shared link CRUD functions for the item
@@ -148,21 +177,34 @@ function SharingNotification({
         onRemoveLink,
         onSubmitSettings,
     } = useSharedLink(api, itemID, itemType, permissions, accessLevel, {
-        handleError: () => createNotification(TYPE_ERROR, contentSharingMessages.sharedLinkUpdateError),
+        handleUpdateSharedLinkError: () => {
+            createNotification(TYPE_ERROR, contentSharingMessages.sharedLinkUpdateError);
+            setIsLoading(false);
+            closeSettings();
+        },
         handleUpdateSharedLinkSuccess: itemData => {
             createNotification(TYPE_INFO, contentSharingMessages.sharedLinkSettingsUpdateSuccess);
             handleUpdateSharedLinkSuccess(itemData);
-            onRequestClose();
+            setIsLoading(false);
+            closeSettings();
+        },
+        handleRemoveSharedLinkError: () => {
+            createNotification(TYPE_ERROR, contentSharingMessages.sharedLinkUpdateError);
+            setIsLoading(false);
+            closeComponent(); // if this function is provided, it will close the modal
         },
         handleRemoveSharedLinkSuccess: itemData => {
-            createNotification(TYPE_INFO, contentSharingMessages.sharedLinkSettingsUpdateSuccess);
+            createNotification(TYPE_INFO, contentSharingMessages.sharedLinkRemovalSuccess);
             handleRemoveSharedLinkSuccess(itemData);
-            onRequestClose();
+            setIsLoading(false);
+            closeComponent();
         },
+        setIsLoading,
         transformAccess: newAccessLevel => USM_TO_API_ACCESS_LEVEL_MAP[newAccessLevel],
         transformPermissions: newSharedLinkPermissionLevel =>
             convertSharedLinkPermissions(newSharedLinkPermissionLevel),
-        transformSettings: (settings, access) => convertSharedLinkSettings(settings, access, serverURL),
+        transformSettings: (settings, access) =>
+            convertSharedLinkSettings(settings, access, isDownloadAvailable, serverURL),
     });
 
     setChangeSharedLinkAccessLevel(() => changeSharedLinkAccessLevel);
@@ -175,14 +217,19 @@ function SharingNotification({
     const collaboratorsListFromAPI: Collaborations | null = useCollaborators(api, itemID, itemType, {
         handleError: () => createNotification(TYPE_ERROR, contentSharingMessages.collaboratorsLoadingError),
     });
-    if (collaboratorsListFromAPI && !collaboratorsList) {
-        setCollaboratorsList(convertCollabsResponse(collaboratorsListFromAPI, ownerEmail, currentUserID === ownerID));
+    const avatarsFromAPI = useAvatars(api, itemID, collaboratorsListFromAPI);
+
+    if (collaboratorsListFromAPI && avatarsFromAPI && !collaboratorsList) {
+        setCollaboratorsList(
+            convertCollabsResponse(collaboratorsListFromAPI, avatarsFromAPI, ownerEmail, currentUserID === ownerID),
+        );
     }
 
     // Set the getContacts function
     const getContactsFn: GetContactsFnType | null = useContacts(api, itemID, {
         handleError: () => createNotification(TYPE_ERROR, contentSharingMessages.getContactsError),
-        transformResponse: data => convertContactsResponse(data, currentUserID),
+        transformGroups: data => convertGroupContactsResponse(data),
+        transformUsers: data => convertUserContactsResponse(data, currentUserID),
     });
     if (getContactsFn && !getContacts) {
         setGetContacts(() => getContactsFn);
@@ -190,9 +237,30 @@ function SharingNotification({
 
     // Set the sendInvites function
     const sendInvitesFn = useInvites(api, itemID, itemType, {
-        handleSuccess: () => createNotification(TYPE_INFO, contentSharingMessages.sendInvitesSuccess),
-        handleError: () => createNotification(TYPE_ERROR, contentSharingMessages.sendInvitesError),
-        transformRequest: data => convertCollabsRequest(data),
+        handleSuccess: response => {
+            createNotification(TYPE_INFO, contentSharingMessages.sendInvitesSuccess);
+            setIsLoading(false);
+            setCollaboratorsList((prevList: collaboratorsListType | null) => {
+                const newList = prevList ? { ...prevList } : { collaborators: [] };
+                const newCollab = convertCollab({
+                    collab: response,
+                    ownerEmail,
+                    isCurrentUserOwner: currentUserID === ownerID,
+                });
+                if (newCollab) {
+                    newList.collaborators.push(newCollab);
+                }
+                return newList;
+            });
+            closeComponent();
+        },
+        handleError: () => {
+            createNotification(TYPE_ERROR, contentSharingMessages.sendInvitesError);
+            setIsLoading(false);
+            closeComponent();
+        },
+        setIsLoading,
+        transformRequest: data => convertCollabsRequest(data, collaboratorsList),
     });
     if (sendInvitesFn && !sendInvites) {
         setSendInvites(() => sendInvitesFn);

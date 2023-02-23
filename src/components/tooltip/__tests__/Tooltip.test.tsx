@@ -3,6 +3,8 @@
 import * as React from 'react';
 import sinon from 'sinon';
 import { shallow } from 'enzyme';
+import noop from 'lodash/noop';
+
 import Tooltip, { TooltipPosition, TooltipTheme } from '../Tooltip';
 import TetherPosition from '../../../common/tether-positions';
 
@@ -89,7 +91,6 @@ describe('components/tooltip/Tooltip', () => {
             expect(component.is('button')).toBe(true);
             expect(component.prop('onBlur')).toBeTruthy();
             expect(component.prop('onFocus')).toBeTruthy();
-            expect(component.prop('onKeyDown')).toBeTruthy();
             expect(component.prop('onMouseEnter')).toBeTruthy();
             expect(component.prop('onMouseLeave')).toBeTruthy();
             expect(component.prop('tabIndex')).toEqual('0');
@@ -192,7 +193,6 @@ describe('components/tooltip/Tooltip', () => {
 
         test('should render TetherComponent in the body if invalid body element is specified', () => {
             const wrapper = shallow(
-                // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
                 // @ts-ignore testing a wrong value for the bodyElement prop
                 <Tooltip bodyElement="foo" text="hi">
                     <button />
@@ -225,16 +225,102 @@ describe('components/tooltip/Tooltip', () => {
             expect(tooltip.text()).toEqual('hi');
         });
 
-        test('should render error class when theme is error', () => {
+        test('should set aria-describedBy when aria-label exists and tooltipText is different than it', () => {
             const wrapper = shallow(
-                <Tooltip isShown text="hi" theme={TooltipTheme.ERROR}>
-                    <button />
+                <Tooltip isShown text="hi">
+                    <button aria-label="test" />
                 </Tooltip>,
             );
             const component = wrapper.childAt(0);
             const tooltip = wrapper.childAt(1);
 
-            expect(wrapper.find('[role="tooltip"]').hasClass('is-error')).toBe(true);
+            expect(component.prop('aria-describedby')).toEqual(tooltip.prop('id'));
+        });
+
+        test('should not set aria-describedBy when aria-label exists but tooltipText is equal to it', () => {
+            const wrapper = shallow(
+                <Tooltip isShown text="hi">
+                    <button aria-label="hi" />
+                </Tooltip>,
+            );
+            const component = wrapper.childAt(0);
+
+            expect(component.prop('aria-describedby')).toEqual(undefined);
+        });
+
+        test('should set aria-hidden as true if aria-label and tooltipText are equal', () => {
+            const wrapper = shallow(
+                <Tooltip isShown text="test">
+                    <button aria-label="test" />
+                </Tooltip>,
+            );
+            const tooltip = wrapper.childAt(1);
+            expect(tooltip.prop('aria-hidden')).toBe(true);
+        });
+
+        test('should set aria-hidden as true if ariaHidden is true', () => {
+            const wrapper = shallow(
+                <Tooltip isShown text="test" ariaHidden>
+                    <button aria-label="test" />
+                </Tooltip>,
+            );
+            const tooltip = wrapper.childAt(1);
+            expect(tooltip.prop('aria-hidden')).toBe(true);
+        });
+
+        test('should not set aria-describedby when ariaHidden is true', () => {
+            const wrapper = shallow(
+                <Tooltip isShown text="hi" ariaHidden>
+                    <button aria-label="test" />
+                </Tooltip>,
+            );
+            const component = wrapper.childAt(0);
+
+            expect(component.prop('aria-describedby')).toBe(undefined);
+        });
+        test('should not set aria-errormessage when ariaHidden is true', () => {
+            const wrapper = shallow(
+                <Tooltip isShown text="hi" ariaHidden>
+                    <button aria-label="test" />
+                </Tooltip>,
+            );
+            const component = wrapper.childAt(0);
+
+            expect(component.prop('aria-errormessage')).toBe(undefined);
+        });
+
+        test('should set aria-hidden as false if aria-label does not exist', () => {
+            const wrapper = shallow(
+                <Tooltip isShown text="hi">
+                    <button />
+                </Tooltip>,
+            );
+            const tooltip = wrapper.childAt(1);
+
+            expect(tooltip.prop('aria-hidden')).toBe(false);
+        });
+
+        test('should set aria-hidden as false if aria-label is different than tooltipText', () => {
+            const wrapper = shallow(
+                <Tooltip isShown text="Im a long tooltip description">
+                    <button aria-label="launch" />
+                </Tooltip>,
+            );
+            const tooltip = wrapper.childAt(1);
+
+            expect(tooltip.prop('aria-hidden')).toBe(false);
+        });
+
+        test('should render error class when theme is error', () => {
+            const wrapper = shallow(
+                <Tooltip isShown text="hi" theme={TooltipTheme.ERROR}>
+                    <button aria-label="test" />
+                </Tooltip>,
+            );
+            const component = wrapper.childAt(0);
+            const tooltip = wrapper.childAt(1);
+
+            expect(wrapper.find('[data-testid="bdl-Tooltip"]').hasClass('is-error')).toBe(true);
             expect(component.prop('aria-describedby')).toEqual(tooltip.prop('id'));
             expect(component.prop('aria-errormessage')).toEqual(tooltip.prop('id'));
         });
@@ -283,6 +369,14 @@ describe('components/tooltip/Tooltip', () => {
 
             expect(wrapper.prop('offset')).toEqual(offset);
         });
+
+        test('should render correctly with tetherElementClassName', () => {
+            expect(
+                getWrapper({
+                    tetherElementClassName: 'tether-element-class-name',
+                }),
+            ).toMatchSnapshot();
+        });
     });
 
     describe('should stop event propagation when stopBubble is set', () => {
@@ -304,6 +398,24 @@ describe('components/tooltip/Tooltip', () => {
             });
             expect(stop).toHaveBeenCalledTimes(1);
             expect(nativeStop).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    describe('componentDidUpdate', () => {
+        test('should reset wasClosedByUser to false if isShown prop is transitioned from false to true', () => {
+            const wrapper = shallow<Tooltip>(
+                <Tooltip text="hi" isShown>
+                    <button />
+                </Tooltip>,
+            );
+
+            expect(wrapper.state('wasClosedByUser')).toBe(false);
+            wrapper.instance().closeTooltip();
+
+            expect(wrapper.state('wasClosedByUser')).toBe(true);
+            wrapper.setProps({ isShown: false });
+            wrapper.setProps({ isShown: true });
+            expect(wrapper.state('wasClosedByUser')).toBe(false);
         });
     });
 
@@ -397,18 +509,29 @@ describe('components/tooltip/Tooltip', () => {
 
     describe('handleKeyDown()', () => {
         test('should update isShown state only when escape key is pressed', () => {
+            const map: { [key: string]: Function } = {};
+            document.addEventListener = jest.fn().mockImplementationOnce((event, cb) => {
+                map[event] = cb;
+            });
             const wrapper = shallow(
                 <Tooltip text="hi">
                     <button />
                 </Tooltip>,
             );
             wrapper.setState({ isShown: true });
-
-            wrapper.find('button').simulate('keydown', { key: 'Escape' });
+            map.keydown({
+                key: 'Escape',
+                stopPropagation: noop,
+            });
+            expect(document.addEventListener).toHaveBeenCalledWith('keydown', expect.anything(), true);
             expect(wrapper.state('isShown')).toBe(false);
         });
 
         test('should not update isShown state only when some other key is pressed', () => {
+            const map: { [key: string]: Function } = {};
+            document.addEventListener = jest.fn().mockImplementationOnce((event, cb) => {
+                map[event] = cb;
+            });
             const wrapper = shallow(
                 <Tooltip text="hi">
                     <button />
@@ -416,7 +539,8 @@ describe('components/tooltip/Tooltip', () => {
             );
             wrapper.setState({ isShown: true });
 
-            wrapper.find('button').simulate('keydown', { key: 'Space' });
+            map.keydown({ key: 'Space' });
+            expect(document.addEventListener).toHaveBeenCalledWith('keydown', expect.anything(), true);
             expect(wrapper.state('isShown')).toBe(true);
         });
 
@@ -438,7 +562,6 @@ describe('components/tooltip/Tooltip', () => {
             const positionTetherMock = jest.fn();
 
             const wrapper = getWrapper({ isShown });
-            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
             // @ts-ignore: react-tether shenanigans
             wrapper.instance().tetherRef = { current: { position: positionTetherMock } };
 

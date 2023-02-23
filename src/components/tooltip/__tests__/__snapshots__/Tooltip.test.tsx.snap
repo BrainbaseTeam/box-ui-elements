@@ -3,14 +3,18 @@
 exports[`components/tooltip/Tooltip render() should match snapshot when stopBubble is set 1`] = `
 <div
   className="tooltip bdl-Tooltip"
-  id="tooltip19"
+  id="tooltip27"
   onClick={[Function]}
   onContextMenu={[Function]}
   onKeyPress={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
   role="presentation"
 >
   <div
+    aria-hidden={false}
     aria-live="polite"
+    data-testid="bdl-Tooltip"
     role="tooltip"
   >
     hi
@@ -90,9 +94,13 @@ exports[`components/tooltip/Tooltip render() should not render with close button
     Hello
   </div>
   <div
+    aria-hidden={false}
     aria-live="polite"
     className="tooltip bdl-Tooltip"
+    data-testid="bdl-Tooltip"
     id="tooltip3"
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
     role="tooltip"
   >
     hi
@@ -127,7 +135,6 @@ exports[`components/tooltip/Tooltip render() should render children wrapped in t
   <div
     onBlur={[Function]}
     onFocus={[Function]}
-    onKeyDown={[Function]}
     onMouseEnter={[Function]}
     onMouseLeave={[Function]}
     tabIndex="0"
@@ -161,12 +168,47 @@ exports[`components/tooltip/Tooltip render() should render correctly with callou
     Hello
   </div>
   <div
+    aria-hidden={false}
     aria-live="polite"
     className="tooltip bdl-Tooltip is-callout"
+    data-testid="bdl-Tooltip"
     id="tooltip5"
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
     role="tooltip"
   >
     hi
+  </div>
+</TetherComponent>
+`;
+
+exports[`components/tooltip/Tooltip render() should render correctly with tetherElementClassName 1`] = `
+<TetherComponent
+  attachment="bottom center"
+  bodyElement={<body />}
+  className="tether-element-class-name"
+  classPrefix="tooltip"
+  constraints={
+    Array [
+      Object {
+        "attachment": "together",
+        "to": "window",
+      },
+    ]
+  }
+  enabled={false}
+  renderElementTag="div"
+  renderElementTo={null}
+  targetAttachment="top center"
+>
+  <div
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+    tabIndex="0"
+  >
+    Hello
   </div>
 </TetherComponent>
 `;
@@ -195,22 +237,19 @@ exports[`components/tooltip/Tooltip render() should render with close button if 
     Hello
   </div>
   <div
+    aria-hidden={false}
     aria-live="polite"
     className="tooltip bdl-Tooltip with-close-button"
+    data-testid="bdl-Tooltip"
     id="tooltip1"
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
     role="tooltip"
   >
     hi
-    <PlainButton
-      className="tooltip-close-button"
+    <CloseButton
       onClick={[Function]}
-    >
-      <X16
-        className="bdl-Tooltip-iconClose"
-        height={14}
-        width={14}
-      />
-    </PlainButton>
+    />
   </div>
 </TetherComponent>
 `;

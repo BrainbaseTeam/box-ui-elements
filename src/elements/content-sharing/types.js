@@ -1,17 +1,22 @@
 // @flow
 import type {
+    BoxItemClassification,
     BoxItemPermission,
+    Collaboration,
+    GroupMini,
     ItemType,
     NewCollaboration,
     SharedLink as APISharedLink,
-    UserCollection,
+    UserMini,
 } from '../../common/types/core';
 import type {
+    accessLevelsDisabledReasonType,
     contactType,
     InviteCollaboratorsRequest,
     item,
     sharedLinkType as USMSharedLinkType,
 } from '../../features/unified-share-modal/flowTypes';
+import type { RequestOptions } from '../../common/types/api';
 
 // "SLS" denotes values that are used in the Shared Link Settings modal
 type ContentSharingEnterpriseDataType = {
@@ -25,7 +30,13 @@ export type ContentSharingUserDataType = {
 };
 
 // This type is used when an item does not have a shared link.
-type SharedLinkNotCreatedType = { accessLevel?: string, canInvite: boolean };
+type SharedLinkNotCreatedType = {
+    accessLevel?: string,
+    canChangeExpiration?: boolean,
+    canInvite: boolean,
+    expirationTimestamp?: ?number,
+    isDownloadAvailable?: boolean,
+};
 
 // This is the full shared link type, which extends the internal USM shared link with
 // data necessary for instantiating the Shared Link Settings modal.
@@ -54,6 +65,9 @@ export type ContentSharingItemDataType = {
 
 export type ContentSharingItemAPIResponse = {
     allowed_invitee_roles: Array<string>,
+    allowed_shared_link_access_levels?: Array<string>,
+    allowed_shared_link_access_levels_disabled_reasons?: accessLevelsDisabledReasonType,
+    classification: ?BoxItemClassification,
     description: string,
     etag: string,
     extension: string,
@@ -75,14 +89,19 @@ export type ContentSharingItemAPIResponse = {
 
 export type ContentSharingHooksOptions = {
     handleError?: Function,
+    handleRemoveSharedLinkError?: Function,
     handleRemoveSharedLinkSuccess?: Function,
     handleSuccess?: Function,
+    handleUpdateSharedLinkError?: Function,
     handleUpdateSharedLinkSuccess?: Function,
+    setIsLoading?: Function,
     transformAccess?: Function,
+    transformGroups?: Function,
     transformItem?: Function,
     transformPermissions?: Function,
     transformResponse?: Function,
     transformSettings?: Function,
+    transformUsers?: Function,
 };
 
 export type SharedLinkSettingsOptions = {
@@ -107,6 +126,28 @@ export type SharedLinkUpdateLevelFnType = () => (level: string) => Promise<void>
 
 export type SharedLinkUpdateSettingsFnType = () => ($Shape<APISharedLink>) => Promise<void>;
 
-export type GetContactsFnType = () => (filterTerm: string) => Promise<Array<contactType> | UserCollection> | null;
+export type GetContactsFnType = () => (filterTerm: string) => Promise<Array<contactType | GroupMini | UserMini>> | null;
+
+export type ContactByEmailObject = { [string]: contactType | UserMini | [] };
+
+export type GetContactsByEmailFnType = () => (filterTerm: {
+    [emails: string]: string,
+}) => Promise<ContactByEmailObject | Array<UserMini>> | null;
 
 export type SendInvitesFnType = () => InviteCollaboratorsRequest => Promise<null | Array<Function>>;
+
+export type ConnectToItemShareFnType = ({
+    access?: string,
+    errorFn?: Function,
+    requestOptions?: RequestOptions,
+    successFn?: Function,
+}) => Function;
+
+export type AvatarURLMap = { [number | string]: ?string };
+
+export type ConvertCollabOptions = {
+    avatarURLMap?: ?AvatarURLMap,
+    collab: Collaboration,
+    isCurrentUserOwner: boolean,
+    ownerEmail: ?string,
+};

@@ -6,6 +6,7 @@ const ANYONE_IN_COMPANY: 'peopleInYourCompany' = 'peopleInYourCompany';
 const PEOPLE_IN_ITEM: 'peopleInThisItem' = 'peopleInThisItem';
 
 // Shared link permission level constants
+const CAN_EDIT: 'canEdit' = 'canEdit';
 const CAN_VIEW_DOWNLOAD: 'canViewDownload' = 'canViewDownload';
 const CAN_VIEW_ONLY: 'canViewOnly' = 'canViewOnly';
 
@@ -23,14 +24,26 @@ const COLLAB_GROUP_TYPE = 'group';
 const COLLAB_USER_TYPE = 'user';
 const COLLAB_PENDING_TYPE = 'pending';
 
-// To do: connect to Item API if this data becomes available
+const COLLAB_RESTRICTION_TYPE_ACCESS_POLICY: 'access_policy' = 'access_policy';
+const COLLAB_RESTRICTION_TYPE_INFORMATION_BARRIER: 'information_barrier' = 'information_barrier';
+
+// Business Justfications for external collab restrictions
+const JUSTIFICATION_CHECKPOINT_COLLAB: 'COLLAB' = 'COLLAB';
+const JUSTIFICATION_CHECKPOINT_CREATE_SHARED_LINK: 'CREATE_SHARED_LINK' = 'CREATE_SHARED_LINK';
+const JUSTIFICATION_CHECKPOINT_DOWNLOAD: 'DOWNLOAD' = 'DOWNLOAD';
+const JUSTIFICATION_CHECKPOINT_EXTERNAL_COLLAB: 'EXTERNAL_COLLAB' = 'EXTERNAL_COLLAB';
+
+// Default allowed access levels
 const ALLOWED_ACCESS_LEVELS = {
     peopleInThisItem: true,
     peopleInYourCompany: true,
     peopleWithTheLink: true,
 };
 
-const INVITEE_PERMISSIONS = [
+const DISABLED_REASON_ACCESS_POLICY: 'access_policy' = 'access_policy';
+const DISABLED_REASON_MALICIOUS_CONTENT: 'malicious_content' = 'malicious_content';
+
+const INVITEE_PERMISSIONS_FOLDER = [
     {
         default: false,
         text: CO_OWNER,
@@ -68,18 +81,41 @@ const INVITEE_PERMISSIONS = [
     },
 ];
 
+const INVITEE_PERMISSIONS_FILE = [
+    {
+        default: true, // default in the WebApp
+        text: EDITOR,
+        value: EDITOR,
+    },
+    {
+        default: false,
+        text: VIEWER,
+        value: VIEWER,
+    },
+];
+
 export {
     ALLOWED_ACCESS_LEVELS,
     ANYONE_IN_COMPANY,
     ANYONE_WITH_LINK,
+    CAN_EDIT,
     CAN_VIEW_DOWNLOAD,
     CAN_VIEW_ONLY,
     COLLAB_GROUP_TYPE,
     COLLAB_PENDING_TYPE,
+    COLLAB_RESTRICTION_TYPE_ACCESS_POLICY,
+    COLLAB_RESTRICTION_TYPE_INFORMATION_BARRIER,
     COLLAB_USER_TYPE,
     CO_OWNER,
+    DISABLED_REASON_ACCESS_POLICY,
+    DISABLED_REASON_MALICIOUS_CONTENT,
     EDITOR,
-    INVITEE_PERMISSIONS,
+    INVITEE_PERMISSIONS_FOLDER,
+    INVITEE_PERMISSIONS_FILE,
+    JUSTIFICATION_CHECKPOINT_COLLAB,
+    JUSTIFICATION_CHECKPOINT_CREATE_SHARED_LINK,
+    JUSTIFICATION_CHECKPOINT_DOWNLOAD,
+    JUSTIFICATION_CHECKPOINT_EXTERNAL_COLLAB,
     OWNER,
     PEOPLE_IN_ITEM,
     PREVIEWER,

@@ -17,7 +17,11 @@ import CommentsAPI from './Comments';
 import TasksNewAPI from './tasks/TasksNew';
 import TaskCollaboratorsAPI from './tasks/TaskCollaborators';
 import TaskLinksAPI from './tasks/TaskLinks';
+import ThreadedCommentsAPI from './ThreadedComments';
 import FileAccessStatsAPI from './FileAccessStats';
+import MarkerBasedGroupsAPI from './MarkerBasedGroups';
+import MarkerBasedUsersAPI from './MarkerBasedUsers';
+import GroupsAPI from './Groups';
 import UsersAPI from './Users';
 import MetadataAPI from './Metadata';
 import FileCollaboratorsAPI from './FileCollaborators';
@@ -89,6 +93,11 @@ class APIFactory {
     commentsAPI: CommentsAPI;
 
     /**
+     * @property {ThreadedCommentsAPI}
+     */
+    threadedCommentsAPI: ThreadedCommentsAPI;
+
+    /**
      * @property {TasksNewAPI}
      */
     tasksNewAPI: TasksNewAPI;
@@ -107,6 +116,21 @@ class APIFactory {
      * @property {FileAccessStatsAPI}
      */
     fileAccessStatsAPI: FileAccessStatsAPI;
+
+    /*
+     * @property {MarkerBasedGroupsAPI}
+     */
+    markerBasedGroupsAPI: MarkerBasedGroupsAPI;
+
+    /*
+     * @property {MarkerBasedUsersAPI}
+     */
+    markerBasedUsersAPI: MarkerBasedUsersAPI;
+
+    /**
+     * @property {GroupsAPI}
+     */
+    groupsAPI: GroupsAPI;
 
     /*
      * @property {UsersAPI}
@@ -260,6 +284,26 @@ class APIFactory {
         if (this.commentsAPI) {
             this.commentsAPI.destroy();
             delete this.commentsAPI;
+        }
+
+        if (this.threadedCommentsAPI) {
+            this.threadedCommentsAPI.destroy();
+            delete this.threadedCommentsAPI;
+        }
+
+        if (this.markerBasedGroupsAPI) {
+            this.markerBasedGroupsAPI.destroy();
+            delete this.markerBasedGroupsAPI;
+        }
+
+        if (this.markerBasedUsersAPI) {
+            this.markerBasedUsersAPI.destroy();
+            delete this.markerBasedUsersAPI;
+        }
+
+        if (this.groupsAPI) {
+            this.groupsAPI.destroy();
+            delete this.groupsAPI;
         }
 
         if (this.usersAPI) {
@@ -478,6 +522,21 @@ class APIFactory {
     }
 
     /**
+     * API for threaded comments
+     *
+     * @param {boolean} shouldDestroy - true if the factory should destroy before returning the call
+     * @return {ThreadedCommentsAPI} ThreadedCommentsAPI instance
+     */
+    getThreadedCommentsAPI(shouldDestroy: boolean): ThreadedCommentsAPI {
+        if (shouldDestroy) {
+            this.destroy();
+        }
+
+        this.threadedCommentsAPI = new ThreadedCommentsAPI(this.options);
+        return this.threadedCommentsAPI;
+    }
+
+    /**
      * API for tasks
      *
      * @param {boolean} shouldDestroy - true if the factory should destroy before returning the call
@@ -603,7 +662,52 @@ class APIFactory {
     }
 
     /**
-     * API for Users
+     * API for Groups (marker-based paging)
+     *
+     * @param {boolean} shouldDestroy - true if the factory should destroy before returning the call
+     * @return {MarkerBasedGroupsAPI} MarkerBasedGroupsAPI instance
+     */
+    getMarkerBasedGroupsAPI(shouldDestroy: boolean): MarkerBasedGroupsAPI {
+        if (shouldDestroy) {
+            this.destroy();
+        }
+
+        this.markerBasedGroupsAPI = new MarkerBasedGroupsAPI(this.options);
+        return this.markerBasedGroupsAPI;
+    }
+
+    /**
+     * API for Users (marker-based paging)
+     *
+     * @param {boolean} shouldDestroy - true if the factory should destroy before returning the call
+     * @return {MarkerBasedUsersAPI} MarkerBasedUsersAPI instance
+     */
+    getMarkerBasedUsersAPI(shouldDestroy: boolean): MarkerBasedUsersAPI {
+        if (shouldDestroy) {
+            this.destroy();
+        }
+
+        this.markerBasedUsersAPI = new MarkerBasedUsersAPI(this.options);
+        return this.markerBasedUsersAPI;
+    }
+
+    /**
+     * API for Groups (offset-based paging)
+     *
+     * @param {boolean} shouldDestroy - true if the factory should destroy before returning the call
+     * @return {GroupsAPI} GroupsAPI instance
+     */
+    getGroupsAPI(shouldDestroy: boolean): GroupsAPI {
+        if (shouldDestroy) {
+            this.destroy();
+        }
+
+        this.groupsAPI = new GroupsAPI(this.options);
+        return this.groupsAPI;
+    }
+
+    /**
+     * API for Users (offset-based paging)
      *
      * @param {boolean} shouldDestroy - true if the factory should destroy before returning the call
      * @return {UsersAPI} UsersAPI instance

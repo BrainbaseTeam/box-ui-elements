@@ -6,7 +6,7 @@ exports[`features/classification/security-controls/SecurityControls should rende
     className="bdl-SecurityControls"
   >
     <SecurityControlsItem
-      key="boxui.securityControls.sharingCollabOnly"
+      key="0"
       message={
         Object {
           "defaultMessage": "Shared links allowed for collaborators only.",
@@ -15,7 +15,7 @@ exports[`features/classification/security-controls/SecurityControls should rende
       }
     />
     <SecurityControlsItem
-      key="boxui.securityControls.externalCollabDomainList"
+      key="1"
       message={
         Object {
           "defaultMessage": "External collaboration limited to approved domains.",
@@ -24,7 +24,7 @@ exports[`features/classification/security-controls/SecurityControls should rende
       }
     />
     <SecurityControlsItem
-      key="boxui.securityControls.desktopDownloadOwners"
+      key="2"
       message={
         Object {
           "defaultMessage": "Download restricted on Box Drive, except Owners/Co-Owners.",
@@ -33,13 +33,13 @@ exports[`features/classification/security-controls/SecurityControls should rende
       }
     />
     <SecurityControlsItem
-      key="boxui.securityControls.appDownloadWhitelist"
+      key="3"
       message={
         Object {
           "defaultMessage": "Only select applications are allowed: {appNames}",
           "id": "boxui.securityControls.appDownloadWhitelist",
           "values": Object {
-            "appNames": "",
+            "appNames": "App 1, App 2",
           },
         }
       }
@@ -54,11 +54,11 @@ exports[`features/classification/security-controls/SecurityControls should rende
     className="bdl-SecurityControls"
   >
     <SecurityControlsItem
-      key="boxui.securityControls.shortAllRestrictions"
+      key="0"
       message={
         Object {
           "defaultMessage": "Sharing, download and app restrictions apply",
-          "id": "boxui.securityControls.shortAllRestrictions",
+          "id": "boxui.securityControls.shortSharingDownloadApp",
         }
       }
     />
@@ -104,7 +104,7 @@ exports[`features/classification/security-controls/SecurityControls should rende
             "defaultMessage": "Only select applications are allowed: {appNames}",
             "id": "boxui.securityControls.appDownloadWhitelist",
             "values": Object {
-              "appNames": "",
+              "appNames": "App 1, App 2",
             },
           },
         },
@@ -120,11 +120,11 @@ exports[`features/classification/security-controls/SecurityControls should rende
     className="bdl-SecurityControls"
   >
     <SecurityControlsItem
-      key="boxui.securityControls.shortAllRestrictions"
+      key="0"
       message={
         Object {
           "defaultMessage": "Sharing, download and app restrictions apply",
-          "id": "boxui.securityControls.shortAllRestrictions",
+          "id": "boxui.securityControls.shortSharingDownloadApp",
         }
       }
     />

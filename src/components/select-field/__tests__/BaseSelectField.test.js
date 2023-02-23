@@ -97,7 +97,7 @@ describe('components/select-field/BaseSelectField', () => {
             expect(buttonWrapper.prop('aria-autocomplete')).toEqual('list');
             expect(buttonWrapper.prop('aria-expanded')).toBe(false);
             expect(buttonWrapper.prop('aria-owns')).toEqual(instance.selectFieldID);
-            expect(buttonWrapper.prop('role')).toEqual('combobox');
+            expect(buttonWrapper.prop('role')).toEqual('listbox');
             expect(buttonWrapper.prop('isDisabled')).toEqual(false);
         });
 
@@ -134,6 +134,15 @@ describe('components/select-field/BaseSelectField', () => {
             });
             const buttonWrapper = wrapper.find('PopperComponent').childAt(0);
             expect(buttonWrapper).toMatchSnapshot();
+        });
+
+        test('should send error tooltip positon to select button when errorTooltipPosition prop has some value', () => {
+            const wrapper = shallowRenderSelectField({
+                error: 'error',
+                errorTooltipPosition: 'middle-left',
+            });
+            const buttonWrapper = wrapper.find('PopperComponent').childAt(0);
+            expect(buttonWrapper.prop('errorTooltipPosition')).toBe('middle-left');
         });
     });
 
@@ -384,6 +393,23 @@ describe('components/select-field/BaseSelectField', () => {
                 expect(spy).not.toHaveBeenCalled();
             },
         );
+
+        test('should not call closeDropdown when dropdown is open and event.relatedTarget.classList contains blurExceptionClassNames', () => {
+            const exception = 'foobar';
+            const wrapper = shallowRenderSelectField({ blurExceptionClassNames: [exception] });
+            const instance = wrapper.instance();
+            const spy = jest.spyOn(instance, 'closeDropdown');
+            wrapper.setState({ isOpen: true });
+
+            const targetWithClassName = {
+                relatedTarget: document.createElement('button'),
+            };
+
+            targetWithClassName.relatedTarget.className = exception;
+            instance.handleBlur(targetWithClassName);
+
+            expect(spy).not.toHaveBeenCalled();
+        });
     });
 
     describe('onArrowDown', () => {

@@ -7,6 +7,56 @@
 import { defineMessages } from 'react-intl';
 
 const messages = defineMessages({
+    activitySidebarFilterOptionAll: {
+        id: 'be.activitySidebarFilter.status.all',
+        defaultMessage: 'All Comments',
+        description: 'One of the dropdown options to select in order to filter comments',
+    },
+    activitySidebarFilterOptionOpen: {
+        id: 'be.activitySidebarFilter.status.open',
+        defaultMessage: 'Unresolved Comments',
+        description: 'One of the dropdown options to select in order to filter comments',
+    },
+    boxSignFtuxBody: {
+        id: 'be.contentSidebar.boxSignFtuxBody',
+        defaultMessage: 'Sign documents or send signature requests, right from where your content lives',
+        description: 'body for first-time user experience tooltip shown to new users of Box Sign',
+    },
+    boxSignFtuxTitle: {
+        id: 'be.contentSidebar.boxSignFtuxTitle',
+        defaultMessage: 'Box Sign - Secure, seamless e-signatures in Box',
+        description: 'title for first-time user experience tooltip shown to new users of Box Sign',
+    },
+    boxSignRequest: {
+        id: 'be.contentSidebar.boxSignRequest',
+        defaultMessage: 'Request Signature',
+        description: 'label for button that opens a Box Sign signature request experience',
+    },
+    boxSignRequestSignature: {
+        id: 'be.contentSidebar.boxSignRequestSignature',
+        defaultMessage: 'Request Signature',
+        description: 'One of the dropdown options that opens a Box Sign request signature experience',
+    },
+    boxSignSignMyself: {
+        id: 'be.contentSidebar.boxSignSignMyself',
+        defaultMessage: 'Sign Myself',
+        description: 'One of the dropdown options that opens a Box Sign sign myself experience',
+    },
+    boxSignSignature: {
+        id: 'be.contentSidebar.boxSignSignature',
+        defaultMessage: 'Sign',
+        description: 'label for button that opens a Box Sign signature fulfillment experience',
+    },
+    boxSignSecurityBlockedTooltip: {
+        defaultMessage: 'This action is unavailable due to a security policy.',
+        description: 'Tooltip text for when Box Sign is blocked due to a security policy',
+        id: 'be.contentSidebar.boxSignSecurityBlockedTooltip',
+    },
+    boxSignWatermarkBlockedTooltip: {
+        defaultMessage: 'This action is unavailable, because the file is watermarked.',
+        description: 'Tooltip text for when Box Sign is blocked due to an item being watermarked',
+        id: 'be.contentSidebar.boxSignWatermarkBlockedTooltip',
+    },
     tasksAddTask: {
         id: 'be.contentSidebar.addTask',
         defaultMessage: 'Add Task',

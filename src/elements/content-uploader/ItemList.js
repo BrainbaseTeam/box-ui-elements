@@ -5,14 +5,14 @@
 
 import React from 'react';
 import noop from 'lodash/noop';
-import { Table, Column } from 'react-virtualized/dist/es/Table';
-import AutoSizer from 'react-virtualized/dist/es/AutoSizer';
+import { Table, Column } from '@box/react-virtualized/dist/es/Table';
+import AutoSizer from '@box/react-virtualized/dist/es/AutoSizer';
 import nameCellRenderer from './nameCellRenderer';
 import progressCellRenderer from './progressCellRenderer';
 import actionCellRenderer from './actionCellRenderer';
 import removeCellRenderer from './removeCellRenderer';
 import type { UploadItem } from '../../common/types/upload';
-import 'react-virtualized/styles.css';
+import '@box/react-virtualized/styles.css';
 import './ItemList.scss';
 
 type Props = {
@@ -20,14 +20,21 @@ type Props = {
     items: UploadItem[],
     onClick: Function,
     onRemoveClick?: (item: UploadItem) => void,
+    onUpgradeCTAClick?: Function,
 };
 
-const ItemList = ({ isResumableUploadsEnabled = false, items, onClick, onRemoveClick = noop }: Props) => (
+const ItemList = ({
+    isResumableUploadsEnabled = false,
+    items,
+    onClick,
+    onRemoveClick = noop,
+    onUpgradeCTAClick,
+}: Props) => (
     <AutoSizer>
         {({ width, height }) => {
             const nameCell = nameCellRenderer(isResumableUploadsEnabled);
-            const progressCell = progressCellRenderer();
-            const actionCell = actionCellRenderer(isResumableUploadsEnabled, onClick);
+            const progressCell = progressCellRenderer(!!onUpgradeCTAClick);
+            const actionCell = actionCellRenderer(isResumableUploadsEnabled, onClick, onUpgradeCTAClick);
             const removeCell = removeCellRenderer(onRemoveClick);
 
             return (
@@ -56,7 +63,7 @@ const ItemList = ({ isResumableUploadsEnabled = false, items, onClick, onRemoveC
                         cellRenderer={actionCell}
                         dataKey="status"
                         flexShrink={0}
-                        width={25}
+                        width={onUpgradeCTAClick ? 100 : 25}
                     />
                     {isResumableUploadsEnabled && (
                         <Column

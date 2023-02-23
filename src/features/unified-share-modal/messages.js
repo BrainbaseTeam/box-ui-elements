@@ -7,7 +7,7 @@ const messages = defineMessages({
         id: 'boxui.unifiedShare.contentSharedWithExternalCollaborators',
     },
     disabledShareLinkPermission: {
-        defaultMessage: 'This option isn’t available for this item due to a security restriction or classification.',
+        defaultMessage: 'This option is not available due to a security policy.',
         description:
             'Tooltip text for when shared permission option is not available due to restriction or classification',
         id: 'boxui.unifiedShare.disabledShareLinkPermission',
@@ -54,6 +54,18 @@ const messages = defineMessages({
         defaultMessage: 'Got it',
         description: 'This is label for the button so a user understands the new interface',
         id: 'boxui.unifiedShare.ftuxConfirmLabel',
+    },
+    ftuxEditPermissionTooltipBody: {
+        defaultMessage: 'Select the new edit option to easily share your file with people or groups.',
+        description:
+            'Text for the body of the tooltip for the ftux experience when the edit option is available for the user',
+        id: 'boxui.unifiedShare.ftuxEditPermissionTooltipBody',
+    },
+    ftuxEditPermissionTooltipTitle: {
+        defaultMessage: 'Collaboration made easy',
+        description:
+            'Text for the title of the tooltip for the ftux experience when the edit option is available for the user',
+        id: 'boxui.unifiedShare.ftuxEditPermissionTooltipTitle',
     },
     collaboratorListTitle: {
         defaultMessage: 'People in ‘{itemName}’',
@@ -203,30 +215,26 @@ const messages = defineMessages({
         description: 'Label for a shared link permission level',
         id: 'boxui.unifiedShare.sharedLinkPermissionsViewDownload',
     },
-    sharedLinkPermissionsViewDownloadDescription: {
-        defaultMessage: 'Users can view and download',
-        description: 'Description for Can view and download option',
-        id: 'boxui.unifiedShare.sharedLinkPermissionsViewDownloadDescription',
-    },
     sharedLinkPermissionsViewOnly: {
         defaultMessage: 'Can view only',
         description: 'Label for a shared link permission level',
         id: 'boxui.unifiedShare.sharedLinkPermissionsViewOnly',
     },
+    ftuxSharedLinkPermissionsEditTag: {
+        defaultMessage: 'NEW',
+        description:
+            'Label for the LabelPill that is shown when the user first opens the SharedLinkPermissions dropdown and sees the Can Edit option',
+        id: 'boxui.unifiedShare.ftuxSharedLinkPermissionsEditTag',
+    },
     sharedLinkPermissionsEdit: {
         defaultMessage: 'Can edit',
-        description: 'Label for a shared link permission to show for editable box notes',
+        description: 'Label for a shared link permission to show for an editable box note / file',
         id: 'boxui.unifiedShare.sharedLinkPermissionsEdit',
     },
     sharedLinkPermissionsEditTooltip: {
         defaultMessage: 'This permission can only be changed in Box Notes',
         description: 'Text to use in the tooltip when presenting an editable Box Note (DO NOT TRANSLATE "Box Notes")',
         id: 'boxui.unifiedShare.sharedLinkPermissionsEditTooltip',
-    },
-    sharedLinkPermissionsViewOnlyDescription: {
-        defaultMessage: 'Users can view only',
-        description: 'Description for Can view only option',
-        id: 'boxui.unifiedShare.sharedLinkPermissionsViewOnlyDescription',
     },
     sharedLinkDisabledTooltipCopy: {
         defaultMessage: 'Create and copy link for sharing',
@@ -244,6 +252,17 @@ const messages = defineMessages({
         description: 'Text shown in share modal when shared link is open to public access',
         id: 'boxui.unifiedShare.sharedLinkPubliclyAvailable',
     },
+    sharedLinkEditablePubliclyAvailable: {
+        defaultMessage:
+            'Publicly available for anyone to view and download. Any logged in users with the link can edit.',
+        description: 'Text shown in share modal when shared link is editable and is open to public access',
+        id: 'boxui.unifiedShare.sharedLinkEditablePubliclyAvailable',
+    },
+    sharedLinkElevatedEditableCompanyAvailable: {
+        defaultMessage: 'People who have access to this link can edit.',
+        description: 'Text shown in share modal when shared link is editable and is open to company access',
+        id: 'boxui.unifiedShare.sharedLinkElevatedEditableCompanyAvailable',
+    },
     upgradeGetMoreAccessControlsDescription: {
         defaultMessage:
             '62% of customers on your plan {upgradeGetMoreAccessControlsLink} to manage collaborators’ access and permission settings',
@@ -254,6 +273,16 @@ const messages = defineMessages({
         defaultMessage: 'upgrade',
         description: 'Label for link to upgrade to get more access controls for inviting collaborators to an item',
         id: 'boxui.unifiedShare.upgradeGetMoreAccessControlsLink',
+    },
+    upgradeLink: {
+        defaultMessage: 'Upgrade now',
+        description: 'Label for link to upgrade account',
+        id: 'boxui.unifiedShare.upgradeLink',
+    },
+    upgradeInlineNoticeTitle: {
+        defaultMessage: 'Upgrade Your Plan',
+        description: 'Title for the upgrade inline notice for upgrade user plan',
+        id: 'boxui.unifiedShare.upgradeInlineNoticeTitle',
     },
     sharedLinkSettings: {
         defaultMessage: 'Link Settings',
@@ -427,6 +456,94 @@ const messages = defineMessages({
         defaultMessage: 'Based on your usage, we think {fullName} would be interested in this file.',
         description: 'Tooltip description to explain recommendation for sharing tooltip',
         id: 'boxui.unifiedShare.recommendedSharingTooltipCalloutText',
+    },
+
+    // Information Barrier restrictions, external collab restrictions and business justifications
+    justificationSelectPlaceholder: {
+        defaultMessage: 'Select Justification',
+        description: 'The placeholder text of the select field that allows selecting a business justification reason',
+        id: 'boxui.unifiedShare.justificationSelectPlaceholder',
+    },
+    justificationRequiredError: {
+        defaultMessage: 'Select a justification or remove to continue',
+        description:
+            'The error message that is displayed when a user tries to send invitations to external collaborators, but a business justification is required before proceeding',
+        id: 'boxui.unifiedShare.justificationRequiredError',
+    },
+    restrictedContactsError: {
+        defaultMessage: 'Remove to continue',
+        description:
+            'The error message that is displayed when a user tries to send invitations to external collaborators, but restricted contacts need to be removed before proceeding',
+        id: 'boxui.unifiedShare.restrictedContactsError',
+    },
+    justifiableContactRestrictionNotice: {
+        defaultMessage:
+            'This content requires a business justification for {count, plural, one {{count} invitation} other {{count} invitations}}. Please select a business justification below.',
+        description:
+            'Text for the notice that is displayed when there are collaboration restrictions that apply to one or more of the selected contacts and business justifications are allowed for bypassing restrictions',
+        id: 'boxui.unifiedShare.justifiableContactRestrictionNotice',
+    },
+    justifiableContactRestrictionNoticeSingular: {
+        defaultMessage:
+            'This content requires a business justification to invite {email}. Please select a business justification below.',
+        description:
+            'Text for the notice that is displayed when there are collaboration restrictions that apply to one or more of the selected contacts and business justifications are allowed for bypassing restrictions',
+        id: 'boxui.unifiedShare.justifiableContactRestrictionNoticeSingular',
+    },
+    justifiableContactRestrictionRemoveButtonLabel: {
+        defaultMessage: 'Alternatively, remove to continue',
+        description:
+            'Label for the button that removes restricted contacts on the contact restriction notice when business justifications are allowed for bypassing restrictions',
+        id: 'boxui.unifiedShare.justifiableContactRestrictionRemoveButtonLabel',
+    },
+    contactRestrictionNotice: {
+        defaultMessage:
+            '{count, plural, one {{count} invitation} other {{count} invitations}} cannot be sent because external collaboration is restricted due to the applied security policy.',
+        description:
+            'Text for the notice that is displayed when there are collaboration restrictions that apply to one or more of the selected contacts',
+        id: 'boxui.unifiedShare.contactRestrictionNotice',
+    },
+    contactRestrictionNoticeSingular: {
+        defaultMessage:
+            'Invitations cannot be sent to {email} because external collaboration is restricted due to the applied security policy.',
+        description:
+            'Text for the notice that is displayed when there are collaboration restrictions that apply to one or more of the selected contacts',
+        id: 'boxui.unifiedShare.contactRestrictionNoticeSingular',
+    },
+    contactRestrictionNoticeInformationBarrier: {
+        defaultMessage:
+            '{count, plural, one {{count} invitation} other {{count} invitations}} cannot be sent due to a security policy.',
+        description:
+            'Text for the notice that is displayed when there are Information Barrier collaboration restrictions that apply to one or more of the selected contacts',
+        id: 'boxui.unifiedShare.contactRestrictionNoticeInformationBarrier',
+    },
+    contactRestrictionNoticeInformationBarrierSingular: {
+        defaultMessage: 'Invitations cannot be sent to {email} due to a security policy.',
+        description:
+            'Text for the notice that is displayed when there are Information Barrier collaboration restrictions that apply to only one of the selected contacts',
+        id: 'boxui.unifiedShare.contactRestrictionNoticeInformationBarrierSingular',
+    },
+    contactRestrictionNoticeInformationBarrierSingularGroup: {
+        defaultMessage: 'Invitations cannot be sent to "{groupName}" due to a security policy.',
+        description:
+            'Text for the notice that is displayed when there are Information Barrier collaboration restrictions that apply to only one of the selected contacts, which is a group',
+        id: 'boxui.unifiedShare.contactRestrictionNoticeInformationBarrierSingularGroup',
+    },
+    contactRestrictionRemoveButtonLabel: {
+        defaultMessage: 'Remove to continue',
+        description: 'Label for the button that removes restricted contacts on the contact restriction notice',
+        id: 'boxui.unifiedShare.contactRestrictionRemoveButtonLabel',
+    },
+    contactEmailsTooltipText: {
+        defaultMessage: '{emails}, and {remainingEmailsCount} more',
+        description:
+            'Text to show when the number of contact email addresses displayed on a tooltip exceeds the maximum amount that can be displayed',
+        id: 'boxui.unifiedShare.contactEmailsTooltipText',
+    },
+    expiresMessage: {
+        defaultMessage: 'Expires',
+        description: 'Label for tooltips or other components that display expiration icons',
+        id: 'boxui.unifiedShare.expiresMessage',
     },
 });
 

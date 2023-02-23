@@ -203,6 +203,24 @@ describe('components/dropdown-menu/DropdownMenu', () => {
             expect(wrapper.prop('enabled')).toBe(false);
         });
 
+        test('should render TetherComponent with attachment and targetAttachment props passed in as tetherAttachment and tetherTargetAttachment', () => {
+            const tetherAttachment = 'middle left';
+            const tetherTargetAttachment = 'middle right';
+            const wrapper = shallow(
+                <DropdownMenu
+                    isRightAligned
+                    tetherAttachment={tetherAttachment}
+                    tetherTargetAttachment={tetherTargetAttachment}
+                >
+                    <FakeButton />
+                    <FakeMenu />
+                </DropdownMenu>,
+            );
+
+            expect(wrapper.prop('attachment')).toEqual(tetherAttachment);
+            expect(wrapper.prop('targetAttachment')).toEqual(tetherTargetAttachment);
+        });
+
         test('should render TetherComponent with enabled prop when menu is open', () => {
             const wrapper = shallow(
                 <DropdownMenu>
@@ -269,6 +287,44 @@ describe('components/dropdown-menu/DropdownMenu', () => {
                 },
             ]);
         });
+
+        test('should render TetherComponent with window constraints and pinned when constrainToWindowWithPin=true', () => {
+            const wrapper = shallow(
+                <DropdownMenu constrainToWindowWithPin>
+                    <FakeButton />
+                    <FakeMenu />
+                </DropdownMenu>,
+            );
+
+            expect(wrapper.prop('constraints')).toEqual([
+                {
+                    to: 'window',
+                    attachment: 'together',
+                    pin: true,
+                },
+            ]);
+        });
+
+        test('should render TetherComponent with window constraints, pinned and scroll parent when constrainToWindowWithPin=true and constrainToScrollParent=true', () => {
+            const wrapper = shallow(
+                <DropdownMenu constrainToScrollParent constrainToWindowWithPin>
+                    <FakeButton />
+                    <FakeMenu />
+                </DropdownMenu>,
+            );
+
+            expect(wrapper.prop('constraints')).toEqual([
+                {
+                    to: 'scrollParent',
+                    attachment: 'together',
+                },
+                {
+                    to: 'window',
+                    attachment: 'together',
+                    pin: true,
+                },
+            ]);
+        });
     });
 
     describe('openMenuAndSetFocusIndex()', () => {
@@ -332,8 +388,13 @@ describe('components/dropdown-menu/DropdownMenu', () => {
         });
 
         test('should call closeMenu() when menu is currently open', () => {
+            const event = {
+                preventDefault: jest.fn(),
+                stopPropagation: jest.fn(),
+            };
+            const onMenuClose = jest.fn();
             const wrapper = shallow(
-                <DropdownMenu>
+                <DropdownMenu onMenuClose={onMenuClose}>
                     <FakeButton />
                     <FakeMenu />
                 </DropdownMenu>,
@@ -342,12 +403,11 @@ describe('components/dropdown-menu/DropdownMenu', () => {
             const instance = wrapper.instance();
             instance.openMenuAndSetFocusIndex(1);
 
-            sandbox.mock(instance).expects('closeMenu');
+            wrapper.find(FakeButton).simulate('click', event);
 
-            wrapper.find(FakeButton).simulate('click', {
-                preventDefault: sandbox.mock(),
-                stopPropagation: sandbox.mock(),
-            });
+            expect(event.stopPropagation).toBeCalled();
+            expect(event.preventDefault).toBeCalled();
+            expect(onMenuClose).toBeCalledWith(event);
         });
     });
 
@@ -386,7 +446,8 @@ describe('components/dropdown-menu/DropdownMenu', () => {
         });
 
         test('shoud not stop esc propagation if dropdown is closed', () => {
-            const wrapper = getWrapper();
+            const onMenuClose = jest.fn();
+            const wrapper = getWrapper({ onMenuClose });
             wrapper.setState({ isOpen: false });
 
             wrapper.find(FakeButton).simulate('keydown', {
@@ -394,10 +455,13 @@ describe('components/dropdown-menu/DropdownMenu', () => {
                 preventDefault: sandbox.mock(),
                 stopPropagation: sandbox.mock().never(),
             });
+
+            expect(onMenuClose).toBeCalled();
         });
 
         test('should stop esc propagation if dropdown is open', () => {
-            const wrapper = getWrapper();
+            const onMenuClose = jest.fn();
+            const wrapper = getWrapper({ onMenuClose });
             wrapper.setState({ isOpen: true });
 
             wrapper.find(FakeButton).simulate('keydown', {
@@ -405,6 +469,8 @@ describe('components/dropdown-menu/DropdownMenu', () => {
                 preventDefault: sandbox.mock(),
                 stopPropagation: sandbox.mock(),
             });
+
+            expect(onMenuClose).toBeCalled();
         });
 
         test('should call openMenuAndSetFocus(-1) to last item when "up" is pressed', () => {
@@ -586,14 +652,12 @@ describe('components/dropdown-menu/DropdownMenu', () => {
 
                 const instance = wrapper.instance();
                 instance.openMenuAndSetFocusIndex(0);
-                instance.closeMenu = closeMenuSpy;
                 const handleDocumentClickEvent = {
                     target: document.createElement('div'),
                 };
                 instance.handleDocumentClick(handleDocumentClickEvent);
 
-                expect(closeMenuSpy).toHaveBeenCalled();
-                expect(onMenuCloseSpy).toHaveBeenCalled();
+                expect(onMenuCloseSpy).toHaveBeenCalledWith(handleDocumentClickEvent);
             });
 
             test.each`

@@ -43,6 +43,13 @@ describe('features/content-explorer/content-explorer/ContentExplorerActionButton
                 hasMoveButton: false,
                 hasCopyButton: false,
             },
+            // copy
+            {
+                contentExplorerMode: ContentExplorerModes.COPY,
+                hasChooseButton: false,
+                hasMoveButton: false,
+                hasCopyButton: true,
+            },
         ].forEach(({ contentExplorerMode, hasChooseButton, hasMoveButton, hasCopyButton }) => {
             test('should render correct buttons based on the specified contentExplorerMode', () => {
                 const wrapper = renderComponent({
@@ -223,6 +230,31 @@ describe('features/content-explorer/content-explorer/ContentExplorerActionButton
 
             expect(onChooseClickSpy.withArgs([currentFolder]).calledOnce).toBe(true);
         });
+
+        test('should not call onChooseClick in MULTI_SELECT mode if selection is empty', () => {
+            const onChooseClickSpy = sandbox.spy();
+            const wrapper = renderComponent({
+                contentExplorerMode: ContentExplorerModes.MULTI_SELECT,
+                onChooseClick: onChooseClickSpy,
+                selectedItems: {},
+            });
+            wrapper.find('.content-explorer-choose-button').simulate('click');
+
+            expect(onChooseClickSpy.calledOnce).toBe(false);
+        });
+
+        test('should call onChooseClick in MULTI_SELECT mode if selection is empty and isNoSelectionAllowed is true', () => {
+            const onChooseClickSpy = sandbox.spy();
+            const wrapper = renderComponent({
+                contentExplorerMode: ContentExplorerModes.MULTI_SELECT,
+                onChooseClick: onChooseClickSpy,
+                selectedItems: {},
+                isNoSelectionAllowed: true,
+            });
+            wrapper.find('.content-explorer-choose-button').simulate('click');
+
+            expect(onChooseClickSpy.withArgs([]).calledOnce).toBe(true);
+        });
     });
 
     describe('onMoveClick', () => {
@@ -258,34 +290,36 @@ describe('features/content-explorer/content-explorer/ContentExplorerActionButton
     });
 
     describe('onCopyClick', () => {
-        test('should call onCopyClick with selected item when copy button is clicked', () => {
-            const item = { id: '0', name: 'item1' };
-            const selectedItems = { '0': item };
-            const onCopyClickSpy = sandbox.spy();
-            const wrapper = renderComponent({
-                contentExplorerMode: ContentExplorerModes.MOVE_COPY,
-                selectedItems,
-                onCopyClick: onCopyClickSpy,
+        describe.each([ContentExplorerModes.COPY, ContentExplorerModes.MOVE_COPY])('%s mode', contentExplorerMode => {
+            test('should call onCopyClick with selected item when copy button is clicked', () => {
+                const item = { id: '0', name: 'item1' };
+                const selectedItems = { '0': item };
+                const onCopyClickSpy = sandbox.spy();
+                const wrapper = renderComponent({
+                    contentExplorerMode,
+                    selectedItems,
+                    onCopyClick: onCopyClickSpy,
+                });
+
+                wrapper.find('.content-explorer-copy-button').simulate('click');
+
+                expect(onCopyClickSpy.withArgs(item).calledOnce).toBe(true);
             });
 
-            wrapper.find('.content-explorer-copy-button').simulate('click');
+            test('should call onCopyClick with current folder when when copy button is clicked and no item is selected', () => {
+                const currentFolder = { id: '0', name: 'item1', type: 'folder' };
+                const onCopyClickSpy = sandbox.spy();
+                const wrapper = renderComponent({
+                    contentExplorerMode,
+                    currentFolder,
+                    onCopyClick: onCopyClickSpy,
+                    selectedItems: {},
+                });
 
-            expect(onCopyClickSpy.withArgs(item).calledOnce).toBe(true);
-        });
+                wrapper.find('.content-explorer-copy-button').simulate('click');
 
-        test('should call onCopyClick with current folder when when copy button is clicked and no item is selected', () => {
-            const currentFolder = { id: '0', name: 'item1', type: 'folder' };
-            const onCopyClickSpy = sandbox.spy();
-            const wrapper = renderComponent({
-                contentExplorerMode: ContentExplorerModes.MOVE_COPY,
-                currentFolder,
-                onCopyClick: onCopyClickSpy,
-                selectedItems: {},
+                expect(onCopyClickSpy.withArgs(currentFolder).calledOnce).toBe(true);
             });
-
-            wrapper.find('.content-explorer-copy-button').simulate('click');
-
-            expect(onCopyClickSpy.withArgs(currentFolder).calledOnce).toBe(true);
         });
     });
 
@@ -309,6 +343,9 @@ describe('features/content-explorer/content-explorer/ContentExplorerActionButton
             },
             {
                 contentExplorerMode: ContentExplorerModes.MOVE_COPY,
+            },
+            {
+                contentExplorerMode: ContentExplorerModes.COPY,
             },
         ].forEach(({ contentExplorerMode }) => {
             test('should not show status message', () => {

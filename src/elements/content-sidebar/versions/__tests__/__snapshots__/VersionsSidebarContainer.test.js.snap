@@ -1,5 +1,46 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`elements/content-sidebar/versions/VersionsSidebarContainer handleFetchError should create StaticVersionSidebar if onUpgradeClick is present 1`] = `
+<StaticVersionsSidebar
+  error={
+    Object {
+      "defaultMessage": "File versions could not be retrieved.",
+      "id": "be.sidebarVersions.fetchError",
+    }
+  }
+  isLoading={false}
+  isWatermarked={false}
+  onUpgradeClick={[Function]}
+  parentName=""
+  versionCount={0}
+  versionLimit={Infinity}
+  versions={Array []}
+/>
+`;
+
+exports[`elements/content-sidebar/versions/VersionsSidebarContainer handleFetchError should set state to default values with error message 1`] = `
+<VersionsSidebar
+  error={
+    Object {
+      "defaultMessage": "File versions could not be retrieved.",
+      "id": "be.sidebarVersions.fetchError",
+    }
+  }
+  fileId="12345"
+  isLoading={false}
+  isWatermarked={false}
+  onDelete={[Function]}
+  onDownload={[Function]}
+  onPreview={[Function]}
+  onPromote={[Function]}
+  onRestore={[Function]}
+  parentName=""
+  versionCount={0}
+  versionLimit={Infinity}
+  versions={Array []}
+/>
+`;
+
 exports[`elements/content-sidebar/versions/VersionsSidebarContainer render should match its snapshot 1`] = `
 <VersionsSidebar
   fileId="12345"

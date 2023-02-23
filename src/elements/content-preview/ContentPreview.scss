@@ -8,6 +8,7 @@
     .bcpr-body {
         display: flex;
         flex: 1;
+        min-height: 0; // Required to prevent overflow of child flex elements
     }
 
     .bcpr-container {
@@ -69,20 +70,27 @@
             right: 0;
         }
     }
-
-    .bcpr-loading-wrapper {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        justify-content: center;
-        background-color: $bdl-gray-05;
-
-        .bcpr-loaded & {
-            display: none;
-        }
-    }
 }
 
 .bcpr.bcpr-thumbnails-open .bcpr-navigate-left {
     left: 226px;
+}
+
+.is-responsive-web {
+    @include breakpoint($medium-screen) {
+        .be.bcpr {
+            position: relative;
+        }
+
+        .bcpr {
+            .bcpr-body {
+                position: static;
+                flex-direction: column;
+            }
+
+            .bcpr-container {
+                position: static;
+            }
+        }
+    }
 }

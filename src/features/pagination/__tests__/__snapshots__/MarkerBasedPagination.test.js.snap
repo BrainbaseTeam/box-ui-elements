@@ -77,7 +77,6 @@ exports[`elements/Pagination/MarkerBasedPagination should render properly with o
                   onBlur={[Function]}
                   onClick={[Function]}
                   onFocus={[Function]}
-                  onKeyDown={[Function]}
                   onMouseEnter={[Function]}
                   onMouseLeave={[Function]}
                   showRadar={false}
@@ -89,7 +88,6 @@ exports[`elements/Pagination/MarkerBasedPagination should render properly with o
                     onBlur={[Function]}
                     onClick={[Function]}
                     onFocus={[Function]}
-                    onKeyDown={[Function]}
                     onMouseEnter={[Function]}
                     onMouseLeave={[Function]}
                     tabIndex="0"
@@ -109,6 +107,7 @@ exports[`elements/Pagination/MarkerBasedPagination should render properly with o
                           width={6}
                         >
                           <svg
+                            aria-hidden="true"
                             className="icon-page-back "
                             focusable="false"
                             height={9}
@@ -151,7 +150,7 @@ exports[`elements/Pagination/MarkerBasedPagination should render properly with o
             >
               <button
                 aria-disabled={true}
-                className="btn is-disabled"
+                className="btn is-disabled bdl-is-disabled"
                 onClick={[Function]}
                 type="submit"
               >
@@ -169,6 +168,7 @@ exports[`elements/Pagination/MarkerBasedPagination should render properly with o
                       width={6}
                     >
                       <svg
+                        aria-hidden="true"
                         className="icon-page-forward "
                         focusable="false"
                         height={9}
@@ -237,7 +237,7 @@ exports[`elements/Pagination/MarkerBasedPagination should render properly with o
             >
               <button
                 aria-disabled={true}
-                className="btn is-disabled"
+                className="btn is-disabled bdl-is-disabled"
                 onClick={[Function]}
                 type="submit"
               >
@@ -255,6 +255,7 @@ exports[`elements/Pagination/MarkerBasedPagination should render properly with o
                       width={6}
                     >
                       <svg
+                        aria-hidden="true"
                         className="icon-page-back "
                         focusable="false"
                         height={9}
@@ -323,7 +324,6 @@ exports[`elements/Pagination/MarkerBasedPagination should render properly with o
                   onBlur={[Function]}
                   onClick={[Function]}
                   onFocus={[Function]}
-                  onKeyDown={[Function]}
                   onMouseEnter={[Function]}
                   onMouseLeave={[Function]}
                   showRadar={false}
@@ -335,7 +335,6 @@ exports[`elements/Pagination/MarkerBasedPagination should render properly with o
                     onBlur={[Function]}
                     onClick={[Function]}
                     onFocus={[Function]}
-                    onKeyDown={[Function]}
                     onMouseEnter={[Function]}
                     onMouseLeave={[Function]}
                     tabIndex="0"
@@ -355,6 +354,7 @@ exports[`elements/Pagination/MarkerBasedPagination should render properly with o
                           width={6}
                         >
                           <svg
+                            aria-hidden="true"
                             className="icon-page-forward "
                             focusable="false"
                             height={9}
@@ -453,7 +453,6 @@ exports[`elements/Pagination/MarkerBasedPagination should render properly with o
                   onBlur={[Function]}
                   onClick={[Function]}
                   onFocus={[Function]}
-                  onKeyDown={[Function]}
                   onMouseEnter={[Function]}
                   onMouseLeave={[Function]}
                   showRadar={false}
@@ -465,7 +464,6 @@ exports[`elements/Pagination/MarkerBasedPagination should render properly with o
                     onBlur={[Function]}
                     onClick={[Function]}
                     onFocus={[Function]}
-                    onKeyDown={[Function]}
                     onMouseEnter={[Function]}
                     onMouseLeave={[Function]}
                     tabIndex="0"
@@ -485,6 +483,7 @@ exports[`elements/Pagination/MarkerBasedPagination should render properly with o
                           width={6}
                         >
                           <svg
+                            aria-hidden="true"
                             className="icon-page-back "
                             focusable="false"
                             height={9}
@@ -555,7 +554,6 @@ exports[`elements/Pagination/MarkerBasedPagination should render properly with o
                   onBlur={[Function]}
                   onClick={[Function]}
                   onFocus={[Function]}
-                  onKeyDown={[Function]}
                   onMouseEnter={[Function]}
                   onMouseLeave={[Function]}
                   showRadar={false}
@@ -567,7 +565,6 @@ exports[`elements/Pagination/MarkerBasedPagination should render properly with o
                     onBlur={[Function]}
                     onClick={[Function]}
                     onFocus={[Function]}
-                    onKeyDown={[Function]}
                     onMouseEnter={[Function]}
                     onMouseLeave={[Function]}
                     tabIndex="0"
@@ -587,6 +584,7 @@ exports[`elements/Pagination/MarkerBasedPagination should render properly with o
                           width={6}
                         >
                           <svg
+                            aria-hidden="true"
                             className="icon-page-forward "
                             focusable="false"
                             height={9}

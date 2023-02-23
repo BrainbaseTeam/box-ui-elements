@@ -11,6 +11,7 @@ import { withAPIContext } from '../../../common/api-context';
 import Avatar from '../Avatar';
 import Media from '../../../../components/media';
 import { MenuItem } from '../../../../components/menu';
+import ActivityCard from '../ActivityCard';
 import ActivityError from '../common/activity-error';
 import ActivityMessage from '../common/activity-message';
 import ActivityTimestamp from '../common/activity-timestamp';
@@ -262,7 +263,7 @@ class Task extends React.Component<Props, State> {
         const isMenuVisible = (permissions.can_delete || permissions.can_update) && !isPending;
 
         return (
-            <div
+            <ActivityCard
                 className="bcs-Task"
                 data-resin-feature="tasks"
                 data-resin-taskid={id}
@@ -278,8 +279,7 @@ class Task extends React.Component<Props, State> {
                     data-testid="task-card"
                 >
                     <Media.Figure className="bcs-Task-avatar">
-                        <Avatar getAvatarUrl={getAvatarUrl} user={createdByUser} />
-                        <TaskTypeIcon width={20} height={20} className="bcs-Task-avatarBadge" />
+                        <Avatar getAvatarUrl={getAvatarUrl} user={createdByUser} badgeIcon={<TaskTypeIcon />} />
                     </Media.Figure>
                     <Media.Body>
                         {isMenuVisible && (
@@ -424,7 +424,7 @@ class Task extends React.Component<Props, State> {
                     }}
                     taskType={task_type}
                 />
-            </div>
+            </ActivityCard>
         );
     }
 }

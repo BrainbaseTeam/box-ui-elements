@@ -6,17 +6,8 @@ type MetadataQueryResponseEntryEnterprise = {
     [string]: MetadataInstanceV2,
 };
 
-type MetadataQueryResponseEntryMetadata = {
-    [string]: MetadataQueryResponseEntryEnterprise,
-};
-
-type MetadataQueryResponseEntry = {
-    item: BoxItem,
-    metadata: MetadataQueryResponseEntryMetadata,
-};
-
 type MetadataQueryResponseData = {
-    entries: Array<MetadataQueryResponseEntry>,
+    entries: Array<BoxItem>,
     next_marker?: string,
 };
 
@@ -25,8 +16,19 @@ type MetadataQueryOrderByClause = {
     field_key: string,
 };
 
+type MetadataFieldConfig = {
+    canEdit?: boolean,
+    displayName?: string,
+    key: string,
+};
+
+// FieldsToShow array items could be simple strings or objects
+// e.g. const fieldsToShow: FieldsToShow = [ 'name', { key: 'desc', displayName: 'Desc', canEdit: true } ];
+type FieldsToShow = Array<MetadataFieldConfig | string>;
+
 type MetadataQuery = {
     ancestor_folder_id: string,
+    fields?: Array<string>,
     from: string,
     limit?: number,
     marker?: string,
@@ -38,20 +40,11 @@ type MetadataQuery = {
     use_index?: string,
 };
 
-type MetadataColumnConfig = {
-    canEdit?: boolean,
-    name: string,
-};
-
-type MetadataColumnsToShow = Array<MetadataColumnConfig | string>;
-
 export type {
-    MetadataColumnConfig,
-    MetadataColumnsToShow,
+    MetadataFieldConfig,
+    FieldsToShow,
     MetadataQuery,
     MetadataQueryOrderByClause,
     MetadataQueryResponseData,
-    MetadataQueryResponseEntry,
     MetadataQueryResponseEntryEnterprise,
-    MetadataQueryResponseEntryMetadata,
 };

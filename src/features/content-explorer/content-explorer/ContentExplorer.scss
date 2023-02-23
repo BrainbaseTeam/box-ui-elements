@@ -51,6 +51,76 @@
         }
     }
 
+    .bdl-ContentExplorerFolderTreeBreadcrumbs {
+        display: flex;
+        align-items: center;
+        height: 30px;
+        margin-top: 15px;
+        margin-bottom: 5px;
+
+        .bdl-ContentExplorerFolderTreeBreadcrumbs-button {
+            margin: 0 10px 0 0;
+            padding: 5px;
+        }
+
+        .bdl-ContentExplorerFolderTreeBreadcrumbs-icon {
+            margin-right: 10px;
+        }
+
+        .bdl-ContentExplorerFolderTreeBreadcrumbs-text {
+            color: $bdl-gray-62;
+        }
+    }
+
+    .bdl-ContentExplorer-subheader {
+        display: flex;
+        align-items: center;
+        height: 10 * $bdl-grid-unit;
+
+        .checkbox-container,
+        .toggle-container {
+            margin: 0;
+        }
+
+        .toggle-simple-label {
+            display: flex;
+            align-items: center;
+            min-width: auto;
+        }
+
+        .content-explorer-select-all-checkbox {
+            margin-right: 18px;
+
+            &:first-child {
+                margin-left: auto;
+            }
+        }
+    }
+
+    .content-explorer-select-all-container {
+        display: flex;
+        flex-grow: 1;
+        align-items: center;
+        height: 10 * $bdl-grid-unit;
+
+        .content-explorer-select-all-items-counter {
+            margin-left: 2px;
+        }
+
+        .content-explorer-select-all-checkbox-label {
+            margin-right: 10px;
+            margin-left: auto;
+        }
+    }
+
+    .bdl-ContentExplorerIncludeSubfolders-icon {
+        margin-left: 4px;
+
+        path {
+            fill: $bdl-box-blue;
+        }
+    }
+
     .content-explorer-empty-state {
         display: flex;
         flex-direction: column;
@@ -67,6 +137,10 @@
         padding-top: 20px;
         border-top: 1px solid $bdl-gray-10;
 
+        .btn {
+            @include bdl-Button--large;
+        }
+
         .status-message {
             position: absolute;
             left: 0;
@@ -76,5 +150,20 @@
         .content-explorer-copy-button {
             margin-right: 0;
         }
+    }
+}
+
+.content-explorer .modal-actions .status-message {
+    margin-right: auto;
+}
+
+.bdl-ContentExplorerModal--responsive .modal-content,
+.bdl-ContentExplorer--responsive {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+    .content-explorer-breadcrumbs-up-button {
+        display: none;
     }
 }

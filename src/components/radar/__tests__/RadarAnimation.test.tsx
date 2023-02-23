@@ -73,6 +73,14 @@ describe('components/radar/RadarAnimation', () => {
         expect(wrapper.prop('offset')).toEqual(offset);
     });
 
+    test('should render correctly with tetherElementClassName', () => {
+        expect(
+            getWrapper({
+                tetherElementClassName: 'tether-element-class-name',
+            }),
+        ).toMatchSnapshot();
+    });
+
     describe('isShown', () => {
         test('should be shown when isShown is not provided', () => {
             expect(
@@ -104,7 +112,6 @@ describe('components/radar/RadarAnimation', () => {
             const positionTetherMock = jest.fn();
 
             const wrapper = getWrapper({ isShown } as RadarAnimationProps);
-            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
             // @ts-ignore: react-tether shenanigans
             wrapper.instance().tetherRef = { current: { position: positionTetherMock } };
 

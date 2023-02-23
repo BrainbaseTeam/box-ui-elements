@@ -4,7 +4,11 @@ import { shallow } from 'enzyme';
 import AnnotationActivityMenu from '../AnnotationActivityMenu';
 
 describe('elements/content-sidebar/ActivityFeed/annotations/AnnotationActivityMenu', () => {
-    const getWrapper = (props = {}) => shallow(<AnnotationActivityMenu id="123" {...props} />);
+    const defaults = {
+        id: '123',
+    };
+
+    const getWrapper = (props = {}) => shallow(<AnnotationActivityMenu {...defaults} {...props} />);
 
     test.each`
         permissions             | showDelete
@@ -21,21 +25,57 @@ describe('elements/content-sidebar/ActivityFeed/annotations/AnnotationActivityMe
         },
     );
 
-    test('should show the delete confirm menu when confirming delete', () => {
-        const wrapper = getWrapper({ canDelete: true });
-        const deleteButton = wrapper.find('MenuItem').prop('onClick');
+    test('should render the edit annotation activity menu item if canEdit is true', () => {
+        const wrapper = getWrapper({ canEdit: true });
 
-        deleteButton();
-
-        expect(wrapper.find('DeleteConfirmation').length).toEqual(1);
+        expect(wrapper.exists('[data-testid="edit-annotation-activity"]')).toBe(true);
     });
 
-    test('shoud render resin tags', () => {
-        const wrapper = getWrapper({ canDelete: true });
+    test('should render the resolve annotation activity menu item if canResolve is true for unresolved item', () => {
+        const wrapper = getWrapper({ canResolve: true, status: 'open' });
 
-        expect(wrapper.find('[data-testid="delete-annotation-activity"]').props()).toMatchObject({
+        expect(wrapper.exists('[data-testid="resolve-annotation-activity"]')).toBe(true);
+    });
+
+    test('should render the unresolve annotation activity menu item if canResolve is true for resolved item', () => {
+        const wrapper = getWrapper({ canResolve: true, status: 'resolved' });
+
+        expect(wrapper.exists('[data-testid="unresolve-annotation-activity"]')).toBe(true);
+    });
+
+    test('should render resin tags', () => {
+        const wrapper = getWrapper({
+            canDelete: true,
+            canEdit: true,
+            canResolve: true,
+            status: 'open',
+        });
+
+        expect(wrapper.find("[data-testid='delete-annotation-activity']").props()).toMatchObject({
             'data-resin-itemid': '123',
             'data-resin-target': 'activityfeed-annotation-delete',
+        });
+
+        expect(wrapper.find("[data-testid='edit-annotation-activity']").props()).toMatchObject({
+            'data-resin-itemid': '123',
+            'data-resin-target': 'activityfeed-annotation-edit',
+        });
+
+        expect(wrapper.find("[data-testid='resolve-annotation-activity']").props()).toMatchObject({
+            'data-resin-itemid': '123',
+            'data-resin-target': 'activityfeed-annotation-resolve',
+        });
+    });
+
+    test('should render resin tags for unresolve activity', () => {
+        const wrapper = getWrapper({
+            canResolve: true,
+            status: 'resolved',
+        });
+
+        expect(wrapper.find("[data-testid='unresolve-annotation-activity']").props()).toMatchObject({
+            'data-resin-itemid': '123',
+            'data-resin-target': 'activityfeed-annotation-unresolve',
         });
     });
 });

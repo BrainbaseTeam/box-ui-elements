@@ -1,7 +1,11 @@
 // @flow
 import * as React from 'react';
+import classNames from 'classnames';
 import TetherComponent from 'react-tether';
 import uniqueId from 'lodash/uniqueId';
+import { KEYS } from '../../constants';
+
+import FlyoutContext from './FlyoutContext';
 
 import './Flyout.scss';
 
@@ -116,6 +120,10 @@ export type FlyoutProps = {
      */
     constrainToWindow?: boolean,
     /**
+     * Toggles responsive behavior
+     */
+    isResponsive?: boolean,
+    /**
      * Whether overlay should be visible by default
      */
     isVisibleByDefault: boolean,
@@ -174,6 +182,7 @@ class Flyout extends React.Component<Props, State> {
         closeOnWindowBlur: false,
         constrainToScrollParent: true,
         constrainToWindow: false,
+        isResponsive: false,
         isVisibleByDefault: false,
         openOnHover: false,
         openOnHoverDelayTimeout: 300,
@@ -249,10 +258,18 @@ class Flyout extends React.Component<Props, State> {
             this.openOverlay();
         }
 
-        // If button was clicked, the detail field should hold number of clicks.
-        // If number is zero, the event was synthesized.
-        // https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail
-        const isButtonClicked = event.detail > 0;
+        // In at least one place, .click() is called programmatically
+        //     src/features/presence/Presence.js
+        // In the programmatic case, the event is not supposed to trigger
+        // autofocus of the content (TBD if this is truly correct behavior).
+        // This line was using "event.detail > 0"
+        // to detect if a click event was from a user, but that made keyboard
+        // triggers of the button click behave differently than the mouse.
+        // So, we use "isTrusted" instead. Note: React polyfills for IE11.
+        // https://developer.mozilla.org/en-US/docs/Web/API/Event/isTrusted
+        // https://reactjs.org/docs/events.html
+
+        const isButtonClicked = event.isTrusted;
 
         this.setState({ isButtonClicked });
 
@@ -265,7 +282,6 @@ class Flyout extends React.Component<Props, State> {
         const { openOnHover, openOnHoverDelayTimeout } = this.props;
         if (openOnHover) {
             clearTimeout(this.hoverDelay);
-
             this.hoverDelay = setTimeout(() => {
                 this.openOverlay();
             }, openOnHoverDelayTimeout);
@@ -280,6 +296,13 @@ class Flyout extends React.Component<Props, State> {
             this.hoverDelay = setTimeout(() => {
                 this.closeOverlay();
             }, openOnHoverDelayTimeout);
+        }
+    };
+
+    handleKeyPress = () => {
+        if (KEYS.enter) {
+            this.openOverlay();
+            this.focusButton();
         }
     };
 
@@ -350,6 +373,7 @@ class Flyout extends React.Component<Props, State> {
             className = '',
             constrainToScrollParent,
             constrainToWindow,
+            isResponsive,
             offset,
             openOnHover,
             position,
@@ -369,10 +393,12 @@ class Flyout extends React.Component<Props, State> {
         const overlayButtonProps: Object = {
             id: this.overlayButtonID,
             key: this.overlayButtonID,
-            role: 'button',
             onClick: this.handleButtonClick,
+            onKeyPress: this.handleKeyPress,
             onMouseEnter: this.handleButtonHover,
             onMouseLeave: this.handleButtonHoverLeave,
+            role: 'button',
+            tabIndex: '0',
             'aria-haspopup': 'true',
             'aria-expanded': isVisible ? 'true' : 'false',
         };
@@ -415,7 +441,7 @@ class Flyout extends React.Component<Props, State> {
             targetAttachment: tetherPosition.targetAttachment,
             enabled: isVisible,
             classes: {
-                element: `flyout-overlay ${className}`,
+                element: classNames('flyout-overlay', { 'bdl-Flyout--responsive': isResponsive }, className),
             },
             constraints,
         };
@@ -448,7 +474,11 @@ class Flyout extends React.Component<Props, State> {
         return (
             <TetherComponent {...tetherProps}>
                 {React.cloneElement(overlayButton, overlayButtonProps)}
-                {isVisible ? React.cloneElement(overlayContent, overlayProps) : null}
+                {isVisible && (
+                    <FlyoutContext.Provider value={{ closeOverlay: this.closeOverlay }}>
+                        {React.cloneElement(overlayContent, overlayProps)}
+                    </FlyoutContext.Provider>
+                )}
             </TetherComponent>
         );
     }
