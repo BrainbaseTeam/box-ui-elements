@@ -61,6 +61,9 @@ const getErrorMessage = (errorCode: ?string, itemName: ?string) => {
 export default () => ({ rowData }: Props) => {
     const { status, error = {}, name, isFolder, file } = rowData;
     const { code } = error;
+    if (!code) {
+        console.error(error);
+    }
 
     if (isFolder && status !== STATUS_ERROR) {
         return null;
